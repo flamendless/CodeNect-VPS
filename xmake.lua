@@ -20,6 +20,18 @@ target("CodeNect")
 	add_cxxflags("-g", "-Wall", "-Wformat", "-pedantic", "$(shell sdl2-config --cflags)")
 	add_ldflags("$(shell sdl2-config --libs)")
 
+	if is_mode("debug") then
+		add_defines("DEBUG_MODE=1")
+		set_symbols("debug")
+		set_optimize("none")
+	end
+
+	if is_mode("release") then
+		set_symbols("hidden")
+		set_optimize("fastest")
+		set_strip("all")
+	end
+
 	on_load(function(target)
 		local packages = find_packages("GL", "dl")
 

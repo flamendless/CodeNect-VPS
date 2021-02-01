@@ -4,13 +4,13 @@ namespace App
 {
 int init()
 {
-	fmt::print(stdout, "Application starting...");
+	fmt::print(stdout, "Application starting...\n");
 
 	int flags = SDL_INIT_VIDEO | SDL_INIT_TIMER;
 
 	if (SDL_Init(flags) != 0)
 	{
-		fmt::printf("Error: %s", SDL_GetError());
+		fmt::printf("Error: %s\n", SDL_GetError());
 		return -1;
 	}
 
@@ -82,7 +82,7 @@ void render_end()
 
 void shutdown()
 {
-	fmt::print(stderr, "Application exiting...");
+	fmt::print(stderr, "Application exiting...\n");
 
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
