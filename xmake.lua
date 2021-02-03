@@ -16,6 +16,9 @@ target("CodeNect")
 	add_files("includes/imnodes/*.cpp|sample.cpp")
 	add_includedirs("includes/imnodes")
 
+	--inih
+	add_includedirs("includes/inih/")
+
 	--fmt
 	add_files("includes/fmt/src/*.cc")
 	add_includedirs("includes/fmt/include")
@@ -66,4 +69,5 @@ target("CodeNect")
 		end
 
 		os.cp("$(curdir)/assets", "$(buildir)/$(os)/$(arch)/" .. mode)
+		os.cp("$(curdir)/config.ini", "$(buildir)/$(os)/$(arch)/" .. mode)
 	end)

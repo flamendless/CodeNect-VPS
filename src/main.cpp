@@ -1,12 +1,20 @@
-#include "app.h"
-#include "filesystem.h"
-#include "sidebar.h"
+#include "config.hpp"
+#include "app.hpp"
+#include "filesystem.hpp"
+#include "sidebar.hpp"
+#include "defines.hpp"
 
 int main(int argv, char** args)
 {
-	int app_status = App::init();
+	CodeNect::App::init();
 
-	if (app_status != 0) return -1;
+	int config_status = CodeNect::Config::init();
+
+	if (config_status != RES_SUCCESS) return -1;
+
+	int app_status = CodeNect::App::init_app();
+
+	if (app_status != RES_SUCCESS) return -1;
 
 	// std::string project_filepath;
 	// bool opened_project = Filesystem::open_project_file(project_filepath);
@@ -27,8 +35,8 @@ int main(int argv, char** args)
 
 	while (is_running)
 	{
-		App::update(is_running);
-		App::render_start();
+		CodeNect::App::update(is_running);
+		CodeNect::App::render_start();
 
 #if DEBUG_MODE
 		if (is_imgui_demo) ImGui::ShowDemoWindow(&is_imgui_demo);
@@ -37,10 +45,10 @@ int main(int argv, char** args)
 		//draw other here
 		Sidebar::draw();
 
-		App::render_end();
+		CodeNect::App::render_end();
 	}
 
-	App::shutdown();
+	CodeNect::App::shutdown();
 
 	return 0;
 }

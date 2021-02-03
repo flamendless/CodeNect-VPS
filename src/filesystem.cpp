@@ -1,7 +1,7 @@
 #define STBI_ONLY_PNG
 #define STB_IMAGE_IMPLEMENTATION
 
-#include "filesystem.h"
+#include "filesystem.hpp"
 
 namespace Filesystem
 {
@@ -12,7 +12,7 @@ bool open_project_file(std::string& project_filepath)
 
 	if (result == NFD_OKAY)
 	{
-		fmt::printf("Opened project file path: %s\n", out_path);
+		PLOGV << "Opened project file path: " << out_path;
 
 		project_filepath = out_path;
 		free(out_path);
@@ -20,9 +20,9 @@ bool open_project_file(std::string& project_filepath)
 		return true;
 	}
 	else if (result == NFD_CANCEL)
-		fmt::printf("Open project file cancelled\n");
+		PLOGV << "Open project file cancelled";
 	else
-		fmt::printf("Error: %s\n", NFD_GetError());
+		PLOGE << "Error: " << NFD_GetError();
 
 	return false;
 }
@@ -62,7 +62,7 @@ bool load_images(const std::vector<std::string>& filenames)
 	for (int i = 0; i < filenames.size(); i++)
 	{
 		const std::string& filename = filenames[i];
-		fmt::printf("filename: %s\n", filename);
+		PLOGV << filename;
 	}
 
 	return true;

@@ -4,6 +4,7 @@
 #include <SDL_opengl.h>
 #include "nfd.h"
 #include "fmt/printf.h"
+#include "plog/Log.h"
 #include "stb_image.h"
 
 namespace Filesystem
@@ -15,4 +16,4 @@ bool load_texture_from_file(const char* filename, GLuint* out, int* width, int* 
 bool load_images(const std::vector<std::string>& filenames);
 }
 
-#endif
+#endif //FILESYSTEM_H

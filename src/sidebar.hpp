@@ -3,8 +3,8 @@
 
 #include "imgui.h"
 #include "fmt/printf.h"
-#include "filesystem.h"
-#include "config.h"
+#include "filesystem.hpp"
+#include "config.hpp"
 
 namespace Sidebar
 {
@@ -12,4 +12,4 @@ void init();
 void draw();
 }
 
-#endif
+#endif //SIDEBAR_H

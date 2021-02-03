@@ -18,22 +18,26 @@
 #include "plog/Initializers/RollingFileInitializer.h"
 #endif
 
-#include "config.h"
+#include "config.hpp"
+#include "defines.hpp"
 
-
-namespace App
+namespace CodeNect
 {
-static SDL_Window* window;
-static SDL_GLContext gl_context;
-static ImGuiIO* imgui_io;
+struct App
+{
+	static SDL_Window* window;
+	static SDL_GLContext gl_context;
+	static ImGuiIO* imgui_io;
 
-int init();
-void init_window();
-void init_imgui();
-void update(bool& is_running);
-void render_start();
-void render_end();
-void shutdown();
+	static void init();
+	static int init_app();
+	static void init_window();
+	static void init_imgui();
+	static void update(bool& is_running);
+	static void render_start();
+	static void render_end();
+	static void shutdown();
+};
 }
 
 #endif //APP_H

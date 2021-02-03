@@ -1,8 +1,12 @@
-#include "app.h"
+#include "app.hpp"
 
-namespace App
+namespace CodeNect
 {
-int init()
+SDL_Window* App::window;
+SDL_GLContext App::gl_context;
+ImGuiIO* App::imgui_io;
+
+void App::init()
 {
 #if DEBUG_MODE
 	static plog::ColorConsoleAppender<plog::TxtFormatter> console_appender;
@@ -10,23 +14,27 @@ int init()
 #else
 	plog::init(plog::verbose, "log.txt");
 #endif
-	PLOGV << "Application starting...";
+}
+
+int App::init_app()
+{
+	PLOGI << "Application starting...";
 
 	int flags = SDL_INIT_VIDEO | SDL_INIT_TIMER;
 
 	if (SDL_Init(flags) != 0)
 	{
 		PLOGE << "Error: " << SDL_GetError();
-		return -1;
+		return RES_FAIL;
 	}
 
-	App::init_window();
-	App::init_imgui();
+	CodeNect::App::init_window();
+	CodeNect::App::init_imgui();
 
-	return 0;
+	return RES_SUCCESS;
 }
 
-void init_window()
+void App::init_window()
 {
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
@@ -35,14 +43,14 @@ void init_window()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 
 	SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
-	App::window = SDL_CreateWindow(Config::app_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Config::win_width, Config::win_height, window_flags);
+	App::window = SDL_CreateWindow(CodeNect::Config::app_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, CodeNect::Config::win_width, CodeNect::Config::win_height, window_flags);
 
 	App::gl_context = SDL_GL_CreateContext(App::window);
 	SDL_GL_MakeCurrent(App::window, App::gl_context);
-	SDL_GL_SetSwapInterval(Config::vsync);
+	SDL_GL_SetSwapInterval(CodeNect::Config::vsync);
 }
 
-void init_imgui()
+void App::init_imgui()
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -52,7 +60,7 @@ void init_imgui()
 	ImGui_ImplOpenGL2_Init();
 }
 
-void update(bool& is_running)
+void App::update(bool& is_running)
 {
 	SDL_Event event;
 
@@ -67,16 +75,16 @@ void update(bool& is_running)
 	}
 }
 
-void render_start()
+void App::render_start()
 {
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App::window);
 	ImGui::NewFrame();
 }
 
-void render_end()
+void App::render_end()
 {
-	const ImVec4& clear_color = Config::clear_color;
+	const ImVec4& clear_color = CodeNect::Config::clear_color;
 
 	ImGui::Render();
 	glViewport(0, 0, (int)App::imgui_io->DisplaySize.x, (int)App::imgui_io->DisplaySize.y);
@@ -86,9 +94,9 @@ void render_end()
 	SDL_GL_SwapWindow(App::window);
 }
 
-void shutdown()
+void App::shutdown()
 {
-	PLOGV << "Application closing...";
+	PLOGI << "Application closing...";
 
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();

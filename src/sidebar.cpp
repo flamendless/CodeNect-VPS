@@ -1,10 +1,10 @@
-#include "sidebar.h"
+#include "sidebar.hpp"
 
 namespace Sidebar
 {
 void init()
 {
-	Filesystem::load_images(Config::sidebar_images_filenames);
+	Filesystem::load_images(CodeNect::Config::sidebar_images_filenames);
 
 	// int img_width = 0;
 	// int img_height = 0;
