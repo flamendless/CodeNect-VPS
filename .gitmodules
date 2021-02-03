@@ -4,3 +4,6 @@
 [submodule "includes/imnodes"]
 	path = includes/imnodes
 	url = https://github.com/rokups/ImNodes
+[submodule "includes/plog"]
+	path = includes/plog
+	url = https://github.com/SergiusTheBest/plog

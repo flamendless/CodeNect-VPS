@@ -4,13 +4,19 @@ namespace App
 {
 int init()
 {
-	fmt::print(stdout, "Application starting...\n");
+#if DEBUG_MODE
+	static plog::ColorConsoleAppender<plog::TxtFormatter> console_appender;
+	plog::init(plog::verbose, &console_appender);
+#else
+	plog::init(plog::verbose, "log.txt");
+#endif
+	PLOGV << "Application starting...";
 
 	int flags = SDL_INIT_VIDEO | SDL_INIT_TIMER;
 
 	if (SDL_Init(flags) != 0)
 	{
-		fmt::printf("Error: %s\n", SDL_GetError());
+		PLOGE << "Error: " << SDL_GetError();
 		return -1;
 	}
 
@@ -70,7 +76,7 @@ void render_start()
 
 void render_end()
 {
-	ImVec4& clear_color = Config::clear_color;
+	const ImVec4& clear_color = Config::clear_color;
 
 	ImGui::Render();
 	glViewport(0, 0, (int)App::imgui_io->DisplaySize.x, (int)App::imgui_io->DisplaySize.y);
@@ -82,7 +88,7 @@ void render_end()
 
 void shutdown()
 {
-	fmt::print(stderr, "Application exiting...\n");
+	PLOGV << "Application closing...";
 
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
