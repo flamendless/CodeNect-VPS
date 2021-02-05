@@ -8,11 +8,11 @@ int main(int argv, char** args)
 {
 	CodeNect::App::init();
 
-	int config_status = CodeNect::Config::init();
+	const int config_status = CodeNect::Config::init();
 
 	if (config_status != RES_SUCCESS) return -1;
 
-	int app_status = CodeNect::App::init_app();
+	const int app_status = CodeNect::App::init_app();
 
 	if (app_status != RES_SUCCESS) return -1;
 
@@ -25,7 +25,9 @@ int main(int argv, char** args)
 	// 	fmt::print(stdout, "no");
 
 	//initialize modules/sources
-	Sidebar::init();
+	const int sidebar_status = CodeNect::Sidebar::init();
+
+	if (sidebar_status != RES_SUCCESS) return -1;
 
 	bool is_running = true;
 
@@ -43,7 +45,7 @@ int main(int argv, char** args)
 #endif
 
 		//draw other here
-		Sidebar::draw();
+		CodeNect::Sidebar::draw();
 
 		CodeNect::App::render_end();
 	}

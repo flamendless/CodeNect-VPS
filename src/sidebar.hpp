@@ -2,14 +2,25 @@
 #define SIDEBAR_H
 
 #include "imgui.h"
-#include "fmt/printf.h"
+#include "plog/Log.h"
 #include "filesystem.hpp"
+#include <vector>
 #include "config.hpp"
+#include "defines.hpp"
+#include "image.hpp"
 
-namespace Sidebar
+namespace CodeNect
 {
-void init();
-void draw();
+struct Sidebar
+{
+	static map_images sidebar_images;
+	static ImGuiWindowFlags flags;
+	static bool is_open;
+
+	static int init();
+	static int load_images();
+	static void draw();
+};
 }
 
 #endif //SIDEBAR_H

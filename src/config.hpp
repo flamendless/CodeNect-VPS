@@ -17,8 +17,13 @@ struct Config
 	static int win_height;
 	static int vsync;
 	static ImVec4 clear_color;
-	static const std::vector<std::string> sidebar_images_filenames;
 	static const char* config_filename;
+
+	struct Sidebar_c
+	{
+		static int pad_x;
+		static vec_filenames images_filenames;
+	};
 
 	static int init();
 };

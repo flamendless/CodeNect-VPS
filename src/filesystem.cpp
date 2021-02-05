@@ -3,12 +3,14 @@
 
 #include "filesystem.hpp"
 
+namespace CodeNect
+{
 namespace Filesystem
 {
 bool open_project_file(std::string& project_filepath)
 {
 	nfdchar_t* out_path = NULL;
-	nfdresult_t result = NFD_OpenDialog(Filesystem::filter_project, NULL, &out_path);
+	nfdresult_t result = NFD_OpenDialog(CodeNect::Filesystem::filter_project, NULL, &out_path);
 
 	if (result == NFD_OKAY)
 	{
@@ -27,14 +29,15 @@ bool open_project_file(std::string& project_filepath)
 	return false;
 }
 
-bool load_texture_from_file(const char* filename, GLuint* out, int* width, int* height)
+// int load_texture_from_file(const char* filename, GLuint* out, int* width, int* height)
+int load_texture_from_file(const char* filename, CodeNect::Image& image)
 {
 	int img_width = 0;
 	int img_height = 0;
 	unsigned char* img_data = stbi_load(filename, &img_width, &img_height, NULL, 4);
 
 	if (img_data == NULL)
-		return false;
+		return RES_FAIL;
 
 	GLuint img_texture;
 	glGenTextures(1, &img_texture);
@@ -50,21 +53,12 @@ bool load_texture_from_file(const char* filename, GLuint* out, int* width, int* 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img_width, img_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img_data);
 	stbi_image_free(img_data);
 
-	*out = img_texture;
-	*width = img_width;
-	*height = img_height;
+	image.filename = filename;
+	image.texture = img_texture;
+	image.width = img_width;
+	image.height = img_height;
 
-	return true;
+	return RES_SUCCESS;
 }
-
-bool load_images(const std::vector<std::string>& filenames)
-{
-	for (int i = 0; i < filenames.size(); i++)
-	{
-		const std::string& filename = filenames[i];
-		PLOGV << filename;
-	}
-
-	return true;
 }
 }
