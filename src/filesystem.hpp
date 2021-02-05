@@ -1,8 +1,8 @@
 #ifndef FILESYSTEM_H
 #define FILESYSTEM_H
 
+#include <GLFW/glfw3.h>
 #include <map>
-#include <SDL_opengl.h>
 #include "nfd.h"
 #include "fmt/printf.h"
 #include "plog/Log.h"

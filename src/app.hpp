@@ -1,13 +1,12 @@
 #ifndef APP_H
 #define APP_H
 
-#include <SDL.h>
-#include <SDL_opengl.h>
+#include <GLFW/glfw3.h>
 #include <stdio.h>
 #include "imgui.h"
-#include "imgui_impl_sdl.h"
+#include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl2.h"
-#include "fmt/printf.h"
+#include "fmt/core.h"
 #include "plog/Init.h"
 #include "plog/Log.h"
 
@@ -25,15 +24,14 @@ namespace CodeNect
 {
 struct App
 {
-	static SDL_Window* window;
-	static SDL_GLContext gl_context;
+	static GLFWwindow* window;
 	static ImGuiIO* imgui_io;
 
+	static void glfw_error_callback(int error, const char* desc);
 	static void init();
 	static int init_app();
 	static void init_window();
 	static void init_imgui();
-	static void update(bool& is_running);
 	static void render_start();
 	static void render_end();
 	static void shutdown();

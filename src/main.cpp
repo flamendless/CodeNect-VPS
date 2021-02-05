@@ -29,15 +29,14 @@ int main(int argv, char** args)
 
 	if (sidebar_status != RES_SUCCESS) return -1;
 
-	bool is_running = true;
-
 #if DEBUG_MODE
 	bool is_imgui_demo = true;
 #endif
 
-	while (is_running)
+	while(!glfwWindowShouldClose(CodeNect::App::window))
 	{
-		CodeNect::App::update(is_running);
+		glfwPollEvents();
+
 		CodeNect::App::render_start();
 
 #if DEBUG_MODE

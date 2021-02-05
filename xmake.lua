@@ -1,15 +1,14 @@
 target("CodeNect")
 	set_basename("CodeNect_$(mode)_$(arch)")
 	set_kind("binary")
-	add_cxxflags("-g", "-Wall", "-Wformat", "-pedantic", "$(shell sdl2-config --cflags)")
-	add_ldflags("$(shell sdl2-config --libs)")
+	add_cxxflags("-g", "-Wall", "-Wformat", "-pedantic")
 
 	--source files
 	add_files("src/*.cpp")
 	add_includedirs("src")
 
 	--dearimgui
-	add_files("includes/imgui/*.cpp", "includes/imgui/backends/imgui_impl_opengl2.cpp", "includes/imgui/backends/imgui_impl_sdl.cpp")
+	add_files("includes/imgui/*.cpp", "includes/imgui/backends/imgui_impl_opengl2.cpp", "includes/imgui/backends/imgui_impl_glfw.cpp")
 	add_includedirs("includes/imgui", "includes/imgui/backends")
 
 	--imnodes
@@ -48,7 +47,7 @@ target("CodeNect")
 	end
 
 	on_load(function(target)
-		local packages = find_packages("GL", "dl", "gtk+-3.0")
+		local packages = find_packages("GL", "gtk+-3.0", "glfw3")
 
 		target:add(packages)
 	end)

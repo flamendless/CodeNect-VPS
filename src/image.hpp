@@ -1,7 +1,7 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
-#include <SDL_opengl.h>
+#include <GLFW/glfw3.h>
 #include <string>
 
 namespace CodeNect
