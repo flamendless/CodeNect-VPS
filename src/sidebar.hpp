@@ -8,12 +8,16 @@
 #include "config.hpp"
 #include "defines.hpp"
 #include "image.hpp"
+#include "ui_button.hpp"
 
 namespace CodeNect
 {
 struct Sidebar
 {
-	static map_images sidebar_images;
+	static map_images images;
+	static map_images images_hover;
+	static map_ui_buttons ui_buttons;
+	static map_tooltips tooltips;
 	static ImGuiWindowFlags flags;
 	static bool is_open;
 

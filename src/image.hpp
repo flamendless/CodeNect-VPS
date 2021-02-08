@@ -9,17 +9,14 @@ namespace CodeNect
 {
 struct Image
 {
+	std::string filename;
+	GLuint texture = 0;
+
 	int width = 0;
 	int height = 0;
-	GLuint texture = 0;
-	std::string filename;
 	ImVec2 size;
-	bool is_hovered = false;
 
-	void* get_texture()
-	{
-		return (void*)(intptr_t) texture;
-	}
+	void* get_texture() { return (void*)(intptr_t) texture; }
 };
 }
 

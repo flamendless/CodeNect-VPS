@@ -26,9 +26,12 @@ struct Config
 		static ImVec2 padding;
 		static ImVec2 item_spacing;
 		static vec_filenames images_filenames;
+		static vec_filenames images_filenames_hover;
 	};
 
 	static int init();
+	static void init_general(INIReader& reader);
+	static void init_sidebar(INIReader& reader);
 };
 }
 

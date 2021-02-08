@@ -32,6 +32,8 @@ bool open_project_file(std::string& project_filepath)
 // int load_texture_from_file(const char* filename, GLuint* out, int* width, int* height)
 int load_texture_from_file(const char* filename, CodeNect::Image& image)
 {
+	PLOGV << "Loading texture from file: " << filename;
+
 	int img_width = 0;
 	int img_height = 0;
 	unsigned char* img_data = stbi_load(filename, &img_width, &img_height, NULL, 4);
