@@ -3,6 +3,7 @@
 
 #include <GLFW/glfw3.h>
 #include <string>
+#include "imgui.h"
 
 namespace CodeNect
 {
@@ -12,6 +13,8 @@ struct Image
 	int height = 0;
 	GLuint texture = 0;
 	std::string filename;
+	ImVec2 size;
+	bool is_hovered = false;
 
 	void* get_texture()
 	{

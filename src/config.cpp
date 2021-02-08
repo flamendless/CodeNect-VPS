@@ -9,7 +9,10 @@ int Config::vsync;
 ImVec4 Config::clear_color;
 const char* Config::config_filename = "config.ini";
 
-int Config::Sidebar_c::pad_x;
+ImVec2 Config::Sidebar_c::size;
+ImVec2 Config::Sidebar_c::pos;
+ImVec2 Config::Sidebar_c::padding;
+ImVec2 Config::Sidebar_c::item_spacing;
 vec_filenames Config::Sidebar_c::images_filenames;
 
 int Config::init()
@@ -34,26 +37,26 @@ if (reader.ParseError() != 0)
 	const float a = reader.GetReal("clear_color", "a", 1.00f);
 	Config::clear_color = ImVec4(r, g, b, a);
 
-	const pair_key_filename test = std::make_pair("test", reader.Get("sidebar_images", "test", "???"));
-	const pair_key_filename test2 = std::make_pair("test2", reader.Get("sidebar_images", "test2", "???"));
-	Config::Sidebar_c::images_filenames.push_back(test);
-	Config::Sidebar_c::images_filenames.push_back(test2);
+	const pair_key_filename folder = std::make_pair("folder", reader.Get("sidebar_images", "folder", "???"));
+	const pair_key_filename play = std::make_pair("play", reader.Get("sidebar_images", "play", "???"));
+	Config::Sidebar_c::images_filenames.push_back(folder);
+	Config::Sidebar_c::images_filenames.push_back(play);
 
-	Config::Sidebar_c::pad_x = reader.GetInteger("sidebar", "pad_x", 8);
+	const int sidebar_x = reader.GetInteger("sidebar", "pos_x", -1);
+	const int sidebar_y = reader.GetInteger("sidebar", "pos_y", -1);
+	const int sidebar_w = reader.GetInteger("sidebar", "width", -1);
+	const int sidebar_h = reader.GetInteger("sidebar", "height", -1);
+	const int sidebar_px = reader.GetInteger("sidebar", "pad_x", -1);
+	const int sidebar_py = reader.GetInteger("sidebar", "pad_y", -1);
+	const int sidebar_isx = reader.GetInteger("sidebar", "item_spacing_x", -1);
+	const int sidebar_isy = reader.GetInteger("sidebar", "item_spacing_y", -1);
 
-	PLOGI << "Config loaded:";
-	PLOGI << "[general]";
-	PLOGI << "\tTitle = " << Config::app_title;
-	PLOGI << "\tWidth = " << Config::win_width;
-	PLOGI << "\tHeight = " << Config::win_height;
-	PLOGI << "\tVsync = " << Config::vsync;
-	PLOGI << "[clear_color]";
-	PLOGI << "\tclear_color.r = " << Config::clear_color.x;
-	PLOGI << "\tclear_color.g = " << Config::clear_color.y;
-	PLOGI << "\tclear_color.b = " << Config::clear_color.z;
-	PLOGI << "\tclear_color.a = " << Config::clear_color.w;
-	PLOGI << "[sidebar]";
-	PLOGI << "\tpad_x = " << Config::Sidebar_c::pad_x;
+	Config::Sidebar_c::pos = ImVec2(sidebar_x, sidebar_y);
+	Config::Sidebar_c::size = ImVec2(sidebar_w, sidebar_h);
+	Config::Sidebar_c::padding = ImVec2(sidebar_px, sidebar_py);
+	Config::Sidebar_c::item_spacing = ImVec2(sidebar_isx, sidebar_isy);
+
+	PLOGI << "Config loaded";
 
 	return RES_SUCCESS;
 }

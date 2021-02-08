@@ -21,7 +21,10 @@ struct Config
 
 	struct Sidebar_c
 	{
-		static int pad_x;
+		static ImVec2 pos;
+		static ImVec2 size;
+		static ImVec2 padding;
+		static ImVec2 item_spacing;
 		static vec_filenames images_filenames;
 	};
 

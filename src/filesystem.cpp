@@ -57,6 +57,7 @@ int load_texture_from_file(const char* filename, CodeNect::Image& image)
 	image.texture = img_texture;
 	image.width = img_width;
 	image.height = img_height;
+	image.size = ImVec2(img_width, img_height);
 
 	return RES_SUCCESS;
 }

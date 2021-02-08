@@ -19,6 +19,8 @@ struct Sidebar
 
 	static int init();
 	static int load_images();
+	static void set_style();
+	static void unset_style();
 	static void draw();
 };
 }
