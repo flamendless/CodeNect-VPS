@@ -23,16 +23,20 @@ struct Config
 	{
 		static ImVec2 pos;
 		static ImVec2 size;
+		static ImVec2 max_img_size;
 		static ImVec2 padding;
 		static ImVec2 item_spacing;
 		static vec_filenames images_filenames;
 		static vec_filenames images_filenames_hover;
+		static std::string indicator_filename;
 	};
 
 	static int init();
 	static void init_general(INIReader& reader);
 	static void init_sidebar(INIReader& reader);
 };
+
+typedef CodeNect::Config::Sidebar_c Sidebar_c;
 }
 
 #endif //CONFIG_H

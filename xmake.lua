@@ -11,16 +11,16 @@ target("CodeNect")
 	add_files("includes/imgui/*.cpp", "includes/imgui/backends/imgui_impl_opengl2.cpp", "includes/imgui/backends/imgui_impl_glfw.cpp")
 	add_includedirs("includes/imgui", "includes/imgui/backends")
 
+	--fmt
+	add_files("includes/fmt/src/*.cc")
+	add_includedirs("includes/fmt/include")
+
 	--imnodes
 	add_files("includes/imnodes/*.cpp|sample.cpp")
 	add_includedirs("includes/imnodes")
 
 	--inih
 	add_includedirs("includes/inih/")
-
-	--fmt
-	add_files("includes/fmt/src/*.cc")
-	add_includedirs("includes/fmt/include")
 
 	--nativefiledialogs
 	add_includedirs("includes/nfd/include")
@@ -31,8 +31,15 @@ target("CodeNect")
 	--plog
 	add_includedirs("includes/plog/include/")
 
+	--ppk_assert
+	add_files("includes/ppk/src/*.cpp")
+	add_includedirs("includes/ppk/src/")
+
 	--stb
 	add_includedirs("includes/stb")
+
+	--tweeny
+	add_includedirs("includes/tweeny/include/")
 
 	if is_mode("debug") then
 		add_defines("DEBUG_MODE=1")

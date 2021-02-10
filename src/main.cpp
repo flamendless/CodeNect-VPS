@@ -2,6 +2,8 @@
 #include "app.hpp"
 #include "filesystem.hpp"
 #include "sidebar.hpp"
+#include "sidebar_indicator.hpp"
+#include "sidebar_handler.hpp"
 #include "defines.hpp"
 
 int main(int argv, char** args)
@@ -9,12 +11,12 @@ int main(int argv, char** args)
 	CodeNect::App::init();
 
 	const int config_status = CodeNect::Config::init();
-
 	if (config_status != RES_SUCCESS) return -1;
 
 	const int app_status = CodeNect::App::init_app();
-
 	if (app_status != RES_SUCCESS) return -1;
+
+	CodeNect::SidebarHandler::init();
 
 	// std::string project_filepath;
 	// bool opened_project = Filesystem::open_project_file(project_filepath);
@@ -26,8 +28,10 @@ int main(int argv, char** args)
 
 	//initialize modules/sources
 	const int sidebar_status = CodeNect::Sidebar::init();
-
 	if (sidebar_status != RES_SUCCESS) return -1;
+
+	const int sidebar_indicator_status = CodeNect::SidebarIndicator::init();
+	if (sidebar_indicator_status != RES_SUCCESS) return -1;
 
 #if DEBUG_MODE
 	bool is_imgui_demo = true;
@@ -35,7 +39,14 @@ int main(int argv, char** args)
 
 	while(!glfwWindowShouldClose(CodeNect::App::window))
 	{
+		float dt = CodeNect::App::imgui_io->DeltaTime;
+
 		glfwPollEvents();
+
+		//update
+		CodeNect::SidebarHandler::update(dt);
+		CodeNect::SidebarIndicator::update(dt);
+		CodeNect::Sidebar::update(dt);
 
 		CodeNect::App::render_start();
 
@@ -45,6 +56,7 @@ int main(int argv, char** args)
 
 		//draw other here
 		CodeNect::Sidebar::draw();
+		CodeNect::SidebarIndicator::draw();
 
 		CodeNect::App::render_end();
 	}

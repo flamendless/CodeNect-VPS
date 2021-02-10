@@ -7,6 +7,7 @@ namespace CodeNect
 {
 struct UI_Button
 {
+	bool hoverable = false;
 	bool is_hovered = false;
 	Image* normal;
 	Image* hovered;
@@ -20,7 +21,7 @@ struct UI_Button
 
 	CodeNect::Image* get_active_image()
 	{
-		if (is_hovered)
+		if (hoverable && is_hovered)
 			return hovered;
 
 		return normal;
@@ -32,7 +33,7 @@ struct UI_Button
 		ImGui::ImageButton(img->get_texture(), img->size, uv0, uv1, 0, bg, tint);
 		is_hovered = ImGui::IsItemHovered();
 
-		if (is_hovered)
+		if (hoverable && is_hovered)
 			ImGui::SetTooltip("%s", tooltip.c_str());
 	}
 };

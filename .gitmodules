@@ -10,3 +10,9 @@
 [submodule "includes/inih"]
 	path = includes/inih
 	url = https://github.com/jtilly/inih.git
+[submodule "includes/ppk"]
+	path = includes/ppk
+	url = https://github.com/gpakosz/PPK_ASSERT
+[submodule "includes/tweeny"]
+	path = includes/tweeny
+	url = https://github.com/mobius3/tweeny
