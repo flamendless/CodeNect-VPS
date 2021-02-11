@@ -17,6 +17,7 @@ ImVec2 Config::Sidebar_c::item_spacing;
 vec_filenames Config::Sidebar_c::images_filenames;
 vec_filenames Config::Sidebar_c::images_filenames_hover;
 std::string Config::Sidebar_c::indicator_filename;
+ImVec2 Config::Sidebar_c::indicator_size;
 
 int Config::init()
 {
@@ -90,7 +91,11 @@ void Config::init_sidebar(INIReader& reader)
 
 
 	//sidebar indicator
-	const std::string indicator_filename = reader.Get("sidebar_images", "indicator", "???");
+	const std::string indicator_filename = reader.Get("sidebar_indicator", "indicator", "???");
+	const int siw = reader.GetInteger("sidebar_indicator", "width", -1);
+	const int sih = reader.GetInteger("sidebar_indicator", "height", -1);
+
 	Config::Sidebar_c::indicator_filename = indicator_filename;
+	Config::Sidebar_c::indicator_size = ImVec2(siw, sih);
 }
 }

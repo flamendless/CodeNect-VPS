@@ -28,7 +28,9 @@ struct Config
 		static ImVec2 item_spacing;
 		static vec_filenames images_filenames;
 		static vec_filenames images_filenames_hover;
+
 		static std::string indicator_filename;
+		static ImVec2 indicator_size;
 	};
 
 	static int init();

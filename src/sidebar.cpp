@@ -18,13 +18,10 @@ ImGuiWindowFlags Sidebar::flags =
 	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoFocusOnAppearing;
 
 bool Sidebar::is_open = true;
-bool Sidebar::is_hovered = false;
-ImVec2 Sidebar::cur_pos;
+float Sidebar::alpha = 0.0f;
 
 int Sidebar::init()
 {
-	Sidebar::cur_pos = ImVec2(Sidebar_c::pos.x, Sidebar_c::pos.y);
-
 	if (Sidebar::load_images() != RES_SUCCESS) return RES_FAIL;
 
 	// for (auto const& value : sidebar_images)
@@ -106,6 +103,7 @@ void Sidebar::check_image_size(const CodeNect::Image& img)
 
 void Sidebar::set_style()
 {
+	ImGui::PushStyleVar(ImGuiStyleVar_Alpha, Sidebar::alpha);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, Sidebar_c::padding);
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2());
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, Sidebar_c::item_spacing);
@@ -113,7 +111,7 @@ void Sidebar::set_style()
 
 void Sidebar::unset_style()
 {
-	ImGui::PopStyleVar(3);
+	ImGui::PopStyleVar(4);
 }
 
 void Sidebar::update(float dt)
@@ -129,7 +127,7 @@ void Sidebar::draw()
 	const ImVec2& max_size = Sidebar_c::max_img_size;
 
 	Sidebar::set_style();
-	ImGui::SetNextWindowPos(Sidebar::cur_pos, ImGuiCond_Always, ImVec2(0.0f, 0.5f));
+	ImGui::SetNextWindowPos(Sidebar_c::pos, ImGuiCond_Always, ImVec2(0.0f, 0.5f));
 	ImGui::SetNextWindowSize(Sidebar_c::size, ImGuiCond_Always);
 	ImGui::Begin("Sidebar", &Sidebar::is_open, Sidebar::flags);
 		btn_folder.draw();
@@ -140,8 +138,6 @@ void Sidebar::draw()
 		ImGui::Dummy(ImVec2(max_size.x, y));
 
 		btn_gear.draw();
-
-		Sidebar::is_hovered = ImGui::IsWindowHovered();
 	ImGui::End();
 	Sidebar::unset_style();
 }

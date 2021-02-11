@@ -21,8 +21,7 @@ struct Sidebar
 	static map_tooltips tooltips;
 	static ImGuiWindowFlags flags;
 	static bool is_open;
-	static bool is_hovered;
-	static ImVec2 cur_pos;
+	static float alpha;
 
 	static int init();
 	static int load_images();

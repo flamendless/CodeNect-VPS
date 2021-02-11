@@ -16,8 +16,6 @@ int main(int argv, char** args)
 	const int app_status = CodeNect::App::init_app();
 	if (app_status != RES_SUCCESS) return -1;
 
-	CodeNect::SidebarHandler::init();
-
 	// std::string project_filepath;
 	// bool opened_project = Filesystem::open_project_file(project_filepath);
     //
@@ -27,11 +25,15 @@ int main(int argv, char** args)
 	// 	fmt::print(stdout, "no");
 
 	//initialize modules/sources
+
+	//Sidebar
 	const int sidebar_status = CodeNect::Sidebar::init();
 	if (sidebar_status != RES_SUCCESS) return -1;
 
 	const int sidebar_indicator_status = CodeNect::SidebarIndicator::init();
 	if (sidebar_indicator_status != RES_SUCCESS) return -1;
+
+	CodeNect::SidebarHandler::init();
 
 #if DEBUG_MODE
 	bool is_imgui_demo = true;
@@ -44,9 +46,9 @@ int main(int argv, char** args)
 		glfwPollEvents();
 
 		//update
-		CodeNect::SidebarHandler::update(dt);
 		CodeNect::SidebarIndicator::update(dt);
 		CodeNect::Sidebar::update(dt);
+		CodeNect::SidebarHandler::update(dt);
 
 		CodeNect::App::render_start();
 

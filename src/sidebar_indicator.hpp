@@ -11,12 +11,10 @@ namespace CodeNect
 {
 struct SidebarIndicator
 {
-	static ImVec2 cur_pos;
-	static ImVec2 size;
+	static CodeNect::UI_Button btn;
 	static ImGuiWindowFlags flags;
 	static bool is_open;
-	static bool is_hovered;
-	static CodeNect::UI_Button btn;
+	static float alpha;
 
 	static int init();
 	static void set_style();
