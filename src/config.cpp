@@ -58,19 +58,19 @@ void Config::init_sidebar(INIReader& reader)
 	vec_filenames& images_filenames = Config::Sidebar_c::images_filenames;
 	vec_filenames& images_filenames_hover = Config::Sidebar_c::images_filenames_hover;
 
-	const pair_key_filename folder = std::make_pair("folder", reader.Get("sidebar_images", "folder", "???"));
+	const pair_key_filename project = std::make_pair("project", reader.Get("sidebar_images", "project", "???"));
 	const pair_key_filename run = std::make_pair("run", reader.Get("sidebar_images", "run", "???"));
-	const pair_key_filename gear = std::make_pair("gear", reader.Get("sidebar_images", "gear", "???"));
-	images_filenames.push_back(folder);
+	const pair_key_filename settings = std::make_pair("settings", reader.Get("sidebar_images", "settings", "???"));
+	images_filenames.push_back(project);
 	images_filenames.push_back(run);
-	images_filenames.push_back(gear);
+	images_filenames.push_back(settings);
 
-	const pair_key_filename folder_hover = std::make_pair("folder_hover", reader.Get("sidebar_images", "folder_hover", "???"));
+	const pair_key_filename project_hover = std::make_pair("project_hover", reader.Get("sidebar_images", "project_hover", "???"));
 	const pair_key_filename run_hover = std::make_pair("run_hover", reader.Get("sidebar_images", "run_hover", "???"));
-	const pair_key_filename gear_hover = std::make_pair("gear_hover", reader.Get("sidebar_images", "gear_hover", "???"));
-	images_filenames_hover.push_back(folder_hover);
+	const pair_key_filename settings_hover = std::make_pair("settings_hover", reader.Get("sidebar_images", "settings_hover", "???"));
+	images_filenames_hover.push_back(project_hover);
 	images_filenames_hover.push_back(run_hover);
-	images_filenames_hover.push_back(gear_hover);
+	images_filenames_hover.push_back(settings_hover);
 
 	const int x = reader.GetInteger("sidebar", "pos_x", -1);
 	const int y = reader.GetInteger("sidebar", "pos_y", -1);

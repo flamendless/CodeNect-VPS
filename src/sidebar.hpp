@@ -21,6 +21,7 @@ struct Sidebar
 	static map_tooltips tooltips;
 	static ImGuiWindowFlags flags;
 	static bool is_open;
+	static bool has_clicked;
 	static float alpha;
 
 	static int init();
@@ -30,6 +31,8 @@ struct Sidebar
 	static void unset_style();
 	static void update(float dt);
 	static void draw();
+	static void draw_sidebar();
+	static void draw_popup_project();
 };
 }
 

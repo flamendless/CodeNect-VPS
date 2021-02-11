@@ -6,9 +6,9 @@ namespace CodeNect
 // map_images Sidebar::images_hover;
 map_ui_buttons Sidebar::ui_buttons;
 map_tooltips Sidebar::tooltips {
-	{"folder", "Project/File"},
+	{"project", "Project/File"},
 	{"run", "Run"},
-	{"gear", "Settings"},
+	{"settings", "Settings"},
 };
 
 ImGuiWindowFlags Sidebar::flags =
@@ -18,7 +18,14 @@ ImGuiWindowFlags Sidebar::flags =
 	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoFocusOnAppearing;
 
 bool Sidebar::is_open = true;
+bool Sidebar::has_clicked = false;
 float Sidebar::alpha = 0.0f;
+
+bool show_project = false;
+ImGuiWindowFlags popup_flags =
+	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
+	ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
+	ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollWithMouse;
 
 int Sidebar::init()
 {
@@ -120,9 +127,15 @@ void Sidebar::update(float dt)
 
 void Sidebar::draw()
 {
-	CodeNect::UI_Button& btn_folder = Sidebar::ui_buttons["folder"];
+	Sidebar::draw_sidebar();
+	Sidebar::draw_popup_project();
+}
+
+void Sidebar::draw_sidebar()
+{
+	CodeNect::UI_Button& btn_project = Sidebar::ui_buttons["project"];
 	CodeNect::UI_Button& btn_run = Sidebar::ui_buttons["run"];
-	CodeNect::UI_Button& btn_gear = Sidebar::ui_buttons["gear"];
+	CodeNect::UI_Button& btn_settings = Sidebar::ui_buttons["settings"];
 
 	const ImVec2& max_size = Sidebar_c::max_img_size;
 
@@ -130,15 +143,49 @@ void Sidebar::draw()
 	ImGui::SetNextWindowPos(Sidebar_c::pos, ImGuiCond_Always, ImVec2(0.0f, 0.5f));
 	ImGui::SetNextWindowSize(Sidebar_c::size, ImGuiCond_Always);
 	ImGui::Begin("Sidebar", &Sidebar::is_open, Sidebar::flags);
-		btn_folder.draw();
+		btn_project.draw();
+
+		if (btn_project.is_clicked)
+			show_project = true;
+
 		btn_run.draw();
 
 		const int isy = CodeNect::Config::Sidebar_c::item_spacing.y;
 		const int y = ImGui::GetContentRegionAvail().y - (max_size.y * 2) - (isy * 2);
 		ImGui::Dummy(ImVec2(max_size.x, y));
-
-		btn_gear.draw();
+		btn_settings.draw();
 	ImGui::End();
 	Sidebar::unset_style();
+
+	Sidebar::has_clicked = btn_project.is_open ||
+		btn_run.is_open ||
+		btn_settings.is_open;
+}
+
+void Sidebar::draw_popup_project()
+{
+	CodeNect::UI_Button& btn_project = Sidebar::ui_buttons["project"];
+	btn_project.is_open = show_project;
+
+	if (btn_project.is_open)
+	{
+		bool is_inside = false;
+
+		ImGui::Begin("Project", &show_project, popup_flags);
+			is_inside = ImGui::IsWindowHovered();
+
+			if (ImGui::BeginMenu("Project"))
+			{
+				ImGui::MenuItem("New Project");
+				ImGui::MenuItem("Open Project");
+				ImGui::MenuItem("Save Project");
+
+            	ImGui::EndMenu();
+			}
+		ImGui::End();
+
+		if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && !is_inside)
+			show_project = false;
+	}
 }
 }

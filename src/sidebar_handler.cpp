@@ -1,6 +1,6 @@
 #include "sidebar_handler.hpp"
 
-#define MS_SIDEBAR_TOGGLE 10
+#define DUR_FADE 50 //the higher the smoother is the fade effect
 
 namespace CodeNect
 {
@@ -13,15 +13,17 @@ void SidebarHandler::init()
 {
 	t_sidebar_a = tweeny::from(Sidebar::alpha)
 		.to(1.0f)
-		.during(MS_SIDEBAR_TOGGLE);
+		.during(DUR_FADE);
 
 	t_sidebar_indicator_a = tweeny::from(SidebarIndicator::alpha)
 		.to(0.0f)
-		.during(MS_SIDEBAR_TOGGLE);
+		.during(DUR_FADE);
 }
 
 void SidebarHandler::update(float dt)
 {
+	if (Sidebar::has_clicked) return;
+
 	const ImVec2& m_pos = ImGui::GetMousePos();
 	const int min = Sidebar_c::pos.x + Sidebar_c::indicator_size.x;
 	const int dist = m_pos.x - min;

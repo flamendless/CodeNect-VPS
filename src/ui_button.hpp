@@ -9,6 +9,8 @@ struct UI_Button
 {
 	bool hoverable = false;
 	bool is_hovered = false;
+	bool is_clicked = false;
+	bool is_open = false;
 	Image* normal;
 	Image* hovered;
 
@@ -21,7 +23,7 @@ struct UI_Button
 
 	CodeNect::Image* get_active_image()
 	{
-		if (hoverable && is_hovered)
+		if (hoverable && (is_hovered || is_open))
 			return hovered;
 
 		return normal;
@@ -30,7 +32,7 @@ struct UI_Button
 	void draw()
 	{
 		CodeNect::Image* img = get_active_image();
-		ImGui::ImageButton(img->get_texture(), img->size, uv0, uv1, 0, bg, tint);
+		is_clicked = ImGui::ImageButton(img->get_texture(), img->size, uv0, uv1, 0, bg, tint);
 		is_hovered = ImGui::IsItemHovered();
 
 		if (hoverable && is_hovered)
