@@ -11,9 +11,11 @@ namespace CodeNect
 {
 struct SidebarHandler
 {
+	Sidebar* m_sidebar;
+	SidebarIndicator* m_sidebar_indicator;
 
-static void init();
-static void update(float dt);
+	void init(Sidebar* sidebar, SidebarIndicator* sidebar_indicator);
+	void update(float dt);
 };
 }
 

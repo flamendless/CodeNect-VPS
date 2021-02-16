@@ -8,12 +8,13 @@
 
 int main(int argv, char** args)
 {
-	CodeNect::App::init();
+	CodeNect::App app;
+	app.init();
 
 	const int config_status = CodeNect::Config::init();
 	if (config_status != RES_SUCCESS) return -1;
 
-	const int app_status = CodeNect::App::init_app();
+	const int app_status = app.init_app();
 	if (app_status != RES_SUCCESS) return -1;
 
 	// std::string project_filepath;
@@ -27,43 +28,47 @@ int main(int argv, char** args)
 	//initialize modules/sources
 
 	//Sidebar
-	const int sidebar_status = CodeNect::Sidebar::init();
+	CodeNect::Sidebar sidebar;
+	CodeNect::SidebarIndicator sidebar_indicator;
+	CodeNect::SidebarHandler sidebar_handler;
+
+	const int sidebar_status = sidebar.init();
 	if (sidebar_status != RES_SUCCESS) return -1;
 
-	const int sidebar_indicator_status = CodeNect::SidebarIndicator::init();
+	const int sidebar_indicator_status = sidebar_indicator.init();
 	if (sidebar_indicator_status != RES_SUCCESS) return -1;
 
-	CodeNect::SidebarHandler::init();
+	sidebar_handler.init(&sidebar, &sidebar_indicator);
 
 #if DEBUG_MODE
 	bool is_imgui_demo = true;
 #endif
 
-	while(!glfwWindowShouldClose(CodeNect::App::window))
+	while(!glfwWindowShouldClose(app.m_window))
 	{
-		float dt = CodeNect::App::imgui_io->DeltaTime;
+		float dt = app.m_imgui_io->DeltaTime;
 
 		glfwPollEvents();
 
 		//update
-		CodeNect::SidebarIndicator::update(dt);
-		CodeNect::Sidebar::update(dt);
-		CodeNect::SidebarHandler::update(dt);
+		sidebar_indicator.update(dt);
+		sidebar.update(dt);
+		sidebar_handler.update(dt);
 
-		CodeNect::App::render_start();
+		app.render_start();
 
 #if DEBUG_MODE
 		if (is_imgui_demo) ImGui::ShowDemoWindow(&is_imgui_demo);
 #endif
 
 		//draw other here
-		CodeNect::Sidebar::draw();
-		CodeNect::SidebarIndicator::draw();
+		sidebar.draw();
+		sidebar_indicator.draw();
 
-		CodeNect::App::render_end();
+		app.render_end();
 	}
 
-	CodeNect::App::shutdown();
+	app.shutdown();
 
 	return 0;
 }

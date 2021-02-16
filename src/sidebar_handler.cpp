@@ -9,20 +9,23 @@ tweeny::tween<float> t_sidebar_indicator_a;
 
 bool show_sidebar = false;
 
-void SidebarHandler::init()
+void SidebarHandler::init(Sidebar* sidebar, SidebarIndicator* sidebar_indicator)
 {
-	t_sidebar_a = tweeny::from(Sidebar::alpha)
+	m_sidebar = sidebar;
+	m_sidebar_indicator = sidebar_indicator;
+
+	t_sidebar_a = tweeny::from(m_sidebar->m_alpha)
 		.to(1.0f)
 		.during(DUR_FADE);
 
-	t_sidebar_indicator_a = tweeny::from(SidebarIndicator::alpha)
+	t_sidebar_indicator_a = tweeny::from(m_sidebar_indicator->m_alpha)
 		.to(0.0f)
 		.during(DUR_FADE);
 }
 
 void SidebarHandler::update(float dt)
 {
-	if (Sidebar::has_clicked) return;
+	if (m_sidebar->m_has_clicked) return;
 
 	const ImVec2& m_pos = ImGui::GetMousePos();
 	const int min = Sidebar_c::pos.x + Sidebar_c::indicator_size.x;
@@ -47,7 +50,7 @@ void SidebarHandler::update(float dt)
 	const float da = t_sidebar_a.step(dt);
 	const float da2 = t_sidebar_indicator_a.step(dt);
 
-	Sidebar::alpha = da;
-	SidebarIndicator::alpha = da2;
+	m_sidebar->m_alpha = da;
+	m_sidebar_indicator->m_alpha = da2;
 }
 }

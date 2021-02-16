@@ -2,30 +2,8 @@
 
 namespace CodeNect
 {
-// map_images Sidebar::images;
-// map_images Sidebar::images_hover;
-map_ui_buttons Sidebar::ui_buttons;
-map_tooltips Sidebar::tooltips {
-	{"project", "Project/File"},
-	{"run", "Run"},
-	{"settings", "Settings"},
-};
-
-ImGuiWindowFlags Sidebar::flags =
-	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
-	ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoMove |
-	ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar |
-	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoFocusOnAppearing;
-
-bool Sidebar::is_open = true;
-bool Sidebar::has_clicked = false;
-float Sidebar::alpha = 0.0f;
-
-bool show_project = false;
-ImGuiWindowFlags popup_flags =
-	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
-	ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
-	ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollWithMouse;
+PopupProject popup_project;
+PopupRun popup_run;
 
 int Sidebar::init()
 {
@@ -88,9 +66,9 @@ int Sidebar::load_images()
 		ui_button.normal = image;
 		ui_button.hovered = image_hover;
 		ui_button.hoverable = true;
-		PPK_ASSERT(Sidebar::tooltips[key] != "", "Tooltip does not exists for '%s'", key.c_str());
-		ui_button.tooltip = Sidebar::tooltips[key];
-		Sidebar::ui_buttons.insert(std::pair<std::string, CodeNect::UI_Button>(key, ui_button));
+		PPK_ASSERT(m_tooltips[key] != "", "Tooltip does not exists for '%s'", key.c_str());
+		ui_button.tooltip = m_tooltips[key];
+		m_ui_buttons.insert(std::pair<std::string, CodeNect::UI_Button>(key, ui_button));
 
 		// Sidebar::images.insert(std::pair<std::string, CodeNect::Image>(key, image));
 		// Sidebar::images_hover.insert(std::pair<std::string, CodeNect::Image>(key_hover, image_hover));
@@ -110,7 +88,7 @@ void Sidebar::check_image_size(const CodeNect::Image& img)
 
 void Sidebar::set_style()
 {
-	ImGui::PushStyleVar(ImGuiStyleVar_Alpha, Sidebar::alpha);
+	ImGui::PushStyleVar(ImGuiStyleVar_Alpha, m_alpha);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, Sidebar_c::padding);
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2());
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, Sidebar_c::item_spacing);
@@ -128,27 +106,37 @@ void Sidebar::update(float dt)
 void Sidebar::draw()
 {
 	Sidebar::draw_sidebar();
-	Sidebar::draw_popup_project();
+
+	CodeNect::UI_Button& btn_project = m_ui_buttons["project"];
+	CodeNect::UI_Button& btn_run = m_ui_buttons["run"];
+	// CodeNect::UI_Button& btn_settings = Sidebar::ui_buttons["settings"];
+
+	btn_project.is_open = popup_project.is_open;
+	if (btn_project.is_open) popup_project.draw();
+
+	btn_run.is_open = popup_run.is_open;
+	if (btn_run.is_open) popup_run.draw();
 }
 
 void Sidebar::draw_sidebar()
 {
-	CodeNect::UI_Button& btn_project = Sidebar::ui_buttons["project"];
-	CodeNect::UI_Button& btn_run = Sidebar::ui_buttons["run"];
-	CodeNect::UI_Button& btn_settings = Sidebar::ui_buttons["settings"];
+	CodeNect::UI_Button& btn_project = m_ui_buttons["project"];
+	CodeNect::UI_Button& btn_run = m_ui_buttons["run"];
+	CodeNect::UI_Button& btn_settings = m_ui_buttons["settings"];
 
 	const ImVec2& max_size = Sidebar_c::max_img_size;
 
 	Sidebar::set_style();
 	ImGui::SetNextWindowPos(Sidebar_c::pos, ImGuiCond_Always, ImVec2(0.0f, 0.5f));
 	ImGui::SetNextWindowSize(Sidebar_c::size, ImGuiCond_Always);
-	ImGui::Begin("Sidebar", &Sidebar::is_open, Sidebar::flags);
+	ImGui::Begin("Sidebar", &m_is_open, m_flags);
 		btn_project.draw();
 
-		if (btn_project.is_clicked)
-			show_project = true;
+		if (btn_project.is_clicked) popup_project.is_open = true;
 
 		btn_run.draw();
+
+		if (btn_run.is_clicked) popup_run.is_open = true;
 
 		const int isy = CodeNect::Config::Sidebar_c::item_spacing.y;
 		const int y = ImGui::GetContentRegionAvail().y - (max_size.y * 2) - (isy * 2);
@@ -157,35 +145,8 @@ void Sidebar::draw_sidebar()
 	ImGui::End();
 	Sidebar::unset_style();
 
-	Sidebar::has_clicked = btn_project.is_open ||
+	m_has_clicked = btn_project.is_open ||
 		btn_run.is_open ||
 		btn_settings.is_open;
-}
-
-void Sidebar::draw_popup_project()
-{
-	CodeNect::UI_Button& btn_project = Sidebar::ui_buttons["project"];
-	btn_project.is_open = show_project;
-
-	if (btn_project.is_open)
-	{
-		bool is_inside = false;
-
-		ImGui::Begin("Project", &show_project, popup_flags);
-			is_inside = ImGui::IsWindowHovered();
-
-			if (ImGui::BeginMenu("Project"))
-			{
-				ImGui::MenuItem("New Project");
-				ImGui::MenuItem("Open Project");
-				ImGui::MenuItem("Save Project");
-
-            	ImGui::EndMenu();
-			}
-		ImGui::End();
-
-		if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && !is_inside)
-			show_project = false;
-	}
 }
 }

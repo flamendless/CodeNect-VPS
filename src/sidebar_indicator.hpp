@@ -11,16 +11,21 @@ namespace CodeNect
 {
 struct SidebarIndicator
 {
-	static CodeNect::UI_Button btn;
-	static ImGuiWindowFlags flags;
-	static bool is_open;
-	static float alpha;
+	CodeNect::UI_Button m_btn;
+	ImGuiWindowFlags m_flags =
+		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
+		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground |
+		ImGuiWindowFlags_NoFocusOnAppearing;
+	bool m_is_open = true;
+	float m_alpha = 1.0f;
 
-	static int init();
-	static void set_style();
-	static void unset_style();
-	static void update(float dt);
-	static void draw();
+	int init();
+	void set_style();
+	void unset_style();
+	void update(float dt);
+	void draw();
 };
 }
 

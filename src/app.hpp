@@ -24,17 +24,16 @@ namespace CodeNect
 {
 struct App
 {
-	static GLFWwindow* window;
-	static ImGuiIO* imgui_io;
+	GLFWwindow* m_window;
+	ImGuiIO* m_imgui_io;
 
-	static void glfw_error_callback(int error, const char* desc);
-	static void init();
-	static int init_app();
-	static void init_window();
-	static void init_imgui();
-	static void render_start();
-	static void render_end();
-	static void shutdown();
+	void init();
+	int init_app();
+	void init_window();
+	void init_imgui();
+	void render_start();
+	void render_end();
+	void shutdown();
 };
 }
 
