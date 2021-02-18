@@ -14,7 +14,7 @@ int SidebarIndicator::init()
 		return RES_FAIL;
 	}
 
-	m_btn.normal = img;
+	m_btn.m_normal = img;
 
 	return RES_SUCCESS;
 }

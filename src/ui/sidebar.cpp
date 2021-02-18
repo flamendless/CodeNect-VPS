@@ -2,8 +2,15 @@
 
 namespace CodeNect
 {
+UI_Button* btn_project;
+UI_Button* btn_run;
+UI_Button* btn_settings;
+UI_Button* btn_about;
+
 PopupProject popup_project;
 PopupRun popup_run;
+PopupSettings popup_settings;
+PopupAbout popup_about;
 
 int Sidebar::init()
 {
@@ -17,6 +24,11 @@ int Sidebar::init()
     //
 	// 	PLOGV << key << " = "  << image.texture;
 	// }
+
+	btn_project = &m_ui_buttons["project"];
+	btn_run = &m_ui_buttons["run"];
+	btn_settings = &m_ui_buttons["settings"];
+	btn_about = &m_ui_buttons["about"];
 
 	return RES_SUCCESS;
 }
@@ -63,11 +75,9 @@ int Sidebar::load_images()
 
 		//create ui button
 		CodeNect::UI_Button ui_button;
-		ui_button.normal = image;
-		ui_button.hovered = image_hover;
-		ui_button.hoverable = true;
-		PPK_ASSERT(m_tooltips[key] != "", "Tooltip does not exists for '%s'", key.c_str());
-		ui_button.tooltip = m_tooltips[key];
+		ui_button.m_normal = image;
+		ui_button.m_hovered = image_hover;
+		ui_button.m_hoverable = true;
 		m_ui_buttons.insert(std::pair<std::string, CodeNect::UI_Button>(key, ui_button));
 
 		// Sidebar::images.insert(std::pair<std::string, CodeNect::Image>(key, image));
@@ -103,50 +113,100 @@ void Sidebar::update(float dt)
 {
 }
 
+void Sidebar::manage_popups()
+{
+	if (btn_project->m_is_hovered)
+	{
+		popup_project.m_is_open = true;
+		popup_run.m_is_open = false;
+		popup_settings.m_is_open = false;
+		popup_about.m_is_open = false;
+	}
+	else if (btn_run->m_is_hovered)
+	{
+		popup_project.m_is_open = false;
+		popup_run.m_is_open = true;
+		popup_settings.m_is_open = false;
+		popup_about.m_is_open = false;
+	}
+	else if (btn_settings->m_is_hovered)
+	{
+		popup_project.m_is_open = false;
+		popup_run.m_is_open = false;
+		popup_settings.m_is_open = true;
+		popup_about.m_is_open = false;
+	}
+	else if (btn_about->m_is_hovered)
+	{
+		popup_project.m_is_open = false;
+		popup_run.m_is_open = false;
+		popup_settings.m_is_open = false;
+
+		if (btn_about->m_is_clicked)
+			popup_about.m_is_open = true;
+	}
+}
+
 void Sidebar::draw()
 {
 	Sidebar::draw_sidebar();
 
-	CodeNect::UI_Button& btn_project = m_ui_buttons["project"];
-	CodeNect::UI_Button& btn_run = m_ui_buttons["run"];
-	// CodeNect::UI_Button& btn_settings = Sidebar::ui_buttons["settings"];
+	btn_project->m_is_open = popup_project.m_is_open;
+	if (btn_project->m_is_open) popup_project.draw();
 
-	btn_project.is_open = popup_project.is_open;
-	if (btn_project.is_open) popup_project.draw();
+	btn_run->m_is_open = popup_run.m_is_open;
+	if (btn_run->m_is_open) popup_run.draw();
 
-	btn_run.is_open = popup_run.is_open;
-	if (btn_run.is_open) popup_run.draw();
+	btn_settings->m_is_open = popup_settings.m_is_open;
+	if (btn_settings->m_is_open) popup_settings.draw();
+
+	btn_about->m_is_open = popup_about.m_is_open;
+	if (btn_about->m_is_open)
+	{
+		ImGui::OpenPopup("AboutPopup");
+		popup_about.draw();
+	}
+
+	m_has_opened = btn_project->m_is_open ||
+		btn_run->m_is_open ||
+		btn_settings->m_is_open ||
+		btn_about->m_is_open;
 }
 
 void Sidebar::draw_sidebar()
 {
-	CodeNect::UI_Button& btn_project = m_ui_buttons["project"];
-	CodeNect::UI_Button& btn_run = m_ui_buttons["run"];
-	CodeNect::UI_Button& btn_settings = m_ui_buttons["settings"];
-
 	const ImVec2& max_size = Sidebar_c::max_img_size;
 
 	Sidebar::set_style();
 	ImGui::SetNextWindowPos(Sidebar_c::pos, ImGuiCond_Always, ImVec2(0.0f, 0.5f));
-	ImGui::SetNextWindowSize(Sidebar_c::size, ImGuiCond_Always);
+	ImGui::SetNextWindowSize(Sidebar_c::size);
 	ImGui::Begin("Sidebar", &m_is_open, m_flags);
-		btn_project.draw();
+		popup_project.m_pos = ImGui::GetCursorPos();
+		btn_project->draw();
 
-		if (btn_project.is_clicked) popup_project.is_open = true;
-
-		btn_run.draw();
-
-		if (btn_run.is_clicked) popup_run.is_open = true;
+		popup_run.m_pos = ImGui::GetCursorPos();
+		btn_run->draw();
 
 		const int isy = CodeNect::Config::Sidebar_c::item_spacing.y;
 		const int y = ImGui::GetContentRegionAvail().y - (max_size.y * 2) - (isy * 2);
 		ImGui::Dummy(ImVec2(max_size.x, y));
-		btn_settings.draw();
+
+		if (ImGui::IsItemHovered())
+		{
+			popup_project.m_is_open = false;
+			popup_run.m_is_open = false;
+			popup_settings.m_is_open = false;
+			popup_about.m_is_open = false;
+		}
+
+		popup_settings.m_pos = ImGui::GetCursorPos();
+		btn_settings->draw();
+
+		popup_about.m_pos = ImGui::GetCursorPos();
+		btn_about->draw();
+
+		Sidebar::manage_popups();
 	ImGui::End();
 	Sidebar::unset_style();
-
-	m_has_clicked = btn_project.is_open ||
-		btn_run.is_open ||
-		btn_settings.is_open;
 }
 }

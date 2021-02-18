@@ -61,16 +61,20 @@ void Config::init_sidebar(INIReader& reader)
 	const pair_key_filename project = std::make_pair("project", reader.Get("sidebar_images", "project", "???"));
 	const pair_key_filename run = std::make_pair("run", reader.Get("sidebar_images", "run", "???"));
 	const pair_key_filename settings = std::make_pair("settings", reader.Get("sidebar_images", "settings", "???"));
+	const pair_key_filename about = std::make_pair("about", reader.Get("sidebar_images", "about", "???"));
 	images_filenames.push_back(project);
 	images_filenames.push_back(run);
 	images_filenames.push_back(settings);
+	images_filenames.push_back(about);
 
 	const pair_key_filename project_hover = std::make_pair("project_hover", reader.Get("sidebar_images", "project_hover", "???"));
 	const pair_key_filename run_hover = std::make_pair("run_hover", reader.Get("sidebar_images", "run_hover", "???"));
 	const pair_key_filename settings_hover = std::make_pair("settings_hover", reader.Get("sidebar_images", "settings_hover", "???"));
+	const pair_key_filename about_hover = std::make_pair("about_hover", reader.Get("sidebar_images", "about_hover", "???"));
 	images_filenames_hover.push_back(project_hover);
 	images_filenames_hover.push_back(run_hover);
 	images_filenames_hover.push_back(settings_hover);
+	images_filenames_hover.push_back(about_hover);
 
 	const int x = reader.GetInteger("sidebar", "pos_x", -1);
 	const int y = reader.GetInteger("sidebar", "pos_y", -1);
@@ -88,7 +92,6 @@ void Config::init_sidebar(INIReader& reader)
 	Config::Sidebar_c::max_img_size = ImVec2(max_img_width, max_img_height);
 	Config::Sidebar_c::padding = ImVec2(px, py);
 	Config::Sidebar_c::item_spacing = ImVec2(isx, isy);
-
 
 	//sidebar indicator
 	const std::string indicator_filename = reader.Get("sidebar_indicator", "indicator", "???");

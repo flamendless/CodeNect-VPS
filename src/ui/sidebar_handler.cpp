@@ -25,13 +25,11 @@ void SidebarHandler::init(Sidebar* sidebar, SidebarIndicator* sidebar_indicator)
 
 void SidebarHandler::update(float dt)
 {
-	if (m_sidebar->m_has_clicked) return;
-
 	const ImVec2& m_pos = ImGui::GetMousePos();
 	const int min = Sidebar_c::pos.x + Sidebar_c::indicator_size.x;
 	const int dist = m_pos.x - min;
 
-	if (dist <= 0)
+	if (dist <= 0 || m_sidebar->m_has_opened)
 		show_sidebar = true;
 	else
 		show_sidebar = false;

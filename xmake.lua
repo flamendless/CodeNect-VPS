@@ -6,7 +6,10 @@ target("CodeNect")
 
 	--source files
 	add_files("src/*.cpp")
-	add_includedirs("src")
+	add_files("src/ui/*.cpp")
+	add_files("src/popups/*.cpp")
+	add_files("src/modules/*.cpp")
+	add_includedirs("src/includes")
 
 	--dearimgui
 	add_files("includes/imgui/*.cpp", "includes/imgui/backends/imgui_impl_opengl2.cpp", "includes/imgui/backends/imgui_impl_glfw.cpp")
