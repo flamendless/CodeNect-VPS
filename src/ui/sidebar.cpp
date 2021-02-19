@@ -212,9 +212,7 @@ void Sidebar::draw_sidebar()
 			popup_about.m_is_open = false;
 		}
 
-		popup_settings.m_pos = ImGui::GetCursorPos();
 		btn_settings->draw();
-
 		btn_about->draw();
 
 		Sidebar::manage_popups();

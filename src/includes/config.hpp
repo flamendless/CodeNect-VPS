@@ -18,6 +18,7 @@ struct Config
 	static int vsync;
 	static ImVec4 clear_color;
 	static const char* config_filename;
+	static std::string style;
 
 	struct Sidebar_c
 	{

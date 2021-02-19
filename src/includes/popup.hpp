@@ -34,6 +34,9 @@ struct PopupRun : Popup
 
 struct PopupSettings : Popup
 {
+	int m_style_idx = -1;
+	const char* m_styles = "Dark\0Light\0Classic\0";
+
 	void draw();
 };
 

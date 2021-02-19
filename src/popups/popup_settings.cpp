@@ -8,22 +8,27 @@ void PopupSettings::draw()
 
 	if (ImGui::BeginPopup("SettingsPopup"))
 	{
-		ImGui::Text("CodeNect: Visual Programming");
-		ImGui::Text("Software for Learning");
-		ImGui::Text("Fundamentals of Programming");
+		ImGui::Text("%s SETTINGS", ICON_FA_COG);
 		ImGui::Separator();
 
-		ImGui::Text("Thesis by:");
-		ImGui::Indent();
-			ImGui::Text("Brandon Blanker Lim-it");
-			ImGui::Text("Jaykel O. Punay");
-		ImGui::Unindent();
+		if (ImGui::Combo("Theme", &m_style_idx, m_styles))
+		{
+			switch(m_style_idx)
+			{
+				case 0: ImGui::StyleColorsDark(); break;
+				case 1: ImGui::StyleColorsLight(); break;
+				case 2: ImGui::StyleColorsClassic(); break;
+			}
+		}
 		ImGui::Separator();
 
-		ImGui::Text("Cavite State University");
-		ImGui::Text("BSIT Batch 2017-2021");
+		if (ImGui::Button(ICON_FA_CHECK " Save"))
+		{
+		}
 
-		if (ImGui::Button("Close"))
+		ImGui::SameLine();
+
+		if (ImGui::Button(ICON_FA_TIMES " Close"))
 		{
 			m_is_open = false;
 			ImGui::CloseCurrentPopup();

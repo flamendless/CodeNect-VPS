@@ -35,7 +35,7 @@ void PopupAbout::draw()
 		ImGui::Unindent();
 		ImGui::Separator();
 
-		if (ImGui::Button("Close"))
+		if (ImGui::Button(ICON_FA_TIMES " Close"))
 		{
 			m_is_open = false;
 			ImGui::CloseCurrentPopup();

@@ -47,7 +47,14 @@ void App::init_imgui()
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	m_imgui_io = &ImGui::GetIO(); (void)m_imgui_io;
-	ImGui::StyleColorsDark();
+
+	if (Config::style == "dark")
+		ImGui::StyleColorsDark();
+	else if (Config::style == "light")
+		ImGui::StyleColorsLight();
+	else if (Config::style == "classic")
+		ImGui::StyleColorsClassic();
+
 	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
 	ImGui_ImplOpenGL2_Init();
 }

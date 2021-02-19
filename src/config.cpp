@@ -8,6 +8,7 @@ int Config::win_height;
 int Config::vsync;
 ImVec4 Config::clear_color;
 const char* Config::config_filename = "config.ini";
+std::string Config::style;
 
 ImVec2 Config::Sidebar_c::size;
 ImVec2 Config::Sidebar_c::max_img_size;
@@ -51,6 +52,7 @@ void Config::init_general(INIReader& reader)
 	const float a = reader.GetReal("clear_color", "a", 1.00f);
 	Config::clear_color = ImVec4(r, g, b, a);
 
+	Config::style = reader.Get("general", "style", "dark");
 }
 
 void Config::init_sidebar(INIReader& reader)
