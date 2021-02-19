@@ -19,3 +19,6 @@
 [submodule "includes/iconfont"]
 	path = includes/iconfont
 	url = https://github.com/juliettef/IconFontCppHeaders
+[submodule "includes/simpleini"]
+	path = includes/simpleini
+	url = https://github.com/brofield/simpleini

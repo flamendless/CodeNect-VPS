@@ -1,10 +1,11 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-#include "INIReader.h"
+#include <vector>
+#include <utility>
+#include "SimpleIni.h"
 #include "imgui.h"
 #include "plog/Log.h"
-#include <vector>
 
 #include "defines.hpp"
 
@@ -35,8 +36,8 @@ struct Config
 	};
 
 	static int init();
-	static void init_general(INIReader& reader);
-	static void init_sidebar(INIReader& reader);
+	static void init_general(CSimpleIniA& reader);
+	static void init_sidebar(CSimpleIniA& reader);
 };
 
 typedef CodeNect::Config::Sidebar_c Sidebar_c;

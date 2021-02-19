@@ -26,8 +26,9 @@ target("CodeNect")
 	add_files("includes/imnodes/*.cpp|sample.cpp")
 	add_includedirs("includes/imnodes")
 
-	--inih
-	add_includedirs("includes/inih/")
+	--simpleini
+	add_files("includes/simpleini/ConvertUTF.c")
+	add_includedirs("includes/simpleini/")
 
 	--nativefiledialogs
 	add_includedirs("includes/nfd/include")
