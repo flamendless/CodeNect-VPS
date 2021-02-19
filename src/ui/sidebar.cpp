@@ -30,12 +30,8 @@ int Sidebar::init()
 	btn_settings = &m_ui_buttons["settings"];
 	btn_about = &m_ui_buttons["about"];
 
-	const int w = CodeNect::Config::win_width;
-	const int h = CodeNect::Config::win_height;
-	const ImVec2 center_pos = ImVec2((float)w/2, (float)h/2);
-
-	popup_settings.m_pos = center_pos;
-	popup_about.m_pos = center_pos;
+	popup_settings.init();
+	popup_about.set_center_pos();
 
 	return RES_SUCCESS;
 }

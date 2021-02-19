@@ -5,9 +5,9 @@ namespace CodeNect
 {
 void PopupAbout::draw()
 {
-	ImGui::SetNextWindowPos(m_pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+	ImGui::SetNextWindowPos(m_center_pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
 
-	if (ImGui::BeginPopup("AboutPopup"))
+	if (ImGui::BeginPopupModal("AboutPopup", &m_is_open, m_popup_flags))
 	{
 		ImGui::Text("%s ABOUT", ICON_FA_INFO_CIRCLE);
 		ImGui::Separator();

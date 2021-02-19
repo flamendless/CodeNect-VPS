@@ -19,7 +19,9 @@ struct Config
 	static int vsync;
 	static ImVec4 clear_color;
 	static const char* config_filename;
+	static const char* user_config_filename;
 	static std::string style;
+	static CSimpleIniA reader;
 
 	struct Sidebar_c
 	{
@@ -36,8 +38,12 @@ struct Config
 	};
 
 	static int init();
-	static void init_general(CSimpleIniA& reader);
-	static void init_sidebar(CSimpleIniA& reader);
+	static bool load_user_config();
+	static bool load_default_config();
+	static void init_general();
+	static void init_sidebar();
+	static void update_style(const int style_idx);
+	static bool save_user_config();
 };
 
 typedef CodeNect::Config::Sidebar_c Sidebar_c;

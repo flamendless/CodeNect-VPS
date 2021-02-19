@@ -8,7 +8,9 @@ int Config::win_height;
 int Config::vsync;
 ImVec4 Config::clear_color;
 const char* Config::config_filename = "config.ini";
+const char* Config::user_config_filename = "config_user.ini";
 std::string Config::style;
+CSimpleIniA Config::reader;
 
 ImVec2 Config::Sidebar_c::size;
 ImVec2 Config::Sidebar_c::max_img_size;
@@ -22,27 +24,58 @@ ImVec2 Config::Sidebar_c::indicator_size;
 
 int Config::init()
 {
-	PLOGI << "Reading config file: " << Config::config_filename;
-
-	CSimpleIniA reader;
 	reader.SetUnicode();
-	SI_Error res = reader.LoadFile(Config::config_filename);
 
-	if (res < 0)
+	bool res = Config::load_user_config();
+
+	if (!res)
 	{
-		PLOGE << "Can't load config file: " << Config::config_filename;
-		return RES_FAIL;
+		bool res2 = Config::load_default_config();
+
+		if (!res2)
+			return RES_FAIL;
 	}
 
-	Config::init_general(reader);
-	Config::init_sidebar(reader);
+	Config::init_general();
+	Config::init_sidebar();
 
 	PLOGI << "Config loaded";
 
 	return RES_SUCCESS;
 }
 
-void Config::init_general(CSimpleIniA& reader)
+bool Config::load_user_config()
+{
+	PLOGI << "Reading user config file: " << Config::user_config_filename;
+	SI_Error res = reader.LoadFile(Config::user_config_filename);
+
+	if (res < 0)
+	{
+		PLOGI << "User config file not found";
+
+		return false;
+	}
+
+	return true;
+}
+
+bool Config::load_default_config()
+{
+	PLOGI << "Reading default config file: " << Config::config_filename;
+
+	SI_Error res = reader.LoadFile(Config::config_filename);
+
+	if (res < 0)
+	{
+		PLOGI << "Default config file not found";
+
+		return false;
+	}
+
+	return true;
+}
+
+void Config::init_general()
 {
 	Config::app_title = reader.GetValue("general", "title", "CodeNect");
 	Config::win_width = std::stoi(reader.GetValue("general", "width", "1024"));
@@ -58,7 +91,7 @@ void Config::init_general(CSimpleIniA& reader)
 	Config::style = reader.GetValue("general", "style", "dark");
 }
 
-void Config::init_sidebar(CSimpleIni& reader)
+void Config::init_sidebar()
 {
 	vec_filenames& images_filenames = Config::Sidebar_c::images_filenames;
 	vec_filenames& images_filenames_hover = Config::Sidebar_c::images_filenames_hover;
@@ -105,5 +138,31 @@ void Config::init_sidebar(CSimpleIni& reader)
 
 	Config::Sidebar_c::indicator_filename = indicator_filename;
 	Config::Sidebar_c::indicator_size = ImVec2(siw, sih);
+}
+
+void Config::update_style(const int style_idx)
+{
+	switch (style_idx)
+	{
+		case 0: reader.SetValue("general", "style", "dark"); break;
+		case 1: reader.SetValue("general", "style", "light"); break;
+		case 2: reader.SetValue("general", "style", "classic"); break;
+	}
+}
+
+bool Config::save_user_config()
+{
+	bool res2 = reader.SaveFile(Config::user_config_filename);
+
+	if (res2 != 0)
+		PLOGW << "Failed to save user config: " << res2;
+	else
+	{
+		PLOGV << "Saving user config: " << res2;
+
+		return RES_FAIL;
+	}
+
+	return RES_SUCCESS;
 }
 }
