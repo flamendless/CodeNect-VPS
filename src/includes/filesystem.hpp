@@ -1,5 +1,5 @@
-#ifndef FILESYSTEM_H
-#define FILESYSTEM_H
+#ifndef FILESYSTEM_HPP
+#define FILESYSTEM_HPP
 
 #include <GLFW/glfw3.h>
 #include <map>
@@ -20,4 +20,4 @@ int load_texture_from_file(const char* filename, CodeNect::Image& image);
 }
 }
 
-#endif //FILESYSTEM_H
+#endif //FILESYSTEM_HPP

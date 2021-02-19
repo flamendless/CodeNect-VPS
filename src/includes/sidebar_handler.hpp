@@ -1,5 +1,5 @@
-#ifndef SIDEBAR_HANDLER_H
-#define SIDEBAR_HANDLER_H
+#ifndef SIDEBAR_HANDLER_HPP
+#define SIDEBAR_HANDLER_HPP
 
 #include <cstdint>
 #include <string>
@@ -19,4 +19,4 @@ struct SidebarHandler
 };
 }
 
-#endif //SIDEBAR_HANDLER_H
+#endif //SIDEBAR_HANDLER_HPP

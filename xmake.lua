@@ -19,6 +19,9 @@ target("CodeNect")
 	add_files("includes/fmt/src/*.cc")
 	add_includedirs("includes/fmt/include")
 
+	--iconfontcppheaders
+	add_includedirs("includes/iconfont")
+
 	--imnodes
 	add_files("includes/imnodes/*.cpp|sample.cpp")
 	add_includedirs("includes/imnodes")

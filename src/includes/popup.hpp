@@ -1,6 +1,7 @@
-#ifndef POPUP_H
-#define POPUP_H
+#ifndef POPUP_HPP
+#define POPUP_HPP
 
+#include "IconsFontAwesome5.h"
 #include "imgui.h"
 #include "config.hpp"
 
@@ -42,4 +43,4 @@ struct PopupAbout : Popup
 };
 }
 
-#endif //POPUP_H
+#endif //POPUP_HPP

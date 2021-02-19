@@ -1,30 +1,39 @@
+#include "imgui.h"
 #include "popup.hpp"
 
 namespace CodeNect
 {
 void PopupAbout::draw()
 {
-	const int w = CodeNect::Config::win_width;
-	const int h = CodeNect::Config::win_height;
-	const ImVec2 pos = ImVec2((float)w/2, (float)h/2);
-	ImGui::SetNextWindowPos(pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+	ImGui::SetNextWindowPos(m_pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
 
 	if (ImGui::BeginPopup("AboutPopup"))
 	{
-		ImGui::Text("CodeNect: Visual Programming");
+		ImGui::Text("%s ABOUT", ICON_FA_INFO_CIRCLE);
+		ImGui::Separator();
+
+		ImGui::Text("%s CodeNect: Visual Programming", ICON_FA_PROJECT_DIAGRAM);
 		ImGui::Text("Software for Learning");
 		ImGui::Text("Fundamentals of Programming");
 		ImGui::Separator();
 
-		ImGui::Text("Thesis by:");
+		ImGui::Text("%s Thesis by:", ICON_FA_BOOK);
 		ImGui::Indent();
-			ImGui::Text("Brandon Blanker Lim-it");
-			ImGui::Text("Jaykel O. Punay");
+			ImGui::Text("%s Brandon Blanker Lim-it", ICON_FA_USER_COG);
+			ImGui::Text("%s Jaykel O. Punay", ICON_FA_USER_NINJA);
 		ImGui::Unindent();
 		ImGui::Separator();
 
-		ImGui::Text("Cavite State University");
-		ImGui::Text("BSIT Batch 2017-2021");
+		ImGui::Text("%s Cavite State University", ICON_FA_SCHOOL);
+		ImGui::Text("%s BSIT Batch 2017-2021", ICON_FA_USERS);
+		ImGui::Separator();
+
+		ImGui::Text("%s Special Thanks to:", ICON_FA_STAR);
+		ImGui::Indent();
+			ImGui::Text("%s James Angelo V. Aves (Adviser)", ICON_FA_USER_CHECK);
+			ImGui::Text("%s Annabelle Almares (Technical Critic)", ICON_FA_USER_EDIT);
+		ImGui::Unindent();
+		ImGui::Separator();
 
 		if (ImGui::Button("Close"))
 		{

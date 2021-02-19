@@ -1,5 +1,5 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef CONFIG_HPP
+#define CONFIG_HPP
 
 #include "INIReader.h"
 #include "imgui.h"
@@ -41,4 +41,4 @@ struct Config
 typedef CodeNect::Config::Sidebar_c Sidebar_c;
 }
 
-#endif //CONFIG_H
+#endif //CONFIG_HPP

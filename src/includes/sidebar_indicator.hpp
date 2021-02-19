@@ -1,5 +1,5 @@
-#ifndef SIDEBAR_INDICATOR_H
-#define SIDEBAR_INDICATOR_H
+#ifndef SIDEBAR_INDICATOR_HPP
+#define SIDEBAR_INDICATOR_HPP
 
 #include "imgui.h"
 #include "plog/Log.h"
@@ -29,4 +29,4 @@ struct SidebarIndicator
 };
 }
 
-#endif //SIDEBAR_INDICATOR_H
+#endif //SIDEBAR_INDICATOR_HPP

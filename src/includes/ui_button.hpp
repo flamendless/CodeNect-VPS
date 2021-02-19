@@ -1,5 +1,5 @@
-#ifndef UI_BUTTON_H
-#define UI_BUTTON_H
+#ifndef UI_BUTTON_HPP
+#define UI_BUTTON_HPP
 
 #include "image.hpp"
 
@@ -36,4 +36,4 @@ struct UI_Button
 };
 }
 
-#endif //UI_BUTTON_H
+#endif //UI_BUTTON_HPP

@@ -1,5 +1,5 @@
-#ifndef APP_H
-#define APP_H
+#ifndef APP_HPP
+#define APP_HPP
 
 #include <GLFW/glfw3.h>
 #include <stdio.h>
@@ -37,4 +37,4 @@ struct App
 };
 }
 
-#endif //APP_H
+#endif //APP_HPP

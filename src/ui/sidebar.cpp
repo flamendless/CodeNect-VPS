@@ -30,6 +30,13 @@ int Sidebar::init()
 	btn_settings = &m_ui_buttons["settings"];
 	btn_about = &m_ui_buttons["about"];
 
+	const int w = CodeNect::Config::win_width;
+	const int h = CodeNect::Config::win_height;
+	const ImVec2 center_pos = ImVec2((float)w/2, (float)h/2);
+
+	popup_settings.m_pos = center_pos;
+	popup_about.m_pos = center_pos;
+
 	return RES_SUCCESS;
 }
 
@@ -133,8 +140,10 @@ void Sidebar::manage_popups()
 	{
 		popup_project.m_is_open = false;
 		popup_run.m_is_open = false;
-		popup_settings.m_is_open = true;
 		popup_about.m_is_open = false;
+
+		if (btn_settings->m_is_clicked)
+			popup_settings.m_is_open = true;
 	}
 	else if (btn_about->m_is_hovered)
 	{
@@ -158,7 +167,11 @@ void Sidebar::draw()
 	if (btn_run->m_is_open) popup_run.draw();
 
 	btn_settings->m_is_open = popup_settings.m_is_open;
-	if (btn_settings->m_is_open) popup_settings.draw();
+	if (btn_settings->m_is_open)
+	{
+		ImGui::OpenPopup("SettingsPopup");
+		popup_settings.draw();
+	}
 
 	btn_about->m_is_open = popup_about.m_is_open;
 	if (btn_about->m_is_open)
@@ -202,7 +215,6 @@ void Sidebar::draw_sidebar()
 		popup_settings.m_pos = ImGui::GetCursorPos();
 		btn_settings->draw();
 
-		popup_about.m_pos = ImGui::GetCursorPos();
 		btn_about->draw();
 
 		Sidebar::manage_popups();

@@ -1,5 +1,5 @@
-#ifndef DEFINES_H
-#define DEFINES_H
+#ifndef DEFINES_HPP
+#define DEFINES_HPP
 
 #define RES_SUCCESS 0
 #define RES_FAIL -1
@@ -16,4 +16,4 @@ typedef std::map<const std::string, const::std::string> map_tooltips;
 typedef std::pair<std::string, std::string> pair_key_filename;
 typedef std::vector<pair_key_filename> vec_filenames;
 
-#endif //DEFINES_H
+#endif //DEFINES_HPP

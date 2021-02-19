@@ -1,5 +1,5 @@
-#ifndef IMAGE_H
-#define IMAGE_H
+#ifndef IMAGE_HPP
+#define IMAGE_HPP
 
 #include <GLFW/glfw3.h>
 #include <string>
@@ -20,4 +20,4 @@ struct Image
 };
 }
 
-#endif //IMAGE_H
+#endif //IMAGE_HPP

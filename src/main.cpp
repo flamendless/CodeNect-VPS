@@ -1,5 +1,6 @@
 #include "config.hpp"
 #include "app.hpp"
+#include "font.hpp"
 #include "filesystem.hpp"
 #include "sidebar.hpp"
 #include "sidebar_indicator.hpp"
@@ -16,6 +17,8 @@ int main(int argv, char** args)
 
 	const int app_status = app.init_app();
 	if (app_status != RES_SUCCESS) return -1;
+
+	CodeNect::Font::init();
 
 	// std::string project_filepath;
 	// bool opened_project = Filesystem::open_project_file(project_filepath);

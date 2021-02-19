@@ -1,5 +1,5 @@
-#ifndef SIDEBAR_H
-#define SIDEBAR_H
+#ifndef SIDEBAR_HPP
+#define SIDEBAR_HPP
 
 #include <vector>
 #include "imgui.h"
@@ -41,4 +41,4 @@ struct Sidebar
 };
 }
 
-#endif //SIDEBAR_H
+#endif //SIDEBAR_HPP
