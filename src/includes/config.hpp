@@ -18,6 +18,7 @@ struct Config
 	static const char* config_filename;
 	static const char* user_config_filename;
 	static std::string style;
+	static int font_size;
 	static CSimpleIniA reader;
 
 	struct Sidebar_c
@@ -40,6 +41,7 @@ struct Config
 	static void init_general();
 	static void init_sidebar();
 	static void update_style(const int style_idx);
+	static void update_font_size(const std::string& font_size);
 	static bool save_user_config();
 };
 

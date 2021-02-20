@@ -13,6 +13,7 @@ ImVec4 Config::clear_color;
 const char* Config::config_filename = "config.ini";
 const char* Config::user_config_filename = "config_user.ini";
 std::string Config::style;
+int Config::font_size;
 CSimpleIniA Config::reader;
 
 ImVec2 Config::Sidebar_c::size;
@@ -92,6 +93,7 @@ void Config::init_general()
 	Config::clear_color = ImVec4(r, g, b, a);
 
 	Config::style = reader.GetValue("general", "style", "dark");
+	Config::font_size = std::stoi(reader.GetValue("general", "font_size", std::to_string(DEFAULT_FONT_SIZE).c_str()));
 }
 
 void Config::init_sidebar()
@@ -151,6 +153,11 @@ void Config::update_style(const int style_idx)
 		case 1: reader.SetValue("general", "style", "light"); break;
 		case 2: reader.SetValue("general", "style", "classic"); break;
 	}
+}
+
+void Config::update_font_size(const std::string& font_size)
+{
+	reader.SetValue("general", "font_size", font_size.c_str());
 }
 
 bool Config::save_user_config()

@@ -11,6 +11,9 @@ void PopupSuccess::draw()
 		ImGui::Text("%s SUCCESS!", ICON_FA_CHECK);
 		ImGui::Separator();
 
+		ImGui::Text("%s", m_message.c_str());
+		ImGui::Separator();
+
 		if (ImGui::Button(ICON_FA_TIMES " Close"))
 		{
 			m_is_open = false;

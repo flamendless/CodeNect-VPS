@@ -1,6 +1,8 @@
 #ifndef FONT_HPP
 #define FONT_HPP
 
+#include <string>
+
 namespace CodeNect
 {
 struct Font
