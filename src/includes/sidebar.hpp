@@ -1,16 +1,8 @@
 #ifndef SIDEBAR_HPP
 #define SIDEBAR_HPP
 
-#include <vector>
 #include "imgui.h"
-#include "plog/Log.h"
-#include "ppk_assert.h"
-#include "filesystem.hpp"
-#include "config.hpp"
 #include "defines.hpp"
-#include "image.hpp"
-#include "ui_button.hpp"
-#include "popup.hpp"
 
 namespace CodeNect
 {

@@ -1,5 +1,7 @@
 #include "popup.hpp"
 
+#include "config.hpp"
+
 namespace CodeNect
 {
 void Popup::set_center_pos()

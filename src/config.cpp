@@ -1,5 +1,8 @@
 #include "config.hpp"
 
+#include <utility>
+#include "plog/Log.h"
+
 namespace CodeNect
 {
 std::string Config::app_title;

@@ -2,9 +2,6 @@
 #define SIDEBAR_INDICATOR_HPP
 
 #include "imgui.h"
-#include "plog/Log.h"
-#include "config.hpp"
-#include "filesystem.hpp"
 #include "ui_button.hpp"
 
 namespace CodeNect

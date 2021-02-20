@@ -3,6 +3,16 @@
 
 #include "filesystem.hpp"
 
+#include <GLFW/glfw3.h>
+#include <map>
+#include "nfd.h"
+#include "fmt/printf.h"
+#include "plog/Log.h"
+#include "stb_image.h"
+#include "defines.hpp"
+
+const char* filter_project = "md";
+
 namespace CodeNect
 {
 namespace Filesystem
@@ -10,7 +20,7 @@ namespace Filesystem
 bool open_project_file(std::string& project_filepath)
 {
 	nfdchar_t* out_path = NULL;
-	nfdresult_t result = NFD_OpenDialog(CodeNect::Filesystem::filter_project, NULL, &out_path);
+	nfdresult_t result = NFD_OpenDialog(filter_project, NULL, &out_path);
 
 	if (result == NFD_OKAY)
 	{

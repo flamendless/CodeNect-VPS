@@ -1,5 +1,10 @@
 #include "font.hpp"
 
+#include "IconsFontAwesome5.h"
+#include "plog/Log.h"
+#include "defines.hpp"
+#include "imgui.h"
+
 const char* far_path = "assets/fonts/fa-regular-400.ttf";
 const char* fas_path = "assets/fonts/fa-solid-900.ttf";
 const char* fab_path = "assets/fonts/fa-brands-400.ttf";

@@ -1,5 +1,21 @@
 #include "app.hpp"
 
+#include <stdio.h>
+#include "fmt/core.h"
+#include "plog/Init.h"
+#include "plog/Log.h"
+
+#if DEBUG_MODE
+#include "plog/Formatters/TxtFormatter.h"
+#include "plog/Appenders/ColorConsoleAppender.h"
+#else
+#include "plog/Initializers/RollingFileInitializer.h"
+#endif
+
+#include "config.hpp"
+#include "defines.hpp"
+
+
 namespace CodeNect
 {
 void glfw_error_callback(int error, const char* desc)

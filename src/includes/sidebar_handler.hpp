@@ -1,9 +1,6 @@
 #ifndef SIDEBAR_HANDLER_HPP
 #define SIDEBAR_HANDLER_HPP
 
-#include <cstdint>
-#include <string>
-#include "tweeny.h"
 #include "sidebar.hpp"
 #include "sidebar_indicator.hpp"
 

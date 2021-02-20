@@ -1,5 +1,10 @@
 #include "sidebar_handler.hpp"
 
+#include <cstdint>
+#include <string>
+#include "config.hpp"
+#include "tweeny.h"
+
 #define DUR_FADE 50 //the higher the smoother is the fade effect
 
 namespace CodeNect

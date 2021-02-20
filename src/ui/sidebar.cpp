@@ -1,5 +1,14 @@
 #include "sidebar.hpp"
 
+#include <vector>
+#include "fmt/core.h"
+#include "plog/Log.h"
+#include "ppk_assert.h"
+#include "filesystem.hpp"
+#include "config.hpp"
+#include "ui_button.hpp"
+#include "popup.hpp"
+
 namespace CodeNect
 {
 UI_Button* btn_project;

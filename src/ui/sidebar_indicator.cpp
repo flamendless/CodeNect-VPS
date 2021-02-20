@@ -1,5 +1,9 @@
 #include "sidebar_indicator.hpp"
 
+#include "plog/Log.h"
+#include "config.hpp"
+#include "filesystem.hpp"
+
 namespace CodeNect
 {
 int SidebarIndicator::init()

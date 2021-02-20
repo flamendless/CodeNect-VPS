@@ -1,5 +1,7 @@
 #include "popup.hpp"
 
+#include "config.hpp"
+
 namespace CodeNect
 {
 PopupSuccess popup_success;
@@ -12,6 +14,8 @@ void PopupSettings::init()
 		m_style_idx = 1;
 	else if (Config::style == "classic")
 		m_style_idx = 2;
+
+	m_style_idx_orig = m_style_idx;
 
 	PopupSettings::set_center_pos();
 	popup_success.set_center_pos();
@@ -40,6 +44,7 @@ void PopupSettings::draw()
 
 		if (ImGui::Button(ICON_FA_CHECK " Save"))
 		{
+			m_style_idx_orig = m_style_idx;
 			Config::update_style(m_style_idx);
 
 			bool res = Config::save_user_config();
@@ -55,6 +60,7 @@ void PopupSettings::draw()
 
 		if (ImGui::Button(ICON_FA_TIMES " Close"))
 		{
+			m_style_idx = m_style_idx_orig;
 			m_is_open = false;
 			ImGui::CloseCurrentPopup();
 		}

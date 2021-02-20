@@ -1,12 +1,9 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-#include <vector>
-#include <utility>
-#include "SimpleIni.h"
+#include <string>
 #include "imgui.h"
-#include "plog/Log.h"
-
+#include "SimpleIni.h"
 #include "defines.hpp"
 
 namespace CodeNect
