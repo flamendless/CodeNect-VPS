@@ -175,16 +175,32 @@ void Config::update_font_size(const std::string& font_size)
 
 bool Config::save_user_config()
 {
-	bool res2 = reader.SaveFile(Config::user_config_filename);
+	bool res = reader.SaveFile(Config::user_config_filename);
 
-	if (res2 != 0)
-		PLOGW << "Failed to save user config: " << res2;
-	else
+	if (res != 0)
 	{
-		PLOGV << "Saving user config: " << res2;
+		PLOGW << "Failed to save user config: " << res;
 
 		return RES_FAIL;
 	}
+	else
+		PLOGV << "Saving user config: " << res;
+
+	return RES_SUCCESS;
+}
+
+bool Config::reset()
+{
+	bool res = std::remove(Config::user_config_filename);
+
+	if (res != 0)
+	{
+		PLOGW << "Failed to delete user config: " << res;
+
+		return RES_FAIL;
+	}
+	else
+		PLOGV << "Deleted user config: " << res;
 
 	return RES_SUCCESS;
 }

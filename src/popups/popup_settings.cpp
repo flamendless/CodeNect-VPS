@@ -6,7 +6,8 @@
 
 namespace CodeNect
 {
-PopupSuccess popup_success;
+PopupAlert popup_alert;
+
 int style_idx = -1;
 int font_size = -1;
 std::string font;
@@ -30,8 +31,7 @@ void PopupSettings::init()
 	font_orig = font;
 
 	PopupSettings::set_center_pos();
-	popup_success.set_center_pos();
-	popup_success.m_message = "Please restart to see the changes.";
+	popup_alert.set_center_pos();
 }
 
 void PopupSettings::draw()
@@ -53,7 +53,7 @@ void PopupSettings::draw()
 		ImGui::Separator();
 
 		PopupSettings::draw_buttons();
-		popup_success.draw();
+		popup_alert.draw();
 
 		ImGui::EndPopup();
 	}
@@ -123,14 +123,35 @@ void PopupSettings::draw_buttons()
 			Config::update_font_size(std::to_string(font_size));
 
 		bool res = Config::save_user_config();
+		PLOGV << "Save user config: " << res;
 
-		if (res != RES_SUCCESS)
+		if (res == RES_SUCCESS)
 		{
 			style_idx_orig = style_idx;
 			font_size_orig = font_size;
 			font_orig = font;
-			popup_success.m_is_open = true;
-			ImGui::OpenPopup("SuccessPopup");
+			popup_alert.open(ALERT_TYPE::SUCCESS, "Configurations saved! Please restart to see the changes.");
+		}
+		else
+		{
+			popup_alert.open(ALERT_TYPE::ERROR, "We encountered an error! Sorry about that.");
+		}
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button(ICON_FA_UNDO " Restore Defaults"))
+	{
+		bool res = Config::reset();
+		PLOGV << "Restore defaults: " << res;
+
+		if (res == RES_SUCCESS)
+		{
+			popup_alert.open(ALERT_TYPE::SUCCESS, "Configurations restored to defaults! Please restart to see the changes.");
+		}
+		else
+		{
+			popup_alert.open(ALERT_TYPE::ERROR, "We encountered an error! Sorry about that.");
 		}
 	}
 

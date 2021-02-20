@@ -20,7 +20,7 @@ namespace CodeNect
 {
 void Font::init()
 {
-	PLOGV << "Loading fonts...";
+	PLOGI << "Loading fonts...";
 
 	ImGuiIO& io = ImGui::GetIO();
 
@@ -44,8 +44,8 @@ void Font::init()
 	else
 		io.Fonts->AddFontDefault();
 
-	PLOGV << "Default fonts loaded successfully.";
-	PLOGV << "Loading " << fas_path << " ...";
+	PLOGI << "Default fonts loaded successfully";
+	PLOGI << "Loading fontawesome: " << fas_path << " ...";
 
 	static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 	ImFontConfig config;
@@ -54,6 +54,6 @@ void Font::init()
 	config.GlyphMinAdvanceX = Config::font_size;
 	io.Fonts->AddFontFromFileTTF(fas_path, Config::font_size, &config, icon_ranges);
 
-	PLOGV << fas_path << " loaded successfully";
+	PLOGI << fas_path << " fontawesome loaded successfully";
 }
 }

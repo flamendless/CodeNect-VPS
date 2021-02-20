@@ -47,6 +47,7 @@ struct Config
 	static void update_font(const std::string& font);
 	static void update_font_size(const std::string& font_size);
 	static bool save_user_config();
+	static bool reset();
 };
 
 typedef CodeNect::Config::Sidebar_c Sidebar_c;

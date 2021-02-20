@@ -5,6 +5,12 @@
 #include "imgui.h"
 #include "plog//Log.h"
 
+enum ALERT_TYPE
+{
+	SUCCESS,
+	ERROR,
+};
+
 namespace CodeNect
 {
 struct Popup
@@ -55,10 +61,12 @@ struct PopupAbout : Popup
 	void draw();
 };
 
-struct PopupSuccess : Popup
+struct PopupAlert : Popup
 {
+	ALERT_TYPE m_type;
 	std::string m_message;
 
+	void open(ALERT_TYPE type, std::string msg);
 	void draw();
 };
 }

@@ -47,7 +47,7 @@ int Sidebar::init()
 
 int Sidebar::load_images()
 {
-	PLOGV << "Loading sidebar images...";
+	PLOGI << "Loading sidebar images...";
 
 	vec_filenames& images_filenames = Sidebar_c::images_filenames;
 	vec_filenames& images_filenames_hover = Sidebar_c::images_filenames_hover;
@@ -95,6 +95,8 @@ int Sidebar::load_images()
 		// Sidebar::images.insert(std::pair<std::string, CodeNect::Image>(key, image));
 		// Sidebar::images_hover.insert(std::pair<std::string, CodeNect::Image>(key_hover, image_hover));
 	}
+
+	PLOGI << "Loaded sidebar images successfully";
 
 	return RES_SUCCESS;
 }
