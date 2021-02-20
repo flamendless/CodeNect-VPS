@@ -13,8 +13,15 @@ ImVec4 Config::clear_color;
 const char* Config::config_filename = "config.ini";
 const char* Config::user_config_filename = "config_user.ini";
 std::string Config::style;
+std::string Config::font;
 int Config::font_size;
 CSimpleIniA Config::reader;
+
+const char* Config::styles = "Dark\0Light\0Classic\0";
+const char* Config::fonts[6] = {
+	"ProggyClean", "ProggyTiny", "DroidSans",
+	"CousineRegular", "KarlaRegular", "RobotoMedium"
+};
 
 ImVec2 Config::Sidebar_c::size;
 ImVec2 Config::Sidebar_c::max_img_size;
@@ -92,7 +99,8 @@ void Config::init_general()
 	const float a = std::stof(reader.GetValue("clear_color", "a", "1.00f"));
 	Config::clear_color = ImVec4(r, g, b, a);
 
-	Config::style = reader.GetValue("general", "style", "dark");
+	Config::style = reader.GetValue("general", "style", DEFAULT_STYLE);
+	Config::font = reader.GetValue("general", "font", DEFAULT_FONT);
 	Config::font_size = std::stoi(reader.GetValue("general", "font_size", std::to_string(DEFAULT_FONT_SIZE).c_str()));
 }
 
@@ -153,6 +161,11 @@ void Config::update_style(const int style_idx)
 		case 1: reader.SetValue("general", "style", "light"); break;
 		case 2: reader.SetValue("general", "style", "classic"); break;
 	}
+}
+
+void Config::update_font(const std::string& font)
+{
+	reader.SetValue("general", "font", font.c_str());
 }
 
 void Config::update_font_size(const std::string& font_size)

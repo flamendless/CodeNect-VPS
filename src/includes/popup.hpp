@@ -43,14 +43,11 @@ struct PopupRun : Popup
 
 struct PopupSettings : Popup
 {
-	int m_style_idx = -1;
-	int m_font_size = -1;
-
-	const char* m_styles = "Dark\0Light\0Classic\0";
-
 	void init();
 	void draw();
 	void draw_buttons();
+	void draw_theme_select();
+	void draw_font_select();
 };
 
 struct PopupAbout : Popup

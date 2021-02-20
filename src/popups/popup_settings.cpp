@@ -7,21 +7,27 @@
 namespace CodeNect
 {
 PopupSuccess popup_success;
-int m_style_idx_orig = -1;
-int m_font_size_orig = -1;
+int style_idx = -1;
+int font_size = -1;
+std::string font;
+int style_idx_orig = -1;
+int font_size_orig = -1;
+std::string font_orig;
 
 void PopupSettings::init()
 {
 	if (Config::style == "dark")
-		m_style_idx = 0;
+		style_idx = 0;
 	else if (Config::style == "light")
-		m_style_idx = 1;
+		style_idx = 1;
 	else if (Config::style == "classic")
-		m_style_idx = 2;
+		style_idx = 2;
 
-	m_style_idx_orig = m_style_idx;
-	m_font_size = Config::font_size;
-	m_font_size_orig = m_font_size;
+	style_idx_orig = style_idx;
+	font_size = Config::font_size;
+	font_size_orig = font_size;
+	font = Config::font;
+	font_orig = font;
 
 	PopupSettings::set_center_pos();
 	popup_success.set_center_pos();
@@ -38,45 +44,11 @@ void PopupSettings::draw()
 		ImGui::Separator();
 
 		ImGui::Text("%s General", ICON_FA_HOME);
+		PopupSettings::draw_theme_select();
+		PopupSettings::draw_font_select();
 
-		if (ImGui::Combo(ICON_FA_PALETTE " Theme", &m_style_idx, m_styles))
-		{
-			switch (m_style_idx)
-			{
-				case 0: ImGui::StyleColorsDark(); break;
-				case 1: ImGui::StyleColorsLight(); break;
-				case 2: ImGui::StyleColorsClassic(); break;
-			}
-		}
-
-		std::string txt_font = std::to_string(m_font_size);
-
-		if (m_font_size == DEFAULT_FONT_SIZE)
-			txt_font.append(" (Default)");
-
-		if (ImGui::BeginCombo(ICON_FA_FONT " Font Size", txt_font.c_str()))
-		{
-			for (int n = MIN_FONT_SIZE; n <= MAX_FONT_SIZE; n++)
-			{
-				ImGui::PushID(n);
-
-				std::string txt = std::to_string(n);
-
-				if (n == DEFAULT_FONT_SIZE)
-					txt.append(" (Default)");
-
-				if (ImGui::Selectable(txt.c_str(), n == m_font_size))
-					m_font_size = n;
-
-				ImGui::PopID();
-			}
-
-			ImGui::EndCombo();
-		}
-
-		if (m_font_size != m_font_size_orig)
+		if ((font_size != font_size_orig) || (font != font_orig))
 			ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "* Save and restart needed");
-
 
 		ImGui::Separator();
 
@@ -87,19 +59,76 @@ void PopupSettings::draw()
 	}
 }
 
+void PopupSettings::draw_theme_select()
+{
+	if (ImGui::Combo(ICON_FA_PALETTE " Theme", &style_idx, Config::styles))
+	{
+		switch (style_idx)
+		{
+			case 0: ImGui::StyleColorsDark(); break;
+			case 1: ImGui::StyleColorsLight(); break;
+			case 2: ImGui::StyleColorsClassic(); break;
+		}
+	}
+}
+
+void PopupSettings::draw_font_select()
+{
+	if (ImGui::BeginCombo(ICON_FA_FONT " Font Name", font.c_str()))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(Config::fonts); n++)
+		{
+			ImGui::PushID(n);
+			std::string txt = Config::fonts[n];
+
+			if (ImGui::Selectable(txt.c_str(), font == txt))
+				font = txt;
+
+			ImGui::PopID();
+		}
+
+		ImGui::EndCombo();
+	}
+
+	std::string txt_font = std::to_string(font_size);
+
+	if (ImGui::BeginCombo(ICON_FA_TEXT_WIDTH " Font Size", txt_font.c_str()))
+	{
+		for (int n = MIN_FONT_SIZE; n <= MAX_FONT_SIZE; n++)
+		{
+			ImGui::PushID(n);
+			std::string txt = std::to_string(n);
+
+			if (ImGui::Selectable(txt.c_str(), n == font_size))
+				font_size = n;
+
+			ImGui::PopID();
+		}
+
+		ImGui::EndCombo();
+	}
+}
+
 void PopupSettings::draw_buttons()
 {
 	if (ImGui::Button(ICON_FA_CHECK " Save"))
 	{
-		m_style_idx_orig = m_style_idx;
-		m_font_size_orig = m_font_size;
-		Config::update_style(m_style_idx);
-		Config::update_font_size(std::to_string(m_font_size));
+		if (style_idx_orig != style_idx)
+			Config::update_style(style_idx);
+
+		if (font_orig != font)
+			Config::update_font(font);
+
+		if (font_size_orig != font_size)
+			Config::update_font_size(std::to_string(font_size));
 
 		bool res = Config::save_user_config();
 
 		if (res != RES_SUCCESS)
 		{
+			style_idx_orig = style_idx;
+			font_size_orig = font_size;
+			font_orig = font;
 			popup_success.m_is_open = true;
 			ImGui::OpenPopup("SuccessPopup");
 		}
@@ -109,8 +138,9 @@ void PopupSettings::draw_buttons()
 
 	if (ImGui::Button(ICON_FA_TIMES " Close"))
 	{
-		m_style_idx = m_style_idx_orig;
-		m_font_size = m_font_size_orig;
+		style_idx = style_idx_orig;
+		font_size = font_size_orig;
+		font = font_orig;
 		m_is_open = false;
 		ImGui::CloseCurrentPopup();
 	}
