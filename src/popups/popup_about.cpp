@@ -1,4 +1,3 @@
-#include "imgui.h"
 #include "popup.hpp"
 
 namespace CodeNect
@@ -9,7 +8,9 @@ void PopupAbout::draw()
 
 	if (ImGui::BeginPopupModal("AboutPopup", &m_is_open, m_popup_flags))
 	{
-		ImGui::Text("%s ABOUT", ICON_FA_INFO_CIRCLE);
+		const char* title = ICON_FA_INFO_CIRCLE " ABOUT";
+		Utils::center_text(title);
+		ImGui::Text("%s", title);
 		ImGui::Separator();
 
 		ImGui::Text("%s CodeNect: Visual Programming", ICON_FA_PROJECT_DIAGRAM);

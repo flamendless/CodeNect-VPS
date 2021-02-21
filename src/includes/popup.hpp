@@ -4,6 +4,7 @@
 #include "IconsFontAwesome5.h"
 #include "imgui.h"
 #include "plog//Log.h"
+#include "utils.hpp"
 
 enum ALERT_TYPE
 {

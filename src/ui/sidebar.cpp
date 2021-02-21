@@ -129,37 +129,33 @@ void Sidebar::update(float dt)
 
 void Sidebar::manage_popups()
 {
-	if (btn_project->m_is_hovered)
+	if (btn_project->m_is_clicked)
 	{
 		popup_project.m_is_open = true;
 		popup_run.m_is_open = false;
 		popup_settings.m_is_open = false;
 		popup_about.m_is_open = false;
 	}
-	else if (btn_run->m_is_hovered)
+	else if (btn_run->m_is_clicked)
 	{
 		popup_project.m_is_open = false;
 		popup_run.m_is_open = true;
 		popup_settings.m_is_open = false;
 		popup_about.m_is_open = false;
 	}
-	else if (btn_settings->m_is_hovered)
+	else if (btn_settings->m_is_clicked)
 	{
 		popup_project.m_is_open = false;
 		popup_run.m_is_open = false;
 		popup_about.m_is_open = false;
-
-		if (btn_settings->m_is_clicked)
-			popup_settings.m_is_open = true;
+		popup_settings.m_is_open = true;
 	}
-	else if (btn_about->m_is_hovered)
+	else if (btn_about->m_is_clicked)
 	{
 		popup_project.m_is_open = false;
 		popup_run.m_is_open = false;
 		popup_settings.m_is_open = false;
-
-		if (btn_about->m_is_clicked)
-			popup_about.m_is_open = true;
+		popup_about.m_is_open = true;
 	}
 }
 

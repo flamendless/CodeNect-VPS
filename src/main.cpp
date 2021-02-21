@@ -5,6 +5,7 @@
 #include "sidebar.hpp"
 #include "sidebar_indicator.hpp"
 #include "sidebar_handler.hpp"
+#include "node_interface.hpp"
 #include "defines.hpp"
 
 int main(int argv, char** args)
@@ -12,11 +13,9 @@ int main(int argv, char** args)
 	CodeNect::App app;
 	app.init();
 
-	const int config_status = CodeNect::Config::init();
-	if (config_status != RES_SUCCESS) return -1;
+	if (CodeNect::Config::init() != RES_SUCCESS) return -1;
 
-	const int app_status = app.init_app();
-	if (app_status != RES_SUCCESS) return -1;
+	if (app.init_app() != RES_SUCCESS) return -1;
 
 	CodeNect::Font::init();
 
@@ -35,13 +34,14 @@ int main(int argv, char** args)
 	CodeNect::SidebarIndicator sidebar_indicator;
 	CodeNect::SidebarHandler sidebar_handler;
 
-	const int sidebar_status = sidebar.init();
-	if (sidebar_status != RES_SUCCESS) return -1;
+	if (sidebar.init() != RES_SUCCESS) return -1;
 
-	const int sidebar_indicator_status = sidebar_indicator.init();
-	if (sidebar_indicator_status != RES_SUCCESS) return -1;
+	if (sidebar_indicator.init() != RES_SUCCESS) return -1;
 
 	sidebar_handler.init(&sidebar, &sidebar_indicator);
+
+	//Interfaces
+	if (CodeNect::NodeInterface::init() != RES_SUCCESS) return -1;
 
 #if DEBUG_MODE
 	bool is_imgui_demo = true;
@@ -67,6 +67,7 @@ int main(int argv, char** args)
 		//draw other here
 		sidebar.draw();
 		sidebar_indicator.draw();
+		CodeNect::NodeInterface::draw();
 
 		app.render_end();
 	}

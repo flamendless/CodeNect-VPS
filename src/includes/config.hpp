@@ -38,11 +38,17 @@ struct Config
 		static ImVec2 indicator_size;
 	};
 
+	struct NodeInterface_c
+	{
+		static ImVec2 pos;
+	};
+
 	static int init();
 	static bool load_user_config();
 	static bool load_default_config();
 	static void init_general();
 	static void init_sidebar();
+	static void init_node_interface();
 	static void update_style(const int style_idx);
 	static void update_font(const std::string& font);
 	static void update_font_size(const std::string& font_size);
@@ -51,6 +57,7 @@ struct Config
 };
 
 typedef CodeNect::Config::Sidebar_c Sidebar_c;
+typedef CodeNect::Config::NodeInterface_c NodeInterface_c;
 }
 
 #endif //CONFIG_HPP

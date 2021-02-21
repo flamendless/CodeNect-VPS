@@ -6,18 +6,18 @@
 #include "defines.hpp"
 #include "config.hpp"
 
-const char* far_path = "assets/fonts/fa-regular-400.ttf";
-const char* fas_path = "assets/fonts/fa-solid-900.ttf";
-const char* fab_path = "assets/fonts/fa-brands-400.ttf";
-const char* proggy_clean_path = "assets/fonts/ProggyClean.ttf";
-const char* proggy_tiny_path = "assets/fonts/ProggyTiny.ttf";
-const char* droid_sans_path = "assets/fonts/DroidSans.ttf";
-const char* cousine_regular_path = "assets/fonts/Cousine-Regular.ttf";
-const char* karla_regular_path = "assets/fonts/Karla-Regular.ttf";
-const char* roboto_medium_path = "assets/fonts/Roboto-Medium.ttf";
-
 namespace CodeNect
 {
+const char* Font::far_path = "assets/fonts/fa-regular-400.ttf";
+const char* Font::fas_path = "assets/fonts/fa-solid-900.ttf";
+const char* Font::fab_path = "assets/fonts/fa-brands-400.ttf";
+const char* Font::proggy_clean_path = "assets/fonts/ProggyClean.ttf";
+const char* Font::proggy_tiny_path = "assets/fonts/ProggyTiny.ttf";
+const char* Font::droid_sans_path = "assets/fonts/DroidSans.ttf";
+const char* Font::cousine_regular_path = "assets/fonts/Cousine-Regular.ttf";
+const char* Font::karla_regular_path = "assets/fonts/Karla-Regular.ttf";
+const char* Font::roboto_medium_path = "assets/fonts/Roboto-Medium.ttf";
+
 void Font::init()
 {
 	PLOGI << "Loading fonts...";

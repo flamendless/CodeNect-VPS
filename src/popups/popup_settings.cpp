@@ -40,7 +40,10 @@ void PopupSettings::draw()
 
 	if (ImGui::BeginPopupModal("SettingsPopup", &m_is_open, m_popup_flags))
 	{
-		ImGui::Text("%s SETTINGS", ICON_FA_COG);
+		const char* title = ICON_FA_COG " SETTINGS";
+		Utils::center_text(title);
+
+		ImGui::Text("%s", title);
 		ImGui::Separator();
 
 		ImGui::Text("%s General", ICON_FA_HOME);

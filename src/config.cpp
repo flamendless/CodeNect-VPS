@@ -33,6 +33,8 @@ vec_filenames Config::Sidebar_c::images_filenames_hover;
 std::string Config::Sidebar_c::indicator_filename;
 ImVec2 Config::Sidebar_c::indicator_size;
 
+ImVec2 Config::NodeInterface_c::pos;
+
 int Config::init()
 {
 	reader.SetUnicode();
@@ -49,6 +51,7 @@ int Config::init()
 
 	Config::init_general();
 	Config::init_sidebar();
+	Config::init_node_interface();
 
 	PLOGI << "Config loaded";
 
@@ -151,6 +154,14 @@ void Config::init_sidebar()
 
 	Config::Sidebar_c::indicator_filename = indicator_filename;
 	Config::Sidebar_c::indicator_size = ImVec2(siw, sih);
+}
+
+void Config::init_node_interface()
+{
+	const int x = std::stoi(reader.GetValue("node_interface", "pos_x", "-1"));
+	const int y = std::stoi(reader.GetValue("node_interface", "pos_y", "-1"));
+
+	Config::NodeInterface_c::pos = ImVec2(x, y);
 }
 
 void Config::update_style(const int style_idx)
