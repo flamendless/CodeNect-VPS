@@ -38,8 +38,20 @@ struct Popup
 	void end_draw();
 };
 
+struct PopupAlert : Popup
+{
+	ALERT_TYPE m_type;
+	std::string m_message;
+
+	void open(ALERT_TYPE type, std::string msg);
+	void draw();
+};
+
 struct PopupProject : Popup
 {
+	PopupAlert m_popup_alert;
+
+	void init();
 	void draw();
 };
 
@@ -50,6 +62,8 @@ struct PopupRun : Popup
 
 struct PopupSettings : Popup
 {
+	PopupAlert m_popup_alert;
+
 	void init();
 	void draw();
 	void draw_buttons();
@@ -59,15 +73,6 @@ struct PopupSettings : Popup
 
 struct PopupAbout : Popup
 {
-	void draw();
-};
-
-struct PopupAlert : Popup
-{
-	ALERT_TYPE m_type;
-	std::string m_message;
-
-	void open(ALERT_TYPE type, std::string msg);
 	void draw();
 };
 }

@@ -18,6 +18,8 @@
 
 namespace CodeNect
 {
+GLFWwindow* App::window;
+
 void glfw_error_callback(int error, const char* desc)
 {
 	std::string log = fmt::format("Glfw error %d: %s", error, desc);
@@ -51,10 +53,10 @@ int App::init_app()
 
 void App::init_window()
 {
-	m_window = glfwCreateWindow(CodeNect::Config::win_width, CodeNect::Config::win_height,
+	App::window = glfwCreateWindow(CodeNect::Config::win_width, CodeNect::Config::win_height,
 		CodeNect::Config::app_title.c_str(), NULL, NULL);
 
-	glfwMakeContextCurrent(m_window);
+	glfwMakeContextCurrent(App::window);
 	glfwSwapInterval(CodeNect::Config::vsync);
 }
 
@@ -62,7 +64,7 @@ void App::init_imgui()
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	m_imgui_io = &ImGui::GetIO(); (void)m_imgui_io;
+	ImGuiIO* imgui_io = &ImGui::GetIO(); (void)imgui_io;
 
 	if (Config::style == "dark")
 		ImGui::StyleColorsDark();
@@ -71,7 +73,7 @@ void App::init_imgui()
 	else if (Config::style == "classic")
 		ImGui::StyleColorsClassic();
 
-	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+	ImGui_ImplGlfw_InitForOpenGL(App::window, true);
 	ImGui_ImplOpenGL2_Init();
 }
 
@@ -88,13 +90,13 @@ void App::render_end()
 	int display_w, display_h;
 
 	ImGui::Render();
-	glfwGetFramebufferSize(m_window, &display_w, &display_h);
+	glfwGetFramebufferSize(App::window, &display_w, &display_h);
 	glViewport(0, 0, display_w, display_h);
 	glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 	glClear(GL_COLOR_BUFFER_BIT);
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-	glfwMakeContextCurrent(m_window);
-	glfwSwapBuffers(m_window);
+	glfwMakeContextCurrent(App::window);
+	glfwSwapBuffers(App::window);
 }
 
 void App::shutdown()
@@ -104,7 +106,7 @@ void App::shutdown()
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-	glfwDestroyWindow(m_window);
+	glfwDestroyWindow(App::window);
 	glfwTerminate();
 }
 }

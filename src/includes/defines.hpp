@@ -4,6 +4,8 @@
 #define RES_SUCCESS 0
 #define RES_FAIL -1
 
+#define PROJECT_EXT "cn"
+
 #define MIN_FONT_SIZE 11
 #define MAX_FONT_SIZE 16
 #define DEFAULT_FONT "ProggyClean"

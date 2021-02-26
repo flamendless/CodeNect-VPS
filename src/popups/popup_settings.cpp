@@ -6,8 +6,6 @@
 
 namespace CodeNect
 {
-PopupAlert popup_alert;
-
 int style_idx = -1;
 int font_size = -1;
 std::string font;
@@ -31,7 +29,7 @@ void PopupSettings::init()
 	font_orig = font;
 
 	PopupSettings::set_center_pos();
-	popup_alert.set_center_pos();
+	m_popup_alert.set_center_pos();
 }
 
 void PopupSettings::draw()
@@ -56,7 +54,7 @@ void PopupSettings::draw()
 		ImGui::Separator();
 
 		PopupSettings::draw_buttons();
-		popup_alert.draw();
+		m_popup_alert.draw();
 
 		ImGui::EndPopup();
 	}
@@ -133,11 +131,11 @@ void PopupSettings::draw_buttons()
 			style_idx_orig = style_idx;
 			font_size_orig = font_size;
 			font_orig = font;
-			popup_alert.open(ALERT_TYPE::SUCCESS, "Configurations saved! Please restart to see the changes.");
+			m_popup_alert.open(ALERT_TYPE::SUCCESS, "Configurations saved! Please restart to see the changes.");
 		}
 		else
 		{
-			popup_alert.open(ALERT_TYPE::ERROR, "We encountered an error! Sorry about that.");
+			m_popup_alert.open(ALERT_TYPE::ERROR, "We encountered an error! Sorry about that.");
 		}
 	}
 
@@ -150,11 +148,11 @@ void PopupSettings::draw_buttons()
 
 		if (res == RES_SUCCESS)
 		{
-			popup_alert.open(ALERT_TYPE::SUCCESS, "Configurations restored to defaults! Please restart to see the changes.");
+			m_popup_alert.open(ALERT_TYPE::SUCCESS, "Configurations restored to defaults! Please restart to see the changes.");
 		}
 		else
 		{
-			popup_alert.open(ALERT_TYPE::ERROR, "We encountered an error! Sorry about that.");
+			m_popup_alert.open(ALERT_TYPE::ERROR, "We encountered an error! Sorry about that.");
 		}
 	}
 

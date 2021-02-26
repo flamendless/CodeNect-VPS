@@ -39,6 +39,7 @@ int Sidebar::init()
 	btn_settings = &m_ui_buttons["settings"];
 	btn_about = &m_ui_buttons["about"];
 
+	popup_project.init();
 	popup_settings.init();
 	popup_about.set_center_pos();
 

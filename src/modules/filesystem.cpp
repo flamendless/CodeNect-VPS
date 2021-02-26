@@ -11,8 +11,6 @@
 #include "stb_image.h"
 #include "defines.hpp"
 
-const char* filter_project = "md";
-
 namespace CodeNect
 {
 namespace Filesystem
@@ -20,7 +18,7 @@ namespace Filesystem
 bool open_project_file(std::string& project_filepath)
 {
 	nfdchar_t* out_path = NULL;
-	nfdresult_t result = NFD_OpenDialog(filter_project, NULL, &out_path);
+	nfdresult_t result = NFD_OpenDialog(PROJECT_EXT, NULL, &out_path);
 
 	if (result == NFD_OKAY)
 	{
@@ -39,7 +37,6 @@ bool open_project_file(std::string& project_filepath)
 	return false;
 }
 
-// int load_texture_from_file(const char* filename, GLuint* out, int* width, int* height)
 int load_texture_from_file(const char* filename, CodeNect::Image& image)
 {
 	PLOGV << "Loading texture from file: " << filename;

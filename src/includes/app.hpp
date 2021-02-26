@@ -10,8 +10,7 @@ namespace CodeNect
 {
 struct App
 {
-	GLFWwindow* m_window;
-	ImGuiIO* m_imgui_io;
+	static GLFWwindow* window;
 
 	void init();
 	int init_app();

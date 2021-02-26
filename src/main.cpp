@@ -19,16 +19,7 @@ int main(int argv, char** args)
 
 	CodeNect::Font::init();
 
-	// std::string project_filepath;
-	// bool opened_project = Filesystem::open_project_file(project_filepath);
-    //
-	// if (opened_project)
-	// 	fmt::print(stdout, project_filepath);
-	// else
-	// 	fmt::print(stdout, "no");
-
 	//initialize modules/sources
-
 	//Sidebar
 	CodeNect::Sidebar sidebar;
 	CodeNect::SidebarIndicator sidebar_indicator;
@@ -47,9 +38,11 @@ int main(int argv, char** args)
 	bool is_imgui_demo = true;
 #endif
 
-	while(!glfwWindowShouldClose(app.m_window))
+	ImGuiIO* imgui_io = &ImGui::GetIO();
+
+	while(!glfwWindowShouldClose(CodeNect::App::window))
 	{
-		float dt = app.m_imgui_io->DeltaTime;
+		float dt = imgui_io->DeltaTime;
 
 		glfwPollEvents();
 
