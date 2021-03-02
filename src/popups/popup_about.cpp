@@ -8,9 +8,8 @@ void PopupAbout::draw()
 
 	if (ImGui::BeginPopupModal("AboutPopup", &m_is_open, m_popup_flags))
 	{
-		const char* title = ICON_FA_INFO_CIRCLE " ABOUT";
-		Utils::center_text(title);
-		ImGui::Text("%s", title);
+		Utils::center_text(m_title);
+		ImGui::Text("%s", m_title);
 		ImGui::Separator();
 
 		ImGui::Text("%s CodeNect: Visual Programming", ICON_FA_PROJECT_DIAGRAM);

@@ -1,5 +1,7 @@
 #include "popup.hpp"
 
+#include <GLFW/glfw3.h>
+#include "app.hpp"
 #include "project.hpp"
 #include "defines.hpp"
 
@@ -19,9 +21,7 @@ void PopupProject::draw()
 		m_is_inside |= ImGui::IsWindowFocused();
 
 		if (ImGui::MenuItem("New Project"))
-		{
-			// Project::init_new();
-		}
+			Project::init_new();
 
 		if (ImGui::MenuItem("Open Project"))
 		{
@@ -33,9 +33,14 @@ void PopupProject::draw()
 
 		ImGui::MenuItem("Save Project");
 		ImGui::Separator();
-		ImGui::MenuItem("Close Project");
+
+		if (ImGui::MenuItem("Close Project", NULL, false, Project::has_open_proj))
+			Project::close();
+
 		ImGui::Separator();
-		ImGui::MenuItem("Exit");
+
+		if (ImGui::MenuItem("Exit"))
+			glfwSetWindowShouldClose(App::window, GL_TRUE);
 	ImGui::End();
 
 	m_popup_alert.draw();

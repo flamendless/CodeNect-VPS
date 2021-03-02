@@ -1,6 +1,7 @@
 #ifndef POPUP_HPP
 #define POPUP_HPP
 
+#include <functional>
 #include "IconsFontAwesome5.h"
 #include "imgui.h"
 #include "plog//Log.h"
@@ -47,6 +48,14 @@ struct PopupAlert : Popup
 	void draw();
 };
 
+struct PopupNewProject : Popup
+{
+	const char* m_title = ICON_FA_FOLDER_OPEN " NEW PROJECT";
+	std::function <void(const char*, const char*, const char*)> m_on_create;
+
+	void draw();
+};
+
 struct PopupProject : Popup
 {
 	PopupAlert m_popup_alert;
@@ -73,6 +82,8 @@ struct PopupSettings : Popup
 
 struct PopupAbout : Popup
 {
+	const char* m_title = ICON_FA_INFO_CIRCLE " ABOUT";
+
 	void draw();
 };
 }

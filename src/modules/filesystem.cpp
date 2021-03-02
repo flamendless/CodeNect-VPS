@@ -5,6 +5,7 @@
 
 #include <GLFW/glfw3.h>
 #include <map>
+#include <filesystem>
 #include "nfd.h"
 #include "fmt/printf.h"
 #include "plog/Log.h"
@@ -15,10 +16,12 @@ namespace CodeNect
 {
 namespace Filesystem
 {
+std::string current_path = std::filesystem::current_path();
+
 bool open_project_file(std::string& project_filepath)
 {
 	nfdchar_t* out_path = NULL;
-	nfdresult_t result = NFD_OpenDialog(PROJECT_EXT, NULL, &out_path);
+	nfdresult_t result = NFD_OpenDialog(PROJECT_EXT, current_path.c_str(), &out_path);
 
 	if (result == NFD_OKAY)
 	{

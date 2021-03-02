@@ -4,6 +4,7 @@
 #define RES_SUCCESS 0
 #define RES_FAIL -1
 
+#define BUF_SIZE 128
 #define PROJECT_EXT "cn"
 
 #define MIN_FONT_SIZE 11

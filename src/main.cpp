@@ -6,6 +6,7 @@
 #include "sidebar_indicator.hpp"
 #include "sidebar_handler.hpp"
 #include "node_interface.hpp"
+#include "project.hpp"
 #include "defines.hpp"
 
 int main(int argv, char** args)
@@ -61,6 +62,7 @@ int main(int argv, char** args)
 		sidebar.draw();
 		sidebar_indicator.draw();
 		CodeNect::NodeInterface::draw();
+		CodeNect::Project::draw();
 
 		app.render_end();
 	}
