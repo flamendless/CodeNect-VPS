@@ -1,7 +1,7 @@
 #define STBI_ONLY_PNG
 #define STB_IMAGE_IMPLEMENTATION
 
-#include "filesystem.hpp"
+#include "modules/filesystem.hpp"
 
 #include <GLFW/glfw3.h>
 #include <map>
@@ -34,6 +34,28 @@ bool open_project_file(std::string& project_filepath)
 	}
 	else if (result == NFD_CANCEL)
 		PLOGV << "Open project file cancelled";
+	else
+		PLOGE << "Error: " << NFD_GetError();
+
+	return false;
+}
+
+bool open_filepath(std::string& filepath)
+{
+	nfdchar_t* out_path = NULL;
+	nfdresult_t result = NFD_SaveDialog(PROJECT_EXT, current_path.c_str(), &out_path);
+
+	if (result == NFD_OKAY)
+	{
+		PLOGV << "Save project file path: " << out_path;
+
+		filepath = out_path;
+		free(out_path);
+
+		return true;
+	}
+	else if (result == NFD_CANCEL)
+		PLOGV << "Save project file cancelled";
 	else
 		PLOGE << "Error: " << NFD_GetError();
 

@@ -1,11 +1,11 @@
-#ifndef UI_BUTTON_HPP
-#define UI_BUTTON_HPP
+#ifndef BUTTON_HPP
+#define BUTTON_HPP
 
 #include "image.hpp"
 
 namespace CodeNect
 {
-struct UI_Button
+struct Button
 {
 	bool m_hoverable = false;
 	bool m_is_hovered = false;
@@ -36,4 +36,4 @@ struct UI_Button
 };
 }
 
-#endif //UI_BUTTON_HPP
+#endif //BUTTON_HPP

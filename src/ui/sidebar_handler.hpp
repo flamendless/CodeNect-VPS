@@ -1,8 +1,8 @@
 #ifndef SIDEBAR_HANDLER_HPP
 #define SIDEBAR_HANDLER_HPP
 
-#include "sidebar.hpp"
-#include "sidebar_indicator.hpp"
+#include "ui/sidebar.hpp"
+#include "ui/sidebar_indicator.hpp"
 
 namespace CodeNect
 {

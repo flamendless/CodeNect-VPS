@@ -1,59 +1,47 @@
-#include "project.hpp"
+#include "modules/project.hpp"
 
+#include <filesystem>
 #include <ctime>
 #include <GLFW/glfw3.h>
 #include "SimpleIni.h"
 #include "plog/Log.h"
 #include "app.hpp"
-#include "filesystem.hpp"
+#include "modules/filesystem.hpp"
 #include "defines.hpp"
+#include "utils.hpp"
+#include "ui/alert.hpp"
 
 namespace CodeNect
 {
 bool Project::has_open_proj = false;
 ProjectMeta Project::meta {};
-PopupNewProject Project::popup_new_proj;
+NewProject Project::new_proj;
 
-PopupAlert popup_alert;
-
-void Project::on_create_new(const char* filename, const char* title, const char* author)
+int Project::on_create_new(const char* filename, const char* title, const char* author)
 {
 	CSimpleIniA writer;
 	writer.SetUnicode();
 
-	time_t rawtime;
-	struct tm *timeinfo;
-	char buffer[80];
-
-	time(&rawtime);
-	timeinfo = localtime(&rawtime);
-	strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
-
 	writer.SetValue("meta", "title", title);
 	writer.SetValue("meta", "author", author);
-	writer.SetValue("meta", "creation_dt", buffer);
+	writer.SetValue("meta", "creation_dt", Utils::time_now().c_str());
 
-	std::string file = std::string(filename) + "." + PROJECT_EXT;
-	int res = writer.SaveFile(file.c_str());
+	std::string file = filename;
 
-	if (res < 0)
-	{
-		popup_alert.open(ALERT_TYPE::ERROR, "Failed to create new project");
-		PLOGW << "Creation of new project failed";
-	}
-	else
-	{
-		popup_alert.open(ALERT_TYPE::SUCCESS, "New Project created successfully.\nPlease open the created project file");
-		PLOGV << "Creation of new project successful";
-	}
+	if (std::filesystem::path(filename).extension() != PROJECT_EXT_DOT)
+		file += PROJECT_EXT_DOT;
+
+	if (writer.SaveFile(file.c_str()) < 0)
+		return RES_FAIL;
+
+	return RES_SUCCESS;
 }
 
 void Project::init_new()
 {
 	//fill Project data from args
-	Project::popup_new_proj.set_center_pos();
-	Project::popup_new_proj.m_on_create = &Project::on_create_new;
-	Project::popup_new_proj.m_is_open = true;
+	Project::new_proj.m_on_create = &Project::on_create_new;
+	Project::new_proj.m_is_open = true;
 }
 
 int Project::open()
@@ -107,10 +95,10 @@ int Project::parse()
 
 void Project::draw()
 {
-	if (Project::popup_new_proj.m_is_open)
+	if (Project::new_proj.m_is_open)
 	{
 		ImGui::OpenPopup("NewProjectPopup");
-		Project::popup_new_proj.draw();
+		Project::new_proj.draw();
 	}
 }
 

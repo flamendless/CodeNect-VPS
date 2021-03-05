@@ -1,15 +1,16 @@
 #include "popup.hpp"
 
 #include <GLFW/glfw3.h>
+#include "modules/project.hpp"
 #include "app.hpp"
-#include "project.hpp"
 #include "defines.hpp"
+#include "ui/alert.hpp"
 
 namespace CodeNect
 {
 void PopupProject::init()
 {
-	m_popup_alert.set_center_pos();
+	// m_popup_alert.set_center_pos();
 }
 
 void PopupProject::draw()
@@ -22,13 +23,14 @@ void PopupProject::draw()
 
 		if (ImGui::MenuItem("New Project"))
 			Project::init_new();
+				// Alert::open(ALERT_TYPE::SUCCESS, "New Project created successfully.\nPlease open the created project file");
 
 		if (ImGui::MenuItem("Open Project"))
 		{
 			if (Project::open() == RES_SUCCESS)
 				m_is_open = false;
 			else
-				m_popup_alert.open(ALERT_TYPE::ERROR, "Failed to open/read the project file");
+				Alert::open(ALERT_TYPE::ERROR, "Failed to open/read the project file");
 		}
 
 		ImGui::MenuItem("Save Project");
@@ -42,8 +44,6 @@ void PopupProject::draw()
 		if (ImGui::MenuItem("Exit"))
 			glfwSetWindowShouldClose(App::window, GL_TRUE);
 	ImGui::End();
-
-	m_popup_alert.draw();
 
 	PopupProject::end_draw();
 }

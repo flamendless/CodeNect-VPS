@@ -2,7 +2,7 @@
 #define PROJECT_H
 
 #include <string>
-#include "popup.hpp"
+#include "ui/new_project.hpp"
 
 namespace CodeNect
 {
@@ -18,9 +18,9 @@ struct Project
 {
 	static bool has_open_proj;
 	static ProjectMeta meta;
-	static PopupNewProject popup_new_proj;
+	static NewProject new_proj;
 
-	static void on_create_new(
+	static int on_create_new(
 		const char* filename,
 		const char* title,
 		const char* author

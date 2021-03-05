@@ -2,13 +2,13 @@
 #define SIDEBAR_INDICATOR_HPP
 
 #include "imgui.h"
-#include "ui_button.hpp"
+#include "ui/button.hpp"
 
 namespace CodeNect
 {
 struct SidebarIndicator
 {
-	CodeNect::UI_Button m_btn;
+	CodeNect::Button m_btn;
 	ImGuiWindowFlags m_flags =
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
 		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoMove |

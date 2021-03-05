@@ -1,8 +1,8 @@
 #include "sidebar_indicator.hpp"
 
 #include "plog/Log.h"
+#include "modules/filesystem.hpp"
 #include "config.hpp"
-#include "filesystem.hpp"
 
 namespace CodeNect
 {

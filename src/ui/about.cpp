@@ -1,12 +1,18 @@
-#include "popup.hpp"
+#include "ui/about.hpp"
+#include "utils.hpp"
 
 namespace CodeNect
 {
-void PopupAbout::draw()
+void About::draw()
 {
-	ImGui::SetNextWindowPos(m_center_pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+	if (!m_is_open)
+		return;
 
-	if (ImGui::BeginPopupModal("AboutPopup", &m_is_open, m_popup_flags))
+    ImVec2 center_pos(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
+	ImGui::SetNextWindowPos(center_pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+	ImGui::SetNextWindowFocus();
+
+	if (ImGui::Begin("About", &m_is_open, m_flags))
 	{
 		Utils::center_text(m_title);
 		ImGui::Text("%s", m_title);
@@ -40,7 +46,8 @@ void PopupAbout::draw()
 			m_is_open = false;
 			ImGui::CloseCurrentPopup();
 		}
-		ImGui::EndPopup();
+
+		ImGui::End();
 	}
 }
 }

@@ -1,12 +1,13 @@
 #include "config.hpp"
 #include "app.hpp"
 #include "font.hpp"
-#include "filesystem.hpp"
-#include "sidebar.hpp"
-#include "sidebar_indicator.hpp"
-#include "sidebar_handler.hpp"
-#include "node_interface.hpp"
-#include "project.hpp"
+#include "modules/filesystem.hpp"
+#include "ui/sidebar.hpp"
+#include "ui/sidebar_indicator.hpp"
+#include "ui/sidebar_handler.hpp"
+#include "ui/node_interface.hpp"
+#include "modules/project.hpp"
+#include "ui/alert.hpp"
 #include "defines.hpp"
 
 int main(int argv, char** args)
@@ -63,6 +64,7 @@ int main(int argv, char** args)
 		sidebar_indicator.draw();
 		CodeNect::NodeInterface::draw();
 		CodeNect::Project::draw();
+		CodeNect::Alert::draw();
 
 		app.render_end();
 	}
