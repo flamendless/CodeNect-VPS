@@ -1,9 +1,9 @@
-#include "popup.hpp"
+#include "popups/popup.hpp"
 
 #include <GLFW/glfw3.h>
-#include "modules/project.hpp"
-#include "app.hpp"
-#include "defines.hpp"
+#include "core/project.hpp"
+#include "core/app.hpp"
+#include "core/defines.hpp"
 #include "ui/alert.hpp"
 
 namespace CodeNect

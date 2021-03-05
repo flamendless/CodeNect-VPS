@@ -10,7 +10,7 @@
 #include "fmt/printf.h"
 #include "plog/Log.h"
 #include "stb_image.h"
-#include "defines.hpp"
+#include "core/defines.hpp"
 
 namespace CodeNect
 {

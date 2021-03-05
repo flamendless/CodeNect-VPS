@@ -1,5 +1,5 @@
 #include "ui/about.hpp"
-#include "utils.hpp"
+#include "core/utils.hpp"
 
 namespace CodeNect
 {

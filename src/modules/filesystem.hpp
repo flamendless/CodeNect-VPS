@@ -2,7 +2,7 @@
 #define FILESYSTEM_HPP
 
 #include <string>
-#include "image.hpp"
+#include "core/image.hpp"
 
 namespace CodeNect
 {

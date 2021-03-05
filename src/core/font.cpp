@@ -1,10 +1,10 @@
-#include "font.hpp"
+#include "core/font.hpp"
 
 #include "IconsFontAwesome5.h"
 #include "plog/Log.h"
 #include "imgui.h"
-#include "defines.hpp"
-#include "config.hpp"
+#include "core/defines.hpp"
+#include "core/config.hpp"
 
 namespace CodeNect
 {

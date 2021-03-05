@@ -1,4 +1,4 @@
-#include "app.hpp"
+#include "core/app.hpp"
 
 #include <stdio.h>
 #include "fmt/core.h"
@@ -12,9 +12,8 @@
 #include "plog/Initializers/RollingFileInitializer.h"
 #endif
 
-#include "config.hpp"
-#include "defines.hpp"
-
+#include "core/config.hpp"
+#include "core/defines.hpp"
 
 namespace CodeNect
 {

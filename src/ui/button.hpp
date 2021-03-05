@@ -1,7 +1,7 @@
 #ifndef BUTTON_HPP
 #define BUTTON_HPP
 
-#include "image.hpp"
+#include "core/image.hpp"
 
 namespace CodeNect
 {

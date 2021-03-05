@@ -1,14 +1,14 @@
-#include "modules/project.hpp"
+#include "core/project.hpp"
 
 #include <filesystem>
 #include <ctime>
 #include <GLFW/glfw3.h>
 #include "SimpleIni.h"
 #include "plog/Log.h"
-#include "app.hpp"
+#include "core/app.hpp"
 #include "modules/filesystem.hpp"
-#include "defines.hpp"
-#include "utils.hpp"
+#include "core/defines.hpp"
+#include "core/utils.hpp"
 #include "ui/alert.hpp"
 
 namespace CodeNect

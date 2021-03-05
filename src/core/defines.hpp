@@ -14,10 +14,12 @@
 #define DEFAULT_FONT_SIZE 13
 #define DEFAULT_STYLE "dark"
 
+#define DUR_FADE 50 //the higher the smoother is the fade effect
+
 #include <map>
 #include <string>
 #include <vector>
-#include "image.hpp"
+#include "core/image.hpp"
 #include "ui/button.hpp"
 
 typedef std::map<const std::string, CodeNect::Image> map_images;

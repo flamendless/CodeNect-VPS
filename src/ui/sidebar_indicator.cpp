@@ -2,7 +2,7 @@
 
 #include "plog/Log.h"
 #include "modules/filesystem.hpp"
-#include "config.hpp"
+#include "core/config.hpp"
 
 namespace CodeNect
 {

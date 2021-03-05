@@ -2,10 +2,9 @@
 
 #include <cstdint>
 #include <string>
-#include "config.hpp"
 #include "tweeny.h"
-
-#define DUR_FADE 50 //the higher the smoother is the fade effect
+#include "core/defines.hpp"
+#include "core/config.hpp"
 
 namespace CodeNect
 {

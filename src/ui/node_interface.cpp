@@ -10,10 +10,10 @@
 #include <imgui_internal.h>
 #include "ImNodesEz.h"
 #include "IconsFontAwesome5.h"
-#include "defines.hpp"
-#include "config.hpp"
-#include "utils.hpp"
-#include "font.hpp"
+#include "core/defines.hpp"
+#include "core/config.hpp"
+#include "core/utils.hpp"
+#include "core/font.hpp"
 
 namespace CodeNect
 {

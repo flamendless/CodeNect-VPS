@@ -3,9 +3,9 @@
 #include "plog/Log.h"
 #include "ui/alert.hpp"
 #include "modules/filesystem.hpp"
-#include "modules/project.hpp"
-#include "utils.hpp"
-#include "defines.hpp"
+#include "core/project.hpp"
+#include "core/utils.hpp"
+#include "core/defines.hpp"
 
 namespace CodeNect
 {

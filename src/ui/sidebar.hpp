@@ -2,7 +2,7 @@
 #define SIDEBAR_HPP
 
 #include "imgui.h"
-#include "defines.hpp"
+#include "core/defines.hpp"
 
 namespace CodeNect
 {

@@ -5,7 +5,7 @@
 #include "plog/Log.h"
 #include "ppk_assert.h"
 #include "modules/filesystem.hpp"
-#include "config.hpp"
+#include "core/config.hpp"
 #include "ui/button.hpp"
 #include "popups/popup.hpp"
 #include "ui/settings.hpp"

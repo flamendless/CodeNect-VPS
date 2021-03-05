@@ -2,7 +2,7 @@
 
 #include "plog/Log.h"
 #include "IconsFontAwesome5.h"
-#include "config.hpp"
+#include "core/config.hpp"
 
 namespace CodeNect
 {

@@ -1,14 +1,14 @@
-#include "config.hpp"
-#include "app.hpp"
-#include "font.hpp"
+#include "core/config.hpp"
+#include "core/app.hpp"
+#include "core/font.hpp"
 #include "modules/filesystem.hpp"
 #include "ui/sidebar.hpp"
 #include "ui/sidebar_indicator.hpp"
 #include "ui/sidebar_handler.hpp"
 #include "ui/node_interface.hpp"
-#include "modules/project.hpp"
 #include "ui/alert.hpp"
-#include "defines.hpp"
+#include "core/project.hpp"
+#include "core/defines.hpp"
 
 int main(int argv, char** args)
 {

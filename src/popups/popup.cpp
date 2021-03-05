@@ -1,6 +1,6 @@
-#include "popup.hpp"
+#include "popups/popup.hpp"
 
-#include "config.hpp"
+#include "core/config.hpp"
 
 namespace CodeNect
 {

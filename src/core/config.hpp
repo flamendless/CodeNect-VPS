@@ -4,7 +4,7 @@
 #include <string>
 #include "imgui.h"
 #include "SimpleIni.h"
-#include "defines.hpp"
+#include "core/defines.hpp"
 
 namespace CodeNect
 {

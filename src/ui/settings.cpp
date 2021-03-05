@@ -2,8 +2,8 @@
 #include <string>
 #include "plog/Log.h"
 #include "IconsFontAwesome5.h"
-#include "config.hpp"
-#include "utils.hpp"
+#include "core/config.hpp"
+#include "core/utils.hpp"
 #include "ui/alert.hpp"
 
 namespace CodeNect
