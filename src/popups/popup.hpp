@@ -23,12 +23,11 @@ struct Popup
 		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
 
+	bool is_centered = false;
 	bool m_is_open = false;
 	bool m_is_inside = false;
-	ImVec2 m_center_pos;
 	ImVec2 m_pos;
 
-	void set_center_pos();
 	void begin_draw();
 	void end_draw();
 };

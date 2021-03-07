@@ -4,17 +4,16 @@
 
 namespace CodeNect
 {
-void Popup::set_center_pos()
-{
-	const int w = CodeNect::Config::win_width;
-	const int h = CodeNect::Config::win_height;
-
-	m_center_pos = ImVec2((float)w/2, (float)h/2);
-}
-
 void Popup::begin_draw()
 {
-	m_pos.x = m_pos.x + Sidebar_c::size.x;
+	if (is_centered)
+	{
+		m_pos.x = ImGui::GetIO().DisplaySize.x * 0.5f;
+		m_pos.y = ImGui::GetIO().DisplaySize.y * 0.5f;
+	}
+	else
+		m_pos.x = m_pos.x + Sidebar_c::size.x;
+
 	ImGui::SetNextWindowPos(m_pos);
 }
 
