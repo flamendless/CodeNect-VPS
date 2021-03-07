@@ -14,6 +14,7 @@
 
 #include "core/config.hpp"
 #include "core/defines.hpp"
+#include "modules/input.hpp"
 
 namespace CodeNect
 {
@@ -55,6 +56,7 @@ void App::init_window()
 	App::window = glfwCreateWindow(CodeNect::Config::win_width, CodeNect::Config::win_height,
 		CodeNect::Config::app_title.c_str(), NULL, NULL);
 
+	glfwSetKeyCallback(App::window, Input::key_callback);
 	glfwMakeContextCurrent(App::window);
 	glfwSwapInterval(CodeNect::Config::vsync);
 }

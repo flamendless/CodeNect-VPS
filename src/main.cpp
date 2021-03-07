@@ -9,6 +9,7 @@
 #include "ui/alert.hpp"
 #include "core/project.hpp"
 #include "core/defines.hpp"
+#include "ui/command_palette.hpp"
 
 int main(int argv, char** args)
 {
@@ -32,6 +33,9 @@ int main(int argv, char** args)
 	if (sidebar_indicator.init() != RES_SUCCESS) return -1;
 
 	sidebar_handler.init(&sidebar, &sidebar_indicator);
+
+	//Others
+	if (CodeNect::CommandPalette::init() != RES_SUCCESS) return -1;
 
 	//Interfaces
 	if (CodeNect::NodeInterface::init() != RES_SUCCESS) return -1;
