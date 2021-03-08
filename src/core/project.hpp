@@ -20,6 +20,7 @@ struct Project
 	static ProjectMeta meta;
 	static NewProject new_proj;
 
+	static void init();
 	static int on_create_new(
 		const char* filename,
 		const char* title,

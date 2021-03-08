@@ -5,10 +5,11 @@
 #include <GLFW/glfw3.h>
 #include "SimpleIni.h"
 #include "plog/Log.h"
-#include "core/app.hpp"
 #include "modules/filesystem.hpp"
+#include "core/app.hpp"
 #include "core/defines.hpp"
 #include "core/utils.hpp"
+#include "core/commands.hpp"
 #include "ui/alert.hpp"
 
 namespace CodeNect
@@ -16,6 +17,18 @@ namespace CodeNect
 bool Project::has_open_proj = false;
 ProjectMeta Project::meta {};
 NewProject Project::new_proj;
+
+void Project::init()
+{
+	Command cmd_new_project("New Project", "create a new project");
+	cmd_new_project.set_fn(Project::init_new);
+
+	Command cmd_open_project("Open Project", "open a project from file");
+	cmd_new_project.set_fn(Project::open);
+
+	Commands::register_cmd(cmd_new_project);
+	Commands::register_cmd(cmd_open_project);
+}
 
 int Project::on_create_new(const char* filename, const char* title, const char* author)
 {
@@ -42,6 +55,8 @@ void Project::init_new()
 	//fill Project data from args
 	Project::new_proj.m_on_create = &Project::on_create_new;
 	Project::new_proj.m_is_open = true;
+
+	// return RES_SUCCESS;
 }
 
 int Project::open()

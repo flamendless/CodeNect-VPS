@@ -22,7 +22,11 @@ int main(int argv, char** args)
 
 	CodeNect::Font::init();
 
-	//initialize modules/sources
+	//Command Palette
+	if (CodeNect::CommandPalette::init() != RES_SUCCESS) return -1;
+
+	CodeNect::Project::init();
+
 	//Sidebar
 	CodeNect::Sidebar sidebar;
 	CodeNect::SidebarIndicator sidebar_indicator;
@@ -33,9 +37,6 @@ int main(int argv, char** args)
 	if (sidebar_indicator.init() != RES_SUCCESS) return -1;
 
 	sidebar_handler.init(&sidebar, &sidebar_indicator);
-
-	//Others
-	if (CodeNect::CommandPalette::init() != RES_SUCCESS) return -1;
 
 	//Interfaces
 	if (CodeNect::NodeInterface::init() != RES_SUCCESS) return -1;
