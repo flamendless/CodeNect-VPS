@@ -69,6 +69,7 @@ int main(int argv, char** args)
 		sidebar_indicator.draw();
 		CodeNect::NodeInterface::draw();
 		CodeNect::Project::draw();
+		CodeNect::CommandPalette::draw();
 		CodeNect::Alert::draw();
 
 		app.render_end();

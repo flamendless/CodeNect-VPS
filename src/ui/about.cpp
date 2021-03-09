@@ -8,8 +8,9 @@ void About::draw()
 	if (!m_is_open)
 		return;
 
-    ImVec2 center_pos(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
+	ImVec2 center_pos(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
 	ImGui::SetNextWindowPos(center_pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+
 	if (!ImGui::IsPopupOpen("AlertPopup"))
 		ImGui::SetNextWindowFocus();
 
