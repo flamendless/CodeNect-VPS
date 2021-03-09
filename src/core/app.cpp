@@ -29,10 +29,10 @@ void glfw_error_callback(int error, const char* desc)
 
 void App::register_commands(void)
 {
-	Command cmd_quit("Quit CodeNect", "quit the software");
-	cmd_quit.set_fn(App::quit_app);
+	Command* cmd_quit = new Command("Quit CodeNect", "quit the software");
+	cmd_quit->set_fn(App::quit_app);
 
-	Commands::register_cmd(cmd_quit);
+	Commands::register_cmd(*cmd_quit);
 }
 
 void App::quit_app()

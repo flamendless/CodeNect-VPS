@@ -5,13 +5,13 @@
 
 namespace CodeNect
 {
-std::vector<Command> Commands::v_cmd;
+std::vector<const Command*> Commands::v_cmd;
 
 void Commands::register_cmd(const Command& cmd)
 {
 	PPK_ASSERT(cmd.tag != Command::NONE, "Command '%s' must have a function callback set", cmd.title.c_str());
 
-	Commands::v_cmd.push_back(cmd);
+	Commands::v_cmd.push_back(&cmd);
 
 	const char* tag;
 
@@ -23,5 +23,14 @@ void Commands::register_cmd(const Command& cmd)
 	}
 
 	PLOGI << "Added command: '" << cmd.title << "', tag: " << tag;
+}
+
+void Commands::shutdown(void)
+{
+	PLOGI << "Clearing commands...";
+
+	Commands::v_cmd.clear();
+
+	PLOGI << "Cleared commands successfully";
 }
 }

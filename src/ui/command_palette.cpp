@@ -33,9 +33,9 @@ void CommandPalette::keypress(GLFWwindow* window, int key, int scancode, int mod
 
 		PLOGV << "Command Palette launched";
 
-		// for (const Command &cmd : Commands::v_cmd)
+		// for (const Command* cmd : Commands::v_cmd)
 		// {
-		// 	PLOGD << "Command: " << cmd.title;
+		// 	PLOGD << "Command: " << cmd->title;
 		// }
 	}
 	else if (key == GLFW_KEY_ESCAPE && CommandPalette::is_open)

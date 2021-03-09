@@ -38,8 +38,9 @@ struct Command
 
 struct Commands
 {
-	static std::vector<Command> v_cmd;
+	static std::vector<const Command*> v_cmd;
 	static void register_cmd(const Command& cmd);
+	static void shutdown(void);
 };
 }
 
