@@ -25,7 +25,8 @@ int main(int argv, char** args)
 	//Command Palette
 	if (CodeNect::CommandPalette::init() != RES_SUCCESS) return -1;
 
-	CodeNect::Project::init();
+	CodeNect::App::register_commands();
+	CodeNect::Project::register_commands();
 
 	//Sidebar
 	CodeNect::Sidebar sidebar;

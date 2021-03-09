@@ -12,6 +12,7 @@
 #include "plog/Initializers/RollingFileInitializer.h"
 #endif
 
+#include "core/commands.hpp"
 #include "core/config.hpp"
 #include "core/defines.hpp"
 #include "modules/input.hpp"
@@ -24,6 +25,19 @@ void glfw_error_callback(int error, const char* desc)
 {
 	std::string log = fmt::format("Glfw error %d: %s", error, desc);
 	PLOGE << log;
+}
+
+void App::register_commands(void)
+{
+	Command cmd_quit("Quit CodeNect", "quit the software");
+	cmd_quit.set_fn(App::quit_app);
+
+	Commands::register_cmd(cmd_quit);
+}
+
+void App::quit_app()
+{
+	glfwSetWindowShouldClose(App::window, GL_TRUE);
 }
 
 void App::init(void)

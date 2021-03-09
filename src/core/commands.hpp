@@ -12,7 +12,7 @@ struct Command
 	std::string title;
 	std::string desc;
 
-	enum { VOID, INT } tag;
+	enum { NONE, VOID, INT } tag = NONE;
 	union
 	{
 		void (*fn_void)(void);
@@ -23,7 +23,7 @@ struct Command
 		: title {title}, desc {desc}
 	{}
 
-	void set_fn(void (*fn)())
+	void set_fn(void (*fn)(void))
 	{
 		fn_void = fn;
 		tag = VOID;

@@ -37,7 +37,7 @@ void PopupProject::draw(void)
 		ImGui::Separator();
 
 		if (ImGui::MenuItem("Exit"))
-			glfwSetWindowShouldClose(App::window, GL_TRUE);
+			App::quit_app();
 	ImGui::End();
 
 	PopupProject::end_draw();

@@ -12,6 +12,9 @@ struct App
 {
 	static GLFWwindow* window;
 
+	static void register_commands(void);
+	static void quit_app(void);
+
 	void init(void);
 	int init_app(void);
 	void init_window(void);
