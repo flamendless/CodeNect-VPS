@@ -28,19 +28,18 @@ struct Popup
 	bool m_is_inside = false;
 	ImVec2 m_pos;
 
-	void begin_draw();
-	void end_draw();
+	void begin_draw(void);
+	void end_draw(void);
 };
 
 struct PopupProject : Popup
 {
-	void init();
-	void draw();
+	void draw(void);
 };
 
 struct PopupRun : Popup
 {
-	void draw();
+	void draw(void);
 };
 }
 

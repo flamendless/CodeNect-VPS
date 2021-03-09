@@ -8,12 +8,7 @@
 
 namespace CodeNect
 {
-void PopupProject::init()
-{
-	// m_popup_alert.set_center_pos();
-}
-
-void PopupProject::draw()
+void PopupProject::draw(void)
 {
 	m_is_inside = false;
 

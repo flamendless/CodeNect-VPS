@@ -41,7 +41,6 @@ int Sidebar::init()
 	btn_settings = &m_ui_buttons["settings"];
 	btn_about = &m_ui_buttons["about"];
 
-	popup_project.init();
 	settings.init();
 
 	return RES_SUCCESS;

@@ -26,7 +26,7 @@ void glfw_error_callback(int error, const char* desc)
 	PLOGE << log;
 }
 
-void App::init()
+void App::init(void)
 {
 #if DEBUG_MODE
 	static plog::ColorConsoleAppender<plog::TxtFormatter> console_appender;
@@ -36,7 +36,7 @@ void App::init()
 #endif
 }
 
-int App::init_app()
+int App::init_app(void)
 {
 	PLOGI << "Application starting...";
 
@@ -51,7 +51,7 @@ int App::init_app()
 	return RES_SUCCESS;
 }
 
-void App::init_window()
+void App::init_window(void)
 {
 	App::window = glfwCreateWindow(CodeNect::Config::win_width, CodeNect::Config::win_height,
 		CodeNect::Config::app_title.c_str(), NULL, NULL);
@@ -61,7 +61,7 @@ void App::init_window()
 	glfwSwapInterval(CodeNect::Config::vsync);
 }
 
-void App::init_imgui()
+void App::init_imgui(void)
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -78,14 +78,14 @@ void App::init_imgui()
 	ImGui_ImplOpenGL2_Init();
 }
 
-void App::render_start()
+void App::render_start(void)
 {
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 }
 
-void App::render_end()
+void App::render_end(void)
 {
 	const ImVec4& clear_color = CodeNect::Config::clear_color;
 	int display_w, display_h;
@@ -100,7 +100,7 @@ void App::render_end()
 	glfwSwapBuffers(App::window);
 }
 
-void App::shutdown()
+void App::shutdown(void)
 {
 	PLOGI << "Application closing...";
 

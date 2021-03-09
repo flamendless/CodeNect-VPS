@@ -17,7 +17,7 @@ struct Font
 	static const char* karla_regular_path;
 	static const char* roboto_medium_path;
 
-	static void init();
+	static void init(void);
 };
 }
 

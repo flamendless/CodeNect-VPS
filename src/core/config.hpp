@@ -43,17 +43,17 @@ struct Config
 		static ImVec2 pos;
 	};
 
-	static int init();
-	static bool load_user_config();
-	static bool load_default_config();
-	static void init_general();
-	static void init_sidebar();
-	static void init_node_interface();
+	static int init(void);
+	static bool load_user_config(void);
+	static bool load_default_config(void);
+	static void init_general(void);
+	static void init_sidebar(void);
+	static void init_node_interface(void);
 	static void update_style(const int style_idx);
 	static void update_font(const std::string& font);
 	static void update_font_size(const std::string& font_size);
-	static bool save_user_config();
-	static bool reset();
+	static bool save_user_config(void);
+	static bool reset(void);
 };
 
 typedef CodeNect::Config::Sidebar_c Sidebar_c;

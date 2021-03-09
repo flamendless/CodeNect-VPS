@@ -2,7 +2,7 @@
 
 namespace CodeNect
 {
-void PopupRun::draw()
+void PopupRun::draw(void)
 {
 	m_is_inside = false;
 

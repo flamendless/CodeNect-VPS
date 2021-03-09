@@ -35,7 +35,7 @@ ImVec2 Config::Sidebar_c::indicator_size;
 
 ImVec2 Config::NodeInterface_c::pos;
 
-int Config::init()
+int Config::init(void)
 {
 	reader.SetUnicode();
 
@@ -58,7 +58,7 @@ int Config::init()
 	return RES_SUCCESS;
 }
 
-bool Config::load_user_config()
+bool Config::load_user_config(void)
 {
 	PLOGI << "Reading user config file: " << Config::user_config_filename;
 	SI_Error res = reader.LoadFile(Config::user_config_filename);
@@ -73,7 +73,7 @@ bool Config::load_user_config()
 	return true;
 }
 
-bool Config::load_default_config()
+bool Config::load_default_config(void)
 {
 	PLOGI << "Reading default config file: " << Config::config_filename;
 
@@ -89,7 +89,7 @@ bool Config::load_default_config()
 	return true;
 }
 
-void Config::init_general()
+void Config::init_general(void)
 {
 	Config::app_title = reader.GetValue("general", "title", "CodeNect");
 	Config::win_width = std::stoi(reader.GetValue("general", "width", "1024"));
@@ -107,7 +107,7 @@ void Config::init_general()
 	Config::font_size = std::stoi(reader.GetValue("general", "font_size", std::to_string(DEFAULT_FONT_SIZE).c_str()));
 }
 
-void Config::init_sidebar()
+void Config::init_sidebar(void)
 {
 	vec_filenames& images_filenames = Config::Sidebar_c::images_filenames;
 	vec_filenames& images_filenames_hover = Config::Sidebar_c::images_filenames_hover;
@@ -156,7 +156,7 @@ void Config::init_sidebar()
 	Config::Sidebar_c::indicator_size = ImVec2(siw, sih);
 }
 
-void Config::init_node_interface()
+void Config::init_node_interface(void)
 {
 	const int x = std::stoi(reader.GetValue("node_interface", "pos_x", "-1"));
 	const int y = std::stoi(reader.GetValue("node_interface", "pos_y", "-1"));
@@ -184,7 +184,7 @@ void Config::update_font_size(const std::string& font_size)
 	reader.SetValue("general", "font_size", font_size.c_str());
 }
 
-bool Config::save_user_config()
+bool Config::save_user_config(void)
 {
 	bool res = reader.SaveFile(Config::user_config_filename);
 
@@ -200,7 +200,7 @@ bool Config::save_user_config()
 	return RES_SUCCESS;
 }
 
-bool Config::reset()
+bool Config::reset(void)
 {
 	bool res = std::remove(Config::user_config_filename);
 

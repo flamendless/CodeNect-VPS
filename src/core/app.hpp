@@ -12,13 +12,13 @@ struct App
 {
 	static GLFWwindow* window;
 
-	void init();
-	int init_app();
-	void init_window();
-	void init_imgui();
-	void render_start();
-	void render_end();
-	void shutdown();
+	void init(void);
+	int init_app(void);
+	void init_window(void);
+	void init_imgui(void);
+	void render_start(void);
+	void render_end(void);
+	void shutdown(void);
 };
 }
 

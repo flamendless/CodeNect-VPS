@@ -18,7 +18,7 @@ const char* Font::cousine_regular_path = "assets/fonts/Cousine-Regular.ttf";
 const char* Font::karla_regular_path = "assets/fonts/Karla-Regular.ttf";
 const char* Font::roboto_medium_path = "assets/fonts/Roboto-Medium.ttf";
 
-void Font::init()
+void Font::init(void)
 {
 	PLOGI << "Loading fonts...";
 

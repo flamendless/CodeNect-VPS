@@ -16,7 +16,7 @@ struct Image
 	int height = 0;
 	ImVec2 size;
 
-	void* get_texture() { return (void*)(intptr_t) texture; }
+	void* get_texture(void) { return (void*)(intptr_t) texture; }
 };
 }
 

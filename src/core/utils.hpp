@@ -25,7 +25,7 @@ inline void center_text(const char* txt, const ImVec2& offset_pos)
 	ImGui::SetCursorPos(pos);
 }
 
-inline std::string time_now()
+inline std::string time_now(void)
 {
 	time_t rawtime;
 	struct tm *timeinfo;

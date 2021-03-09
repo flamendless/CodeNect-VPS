@@ -4,7 +4,7 @@
 
 namespace CodeNect
 {
-void Popup::begin_draw()
+void Popup::begin_draw(void)
 {
 	if (is_centered)
 	{
@@ -17,7 +17,7 @@ void Popup::begin_draw()
 	ImGui::SetNextWindowPos(m_pos);
 }
 
-void Popup::end_draw()
+void Popup::end_draw(void)
 {
 	if (!m_is_inside)
 		m_is_open = false;

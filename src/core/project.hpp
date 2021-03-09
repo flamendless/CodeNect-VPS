@@ -20,17 +20,17 @@ struct Project
 	static ProjectMeta meta;
 	static NewProject new_proj;
 
-	static void init();
+	static void init(void);
 	static int on_create_new(
 		const char* filename,
 		const char* title,
 		const char* author
 	);
-	static void init_new();
-	static int open();
-	static int parse();
-	static void draw();
-	static void close();
+	static void init_new(void);
+	static int open(void);
+	static int parse(void);
+	static void draw(void);
+	static void close(void);
 };
 }
 

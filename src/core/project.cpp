@@ -18,7 +18,7 @@ bool Project::has_open_proj = false;
 ProjectMeta Project::meta {};
 NewProject Project::new_proj;
 
-void Project::init()
+void Project::init(void)
 {
 	Command cmd_new_project("New Project", "create a new project");
 	cmd_new_project.set_fn(Project::init_new);
@@ -50,7 +50,7 @@ int Project::on_create_new(const char* filename, const char* title, const char* 
 	return RES_SUCCESS;
 }
 
-void Project::init_new()
+void Project::init_new(void)
 {
 	//fill Project data from args
 	Project::new_proj.m_on_create = &Project::on_create_new;
@@ -59,7 +59,7 @@ void Project::init_new()
 	// return RES_SUCCESS;
 }
 
-int Project::open()
+int Project::open(void)
 {
 	bool res = Filesystem::open_project_file(Project::meta.filepath);
 
@@ -78,7 +78,7 @@ int Project::open()
 	return RES_FAIL;
 }
 
-int Project::parse()
+int Project::parse(void)
 {
 	PLOGI << "Parsing project file...";
 
@@ -108,7 +108,7 @@ int Project::parse()
 	return RES_SUCCESS;
 }
 
-void Project::draw()
+void Project::draw(void)
 {
 	if (Project::new_proj.m_is_open)
 	{
@@ -117,7 +117,7 @@ void Project::draw()
 	}
 }
 
-void Project::close()
+void Project::close(void)
 {
 	has_open_proj = false;
 
