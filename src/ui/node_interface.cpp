@@ -29,7 +29,6 @@ ImGuiWindowFlags flags =
 	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings |
 	ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar;
 ImVec2 center_pos;
-ImFont* font;
 
 const char* str = ICON_FA_PROJECT_DIAGRAM " Welcome to CodeNect";
 const char* str2 = ICON_FA_ANGLE_LEFT " Hover on the left side to access the sidebar";
@@ -45,18 +44,6 @@ bool NodeInterface::init()
 	NodeInterface::size = ImVec2(w, h);
 
 	center_pos = ImVec2((float)w/2, (float)h/2);
-
-	const int font_size = 16;
-
-	ImGuiIO& io = ImGui::GetIO();
-	font = io.Fonts->AddFontFromFileTTF(Font::roboto_medium_path, font_size);
-
-	static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
-	ImFontConfig config;
-	config.MergeMode = true;
-	config.PixelSnapH = true;
-	config.GlyphMinAdvanceX = font_size;
-	io.Fonts->AddFontFromFileTTF(Font::fas_path, font_size, &config, icon_ranges);
 
 	return RES_SUCCESS;
 }
@@ -75,8 +62,7 @@ void NodeInterface::draw()
 
 void NodeInterface::draw_startup()
 {
-	ImGui::PushFont(font);
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(16.0f, 16.0f));
+	Font::use_font(FONT_SIZE::LARGE);
 
 	Utils::center_text(str, center_pos);
 	ImGui::Text("%s", str);
@@ -87,8 +73,7 @@ void NodeInterface::draw_startup()
 	Utils::center_text(str3);
 	ImGui::Text("%s", str3);
 
-	ImGui::PopStyleVar();
-	ImGui::PopFont();
+	Font::unuse_font();
 }
 
 void NodeInterface::draw_main()
