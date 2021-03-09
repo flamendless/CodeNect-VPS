@@ -36,6 +36,7 @@ struct Config
 
 		static std::string indicator_filename;
 		static ImVec2 indicator_size;
+		static void shutdown(void);
 	};
 
 	struct NodeInterface_c

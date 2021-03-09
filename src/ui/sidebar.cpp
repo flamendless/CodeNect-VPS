@@ -23,7 +23,7 @@ PopupRun popup_run;
 Settings settings;
 About about;
 
-int Sidebar::init()
+int Sidebar::init(void)
 {
 	if (Sidebar::load_images() != RES_SUCCESS) return RES_FAIL;
 
@@ -46,7 +46,7 @@ int Sidebar::init()
 	return RES_SUCCESS;
 }
 
-int Sidebar::load_images()
+int Sidebar::load_images(void)
 {
 	PLOGI << "Loading sidebar images...";
 
@@ -87,8 +87,8 @@ int Sidebar::load_images()
 		PLOGV << "Loaded successfully: " << key_hover;
 
 		//create ui button
-		CodeNect::Button* ui_button = new CodeNect::Button(image, image_hover, true);
-		m_ui_buttons.insert(std::pair<std::string, CodeNect::Button*>(key, ui_button));
+		CodeNect::Button* btn = new CodeNect::Button(image, image_hover, true);
+		m_ui_buttons.insert(std::pair<std::string, CodeNect::Button*>(key, btn));
 
 		// Sidebar::images.insert(std::pair<std::string, CodeNect::Image>(key, image));
 		// Sidebar::images_hover.insert(std::pair<std::string, CodeNect::Image>(key_hover, image_hover));
@@ -108,7 +108,7 @@ void Sidebar::check_image_size(const CodeNect::Image& img)
 	PPK_ASSERT((is.x == ms.x && is.y == ms.y), "%s", err.c_str());
 }
 
-void Sidebar::set_style()
+void Sidebar::set_style(void)
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_Alpha, m_alpha);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, Sidebar_c::padding);
@@ -116,7 +116,7 @@ void Sidebar::set_style()
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, Sidebar_c::item_spacing);
 }
 
-void Sidebar::unset_style()
+void Sidebar::unset_style(void)
 {
 	ImGui::PopStyleVar(4);
 }
@@ -125,7 +125,7 @@ void Sidebar::update(float dt)
 {
 }
 
-void Sidebar::manage_popups()
+void Sidebar::manage_popups(void)
 {
 	if (btn_project->m_is_clicked)
 	{
@@ -171,7 +171,7 @@ void Sidebar::manage_popups()
 	}
 }
 
-void Sidebar::draw()
+void Sidebar::draw(void)
 {
 	Sidebar::draw_sidebar();
 
@@ -193,7 +193,7 @@ void Sidebar::draw()
 		btn_about->m_is_open;
 }
 
-void Sidebar::draw_sidebar()
+void Sidebar::draw_sidebar(void)
 {
 	const ImVec2& max_size = Sidebar_c::max_img_size;
 
@@ -228,5 +228,14 @@ void Sidebar::draw_sidebar()
 		Sidebar::manage_popups();
 	ImGui::End();
 	Sidebar::unset_style();
+}
+
+void Sidebar::shutdown()
+{
+	PLOGI << "Clearing sidebar buttons...";
+
+	m_ui_buttons.clear();
+
+	PLOGI << "Cleared sidebar buttons successfully";
 }
 }

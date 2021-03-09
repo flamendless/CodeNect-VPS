@@ -21,15 +21,16 @@ struct Sidebar
 	bool m_has_opened = false;
 	float m_alpha = 0.0f;
 
-	int init();
-	int load_images();
+	int init(void);
+	int load_images(void);
 	void check_image_size(const CodeNect::Image& img);
-	void set_style();
-	void unset_style();
-	void manage_popups();
+	void set_style(void);
+	void unset_style(void);
+	void manage_popups(void);
 	void update(float dt);
-	void draw();
-	void draw_sidebar();
+	void draw(void);
+	void draw_sidebar(void);
+	void shutdown(void);
 };
 }
 

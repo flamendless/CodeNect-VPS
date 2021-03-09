@@ -115,4 +115,13 @@ void Font::unuse_font(void)
 	ImGui::PopStyleVar();
 	ImGui::PopFont();
 }
+
+void Font::shutdown(void)
+{
+	PLOGI << "Clearing fonts...";
+
+	Font::fonts.clear();
+
+	PLOGI << "Cleared fonts successfully";
+}
 }

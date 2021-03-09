@@ -76,6 +76,10 @@ int main(int argv, char** args)
 		app.render_end();
 	}
 
+	sidebar.shutdown();
+	CodeNect::Commands::shutdown();
+	CodeNect::Font::shutdown();
+	CodeNect::Sidebar_c::shutdown();
 	app.shutdown();
 
 	return 0;
