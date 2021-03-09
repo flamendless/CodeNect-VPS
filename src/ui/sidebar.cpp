@@ -36,10 +36,10 @@ int Sidebar::init()
 	// 	PLOGV << key << " = "  << image.texture;
 	// }
 
-	btn_project = &m_ui_buttons["project"];
-	btn_run = &m_ui_buttons["run"];
-	btn_settings = &m_ui_buttons["settings"];
-	btn_about = &m_ui_buttons["about"];
+	btn_project = m_ui_buttons["project"];
+	btn_run = m_ui_buttons["run"];
+	btn_settings = m_ui_buttons["settings"];
+	btn_about = m_ui_buttons["about"];
 
 	settings.init();
 
@@ -87,11 +87,8 @@ int Sidebar::load_images()
 		PLOGV << "Loaded successfully: " << key_hover;
 
 		//create ui button
-		CodeNect::Button ui_button;
-		ui_button.m_normal = image;
-		ui_button.m_hovered = image_hover;
-		ui_button.m_hoverable = true;
-		m_ui_buttons.insert(std::pair<std::string, CodeNect::Button>(key, ui_button));
+		CodeNect::Button* ui_button = new CodeNect::Button(image, image_hover, true);
+		m_ui_buttons.insert(std::pair<std::string, CodeNect::Button*>(key, ui_button));
 
 		// Sidebar::images.insert(std::pair<std::string, CodeNect::Image>(key, image));
 		// Sidebar::images_hover.insert(std::pair<std::string, CodeNect::Image>(key_hover, image_hover));
