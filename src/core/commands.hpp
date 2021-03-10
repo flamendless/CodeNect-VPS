@@ -12,6 +12,7 @@ struct Command
 	std::string m_title;
 	std::string m_desc;
 	const char* m_icon;
+	bool m_close_command_palette = false;
 
 	enum { NONE, VOID, INT } m_tag = NONE;
 	union

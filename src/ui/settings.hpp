@@ -8,19 +8,18 @@ namespace CodeNect
 {
 struct Settings
 {
-	ImGuiWindowFlags m_flags =
-		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
-		ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
-	bool m_is_open = false;
-	const char* m_title = ICON_FA_COG " SETTINGS";
+	static ImGuiWindowFlags flags;
+	static bool is_open;
+	static const char* title;
 
-	void init(void);
-	void draw(void);
-	void draw_buttons(void);
-	void draw_theme_select(void);
-	void draw_font_select(void);
+	static void init(void);
+	static void register_commands(void);
+	static void open(void);
+	static void draw(void);
+	static void draw_buttons(void);
+	static void draw_theme_select(void);
+	static void draw_font_select(void);
+	static void draw_command_palette(void);
 };
 }
 

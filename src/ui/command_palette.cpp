@@ -28,26 +28,35 @@ int CommandPalette::init(void)
 {
 	Input::register_keypress(CommandPalette::keypress);
 
-	CommandPalette::size = Config::CommandPalette_c::size;
-
 	return RES_SUCCESS;
+}
+
+void CommandPalette::open(void)
+{
+	CommandPalette::size = Config::CommandPalette_c::size;
+	CommandPalette::is_open = true;
+
+	PLOGV << "Command Palette launched";
+}
+
+void CommandPalette::close(void)
+{
+	CommandPalette::cur_pos = 0;
+	CommandPalette::cur_cmd = -1;
+	CommandPalette::is_open = false;
+
+	PLOGV << "Command Palette closed";
 }
 
 void CommandPalette::keypress(GLFWwindow* window, int key, int scancode, int mods)
 {
 	if (key == GLFW_KEY_P && mods == (GLFW_MOD_SHIFT | GLFW_MOD_CONTROL))
 	{
-		CommandPalette::is_open = true;
-
-		PLOGV << "Command Palette launched";
+		CommandPalette::open();
 	}
 	else if (key == GLFW_KEY_ESCAPE && CommandPalette::is_open)
 	{
-		CommandPalette::is_open = false;
-		CommandPalette::cur_pos = 0;
-		CommandPalette::cur_cmd = -1;
-
-		PLOGV << "Command Palette closed";
+		CommandPalette::close();
 	}
 	else if (key == GLFW_KEY_UP && CommandPalette::is_open)
 	{
@@ -71,6 +80,9 @@ void CommandPalette::keypress(GLFWwindow* window, int key, int scancode, int mod
 		const Command* cmd = Commands::v_cmd[CommandPalette::cur_cmd];
 		cmd->run();
 
+		if (cmd->m_close_command_palette)
+			CommandPalette::close();
+
 		PLOGV << "Command launched: " << cmd->m_title;
 	}
 }
@@ -93,8 +105,9 @@ void CommandPalette::draw(void)
 		Utils::center_text(CommandPalette::title, true);
 		ImGui::Separator();
 
+		float font_size = (Font::get_font_size(FONT_SIZE::LARGE) * 2) + 8;
 		static ImVec4 color(1, 1, 1, 0.6f);
-		ImGui::SetNextItemWidth(CommandPalette::size.x * 0.9);
+		ImGui::SetNextItemWidth(CommandPalette::size.x - font_size);
 		CommandPalette::filter.Draw(ICON_FA_SEARCH);
 		ImGui::SetKeyboardFocusHere(-1);
 		int cur = 0;
@@ -116,7 +129,6 @@ void CommandPalette::draw(void)
 
 					ImGui::SameLine();
 					ImGui::TextColored(color, "(%s)", cmd->m_desc.c_str());
-
 					cur++;
 				}
 			}

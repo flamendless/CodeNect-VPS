@@ -9,7 +9,6 @@
 #include "ui/button.hpp"
 #include "popups/popup.hpp"
 #include "ui/settings.hpp"
-#include "ui/about.hpp"
 
 namespace CodeNect
 {
@@ -20,8 +19,7 @@ Button* btn_about;
 
 PopupProject popup_project;
 PopupRun popup_run;
-Settings settings;
-About about;
+About Sidebar::about;
 
 int Sidebar::init(void)
 {
@@ -40,8 +38,6 @@ int Sidebar::init(void)
 	btn_run = m_ui_buttons["run"];
 	btn_settings = m_ui_buttons["settings"];
 	btn_about = m_ui_buttons["about"];
-
-	settings.init();
 
 	return RES_SUCCESS;
 }
@@ -144,7 +140,7 @@ void Sidebar::manage_popups(void)
 		popup_run.m_is_open = false;
 	}
 
-	if (settings.m_is_open)
+	if (Settings::is_open)
 	{
 		btn_project->m_hoverable = false;
 		btn_run->m_hoverable = false;
@@ -177,8 +173,7 @@ void Sidebar::draw(void)
 	btn_run->m_is_open = popup_run.m_is_open;
 	if (btn_run->m_is_open) popup_run.draw();
 
-	btn_settings->m_is_open = settings.m_is_open;
-	settings.draw();
+	btn_settings->m_is_open = Settings::is_open;
 
 	btn_about->m_is_open = about.m_is_open;
 	about.draw();
@@ -215,7 +210,7 @@ void Sidebar::draw_sidebar(void)
 
 		btn_settings->draw();
 		if (!m_has_opened && btn_settings->m_is_clicked)
-			settings.m_is_open = true;
+			Settings::open();
 
 		btn_about->draw();
 		if (!m_has_opened && btn_about->m_is_clicked)
