@@ -9,6 +9,7 @@
 #include "ui/button.hpp"
 #include "popups/popup.hpp"
 #include "ui/settings.hpp"
+#include "ui/about.hpp"
 
 namespace CodeNect
 {
@@ -19,7 +20,6 @@ Button* btn_about;
 
 PopupProject popup_project;
 PopupRun popup_run;
-About Sidebar::about;
 
 int Sidebar::init(void)
 {
@@ -147,7 +147,7 @@ void Sidebar::manage_popups(void)
 		btn_settings->m_hoverable = true;
 		btn_about->m_hoverable = false;
 	}
-	else if (about.m_is_open)
+	else if (About::is_open)
 	{
 		btn_project->m_hoverable = false;
 		btn_run->m_hoverable = false;
@@ -175,8 +175,7 @@ void Sidebar::draw(void)
 
 	btn_settings->m_is_open = Settings::is_open;
 
-	btn_about->m_is_open = about.m_is_open;
-	about.draw();
+	btn_about->m_is_open = About::is_open;
 
 	m_has_opened = btn_project->m_is_open ||
 		btn_run->m_is_open ||
@@ -214,7 +213,7 @@ void Sidebar::draw_sidebar(void)
 
 		btn_about->draw();
 		if (!m_has_opened && btn_about->m_is_clicked)
-			about.m_is_open = true;
+			About::open();
 
 		Sidebar::manage_popups();
 	ImGui::End();

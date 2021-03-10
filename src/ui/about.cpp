@@ -1,12 +1,38 @@
 #include "ui/about.hpp"
+
+#include "plog/Log.h"
 #include "core/utils.hpp"
 #include "core/config.hpp"
+#include "core/commands.hpp"
 
 namespace CodeNect
 {
+ImGuiWindowFlags About::flags =
+	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
+	ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
+	ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
+	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
+bool About::is_open = false;
+const char* About::title = ICON_FA_INFO_CIRCLE " ABOUT";
+
+void About::register_commands(void)
+{
+	Command* cmd = new Command("About", "open about window", ICON_FA_INFO_CIRCLE);
+	cmd->set_fn(About::open);
+	cmd->m_close_command_palette = true;
+
+	Commands::register_cmd(*cmd);
+}
+
+void About::open(void)
+{
+	About::is_open = true;
+	PLOGD << "Opened About window";
+}
+
 void About::draw()
 {
-	if (!m_is_open)
+	if (!is_open)
 		return;
 
 	ImVec2 center_pos(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
@@ -15,9 +41,9 @@ void About::draw()
 	if (!ImGui::IsPopupOpen("AlertPopup"))
 		ImGui::SetNextWindowFocus();
 
-	if (ImGui::Begin("About", &m_is_open, m_flags))
+	if (ImGui::Begin("About", &is_open, flags))
 	{
-		Utils::center_text(m_title, true);
+		Utils::center_text(title, true);
 		ImGui::Separator();
 
 		Utils::center_text(ICON_FA_PROJECT_DIAGRAM " CodeNect: Visual Programming", true);
@@ -46,7 +72,7 @@ void About::draw()
 
 		if (ImGui::Button(ICON_FA_TIMES " Close"))
 		{
-			m_is_open = false;
+			is_open = false;
 			ImGui::CloseCurrentPopup();
 		}
 

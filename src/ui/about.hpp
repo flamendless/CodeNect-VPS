@@ -8,15 +8,13 @@ namespace CodeNect
 {
 struct About
 {
-	ImGuiWindowFlags m_flags =
-		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
-		ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
-	bool m_is_open = false;
-	const char* m_title = ICON_FA_INFO_CIRCLE " ABOUT";
+	static ImGuiWindowFlags flags;
+	static bool is_open;
+	static const char* title;
 
-	void draw();
+	static void register_commands(void);
+	static void open(void);
+	static void draw(void);
 };
 }
 

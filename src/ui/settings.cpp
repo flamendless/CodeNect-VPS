@@ -61,6 +61,7 @@ void Settings::open(void)
 {
 	Settings::init();
 	Settings::is_open = true;
+	PLOGD << "Opened Settings window";
 }
 
 void Settings::draw(void)
