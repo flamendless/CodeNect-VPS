@@ -40,6 +40,11 @@ struct Config
 		static void shutdown(void);
 	};
 
+	struct CommandPalette_c
+	{
+		static ImVec2 size;
+	};
+
 	struct NodeInterface_c
 	{
 		static ImVec2 pos;
@@ -50,6 +55,7 @@ struct Config
 	static bool load_default_config(void);
 	static void init_general(void);
 	static void init_sidebar(void);
+	static void init_command_palette(void);
 	static void init_node_interface(void);
 	static void update_style(const int style_idx);
 	static void update_font(const std::string& font);
@@ -59,6 +65,7 @@ struct Config
 };
 
 typedef CodeNect::Config::Sidebar_c Sidebar_c;
+typedef CodeNect::Config::CommandPalette_c CommandPalette_c;
 typedef CodeNect::Config::NodeInterface_c NodeInterface_c;
 }
 

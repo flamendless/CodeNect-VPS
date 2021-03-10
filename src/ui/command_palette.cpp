@@ -7,6 +7,7 @@
 #include "core/commands.hpp"
 #include "core/utils.hpp"
 #include "core/font.hpp"
+#include "core/config.hpp"
 
 namespace CodeNect
 {
@@ -18,7 +19,7 @@ ImGuiWindowFlags CommandPalette::flags =
 	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
 	ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
 	ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
-	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
+	ImGuiWindowFlags_NoScrollWithMouse;
 ImGuiTextFilter CommandPalette::filter;
 int CommandPalette::cur_pos = 0;
 int CommandPalette::cur_cmd = -1;
@@ -27,18 +28,13 @@ int CommandPalette::init(void)
 {
 	Input::register_keypress(CommandPalette::keypress);
 
-	CommandPalette::size = ImVec2(320, 240);
+	CommandPalette::size = Config::CommandPalette_c::size;
 
 	return RES_SUCCESS;
 }
 
 void CommandPalette::keypress(GLFWwindow* window, int key, int scancode, int mods)
 {
-	// for (const Command* cmd : Commands::v_cmd)
-	// {
-	// 	PLOGD << "Command: " << cmd->title;
-	// }
-
 	if (key == GLFW_KEY_P && mods == (GLFW_MOD_SHIFT | GLFW_MOD_CONTROL))
 	{
 		CommandPalette::is_open = true;
@@ -98,6 +94,7 @@ void CommandPalette::draw(void)
 		ImGui::Separator();
 
 		static ImVec4 color(1, 1, 1, 0.6f);
+		ImGui::SetNextItemWidth(CommandPalette::size.x * 0.9);
 		CommandPalette::filter.Draw(ICON_FA_SEARCH);
 		ImGui::SetKeyboardFocusHere(-1);
 		int cur = 0;

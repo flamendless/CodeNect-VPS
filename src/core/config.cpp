@@ -5,6 +5,7 @@
 
 namespace CodeNect
 {
+//General
 std::string Config::app_title;
 int Config::win_width;
 int Config::win_height;
@@ -24,6 +25,7 @@ const char* Config::fonts[6] = {
 };
 const char* Config::version;
 
+//Sidebar_c
 ImVec2 Config::Sidebar_c::size;
 ImVec2 Config::Sidebar_c::max_img_size;
 ImVec2 Config::Sidebar_c::pos;
@@ -34,6 +36,10 @@ vec_filenames Config::Sidebar_c::images_filenames_hover;
 std::string Config::Sidebar_c::indicator_filename;
 ImVec2 Config::Sidebar_c::indicator_size;
 
+//CommandPalette_c
+ImVec2 Config::CommandPalette_c::size;
+
+//NodeInterface_c
 ImVec2 Config::NodeInterface_c::pos;
 
 int Config::init(void)
@@ -52,6 +58,7 @@ int Config::init(void)
 
 	Config::init_general();
 	Config::init_sidebar();
+	Config::init_command_palette();
 	Config::init_node_interface();
 
 	PLOGI << "Config loaded";
@@ -156,6 +163,14 @@ void Config::init_sidebar(void)
 
 	Config::Sidebar_c::indicator_filename = indicator_filename;
 	Config::Sidebar_c::indicator_size = ImVec2(siw, sih);
+}
+
+void Config::init_command_palette(void)
+{
+	const int width = std::stoi(reader.GetValue("command_palette", "width", "-1"));
+	const int height = std::stoi(reader.GetValue("command_palette", "height", "-1"));
+
+	Config::CommandPalette_c::size = ImVec2(width, height);
 }
 
 void Config::init_node_interface(void)
