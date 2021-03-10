@@ -1,6 +1,7 @@
 #include "core/app.hpp"
 
 #include <stdio.h>
+#include "IconsFontAwesome5.h"
 #include "fmt/core.h"
 #include "plog/Init.h"
 #include "plog/Log.h"
@@ -29,7 +30,7 @@ void glfw_error_callback(int error, const char* desc)
 
 void App::register_commands(void)
 {
-	Command* cmd_quit = new Command("Quit CodeNect", "quit the software");
+	Command* cmd_quit = new Command("Quit CodeNect", "quit the software", ICON_FA_TIMES_CIRCLE);
 	cmd_quit->set_fn(App::quit_app);
 
 	Commands::register_cmd(*cmd_quit);

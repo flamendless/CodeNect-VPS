@@ -6,6 +6,7 @@
 #include "tweeny.h"
 #include "core/defines.hpp"
 #include "core/config.hpp"
+#include "ui/command_palette.hpp"
 
 #define DUR_FADE_IN 1000
 #define DUR_FADE_OUT 50000
@@ -33,7 +34,7 @@ void SidebarHandler::update(float dt)
 	const int min = Sidebar_c::pos.x + Sidebar_c::indicator_size.x;
 	const int dist = mouse_pos.x - min;
 
-	if (dist <= 0 || m_sidebar->m_has_opened)
+	if ((dist <= 0 || m_sidebar->m_has_opened) && !CommandPalette::is_open)
 		show_sidebar = true;
 	else
 		show_sidebar = false;

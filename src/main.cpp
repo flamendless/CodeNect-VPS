@@ -55,8 +55,6 @@ int main(int argv, char** args)
 		glfwPollEvents();
 
 		//update
-		sidebar_indicator.update(dt);
-		sidebar.update(dt);
 		sidebar_handler.update(dt);
 
 		app.render_start();

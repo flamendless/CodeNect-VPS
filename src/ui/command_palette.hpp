@@ -12,7 +12,12 @@ struct CommandPalette
 {
 	static bool is_open;
 	static const char* title;
+	static const char* str_close;
+	static ImVec2 size;
 	static ImGuiWindowFlags flags;
+	static ImGuiTextFilter filter;
+	static int cur_pos;
+	static int cur_cmd;
 
 	static int init(void);
 	static void keypress(GLFWwindow* window, int key, int scancode, int mods);

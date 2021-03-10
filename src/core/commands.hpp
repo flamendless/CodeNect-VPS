@@ -9,30 +9,41 @@ namespace CodeNect
 {
 struct Command
 {
-	std::string title;
-	std::string desc;
+	std::string m_title;
+	std::string m_desc;
+	const char* m_icon;
 
-	enum { NONE, VOID, INT } tag = NONE;
+	enum { NONE, VOID, INT } m_tag = NONE;
 	union
 	{
-		void (*fn_void)(void);
-		int (*fn_int)(void);
+		void (*m_fn_void)(void);
+		int (*m_fn_int)(void);
 	};
 
-	Command(const char* title, const char* desc)
-		: title {title}, desc {desc}
+	Command(const char* title, const char* desc, const char* icon)
+		: m_title {title}, m_desc {desc}, m_icon {icon}
 	{}
 
 	void set_fn(void (*fn)(void))
 	{
-		fn_void = fn;
-		tag = VOID;
+		m_fn_void = fn;
+		m_tag = VOID;
 	}
 
-	void set_fn(int (*fn)())
+	void set_fn(int (*fn)(void))
 	{
-		fn_int = fn;
-		tag = INT;
+		m_fn_int = fn;
+		m_tag = INT;
+	}
+
+	void run() const
+	{
+		switch(m_tag)
+		{
+			case Command::NONE: break;
+			case Command::VOID: m_fn_void(); break;
+			case Command::INT: m_fn_int(); break;
+		}
 	}
 };
 

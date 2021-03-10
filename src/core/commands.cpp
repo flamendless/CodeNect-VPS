@@ -9,20 +9,20 @@ std::vector<const Command*> Commands::v_cmd;
 
 void Commands::register_cmd(const Command& cmd)
 {
-	PPK_ASSERT(cmd.tag != Command::NONE, "Command '%s' must have a function callback set", cmd.title.c_str());
+	PPK_ASSERT(cmd.m_tag != Command::NONE, "Command '%s' must have a function callback set", cmd.m_title.c_str());
 
 	Commands::v_cmd.push_back(&cmd);
 
 	const char* tag;
 
-	switch(cmd.tag)
+	switch(cmd.m_tag)
 	{
 		case Command::NONE: break;
 		case Command::VOID: tag = "void"; break;
 		case Command::INT: tag = "int"; break;
 	}
 
-	PLOGI << "Added command: '" << cmd.title << "', tag: " << tag;
+	PLOGI << "Added command: '" << cmd.m_title << "', tag: " << tag;
 }
 
 void Commands::shutdown(void)

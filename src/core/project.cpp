@@ -20,10 +20,10 @@ NewProject Project::new_proj;
 
 void Project::register_commands(void)
 {
-	Command* cmd_new_project = new Command("New Project", "create a new project");
+	Command* cmd_new_project = new Command("New Project", "create a new project", ICON_FA_FILE);
 	cmd_new_project->set_fn(Project::init_new);
 
-	Command* cmd_open_project = new Command("Open Project", "open a project from file");
+	Command* cmd_open_project = new Command("Open Project", "open a project from file", ICON_FA_FOLDER_OPEN);
 	cmd_open_project->set_fn(Project::open);
 
 	Commands::register_cmd(*cmd_new_project);

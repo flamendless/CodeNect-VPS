@@ -12,37 +12,70 @@ namespace CodeNect
 {
 bool CommandPalette::is_open = false;
 const char* CommandPalette::title = ICON_FA_TERMINAL " Command Palette";
+const char* CommandPalette::str_close = "press <ESC> to close";
+ImVec2 CommandPalette::size;
 ImGuiWindowFlags CommandPalette::flags =
 	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
 	ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
 	ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
 	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
+ImGuiTextFilter CommandPalette::filter;
+int CommandPalette::cur_pos = 0;
+int CommandPalette::cur_cmd = -1;
 
 int CommandPalette::init(void)
 {
 	Input::register_keypress(CommandPalette::keypress);
+
+	CommandPalette::size = ImVec2(320, 240);
 
 	return RES_SUCCESS;
 }
 
 void CommandPalette::keypress(GLFWwindow* window, int key, int scancode, int mods)
 {
+	// for (const Command* cmd : Commands::v_cmd)
+	// {
+	// 	PLOGD << "Command: " << cmd->title;
+	// }
+
 	if (key == GLFW_KEY_P && mods == (GLFW_MOD_SHIFT | GLFW_MOD_CONTROL))
 	{
 		CommandPalette::is_open = true;
 
 		PLOGV << "Command Palette launched";
-
-		// for (const Command* cmd : Commands::v_cmd)
-		// {
-		// 	PLOGD << "Command: " << cmd->title;
-		// }
 	}
 	else if (key == GLFW_KEY_ESCAPE && CommandPalette::is_open)
 	{
 		CommandPalette::is_open = false;
+		CommandPalette::cur_pos = 0;
+		CommandPalette::cur_cmd = -1;
 
 		PLOGV << "Command Palette closed";
+	}
+	else if (key == GLFW_KEY_UP && CommandPalette::is_open)
+	{
+		CommandPalette::cur_pos--;
+
+		if (CommandPalette::cur_pos < 0)
+			CommandPalette::cur_pos = CommandPalette::filter.CountGrep;
+	}
+	else if (key == GLFW_KEY_DOWN && CommandPalette::is_open)
+	{
+		CommandPalette::cur_pos++;
+
+		if (CommandPalette::cur_pos > CommandPalette::filter.CountGrep)
+			CommandPalette::cur_pos = 0;
+	}
+	else if (key == GLFW_KEY_ENTER && CommandPalette::is_open)
+	{
+		if (CommandPalette::cur_cmd == -1)
+			return;
+
+		const Command* cmd = Commands::v_cmd[CommandPalette::cur_cmd];
+		cmd->run();
+
+		PLOGV << "Command launched: " << cmd->m_title;
 	}
 }
 
@@ -53,6 +86,7 @@ void CommandPalette::draw(void)
 
 	ImVec2 center_pos(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
 	ImGui::SetNextWindowPos(center_pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+	ImGui::SetNextWindowSize(CommandPalette::size);
 
 	if (!ImGui::IsPopupOpen("AlertPopup"))
 		ImGui::SetNextWindowFocus();
@@ -60,10 +94,40 @@ void CommandPalette::draw(void)
 	if (ImGui::Begin("CommandPalette", &CommandPalette::is_open, CommandPalette::flags))
 	{
 		Font::use_font(FONT_SIZE::LARGE);
-		Utils::center_text(CommandPalette::title);
-		ImGui::Text("%s", CommandPalette::title);
+		Utils::center_text(CommandPalette::title, true);
+		ImGui::Separator();
 
-		ImGui::TextColored(ImVec4(1, 1, 1, 0.75f), "press <ESC> to close");
+		static ImVec4 color(1, 1, 1, 0.6f);
+		CommandPalette::filter.Draw(ICON_FA_SEARCH);
+		ImGui::SetKeyboardFocusHere(-1);
+		int cur = 0;
+
+		for (int i = 0; i < Commands::v_cmd.size(); i++)
+		{
+			const Command* cmd = Commands::v_cmd[i];
+			if (CommandPalette::filter.PassFilter(cmd->m_title.c_str()))
+			{
+				if (CommandPalette::filter.CountGrep != 0)
+				{
+					if (cur_pos == cur)
+					{
+						ImGui::Text(ICON_FA_ARROW_RIGHT "    %s %s", cmd->m_icon, cmd->m_title.c_str());
+						CommandPalette::cur_cmd = i;
+					}
+					else
+						ImGui::TextColored(color, "%s %s", cmd->m_icon, cmd->m_title.c_str());
+
+					ImGui::SameLine();
+					ImGui::TextColored(color, "(%s)", cmd->m_desc.c_str());
+
+					cur++;
+				}
+			}
+		}
+
+		ImGui::Separator();
+		Utils::center_text(CommandPalette::str_close);
+		ImGui::TextColored(color, "%s", CommandPalette::str_close);
 
 		Font::unuse_font();
 		ImGui::End();
