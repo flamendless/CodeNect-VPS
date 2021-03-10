@@ -88,7 +88,7 @@ void Font::init_fonts(void)
 	PLOGI << "Loaded custom fonts successfully";
 }
 
-void Font::use_font(FONT_SIZE size)
+CustomFont* Font::get_custom_font(FONT_SIZE size)
 {
 	CustomFont* font;
 
@@ -106,8 +106,21 @@ void Font::use_font(FONT_SIZE size)
 		}
 	}
 
+	return font;
+}
+
+void Font::use_font(FONT_SIZE size)
+{
+	CustomFont* font = Font::get_custom_font(size);
 	ImGui::PushFont(font->font);
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(font->size, font->size));
+}
+
+float Font::get_font_size(FONT_SIZE size)
+{
+	CustomFont* font = Font::get_custom_font(size);
+
+	return font->size;
 }
 
 void Font::unuse_font(void)

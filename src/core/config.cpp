@@ -201,6 +201,17 @@ void Config::update_font_size(const std::string& font_size)
 	reader.SetValue("general", "font_size", font_size.c_str());
 }
 
+void Config::update_command_palette(const ImVec2& size)
+{
+	std::string width = std::to_string(size.x);
+	std::string height = std::to_string(size.y);
+
+	reader.SetValue("command_palette", "width", width.c_str());
+	reader.SetValue("command_palette", "height", height.c_str());
+
+	Config::CommandPalette_c::size = size;
+}
+
 bool Config::save_user_config(void)
 {
 	bool res = reader.SaveFile(Config::user_config_filename);

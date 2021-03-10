@@ -25,7 +25,9 @@ struct Font
 
 	static void init(void);
 	static void init_fonts(void);
+	static CustomFont* get_custom_font(FONT_SIZE size);
 	static void use_font(FONT_SIZE size);
+	static float get_font_size(FONT_SIZE size);
 	static void unuse_font(void);
 	static void shutdown(void);
 };
