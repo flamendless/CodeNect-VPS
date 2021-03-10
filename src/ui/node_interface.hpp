@@ -12,6 +12,7 @@ struct NodeInterface
 	static ImVec2 pos;
 	static ImVec2 size;
 
+	NodeInterface() = delete;
 	static bool init();
 	static void draw();
 	static void draw_startup();

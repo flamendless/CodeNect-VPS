@@ -19,6 +19,7 @@ struct Alert
 	static bool is_open;
 	static ImGuiWindowFlags flags;
 
+	Alert() = delete;
 	static void open(ALERT_TYPE type, std::string msg);
 	static void draw();
 };

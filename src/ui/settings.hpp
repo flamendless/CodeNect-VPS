@@ -12,6 +12,7 @@ struct Settings
 	static bool is_open;
 	static const char* title;
 
+	Settings() = delete;
 	static void init(void);
 	static void register_commands(void);
 	static void open(void);

@@ -14,6 +14,7 @@ struct Input
 	static std::vector<keycallback_t> v_keypresses;
 	// static std::vector<keycallback_t> v_keyreleases;
 
+	Input() = delete;
 	static void register_keypress(keycallback_t fn);
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 };

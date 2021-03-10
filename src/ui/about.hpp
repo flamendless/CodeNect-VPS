@@ -12,6 +12,7 @@ struct About
 	static bool is_open;
 	static const char* title;
 
+	About() = delete;
 	static void register_commands(void);
 	static void open(void);
 	static void draw(void);

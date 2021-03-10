@@ -23,7 +23,7 @@ void display_asterisk(bool ref)
 	}
 }
 
-void NewProject::draw()
+void NewProject::draw(void)
 {
     ImVec2 center_pos(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
 	ImGui::SetNextWindowPos(center_pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));

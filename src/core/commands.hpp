@@ -50,6 +50,7 @@ struct Command
 
 struct Commands
 {
+	Commands() = delete;
 	static std::vector<const Command*> v_cmd;
 	static void register_cmd(const Command& cmd);
 	static void shutdown(void);

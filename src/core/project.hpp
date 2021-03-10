@@ -20,6 +20,7 @@ struct Project
 	static ProjectMeta meta;
 	static NewProject new_proj;
 
+	Project() = delete;
 	static void register_commands(void);
 	static int on_create_new(
 		const char* filename,

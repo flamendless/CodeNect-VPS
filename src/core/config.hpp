@@ -50,6 +50,7 @@ struct Config
 		static ImVec2 pos;
 	};
 
+	Config() = delete;
 	static int init(void);
 	static bool load_user_config(void);
 	static bool load_default_config(void);

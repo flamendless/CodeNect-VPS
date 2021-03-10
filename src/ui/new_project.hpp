@@ -18,8 +18,7 @@ struct NewProject
 	const char* m_title = ICON_FA_FOLDER_OPEN " NEW PROJECT";
 	std::function <int(const char*, const char*, const char*)> m_on_create;
 
-	void init();
-	void draw();
+	void draw(void);
 };
 }
 

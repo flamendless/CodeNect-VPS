@@ -19,6 +19,7 @@ struct CommandPalette
 	static int cur_pos;
 	static int cur_cmd;
 
+	CommandPalette() = delete;
 	static int init(void);
 	static void open(void);
 	static void close(void);

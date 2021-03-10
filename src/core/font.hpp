@@ -23,6 +23,7 @@ struct Font
 	static const char* roboto_medium_path;
 	static map_fonts fonts;
 
+	Font() = delete;
 	static void init(void);
 	static void init_fonts(void);
 	static CustomFont* get_custom_font(FONT_SIZE size);
