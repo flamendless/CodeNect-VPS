@@ -23,6 +23,7 @@ struct Config
 	static CSimpleIniA reader;
 	static const char* styles;
 	static const char* fonts[6];
+	static const char* version;
 
 	struct Sidebar_c
 	{

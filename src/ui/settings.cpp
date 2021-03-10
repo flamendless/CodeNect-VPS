@@ -1,7 +1,6 @@
 #include "settings.hpp"
 #include <string>
 #include "plog/Log.h"
-#include "IconsFontAwesome5.h"
 #include "core/config.hpp"
 #include "core/utils.hpp"
 #include "ui/alert.hpp"
@@ -15,7 +14,7 @@ int style_idx_orig = -1;
 int font_size_orig = -1;
 std::string font_orig;
 
-void Settings::init()
+void Settings::init(void)
 {
 	if (Config::style == "dark")
 		style_idx = 0;
@@ -31,7 +30,7 @@ void Settings::init()
 	font_orig = font;
 }
 
-void Settings::draw()
+void Settings::draw(void)
 {
 	if (!m_is_open)
 		return;
@@ -44,10 +43,7 @@ void Settings::draw()
 
 	if (ImGui::Begin("Settings", &m_is_open, m_flags))
 	{
-		const char* title = ICON_FA_COG " SETTINGS";
-		Utils::center_text(title);
-
-		ImGui::Text("%s", title);
+		Utils::center_text(m_title, true);
 		ImGui::Separator();
 
 		ImGui::Text("%s General", ICON_FA_HOME);
@@ -65,7 +61,7 @@ void Settings::draw()
 	}
 }
 
-void Settings::draw_theme_select()
+void Settings::draw_theme_select(void)
 {
 	if (ImGui::Combo(ICON_FA_PALETTE " Theme", &style_idx, Config::styles))
 	{
@@ -78,7 +74,7 @@ void Settings::draw_theme_select()
 	}
 }
 
-void Settings::draw_font_select()
+void Settings::draw_font_select(void)
 {
 	if (ImGui::BeginCombo(ICON_FA_FONT " Font Name", font.c_str()))
 	{
@@ -115,7 +111,7 @@ void Settings::draw_font_select()
 	}
 }
 
-void Settings::draw_buttons()
+void Settings::draw_buttons(void)
 {
 	if (ImGui::Button(ICON_FA_CHECK " Save"))
 	{

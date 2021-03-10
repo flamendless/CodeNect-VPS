@@ -18,11 +18,10 @@ struct SidebarIndicator
 	bool m_is_open = true;
 	float m_alpha = 1.0f;
 
-	int init();
-	void set_style();
-	void unset_style();
-	void update(float dt);
-	void draw();
+	int init(void);
+	void set_style(void);
+	void unset_style(void);
+	void draw(void);
 };
 }
 

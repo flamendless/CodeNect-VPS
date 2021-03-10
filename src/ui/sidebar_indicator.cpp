@@ -6,7 +6,7 @@
 
 namespace CodeNect
 {
-int SidebarIndicator::init()
+int SidebarIndicator::init(void)
 {
 	CodeNect::Image *img = new CodeNect::Image();
 	const std::string filename = Sidebar_c::indicator_filename;
@@ -23,7 +23,7 @@ int SidebarIndicator::init()
 	return RES_SUCCESS;
 }
 
-void SidebarIndicator::set_style()
+void SidebarIndicator::set_style(void)
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_Alpha, m_alpha);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2());
@@ -31,16 +31,12 @@ void SidebarIndicator::set_style()
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2());
 }
 
-void SidebarIndicator::unset_style()
+void SidebarIndicator::unset_style(void)
 {
 	ImGui::PopStyleVar(4);
 }
 
-void SidebarIndicator::update(float dt)
-{
-}
-
-void SidebarIndicator::draw()
+void SidebarIndicator::draw(void)
 {
 
 	SidebarIndicator::set_style();

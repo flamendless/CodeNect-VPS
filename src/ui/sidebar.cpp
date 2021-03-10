@@ -121,10 +121,6 @@ void Sidebar::unset_style(void)
 	ImGui::PopStyleVar(4);
 }
 
-void Sidebar::update(float dt)
-{
-}
-
 void Sidebar::manage_popups(void)
 {
 	if (btn_project->m_is_clicked)

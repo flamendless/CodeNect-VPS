@@ -27,7 +27,6 @@ struct Sidebar
 	void set_style(void);
 	void unset_style(void);
 	void manage_popups(void);
-	void update(float dt);
 	void draw(void);
 	void draw_sidebar(void);
 	void shutdown(void);

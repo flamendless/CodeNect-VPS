@@ -22,6 +22,7 @@ const char* Config::fonts[6] = {
 	"ProggyClean", "ProggyTiny", "DroidSans",
 	"CousineRegular", "KarlaRegular", "RobotoMedium"
 };
+const char* Config::version;
 
 ImVec2 Config::Sidebar_c::size;
 ImVec2 Config::Sidebar_c::max_img_size;
@@ -91,6 +92,7 @@ bool Config::load_default_config(void)
 
 void Config::init_general(void)
 {
+	Config::version = reader.GetValue("general", "version", "???");
 	Config::app_title = reader.GetValue("general", "title", "CodeNect");
 	Config::win_width = std::stoi(reader.GetValue("general", "width", "1024"));
 	Config::win_height = std::stoi(reader.GetValue("general", "height", "720"));

@@ -2,6 +2,7 @@
 #define SETTINGS_HPP
 
 #include "imgui.h"
+#include "IconsFontAwesome5.h"
 
 namespace CodeNect
 {
@@ -13,12 +14,13 @@ struct Settings
 		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
 	bool m_is_open = false;
+	const char* m_title = ICON_FA_COG " SETTINGS";
 
-	void init();
-	void draw();
-	void draw_buttons();
-	void draw_theme_select();
-	void draw_font_select();
+	void init(void);
+	void draw(void);
+	void draw_buttons(void);
+	void draw_theme_select(void);
+	void draw_font_select(void);
 };
 }
 

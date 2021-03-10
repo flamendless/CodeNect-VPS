@@ -64,14 +64,11 @@ void NodeInterface::draw_startup()
 {
 	Font::use_font(FONT_SIZE::LARGE);
 
-	Utils::center_text(str, center_pos);
-	ImGui::Text("%s", str);
+	Utils::center_text(str, center_pos, true);
 
-	Utils::center_text(str2);
-	ImGui::Text("%s", str2);
+	Utils::center_text(str2, true);
 
-	Utils::center_text(str3);
-	ImGui::Text("%s", str3);
+	Utils::center_text(str3, true);
 
 	Font::unuse_font();
 }

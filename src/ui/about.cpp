@@ -1,5 +1,6 @@
 #include "ui/about.hpp"
 #include "core/utils.hpp"
+#include "core/config.hpp"
 
 namespace CodeNect
 {
@@ -16,13 +17,13 @@ void About::draw()
 
 	if (ImGui::Begin("About", &m_is_open, m_flags))
 	{
-		Utils::center_text(m_title);
-		ImGui::Text("%s", m_title);
+		Utils::center_text(m_title, true);
 		ImGui::Separator();
 
-		ImGui::Text("%s CodeNect: Visual Programming", ICON_FA_PROJECT_DIAGRAM);
-		ImGui::Text("Software for Learning");
-		ImGui::Text("Fundamentals of Programming");
+		Utils::center_text(ICON_FA_PROJECT_DIAGRAM " CodeNect: Visual Programming", true);
+		Utils::center_text("Software for Learning", true);
+		Utils::center_text("Fundamentals of Programming", true);
+		Utils::center_text(Config::version, true);
 		ImGui::Separator();
 
 		ImGui::Text("%s Thesis by:", ICON_FA_BOOK);

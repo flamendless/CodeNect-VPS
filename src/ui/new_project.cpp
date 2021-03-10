@@ -30,8 +30,7 @@ void NewProject::draw()
 
 	if (ImGui::BeginPopupModal("NewProjectPopup", &m_is_open, m_flags))
 	{
-		Utils::center_text(m_title);
-		ImGui::Text("%s", m_title);
+		Utils::center_text(m_title, true);
 		ImGui::Separator();
 
 		static bool can_create = false;
