@@ -36,7 +36,7 @@ const char* str3 = ICON_FA_TERMINAL " Press <Ctrl+P> to access the command palet
 
 bool NodeInterface::init()
 {
-	const ImVec2 pos = NodeInterface_c::pos;
+	const ImVec2 pos = Config::NodeInterface_c::pos;
 	const int w = Config::win_width - pos.x * 2;
 	const int h = Config::win_height - pos.y * 2;
 

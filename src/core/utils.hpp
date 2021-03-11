@@ -59,6 +59,16 @@ inline std::string time_now(void)
 
 	return std::string(buffer);
 }
+
+inline void open_url(const char* url)
+{
+	std::string str_url = url;
+#ifdef OS_LINUX
+	std::string cmd = "xdg-open " + str_url;
+	system(cmd.c_str());
+#elif OS_WIN
+#endif
+}
 }
 }
 

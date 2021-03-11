@@ -3,6 +3,7 @@
 #include "plog/Log.h"
 #include "IconsFontAwesome5.h"
 #include "core/config.hpp"
+#include "core/font.hpp"
 
 namespace CodeNect
 {
@@ -32,6 +33,7 @@ void Alert::draw()
 
 	if (ImGui::BeginPopupModal("AlertPopup", &is_open, flags))
 	{
+		Font::use_font(FONT_SIZE::LARGE);
 		if (type == ALERT_TYPE::SUCCESS)
 			ImGui::Text("%s SUCCESS!", ICON_FA_CHECK);
 		else if (type == ALERT_TYPE::ERROR)
@@ -47,6 +49,7 @@ void Alert::draw()
 			ImGui::CloseCurrentPopup();
 		}
 
+		Font::unuse_font();
 		ImGui::EndPopup();
 	}
 }

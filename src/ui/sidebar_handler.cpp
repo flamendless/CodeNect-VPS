@@ -31,7 +31,7 @@ void SidebarHandler::update(float dt)
 {
 	dt *= 1000;
 	const ImVec2& mouse_pos = ImGui::GetMousePos();
-	const int min = Sidebar_c::pos.x + Sidebar_c::indicator_size.x;
+	const int min = Config::Sidebar_c::pos.x + Config::Sidebar_c::indicator_size.x;
 	const int dist = mouse_pos.x - min;
 
 	if ((dist <= 0 || m_sidebar->m_has_opened) && !CommandPalette::is_open)

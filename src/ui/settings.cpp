@@ -6,6 +6,7 @@
 #include "ui/alert.hpp"
 #include "core/commands.hpp"
 #include "ui/command_palette.hpp"
+#include "core/font.hpp"
 
 namespace CodeNect
 {
@@ -44,7 +45,7 @@ void Settings::init(void)
 	settings_data.font_size_orig = settings_data.font_size;
 	settings_data.font = Config::font;
 	settings_data.font_orig = settings_data.font;
-	settings_data.cp_size = CommandPalette_c::size;
+	settings_data.cp_size = Config::CommandPalette_c::size;
 	settings_data.cp_size_orig = settings_data.cp_size;
 }
 
@@ -66,15 +67,16 @@ void Settings::open(void)
 
 void Settings::draw(void)
 {
-	if (!is_open)
+	if (!Settings::is_open)
 		return;
 
 	ImVec2 center_pos(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
 	ImGui::SetNextWindowPos(center_pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
 
-	if (ImGui::Begin("Settings", &is_open, flags))
+	if (ImGui::Begin("Settings", &Settings::is_open, Settings::flags))
 	{
-		Utils::center_text(title, true);
+		Font::use_font(FONT_SIZE::LARGE);
+		Utils::center_text(Settings::title, true);
 		ImGui::Separator();
 
 		Utils::center_text(ICON_FA_HOME " General", true);
@@ -91,6 +93,7 @@ void Settings::draw(void)
 
 		Settings::draw_buttons();
 
+		Font::unuse_font();
 		ImGui::End();
 	}
 }
@@ -196,7 +199,7 @@ void Settings::draw_buttons(void)
 		settings_data.style_idx = settings_data.style_idx_orig;
 		settings_data.font_size = settings_data.font_size_orig;
 		settings_data.font = settings_data.font_orig;
-		is_open = false;
+		Settings::is_open = false;
 	}
 }
 

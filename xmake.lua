@@ -62,6 +62,12 @@ target("CodeNect")
 		set_strip("all")
 	end
 
+	if is_host("linux") then
+		add_defines("OS_LINUX=1")
+	elseif is_host("windows") then
+		add_defines("OS_WIN=1")
+	end
+
 	on_load(function(target)
 		local packages = find_packages("GL", "gtk+-3.0", "glfw3")
 

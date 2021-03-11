@@ -51,7 +51,8 @@ void Font::init(void)
 	config.MergeMode = true;
 	config.PixelSnapH = true;
 	config.GlyphMinAdvanceX = Config::font_size;
-	io.Fonts->AddFontFromFileTTF(fas_path, Config::font_size, &config, icon_ranges);
+	io.Fonts->AddFontFromFileTTF(Font::fas_path, Config::font_size, &config, icon_ranges);
+	io.Fonts->AddFontFromFileTTF(Font::fab_path, Config::font_size, &config, icon_ranges);
 
 	Font::init_fonts();
 
@@ -81,6 +82,7 @@ void Font::init_fonts(void)
 		config.PixelSnapH = true;
 		config.GlyphMinAdvanceX = size;
 		io.Fonts->AddFontFromFileTTF(Font::fas_path, size, &config, icon_ranges);
+		io.Fonts->AddFontFromFileTTF(Font::fab_path, size, &config, icon_ranges);
 
 		PLOGV << "Loaded: " << value.first << " of size: " << size << " successfully";
 	}

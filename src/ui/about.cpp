@@ -4,6 +4,7 @@
 #include "core/utils.hpp"
 #include "core/config.hpp"
 #include "core/commands.hpp"
+#include "core/font.hpp"
 
 namespace CodeNect
 {
@@ -32,7 +33,7 @@ void About::open(void)
 
 void About::draw()
 {
-	if (!is_open)
+	if (!About::is_open)
 		return;
 
 	ImVec2 center_pos(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
@@ -41,9 +42,10 @@ void About::draw()
 	if (!ImGui::IsPopupOpen("AlertPopup"))
 		ImGui::SetNextWindowFocus();
 
-	if (ImGui::Begin("About", &is_open, flags))
+	if (ImGui::Begin("About", &About::is_open, About::flags))
 	{
-		Utils::center_text(title, true);
+		Font::use_font(FONT_SIZE::LARGE);
+		Utils::center_text(About::title, true);
 		ImGui::Separator();
 
 		Utils::center_text(ICON_FA_PROJECT_DIAGRAM " CodeNect: Visual Programming", true);
@@ -71,11 +73,9 @@ void About::draw()
 		ImGui::Separator();
 
 		if (ImGui::Button(ICON_FA_TIMES " Close"))
-		{
-			is_open = false;
-			ImGui::CloseCurrentPopup();
-		}
+			About::is_open = false;
 
+		Font::unuse_font();
 		ImGui::End();
 	}
 }

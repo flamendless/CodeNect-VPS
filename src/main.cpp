@@ -12,6 +12,7 @@
 #include "ui/command_palette.hpp"
 #include "ui/settings.hpp"
 #include "ui/about.hpp"
+#include "ui/help.hpp"
 
 int main(int argv, char** args)
 {
@@ -31,6 +32,7 @@ int main(int argv, char** args)
 	CodeNect::Project::register_commands();
 	CodeNect::Settings::register_commands();
 	CodeNect::About::register_commands();
+	CodeNect::Help::register_commands();
 
 	//Sidebar
 	CodeNect::Sidebar sidebar;
@@ -73,8 +75,6 @@ int main(int argv, char** args)
 		CodeNect::NodeInterface::draw();
 		CodeNect::Project::draw();
 		CodeNect::CommandPalette::draw();
-		CodeNect::Settings::draw();
-		CodeNect::About::draw();
 		CodeNect::Alert::draw();
 
 		app.render_end();
@@ -83,7 +83,7 @@ int main(int argv, char** args)
 	sidebar.shutdown();
 	CodeNect::Commands::shutdown();
 	CodeNect::Font::shutdown();
-	CodeNect::Sidebar_c::shutdown();
+	CodeNect::Config::Sidebar_c::shutdown();
 	app.shutdown();
 
 	return 0;
