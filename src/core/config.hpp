@@ -64,11 +64,11 @@ struct Config
 	static void update_command_palette(const ImVec2& size);
 	static bool save_user_config(void);
 	static bool reset(void);
-};
 
-typedef CodeNect::Config::Sidebar_c Sidebar_c;
-typedef CodeNect::Config::CommandPalette_c CommandPalette_c;
-typedef CodeNect::Config::NodeInterface_c NodeInterface_c;
+	typedef Config::Sidebar_c Sidebar_c;
+	typedef Config::CommandPalette_c CommandPalette_c;
+	typedef Config::NodeInterface_c NodeInterface_c;
+};
 }
 
 #endif //CONFIG_HPP

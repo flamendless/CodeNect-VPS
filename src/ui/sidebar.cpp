@@ -10,6 +10,7 @@
 #include "popups/popup.hpp"
 #include "ui/settings.hpp"
 #include "ui/about.hpp"
+#include "ui/help.hpp"
 
 namespace CodeNect
 {
@@ -17,6 +18,7 @@ Button* btn_project;
 Button* btn_run;
 Button* btn_settings;
 Button* btn_about;
+Button* btn_help;
 
 PopupProject popup_project;
 PopupRun popup_run;
@@ -38,6 +40,7 @@ int Sidebar::init(void)
 	btn_run = m_ui_buttons["run"];
 	btn_settings = m_ui_buttons["settings"];
 	btn_about = m_ui_buttons["about"];
+	btn_help = m_ui_buttons["help"];
 
 	return RES_SUCCESS;
 }
@@ -46,8 +49,8 @@ int Sidebar::load_images(void)
 {
 	PLOGI << "Loading sidebar images...";
 
-	vec_filenames& images_filenames = Sidebar_c::images_filenames;
-	vec_filenames& images_filenames_hover = Sidebar_c::images_filenames_hover;
+	vec_filenames& images_filenames = Config::Sidebar_c::images_filenames;
+	vec_filenames& images_filenames_hover = Config::Sidebar_c::images_filenames_hover;
 
 	for (int i = 0; i < images_filenames.size(); i++)
 	{
@@ -97,7 +100,7 @@ int Sidebar::load_images(void)
 
 void Sidebar::check_image_size(const CodeNect::Image& img)
 {
-	const ImVec2& ms = Sidebar_c::max_img_size;
+	const ImVec2& ms = Config::Sidebar_c::max_img_size;
 	const ImVec2& is = img.size;
 
 	std::string err = fmt::format("({}, {}) != ({}, {})", is.x, is.y, ms.x, ms.y);
@@ -107,9 +110,9 @@ void Sidebar::check_image_size(const CodeNect::Image& img)
 void Sidebar::set_style(void)
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_Alpha, m_alpha);
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, Sidebar_c::padding);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, Config::Sidebar_c::padding);
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2());
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, Sidebar_c::item_spacing);
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, Config::Sidebar_c::item_spacing);
 }
 
 void Sidebar::unset_style(void)
@@ -154,6 +157,14 @@ void Sidebar::manage_popups(void)
 		btn_settings->m_hoverable = false;
 		btn_about->m_hoverable = true;
 	}
+	else if (Help::is_open)
+	{
+		btn_project->m_hoverable = false;
+		btn_run->m_hoverable = false;
+		btn_settings->m_hoverable = false;
+		btn_about->m_hoverable = false;
+		btn_help->m_hoverable = true;
+	}
 	else
 	{
 		btn_project->m_hoverable = true;
@@ -174,22 +185,23 @@ void Sidebar::draw(void)
 	if (btn_run->m_is_open) popup_run.draw();
 
 	btn_settings->m_is_open = Settings::is_open;
-
 	btn_about->m_is_open = About::is_open;
+	btn_help->m_is_open = Help::is_open;
 
 	m_has_opened = btn_project->m_is_open ||
 		btn_run->m_is_open ||
 		btn_settings->m_is_open ||
-		btn_about->m_is_open;
+		btn_about->m_is_open ||
+		btn_help->m_is_open;
 }
 
 void Sidebar::draw_sidebar(void)
 {
-	const ImVec2& max_size = Sidebar_c::max_img_size;
+	const ImVec2& max_size = Config::Sidebar_c::max_img_size;
 
 	Sidebar::set_style();
-	ImGui::SetNextWindowPos(Sidebar_c::pos, ImGuiCond_Always, ImVec2(0.0f, 0.5f));
-	ImGui::SetNextWindowSize(Sidebar_c::size);
+	ImGui::SetNextWindowPos(Config::Sidebar_c::pos, ImGuiCond_Always, ImVec2(0.0f, 0.5f));
+	ImGui::SetNextWindowSize(Config::Sidebar_c::size);
 	ImGui::Begin("Sidebar", &m_is_open, m_flags);
 		popup_project.m_pos = ImGui::GetCursorPos();
 		btn_project->draw();
@@ -197,8 +209,9 @@ void Sidebar::draw_sidebar(void)
 		popup_run.m_pos = ImGui::GetCursorPos();
 		btn_run->draw();
 
+		static const int btn_after = 3;
 		const int isy = CodeNect::Config::Sidebar_c::item_spacing.y;
-		const int y = ImGui::GetContentRegionAvail().y - (max_size.y * 2) - (isy * 2);
+		const int y = ImGui::GetContentRegionAvail().y - (max_size.y * btn_after) - (isy * btn_after);
 		ImGui::Dummy(ImVec2(max_size.x, y));
 
 		if (ImGui::IsItemHovered())
@@ -215,9 +228,17 @@ void Sidebar::draw_sidebar(void)
 		if (!m_has_opened && btn_about->m_is_clicked)
 			About::open();
 
+		btn_help->draw();
+		if (!m_has_opened && btn_help->m_is_clicked)
+			Help::open();
+
 		Sidebar::manage_popups();
 	ImGui::End();
 	Sidebar::unset_style();
+
+	Settings::draw();
+	About::draw();
+	Help::draw();
 }
 
 void Sidebar::shutdown()

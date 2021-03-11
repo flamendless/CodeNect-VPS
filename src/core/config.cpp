@@ -125,19 +125,23 @@ void Config::init_sidebar(void)
 	const pair_key_filename run = std::make_pair("run", reader.GetValue("sidebar_images", "run", "???"));
 	const pair_key_filename settings = std::make_pair("settings", reader.GetValue("sidebar_images", "settings", "???"));
 	const pair_key_filename about = std::make_pair("about", reader.GetValue("sidebar_images", "about", "???"));
+	const pair_key_filename help = std::make_pair("help", reader.GetValue("sidebar_images", "help", "???"));
 	images_filenames.push_back(project);
 	images_filenames.push_back(run);
 	images_filenames.push_back(settings);
 	images_filenames.push_back(about);
+	images_filenames.push_back(help);
 
 	const pair_key_filename project_hover = std::make_pair("project_hover", reader.GetValue("sidebar_images", "project_hover", "???"));
 	const pair_key_filename run_hover = std::make_pair("run_hover", reader.GetValue("sidebar_images", "run_hover", "???"));
 	const pair_key_filename settings_hover = std::make_pair("settings_hover", reader.GetValue("sidebar_images", "settings_hover", "???"));
 	const pair_key_filename about_hover = std::make_pair("about_hover", reader.GetValue("sidebar_images", "about_hover", "???"));
+	const pair_key_filename help_hover = std::make_pair("help_hover", reader.GetValue("sidebar_images", "help_hover", "???"));
 	images_filenames_hover.push_back(project_hover);
 	images_filenames_hover.push_back(run_hover);
 	images_filenames_hover.push_back(settings_hover);
 	images_filenames_hover.push_back(about_hover);
+	images_filenames_hover.push_back(help_hover);
 
 	const int x = std::stoi(reader.GetValue("sidebar", "pos_x", "-1"));
 	const int y = std::stoi(reader.GetValue("sidebar", "pos_y", "-1"));
