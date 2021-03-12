@@ -51,7 +51,6 @@ void Help::draw()
 
 	if (ImGui::Begin("Help", &Help::is_open, Help::flags))
 	{
-		Font::use_font(FONT_SIZE::LARGE);
 		Utils::center_text(Help::title, true);
 		ImGui::Separator();
 
@@ -61,7 +60,6 @@ void Help::draw()
 		if (ImGui::Button(ICON_FA_TIMES " Close"))
 			Help::is_open = false;
 
-		Font::unuse_font();
 		ImGui::End();
 	}
 }

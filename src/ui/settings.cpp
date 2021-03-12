@@ -75,7 +75,6 @@ void Settings::draw(void)
 
 	if (ImGui::Begin("Settings", &Settings::is_open, Settings::flags))
 	{
-		Font::use_font(FONT_SIZE::LARGE);
 		Utils::center_text(Settings::title, true);
 		ImGui::Separator();
 
@@ -93,7 +92,6 @@ void Settings::draw(void)
 
 		Settings::draw_buttons();
 
-		Font::unuse_font();
 		ImGui::End();
 	}
 }

@@ -44,7 +44,6 @@ void About::draw()
 
 	if (ImGui::Begin("About", &About::is_open, About::flags))
 	{
-		Font::use_font(FONT_SIZE::LARGE);
 		Utils::center_text(About::title, true);
 		ImGui::Separator();
 
@@ -75,7 +74,6 @@ void About::draw()
 		if (ImGui::Button(ICON_FA_TIMES " Close"))
 			About::is_open = false;
 
-		Font::unuse_font();
 		ImGui::End();
 	}
 }
