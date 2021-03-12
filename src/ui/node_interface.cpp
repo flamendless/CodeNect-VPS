@@ -76,7 +76,7 @@ void NodeInterface::draw_main(void)
 
 	ImNodes::BeginCanvas(&canvas);
 	NodeInterface::draw_nodes();
-	NodeInterface::draw_nodes_context_menu();
+	NodeInterface::draw_nodes_context_menu(canvas);
 	ImNodes::EndCanvas();
 }
 
@@ -141,7 +141,7 @@ void NodeInterface::draw_nodes(void)
 	}
 }
 
-void NodeInterface::draw_nodes_context_menu(void)
+void NodeInterface::draw_nodes_context_menu(ImNodes::CanvasState& canvas)
 {
 	if (ImGui::BeginPopup("NodesContextMenu"))
 	{
@@ -155,6 +155,9 @@ void NodeInterface::draw_nodes_context_menu(void)
 		}
 
 		ImGui::Separator();
+
+		if (ImGui::MenuItem("Reset Zoom"))
+            canvas.Zoom = 1;
 
 		if (ImGui::IsAnyMouseDown() && !ImGui::IsWindowHovered())
 			ImGui::CloseCurrentPopup();

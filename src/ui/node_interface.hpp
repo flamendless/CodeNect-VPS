@@ -2,6 +2,7 @@
 #define NODE_INTERFACE_HPP
 
 #include "imgui.h"
+#include "ImNodes.h"
 
 namespace CodeNect
 {
@@ -22,7 +23,7 @@ struct NodeInterface
 	static void draw_startup(void);
 	static void draw_main(void);
 	static void draw_nodes(void);
-	static void draw_nodes_context_menu(void);
+	static void draw_nodes_context_menu(ImNodes::CanvasState& canvas);
 };
 }
 
