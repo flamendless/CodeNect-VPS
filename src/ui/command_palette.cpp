@@ -80,6 +80,8 @@ void CommandPalette::keypress(GLFWwindow* window, int key, int scancode, int mod
 		const Command* cmd = Commands::v_cmd[CommandPalette::cur_cmd];
 		cmd->run();
 
+		CommandPalette::filter.Clear();
+
 		if (cmd->m_close_command_palette)
 			CommandPalette::close();
 

@@ -47,6 +47,23 @@ inline void center_text(const char* txt, const ImVec2& offset_pos, bool draw_tex
 		ImGui::Text("%s", txt);
 }
 
+inline void help_marker(const char* desc, bool same_line = false)
+{
+	if (same_line)
+		ImGui::SameLine();
+
+	ImGui::TextDisabled("(?)");
+
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+		ImGui::TextUnformatted(desc);
+		ImGui::PopTextWrapPos();
+		ImGui::EndTooltip();
+	}
+}
+
 inline std::string time_now(void)
 {
 	time_t rawtime;

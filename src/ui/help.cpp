@@ -17,10 +17,20 @@ ImGuiWindowFlags Help::flags =
 bool Help::is_open = false;
 const char* Help::title = ICON_FA_QUESTION_CIRCLE " HELP";
 
-Help::items_t Help::v_items
+Help::pair_t Help::v_items
 {
 	std::make_pair<const char*, const char*>(ICON_FA_ENVELOPE " E-Mail:", "mailto:flamendless8@gmail.com"),
 	std::make_pair<const char*, const char*>(ICON_FA_GITHUB " Github:", "https://github.com/flamendless/CodeNect-VPS"),
+};
+
+Help::tuple_t Help::v_key_items
+{
+	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " LMB", "select node", "left mouse button"),
+	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " RMB", "open nodes menu", "right mouse button"),
+	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " LMB + Drag", "move node", "left mouse button hold then drag"),
+	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " MMB + Drag", "pan view", "middle mouse button then drag"),
+	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " Scroll Wheel", "zoom in/out", "scroll middle mouse button/wheel"),
+	std::make_tuple<const char*, const char*, const char*>(ICON_FA_BACKSPACE " Delete Key", "delete selected node", "'del' key in keyboard"),
 };
 
 void Help::register_commands(void)
@@ -29,7 +39,12 @@ void Help::register_commands(void)
 	cmd->set_fn(Help::open);
 	cmd->m_close_command_palette = true;
 
+	Command* cmd_alt = new Command("Keyboard Controls", "open keyboard controls window", ICON_FA_KEYBOARD);
+	cmd_alt->set_fn(Help::open);
+	cmd_alt->m_close_command_palette = true;
+
 	Commands::register_cmd(*cmd);
+	Commands::register_cmd(*cmd_alt);
 }
 
 void Help::open(void)
@@ -54,6 +69,9 @@ void Help::draw()
 		Utils::center_text(Help::title, true);
 		ImGui::Separator();
 
+		Help::draw_commands();
+		ImGui::Separator();
+
 		Help::draw_support();
 		ImGui::Separator();
 
@@ -64,20 +82,45 @@ void Help::draw()
 	}
 }
 
+void Help::draw_commands(void)
+{
+	Utils::center_text(ICON_FA_KEYBOARD " Commands", true);
+
+	if (ImGui::BeginTable("TableCommands", 3))
+	{
+		for (const std::tuple<const char*, const char*, const char*> &item : Help::v_key_items)
+		{
+			ImGui::TableNextRow();
+			ImGui::TableNextColumn();
+			ImGui::Text("%s", std::get<0>(item));
+
+			ImGui::TableNextColumn();
+			ImGui::Text("%s", std::get<1>(item));
+
+			ImGui::TableNextColumn();
+			Utils::help_marker(std::get<2>(item));
+		}
+
+		ImGui::EndTable();
+	}
+}
+
 void Help::draw_support(void)
 {
-	if (ImGui::BeginTable("TableSupport", 2))
+	Utils::center_text(ICON_FA_ADDRESS_BOOK " Contacts", true);
+
+	if (ImGui::BeginTable("TableSupport", 3))
 	{
 		for (const std::pair<const char*, const char*> &item : Help::v_items)
 		{
 			ImGui::TableNextRow();
 			ImGui::TableNextColumn();
 			ImGui::Text("%s", item.first);
+
 			ImGui::TableNextColumn();
-
 			ImGui::Text("%s", item.second);
-			ImGui::SameLine();
 
+			ImGui::TableNextColumn();
 			ImGui::PushID(item.second);
 
 			if (ImGui::SmallButton(ICON_FA_EXTERNAL_LINK_ALT))
