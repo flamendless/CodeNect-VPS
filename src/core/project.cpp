@@ -68,7 +68,7 @@ int Project::open(void)
 		if (Project::parse() == RES_FAIL)
 			return RES_FAIL;
 
-		has_open_proj = true;
+		Project::has_open_proj = true;
 
 		return RES_SUCCESS;
 	}
@@ -117,7 +117,7 @@ void Project::draw(void)
 
 void Project::close(void)
 {
-	has_open_proj = false;
+	Project::has_open_proj = false;
 
 	Project::meta.filepath.clear();
 	Project::meta.title.clear();

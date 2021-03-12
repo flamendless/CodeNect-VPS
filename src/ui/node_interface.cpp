@@ -9,32 +9,34 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 #include "ImNodesEz.h"
+#include "plog/Log.h"
 #include "IconsFontAwesome5.h"
+#include "core/project.hpp"
 #include "core/defines.hpp"
 #include "core/config.hpp"
 #include "core/utils.hpp"
 #include "core/font.hpp"
+#include "modules/nodes.hpp"
 
 namespace CodeNect
 {
 bool NodeInterface::is_open = true;
-bool NodeInterface::has_open_file = false;
 ImVec2 NodeInterface::pos;
 ImVec2 NodeInterface::size;
 
-ImGuiWindowFlags flags =
+ImGuiWindowFlags NodeInterface::flags =
 	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
 	ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoMove |
 	ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar |
 	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings |
 	ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar;
-ImVec2 center_pos;
+ImVec2 NodeInterface::center_pos;
 
-const char* str = ICON_FA_PROJECT_DIAGRAM " Welcome to CodeNect";
-const char* str2 = ICON_FA_ANGLE_LEFT " Hover on the left side to access the sidebar";
-const char* str3 = ICON_FA_TERMINAL " Press <Ctrl+P> to access the command palette";
+const char* NodeInterface::str = ICON_FA_PROJECT_DIAGRAM " Welcome to CodeNect";
+const char* NodeInterface::str2 = ICON_FA_ANGLE_LEFT " Hover on the left side to access the sidebar";
+const char* NodeInterface::str3 = ICON_FA_TERMINAL " Press <Ctrl+P> to access the command palette";
 
-bool NodeInterface::init()
+bool NodeInterface::init(void)
 {
 	const ImVec2 pos = Config::NodeInterface_c::pos;
 	const int w = Config::win_width - pos.x * 2;
@@ -42,43 +44,122 @@ bool NodeInterface::init()
 
 	NodeInterface::pos = pos;
 	NodeInterface::size = ImVec2(w, h);
-
-	center_pos = ImVec2((float)w/2, (float)h/2);
+	NodeInterface::center_pos = ImVec2((float)w/2, (float)h/2);
 
 	return RES_SUCCESS;
 }
 
-void NodeInterface::draw()
+void NodeInterface::draw(void)
 {
 	ImGui::SetNextWindowPos(NodeInterface::pos);
 	ImGui::SetNextWindowSize(NodeInterface::size);
-	ImGui::Begin("NodeInterface", &NodeInterface::is_open, flags);
-		if (!has_open_file)
+	ImGui::Begin("NodeInterface", &NodeInterface::is_open, NodeInterface::flags);
+		if (!Project::has_open_proj)
 			NodeInterface::draw_startup();
 		else
 			NodeInterface::draw_main();
 	ImGui::End();
 }
 
-void NodeInterface::draw_startup()
+void NodeInterface::draw_startup(void)
 {
 	Font::use_font(FONT_SIZE::LARGE);
-
-	Utils::center_text(str, center_pos, true);
-
-	Utils::center_text(str2, true);
-
-	Utils::center_text(str3, true);
-
+	Utils::center_text(NodeInterface::str, NodeInterface::center_pos, true);
+	Utils::center_text(NodeInterface::str2, true);
+	Utils::center_text(NodeInterface::str3, true);
 	Font::unuse_font();
 }
 
-void NodeInterface::draw_main()
+void NodeInterface::draw_main(void)
 {
 	static ImNodes::CanvasState canvas{};
 
 	ImNodes::BeginCanvas(&canvas);
-
+	NodeInterface::draw_nodes();
+	NodeInterface::draw_nodes_context_menu();
 	ImNodes::EndCanvas();
+}
+
+void NodeInterface::draw_nodes(void)
+{
+	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin(); it != Nodes::v_nodes.end();)
+	{
+		Node* node = *it;
+
+		if (ImNodes::Ez::BeginNode(node, node->m_title, &node->m_pos, &node->m_selected))
+		{
+			ImNodes::Ez::InputSlots(node->m_in_slots.data(), node->m_in_slots.size());
+			ImGui::Text("Content of %s", node->m_title);
+			ImNodes::Ez::OutputSlots(node->m_out_slots.data(), node->m_out_slots.size());
+
+			Connection new_connection;
+
+			if (ImNodes::GetNewConnection(&new_connection.in_node, &new_connection.in_slot,
+					&new_connection.out_node, &new_connection.out_slot))
+			{
+				((Node*) new_connection.in_node)->m_connections.push_back(new_connection);
+				((Node*) new_connection.out_node)->m_connections.push_back(new_connection);
+			}
+
+			for (const Connection& connection : node->m_connections)
+			{
+				if (connection.out_node != node) continue;
+
+				if (!ImNodes::Connection(connection.in_node, connection.in_slot,
+						connection.out_node, connection.out_slot))
+				{
+					((Node*) connection.in_node)->delete_connection(connection);
+					((Node*) connection.out_node)->delete_connection(connection);
+				}
+			}
+		}
+
+		ImNodes::Ez::EndNode();
+
+		if (node->m_selected && ImGui::IsKeyPressedMap(ImGuiKey_Delete))
+		{
+			for (Connection& connection : node->m_connections)
+			{
+				if (connection.out_node == node)
+					((Node*) connection.in_node)->delete_connection(connection);
+				else
+					((Node*) connection.out_node)->delete_connection(connection);
+			}
+
+			node->m_connections.clear();
+			delete node;
+			it = Nodes::v_nodes.erase(it);
+		}
+		else
+			++it;
+	}
+
+	if (ImGui::IsMouseReleased(1) && ImGui::IsWindowHovered() && !ImGui::IsMouseDragging(1))
+	{
+		ImGui::FocusWindow(ImGui::GetCurrentWindow());
+		ImGui::OpenPopup("NodesContextMenu");
+	}
+}
+
+void NodeInterface::draw_nodes_context_menu(void)
+{
+	if (ImGui::BeginPopup("NodesContextMenu"))
+	{
+		for (const std::pair<const std::string, Node*(*)()>& desc : Nodes::m_available_nodes)
+		{
+			if (ImGui::MenuItem(desc.first.c_str()))
+			{
+				Nodes::v_nodes.push_back(desc.second());
+				ImNodes::AutoPositionNode(Nodes::v_nodes.back());
+			}
+		}
+
+		ImGui::Separator();
+
+		if (ImGui::IsAnyMouseDown() && !ImGui::IsWindowHovered())
+			ImGui::CloseCurrentPopup();
+
+		ImGui::EndPopup();
+	}
 }
 }
