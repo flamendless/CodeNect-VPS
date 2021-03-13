@@ -18,6 +18,7 @@ struct CommandPalette
 	static ImGuiTextFilter filter;
 	static int cur_pos;
 	static int cur_cmd;
+	static int filtered;
 
 	CommandPalette() = delete;
 	static int init(void);

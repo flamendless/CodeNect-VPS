@@ -23,6 +23,7 @@ ImGuiWindowFlags CommandPalette::flags =
 ImGuiTextFilter CommandPalette::filter;
 int CommandPalette::cur_pos = 0;
 int CommandPalette::cur_cmd = -1;
+int CommandPalette::filtered = -1;
 
 int CommandPalette::init(void)
 {
@@ -109,36 +110,46 @@ void CommandPalette::draw(void)
 
 		float font_size = (Font::get_font_size(FONT_SIZE::LARGE) * 2) + 8;
 		static ImVec4 color(1, 1, 1, 0.6f);
-		ImGui::SetNextItemWidth(CommandPalette::size.x - font_size);
-		CommandPalette::filter.Draw(ICON_FA_SEARCH);
+		CommandPalette::filter.Draw(ICON_FA_SEARCH, CommandPalette::size.x - font_size);
 		ImGui::SetKeyboardFocusHere(-1);
 		int cur = 0;
+
+		Utils::center_text(CommandPalette::str_close);
+		ImGui::TextColored(color, "%s", CommandPalette::str_close);
+		ImGui::Separator();
+
+		//TODO CountGrep always is set to 1
+
+		const ImVec2 child_size = ImGui::GetContentRegionAvail();
+		const bool child_is_visible = ImGui::BeginChild("child", child_size);
 
 		for (int i = 0; i < Commands::v_cmd.size(); i++)
 		{
 			const Command* cmd = Commands::v_cmd[i];
+
 			if (CommandPalette::filter.PassFilter(cmd->m_title.c_str()))
 			{
 				if (CommandPalette::filter.CountGrep != 0)
 				{
-					if (cur_pos == cur)
-					{
-						ImGui::Text(ICON_FA_ARROW_RIGHT "    %s %s", cmd->m_icon, cmd->m_title.c_str());
-						CommandPalette::cur_cmd = i;
-					}
-					else
-						ImGui::TextColored(color, "%s %s", cmd->m_icon, cmd->m_title.c_str());
 
-					ImGui::SameLine();
-					ImGui::TextColored(color, "(%s)", cmd->m_desc.c_str());
-					cur++;
+					if (child_is_visible)
+					{
+						if (cur_pos == cur)
+						{
+							ImGui::Text(ICON_FA_ARROW_RIGHT "    %s %s", cmd->m_icon, cmd->m_title.c_str());
+							CommandPalette::cur_cmd = i;
+						}
+						else
+							ImGui::TextColored(color, "%s %s", cmd->m_icon, cmd->m_title.c_str());
+
+						ImGui::SameLine();
+						ImGui::TextColored(color, "(%s)", cmd->m_desc.c_str());
+						cur++;
+					}
 				}
 			}
 		}
-
-		ImGui::Separator();
-		Utils::center_text(CommandPalette::str_close);
-		ImGui::TextColored(color, "%s", CommandPalette::str_close);
+		ImGui::EndChild();
 
 		Font::unuse_font();
 		ImGui::End();
