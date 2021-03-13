@@ -1,5 +1,6 @@
 #include "settings.hpp"
 #include <string>
+#include "IconsFontAwesome5.h"
 #include "plog/Log.h"
 #include "core/config.hpp"
 #include "core/utils.hpp"

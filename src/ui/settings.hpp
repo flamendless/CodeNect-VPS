@@ -2,7 +2,6 @@
 #define SETTINGS_HPP
 
 #include "imgui.h"
-#include "IconsFontAwesome5.h"
 
 namespace CodeNect
 {

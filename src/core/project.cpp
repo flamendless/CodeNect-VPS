@@ -14,7 +14,11 @@
 
 namespace CodeNect
 {
+#if DEBUG_MODE
+bool Project::has_open_proj = true;
+#else
 bool Project::has_open_proj = false;
+#endif
 ProjectMeta Project::meta {};
 NewProject Project::new_proj;
 

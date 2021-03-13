@@ -27,9 +27,9 @@ Help::tuple_t Help::v_key_items
 {
 	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " LMB", "select node", "left mouse button"),
 	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " RMB", "open nodes menu", "right mouse button"),
-	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " LMB + Drag", "move node", "left mouse button hold then drag"),
-	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " MMB + Drag", "pan view", "middle mouse button then drag"),
-	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " Scroll Wheel", "zoom in/out", "scroll middle mouse button/wheel"),
+	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " LMB + Drag", "move node", "hold left mouse button then drag"),
+	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " MMB + Drag", "pan view", "hold middle mouse button then drag"),
+	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " Ctrl + Scroll Wheel", "zoom in/out", "hold 'ctrl' key in then scroll middle mouse button/wheel"),
 	std::make_tuple<const char*, const char*, const char*>(ICON_FA_BACKSPACE " Delete Key", "delete selected node", "'del' key in keyboard"),
 };
 
