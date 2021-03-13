@@ -12,6 +12,9 @@ target("CodeNect")
 	add_files("src/ui/*.cpp")
 	add_includedirs("src/")
 
+	--better-enums
+	add_includedirs("includes/better-enums")
+
 	--dearimgui
 	add_files("includes/imgui/*.cpp", "includes/imgui/backends/imgui_impl_opengl2.cpp", "includes/imgui/backends/imgui_impl_glfw.cpp")
 	add_includedirs("includes/imgui", "includes/imgui/backends")
