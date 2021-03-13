@@ -19,6 +19,7 @@ struct Settings
 	static void draw_buttons(void);
 	static void draw_theme_select(void);
 	static void draw_font_select(void);
+	static void draw_sidebar(void);
 	static void draw_command_palette(void);
 };
 }

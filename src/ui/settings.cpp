@@ -22,6 +22,11 @@ struct SettingsData
 
 	ImVec2 cp_size_orig;
 	ImVec2 cp_size;
+
+	int fade_in;
+	int fade_out;
+	int fade_in_orig;
+	int fade_out_orig;
 } settings_data;
 
 ImGuiWindowFlags Settings::flags =
@@ -48,6 +53,10 @@ void Settings::init(void)
 	settings_data.font_orig = settings_data.font;
 	settings_data.cp_size = Config::CommandPalette_c::size;
 	settings_data.cp_size_orig = settings_data.cp_size;
+	settings_data.fade_in = Config::Sidebar_c::fade_in;
+	settings_data.fade_out = Config::Sidebar_c::fade_out;
+	settings_data.fade_in_orig = settings_data.fade_in;
+	settings_data.fade_out_orig = settings_data.fade_out;
 }
 
 void Settings::register_commands(void)
@@ -82,6 +91,8 @@ void Settings::draw(void)
 		Utils::center_text(ICON_FA_HOME " General", true);
 		Settings::draw_theme_select();
 		Settings::draw_font_select();
+		ImGui::Separator();
+		Settings::draw_sidebar();
 		ImGui::Separator();
 		Settings::draw_command_palette();
 
@@ -164,6 +175,10 @@ void Settings::draw_buttons(void)
 			settings_data.cp_size_orig.y != settings_data.cp_size.y)
 			Config::update_command_palette(settings_data.cp_size);
 
+		if (settings_data.fade_in != settings_data.fade_in_orig ||
+			settings_data.fade_out != settings_data.fade_out_orig)
+			Config::update_sidebar(settings_data.fade_in, settings_data.fade_out);
+
 		bool res = Config::save_user_config();
 		PLOGV << "Save user config: " << res;
 
@@ -200,6 +215,17 @@ void Settings::draw_buttons(void)
 		settings_data.font = settings_data.font_orig;
 		Settings::is_open = false;
 	}
+}
+
+void Settings::draw_sidebar(void)
+{
+	Utils::center_text(ICON_FA_ANGLE_LEFT " Sidebar", true);
+
+	ImGui::SliderInt("fade in", &settings_data.fade_in, 0, 5000);
+	Utils::help_marker("lower value = faster, higher value = slower", true);
+
+	ImGui::SliderInt("fade out", &settings_data.fade_out, 0, 5000);
+	Utils::help_marker("lower value = faster, higher value = slower", true);
 }
 
 void Settings::draw_command_palette(void)

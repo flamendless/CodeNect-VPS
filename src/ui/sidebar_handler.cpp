@@ -8,13 +8,9 @@
 #include "core/config.hpp"
 #include "ui/command_palette.hpp"
 
-#define DUR_FADE_IN 1000
-#define DUR_FADE_OUT 50000
-
 namespace CodeNect
 {
-tweeny::tween<float> t_sidebar;
-tweeny::tween<float> t_si;
+tweeny::tween<float> tween;
 
 bool show_sidebar = false;
 
@@ -22,14 +18,10 @@ void SidebarHandler::init(Sidebar* sidebar, SidebarIndicator* sidebar_indicator)
 {
 	m_sidebar = sidebar;
 	m_sidebar_indicator = sidebar_indicator;
-
-	t_sidebar = tweeny::from(m_sidebar->m_alpha).to(1.0f);
-	t_si = tweeny::from(m_sidebar_indicator->m_alpha).to(0.0f);
 }
 
 void SidebarHandler::update(float dt)
 {
-	dt *= 1000;
 	const ImVec2& mouse_pos = ImGui::GetMousePos();
 	const int min = Config::Sidebar_c::pos.x + Config::Sidebar_c::indicator_size.x;
 	const int dist = mouse_pos.x - min;
@@ -40,26 +32,11 @@ void SidebarHandler::update(float dt)
 		show_sidebar = false;
 
 	if (show_sidebar)
-	{
-		t_sidebar.during(DUR_FADE_IN);
-		t_si.during(DUR_FADE_IN);
-
-		t_sidebar.forward();
-		t_si.forward();
-	}
+		tween = tweeny::from(m_sidebar->m_alpha).to(1.0f).during(Config::Sidebar_c::fade_in);
 	else
-	{
-		t_sidebar.during(DUR_FADE_OUT);
-		t_si.during(DUR_FADE_OUT);
+		tween = tweeny::from(m_sidebar->m_alpha).to(0.0f).during(Config::Sidebar_c::fade_out);
 
-		t_sidebar.backward();
-		t_si.backward();
-	}
-
-	const float da = t_sidebar.step(dt);
-	const float da2 = t_si.step(dt);
-
-	m_sidebar->m_alpha = da;
-	m_sidebar_indicator->m_alpha = da2;
+	const float value = tween.step(static_cast<int>(dt * 1000));
+	m_sidebar->m_alpha = value;
 }
 }

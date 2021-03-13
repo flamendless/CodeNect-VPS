@@ -26,6 +26,8 @@ const char* Config::fonts[6] = {
 const char* Config::version;
 
 //Sidebar_c
+int Config::Sidebar_c::fade_in;
+int Config::Sidebar_c::fade_out;
 ImVec2 Config::Sidebar_c::size;
 ImVec2 Config::Sidebar_c::max_img_size;
 ImVec2 Config::Sidebar_c::pos;
@@ -143,6 +145,8 @@ void Config::init_sidebar(void)
 	images_filenames_hover.push_back(about_hover);
 	images_filenames_hover.push_back(help_hover);
 
+	const int fade_in = std::stoi(reader.GetValue("sidebar_handler", "fade_in", "-1"));
+	const int fade_out = std::stoi(reader.GetValue("sidebar_handler", "fade_out", "-1"));
 	const int x = std::stoi(reader.GetValue("sidebar", "pos_x", "-1"));
 	const int y = std::stoi(reader.GetValue("sidebar", "pos_y", "-1"));
 	const int w = std::stoi(reader.GetValue("sidebar", "width", "-1"));
@@ -154,6 +158,8 @@ void Config::init_sidebar(void)
 	const int max_img_width = std::stoi(reader.GetValue("sidebar", "max_img_width", "-1"));
 	const int max_img_height = std::stoi(reader.GetValue("sidebar", "max_img_height", "-1"));
 
+	Config::Sidebar_c::fade_in = fade_in;
+	Config::Sidebar_c::fade_out = fade_out;
 	Config::Sidebar_c::pos = ImVec2(x, y);
 	Config::Sidebar_c::size = ImVec2(w, h);
 	Config::Sidebar_c::max_img_size = ImVec2(max_img_width, max_img_height);
@@ -214,6 +220,18 @@ void Config::update_command_palette(const ImVec2& size)
 	reader.SetValue("command_palette", "height", height.c_str());
 
 	Config::CommandPalette_c::size = size;
+}
+
+void Config::update_sidebar(const int fade_in, const int fade_out)
+{
+	std::string str_fade_in = std::to_string(fade_in);
+	std::string str_fade_out = std::to_string(fade_out);
+
+	reader.SetValue("sidebar_handler", "fade_in", str_fade_in.c_str());
+	reader.SetValue("sidebar_handler", "fade_out", str_fade_out.c_str());
+
+	Config::Sidebar_c::fade_in = fade_in;
+	Config::Sidebar_c::fade_out = fade_out;
 }
 
 bool Config::save_user_config(void)

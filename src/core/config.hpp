@@ -27,6 +27,8 @@ struct Config
 
 	struct Sidebar_c
 	{
+		static int fade_in;
+		static int fade_out;
 		static ImVec2 pos;
 		static ImVec2 size;
 		static ImVec2 max_img_size;
@@ -62,6 +64,7 @@ struct Config
 	static void update_font(const std::string& font);
 	static void update_font_size(const std::string& font_size);
 	static void update_command_palette(const ImVec2& size);
+	static void update_sidebar(const int fade_in, const int fade_out);
 	static bool save_user_config(void);
 	static bool reset(void);
 
