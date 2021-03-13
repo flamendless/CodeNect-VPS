@@ -17,6 +17,7 @@
 #include "core/utils.hpp"
 #include "core/font.hpp"
 #include "modules/nodes.hpp"
+#include "ui/create_node.hpp"
 
 namespace CodeNect
 {
@@ -78,6 +79,8 @@ void NodeInterface::draw_main(void)
 	NodeInterface::draw_nodes();
 	NodeInterface::draw_nodes_context_menu(canvas);
 	ImNodes::EndCanvas();
+
+	CreateNode::draw();
 }
 
 void NodeInterface::draw_nodes(void)
@@ -86,10 +89,10 @@ void NodeInterface::draw_nodes(void)
 	{
 		Node* node = *it;
 
-		if (ImNodes::Ez::BeginNode(node, node->m_title, &node->m_pos, &node->m_selected))
+		if (ImNodes::Ez::BeginNode(node, node->m_var_name, &node->m_pos, &node->m_selected))
 		{
 			ImNodes::Ez::InputSlots(node->m_in_slots.data(), node->m_in_slots.size());
-			ImGui::Text("Content of %s", node->m_title);
+			ImGui::Text("Content of %s", node->m_var_name);
 			ImNodes::Ez::OutputSlots(node->m_out_slots.data(), node->m_out_slots.size());
 
 			Connection new_connection;
@@ -145,8 +148,20 @@ void NodeInterface::draw_nodes_context_menu(ImNodes::CanvasState& canvas)
 {
 	if (ImGui::BeginPopup("NodesContextMenu"))
 	{
+		if (ImGui::BeginMenu("New Node"))
+		{
+			if (ImGui::MenuItem("Variable"))
+			{
+				ImGui::CloseCurrentPopup();
+				CreateNode::open(NODE_KIND::VARIABLE);
+			}
+
+			ImGui::EndMenu();
+		}
+
 		for (const std::pair<const std::string, Node*(*)()>& desc : Nodes::m_available_nodes)
 		{
+
 			if (ImGui::MenuItem(desc.first.c_str()))
 			{
 				Nodes::v_nodes.push_back(desc.second());
@@ -159,7 +174,7 @@ void NodeInterface::draw_nodes_context_menu(ImNodes::CanvasState& canvas)
 		if (ImGui::MenuItem("Reset Zoom"))
             canvas.Zoom = 1;
 
-		if (ImGui::IsAnyMouseDown() && !ImGui::IsWindowHovered())
+		if (ImGui::IsAnyMouseDown() && !ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered())
 			ImGui::CloseCurrentPopup();
 
 		ImGui::EndPopup();
