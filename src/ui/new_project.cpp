@@ -9,19 +9,6 @@
 
 namespace CodeNect
 {
-void display_asterisk(bool ref)
-{
-	if (ref)
-	{
-		ImGui::TextColored(ImVec4(1, 0, 0, 1), "*");
-		ImGui::SameLine();
-	}
-	else
-	{
-		ImGui::TextColored(ImVec4(0, 0, 0, 0), "*");
-		ImGui::SameLine();
-	}
-}
 
 void NewProject::draw(void)
 {
@@ -42,7 +29,7 @@ void NewProject::draw(void)
 		int len_title = strlen(temp_title);
 		int len_author = strlen(temp_author);
 
-		display_asterisk(len_filepath == 0);
+		Utils::display_asterisk(len_filepath == 0);
 		ImGui::InputText("Filname", temp_filepath, IM_ARRAYSIZE(temp_filepath), ImGuiInputTextFlags_ReadOnly);
 		ImGui::SameLine();
 
@@ -52,10 +39,10 @@ void NewProject::draw(void)
 				strcpy(temp_filepath, filepath.c_str());
 		}
 
-		display_asterisk(len_title == 0);
+		Utils::display_asterisk(len_title == 0);
 		ImGui::InputText("Title", temp_title, IM_ARRAYSIZE(temp_title));
 
-		display_asterisk(len_author == 0);
+		Utils::display_asterisk(len_author == 0);
 		ImGui::InputText("Author", temp_author, IM_ARRAYSIZE(temp_author));
 		ImGui::Separator();
 

@@ -64,6 +64,23 @@ inline void help_marker(const char* desc, bool same_line = false)
 	}
 }
 
+inline void display_asterisk(bool ref)
+{
+	if (ref)
+	{
+		ImGui::TextColored(ImVec4(1, 0, 0, 1), "*");
+		ImGui::SameLine();
+
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("This field is required");
+	}
+	else
+	{
+		ImGui::TextColored(ImVec4(0, 0, 0, 0), "*");
+		ImGui::SameLine();
+	}
+}
+
 inline std::string time_now(void)
 {
 	time_t rawtime;
