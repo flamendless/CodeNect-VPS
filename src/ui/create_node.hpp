@@ -4,13 +4,12 @@
 #include <vector>
 #include <string>
 #include "imgui.h"
+#include "enum.h"
 #include "IconsFontAwesome5.h"
 #include "modules/node.hpp"
 
 namespace CodeNect
 {
-enum NODE_KIND { VARIABLE = 1 };
-
 struct Variable
 {
 	const char* m_name;
@@ -23,6 +22,7 @@ struct CreateNode
 {
 	static ImGuiWindowFlags flags;
 	static bool is_open;
+	static bool is_pos_locked;
 	static const char* title;
 	static NODE_KIND kind;
 
@@ -30,6 +30,8 @@ struct CreateNode
 	static void open(NODE_KIND kind);
 	static void close(void);
 	static void draw(void);
+	static void draw_buttons(void);
+	static void create_var_node(void);
 };
 }
 

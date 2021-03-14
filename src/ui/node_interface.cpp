@@ -54,12 +54,16 @@ void NodeInterface::draw(void)
 {
 	ImGui::SetNextWindowPos(NodeInterface::pos);
 	ImGui::SetNextWindowSize(NodeInterface::size);
-	ImGui::Begin("NodeInterface", &NodeInterface::is_open, NodeInterface::flags);
+
+	if (ImGui::Begin("NodeInterface", &NodeInterface::is_open, NodeInterface::flags))
+	{
 		if (!Project::has_open_proj)
 			NodeInterface::draw_startup();
 		else
 			NodeInterface::draw_main();
-	ImGui::End();
+
+		ImGui::End();
+	}
 }
 
 void NodeInterface::draw_startup(void)
@@ -78,9 +82,60 @@ void NodeInterface::draw_main(void)
 	ImNodes::BeginCanvas(&canvas);
 	NodeInterface::draw_nodes();
 	NodeInterface::draw_nodes_context_menu(canvas);
-	ImNodes::EndCanvas();
-
 	CreateNode::draw();
+	ImNodes::EndCanvas();
+}
+
+void NodeInterface::draw_node(const Node &node)
+{
+	// if (ImGui::BeginTable("TableNode", 2))
+	// {
+	// 	ImGui::TableNextRow();
+	// 	ImGui::TableNextColumn();
+	// 	ImGui::Text("Name:");
+	// 	ImGui::Text("Value:");
+    //
+	// 	ImGui::TableNextColumn();
+	// 	ImGui::Text("%s", node.m_name);
+	// 	ImGui::Text("%s", node.m_value);
+    //
+	// 	ImGui::EndTable();
+	// }
+
+	const float width = ImGui::GetContentRegionAvailWidth();
+	ImGui::SetNextItemWidth(width * 0.4);
+	ImGui::Text("Name:");
+	ImGui::SameLine(64);
+	ImGui::Text("%s", node.m_name);
+
+	ImGui::SetNextItemWidth(width * 0.4);
+	ImGui::Text("Value:");
+	ImGui::SameLine(64);
+	ImGui::Text("%s", node.m_value);
+}
+
+void NodeInterface::draw_connections(const Node &node)
+{
+	Connection new_connection;
+
+	if (ImNodes::GetNewConnection(&new_connection.in_node, &new_connection.in_slot,
+			&new_connection.out_node, &new_connection.out_slot))
+	{
+		((Node*) new_connection.in_node)->m_connections.push_back(new_connection);
+		((Node*) new_connection.out_node)->m_connections.push_back(new_connection);
+	}
+
+	for (const Connection& connection : node.m_connections)
+	{
+		if (connection.out_node != &node) continue;
+
+		if (!ImNodes::Connection(connection.in_node, connection.in_slot,
+				connection.out_node, connection.out_slot))
+		{
+			((Node*) connection.in_node)->delete_connection(connection);
+			((Node*) connection.out_node)->delete_connection(connection);
+		}
+	}
 }
 
 void NodeInterface::draw_nodes(void)
@@ -89,32 +144,14 @@ void NodeInterface::draw_nodes(void)
 	{
 		Node* node = *it;
 
-		if (ImNodes::Ez::BeginNode(node, node->m_var_name, &node->m_pos, &node->m_selected))
+		if (ImNodes::Ez::BeginNode(node, node->m_str_kind, &node->m_pos, &node->m_selected))
 		{
+			NodeInterface::draw_node(*node);
+
 			ImNodes::Ez::InputSlots(node->m_in_slots.data(), node->m_in_slots.size());
-			ImGui::Text("Content of %s", node->m_var_name);
 			ImNodes::Ez::OutputSlots(node->m_out_slots.data(), node->m_out_slots.size());
 
-			Connection new_connection;
-
-			if (ImNodes::GetNewConnection(&new_connection.in_node, &new_connection.in_slot,
-					&new_connection.out_node, &new_connection.out_slot))
-			{
-				((Node*) new_connection.in_node)->m_connections.push_back(new_connection);
-				((Node*) new_connection.out_node)->m_connections.push_back(new_connection);
-			}
-
-			for (const Connection& connection : node->m_connections)
-			{
-				if (connection.out_node != node) continue;
-
-				if (!ImNodes::Connection(connection.in_node, connection.in_slot,
-						connection.out_node, connection.out_slot))
-				{
-					((Node*) connection.in_node)->delete_connection(connection);
-					((Node*) connection.out_node)->delete_connection(connection);
-				}
-			}
+			NodeInterface::draw_connections(*node);
 		}
 
 		ImNodes::Ez::EndNode();
@@ -152,8 +189,8 @@ void NodeInterface::draw_nodes_context_menu(ImNodes::CanvasState& canvas)
 		{
 			if (ImGui::MenuItem("Variable"))
 			{
-				ImGui::CloseCurrentPopup();
 				CreateNode::open(NODE_KIND::VARIABLE);
+				ImGui::CloseCurrentPopup();
 			}
 
 			ImGui::EndMenu();

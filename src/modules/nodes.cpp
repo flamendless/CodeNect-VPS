@@ -8,7 +8,7 @@ Nodes::m_node_t Nodes::m_available_nodes
 	{
 		"Hello", []() -> Node*
 		{
-			return new Node("Hello",
+			return new Node(NODE_KIND::VARIABLE, "Hello", "Hello",
 				{
 					{"String", NODE_SLOT::STRING},
 				},
@@ -21,7 +21,7 @@ Nodes::m_node_t Nodes::m_available_nodes
 	{
 		"World", []() -> Node*
 		{
-			return new Node("World",
+			return new Node(NODE_KIND::VARIABLE, "World", "World",
 				{
 					{"String", NODE_SLOT::STRING},
 				},
