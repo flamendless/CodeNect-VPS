@@ -1,6 +1,8 @@
 #ifndef VALIDATIONS_HPP
 #define VALIDATIONS_HPP
 
+#include <map>
+#include "plog/Log.h"
 #include "verbalexpressions.hpp"
 #include "core/defines.hpp"
 
@@ -8,9 +10,14 @@ namespace CodeNect
 {
 namespace Validations
 {
-inline std::vector<std::string> v_reserved_keywords
+inline std::map<const std::string, bool> m_reserved_keywords
 {
-	"bool", "int", "float", "double", "string", "char", "void"
+	{"bool", true},
+	{"int", true},
+	{"float", true},
+	{"double", true},
+	{"string", true},
+	{"char", true},
 };
 
 inline verex::verex expr_var_name = verex::verex().search_one_line().start_of_line()
@@ -18,13 +25,8 @@ inline verex::verex expr_var_name = verex::verex().search_one_line().start_of_li
 
 inline int validate_var_name(const char* str)
 {
-	std::string str_arg(str);
-
-	for (const std::string& keyword : v_reserved_keywords)
-	{
-		if (keyword == str_arg)
-			return RES_VARNAME_CONFLICT_KEYWORD;
-	}
+	if (m_reserved_keywords.count(str))
+		return RES_VARNAME_CONFLICT_KEYWORD;
 
 	bool res = expr_var_name.test(str);
 

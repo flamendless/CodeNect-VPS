@@ -17,7 +17,7 @@
 #define RES_VARNAME_CONFLICT_KEYWORD -2
 #define RES_VARNAME_INVALID -1
 #define RES_VARNAME_VALID 1
-#define STR_CONFLICT_KEYWORD "variable name can't be used because it's a reserverd keyword"
+#define STR_CONFLICT_KEYWORD "variable name can't be used because it's a reserved keyword"
 
 #include <map>
 #include <string>
