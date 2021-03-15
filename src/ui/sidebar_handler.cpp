@@ -12,7 +12,8 @@ namespace CodeNect
 {
 tweeny::tween<float> tween;
 
-bool show_sidebar = false;
+bool sidebar_is_visible = false;
+bool sidebar_was_visible = false;
 
 void SidebarHandler::init(Sidebar* sidebar, SidebarIndicator* sidebar_indicator)
 {
@@ -26,15 +27,15 @@ void SidebarHandler::update(float dt)
 	const int min = Config::Sidebar_c::pos.x + Config::Sidebar_c::indicator_size.x;
 	const int dist = mouse_pos.x - min;
 
-	if ((dist <= 0 || m_sidebar->m_has_opened) && !CommandPalette::is_open)
-		show_sidebar = true;
-	else
-		show_sidebar = false;
+	sidebar_is_visible = (dist <= 0 || m_sidebar->m_has_opened) && !CommandPalette::is_open;
 
-	if (show_sidebar)
+	if (sidebar_is_visible && !sidebar_was_visible)
 		tween = tweeny::from(m_sidebar->m_alpha).to(1.0f).during(Config::Sidebar_c::fade_in);
-	else
+
+	if (!sidebar_is_visible && sidebar_was_visible)
 		tween = tweeny::from(m_sidebar->m_alpha).to(0.0f).during(Config::Sidebar_c::fade_out);
+
+	sidebar_was_visible = sidebar_is_visible;
 
 	const float value = tween.step(static_cast<int>(dt * 1000));
 	m_sidebar->m_alpha = value;
