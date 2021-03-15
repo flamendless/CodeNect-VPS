@@ -53,6 +53,9 @@ target("CodeNect")
 	--tweeny
 	add_includedirs("includes/tweeny/include/")
 
+	--verbalexpressions
+	add_includedirs("includes/verbal_expr/")
+
 	if is_mode("debug") then
 		add_defines("DEBUG_MODE=1")
 		set_symbols("debug")
