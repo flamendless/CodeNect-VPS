@@ -14,14 +14,21 @@ bool CreateNode::is_open = false;
 bool CreateNode::is_pos_locked = true;
 const char* CreateNode::title = ICON_FA_PLUS_SQUARE "Create Node";
 NODE_KIND CreateNode::kind = NODE_KIND::EMPTY;
-// NodeTempData* CreateNode::data = new NodeTempData();
-NodeTempData* CreateNode::data;
+bool CreateNode::can_create = false;
+TempVarData* CreateNode::data::var;
+TempOperationData* CreateNode::data::op;
 
 bool first = false;
 
 void CreateNode::open(NODE_KIND kind)
 {
-	CreateNode::data = new NodeTempData();
+	switch (kind)
+	{
+		case NODE_KIND::EMPTY: break;
+		case NODE_KIND::VARIABLE: CreateNode::data::var = new TempVarData(); break;
+		case NODE_KIND::OPERATION: CreateNode::data::op = new TempOperationData(); break;
+	}
+
 	CreateNode::kind = kind;
 	CreateNode::is_open = true;
 	first = true;
@@ -49,7 +56,13 @@ void CreateNode::draw(void)
 	{
 		Utils::center_text(CreateNode::title, true);
 		ImGui::Separator();
-		CreateNode::draw_var();
+
+		switch (CreateNode::kind)
+		{
+			case NODE_KIND::EMPTY: break;
+			case NODE_KIND::VARIABLE: CreateNode::draw_var(); break;
+			case NODE_KIND::OPERATION: CreateNode::draw_op(); break;
+		}
 
 		ImGui::Separator();
 		CreateNode::draw_buttons();
@@ -60,24 +73,25 @@ void CreateNode::draw(void)
 
 void CreateNode::draw_buttons(void)
 {
-	if (!data->can_create)
+	if (!CreateNode::can_create)
 		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 
 	if (ImGui::Button(ICON_FA_CHECK " Create"))
 	{
-		if (data->can_create)
+		if (CreateNode::can_create)
 		{
 			switch (CreateNode::kind)
 			{
 				case NODE_KIND::EMPTY: break;
 				case NODE_KIND::VARIABLE: CreateNode::create_var_node(); break;
+				case NODE_KIND::OPERATION: CreateNode::create_op_node(); break;
 			}
 
 			CreateNode::close();
 		}
 	}
 
-	if (!data->can_create)
+	if (!CreateNode::can_create)
 		ImGui::PopStyleVar(1);
 
 	ImGui::SameLine();

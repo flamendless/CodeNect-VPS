@@ -86,23 +86,6 @@ void NodeInterface::draw_main(void)
 	ImNodes::EndCanvas();
 }
 
-void NodeInterface::draw_node(Node &node)
-{
-	if (ImGui::BeginTable("TableNode", 2, ImGuiTableFlags_SizingFixedFit))
-	{
-		ImGui::TableNextRow();
-		ImGui::TableNextColumn();
-		ImGui::Text("Name:");
-		ImGui::Text("Value:");
-
-		ImGui::TableNextColumn();
-		ImGui::Text("%s", node.m_name);
-		node.m_value.draw();
-
-		ImGui::EndTable();
-	}
-}
-
 void NodeInterface::draw_connections(const Node &node)
 {
 	Connection new_connection;
@@ -135,7 +118,7 @@ void NodeInterface::draw_nodes(void)
 
 		if (ImNodes::Ez::BeginNode(node, node->m_str_kind, &node->m_pos, &node->m_selected))
 		{
-			NodeInterface::draw_node(*node);
+			node->draw_node();
 
 			ImNodes::Ez::InputSlots(node->m_in_slots.data(), node->m_in_slots.size());
 			ImNodes::Ez::OutputSlots(node->m_out_slots.data(), node->m_out_slots.size());
@@ -179,6 +162,12 @@ void NodeInterface::draw_nodes_context_menu(ImNodes::CanvasState& canvas)
 			if (ImGui::MenuItem("Variable"))
 			{
 				CreateNode::open(NODE_KIND::VARIABLE);
+				ImGui::CloseCurrentPopup();
+			}
+
+			if (ImGui::MenuItem("Operation"))
+			{
+				CreateNode::open(NODE_KIND::OPERATION);
 				ImGui::CloseCurrentPopup();
 			}
 
