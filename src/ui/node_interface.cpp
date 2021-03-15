@@ -86,32 +86,21 @@ void NodeInterface::draw_main(void)
 	ImNodes::EndCanvas();
 }
 
-void NodeInterface::draw_node(const Node &node)
+void NodeInterface::draw_node(Node &node)
 {
-	// if (ImGui::BeginTable("TableNode", 2))
-	// {
-	// 	ImGui::TableNextRow();
-	// 	ImGui::TableNextColumn();
-	// 	ImGui::Text("Name:");
-	// 	ImGui::Text("Value:");
-    //
-	// 	ImGui::TableNextColumn();
-	// 	ImGui::Text("%s", node.m_name);
-	// 	ImGui::Text("%s", node.m_value);
-    //
-	// 	ImGui::EndTable();
-	// }
+	if (ImGui::BeginTable("TableNode", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::Text("Name:");
+		ImGui::Text("Value:");
 
-	const float width = ImGui::GetContentRegionAvailWidth();
-	ImGui::SetNextItemWidth(width * 0.4);
-	ImGui::Text("Name:");
-	ImGui::SameLine(64);
-	ImGui::Text("%s", node.m_name);
+		ImGui::TableNextColumn();
+		ImGui::Text("%s", node.m_name);
+		node.m_value.draw();
 
-	ImGui::SetNextItemWidth(width * 0.4);
-	ImGui::Text("Value:");
-	ImGui::SameLine(64);
-	ImGui::Text("%s", node.m_value);
+		ImGui::EndTable();
+	}
 }
 
 void NodeInterface::draw_connections(const Node &node)
@@ -201,7 +190,8 @@ void NodeInterface::draw_nodes_context_menu(ImNodes::CanvasState& canvas)
 
 			if (ImGui::MenuItem(desc.first.c_str()))
 			{
-				Nodes::v_nodes.push_back(desc.second());
+				Node* node = desc.second();
+				Nodes::v_nodes.push_back(node);
 				ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 			}
 		}

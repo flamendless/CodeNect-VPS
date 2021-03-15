@@ -21,13 +21,16 @@ struct Variable
 
 struct NodeTempData
 {
-	bool can_create = false;
-	char name[BUF_SIZE] = "";
-	bool valid_name = false;
-	char value[BUF_SIZE];
-	bool valid_value = false;
-	int value_bool = 1;
 	NODE_SLOT slot = NODE_SLOT::EMPTY;
+	bool can_create = false;
+
+	char buf_name[BUF_SIZE] = "";
+	char buf_string[BUF_SIZE * 2] = "";
+	bool valid_name = false;
+	bool valid_value = false;
+	int res_name;
+
+	NodeValue value;
 };
 
 struct CreateNode
@@ -37,7 +40,7 @@ struct CreateNode
 	static bool is_pos_locked;
 	static const char* title;
 	static NODE_KIND kind;
-	static NodeTempData data;
+	static NodeTempData* data;
 
 	CreateNode() = delete;
 	static void open(NODE_KIND kind);
@@ -47,6 +50,10 @@ struct CreateNode
 	static void draw_buttons(void);
 	static void draw_var(void);
 	static void draw_opt_bool(void);
+	static void draw_opt_int(void);
+	static void draw_opt_float(void);
+	static void draw_opt_double(void);
+	static void draw_opt_string(void);
 };
 }
 

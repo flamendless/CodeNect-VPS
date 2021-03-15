@@ -64,7 +64,7 @@ inline void help_marker(const char* desc, bool same_line = false)
 	}
 }
 
-inline void display_asterisk(bool ref)
+inline void display_asterisk(bool ref, const char* str)
 {
 	if (ref)
 	{
@@ -72,13 +72,18 @@ inline void display_asterisk(bool ref)
 		ImGui::SameLine();
 
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("This field is required");
+			ImGui::SetTooltip("%s", str);
 	}
 	else
 	{
 		ImGui::TextColored(ImVec4(0, 0, 0, 0), "*");
 		ImGui::SameLine();
 	}
+}
+
+inline void display_asterisk(bool ref)
+{
+	display_asterisk(ref, "This field is required");
 }
 
 inline std::string time_now(void)

@@ -23,7 +23,7 @@ struct NodeInterface
 	static void draw(void);
 	static void draw_startup(void);
 	static void draw_main(void);
-	static void draw_node(const Node &node);
+	static void draw_node(Node &node);
 	static void draw_connections(const Node &node);
 	static void draw_nodes(void);
 	static void draw_nodes_context_menu(ImNodes::CanvasState& canvas);
