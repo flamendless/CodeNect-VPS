@@ -27,6 +27,7 @@ void CreateNode::open(NODE_KIND kind)
 		case NODE_KIND::EMPTY: break;
 		case NODE_KIND::VARIABLE: CreateNode::data::var = new TempVarData(); break;
 		case NODE_KIND::OPERATION: CreateNode::data::op = new TempOperationData(); break;
+		case NODE_KIND::IF: break;
 	}
 
 	CreateNode::kind = kind;
@@ -62,6 +63,7 @@ void CreateNode::draw(void)
 			case NODE_KIND::EMPTY: break;
 			case NODE_KIND::VARIABLE: CreateNode::draw_var(); break;
 			case NODE_KIND::OPERATION: CreateNode::draw_op(); break;
+			case NODE_KIND::IF: break;
 		}
 
 		ImGui::Separator();
@@ -85,6 +87,7 @@ void CreateNode::draw_buttons(void)
 				case NODE_KIND::EMPTY: break;
 				case NODE_KIND::VARIABLE: CreateNode::create_var_node(); break;
 				case NODE_KIND::OPERATION: CreateNode::create_op_node(); break;
+				case NODE_KIND::IF: break;
 			}
 
 			CreateNode::close();

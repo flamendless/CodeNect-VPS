@@ -15,7 +15,6 @@ struct Node
 	ImVec2 m_pos{};
 
 	NODE_KIND m_kind = NODE_KIND::EMPTY;
-	const char* m_str_kind;
 	const char* m_name;
 
 	v_connection_t m_connections{};
@@ -24,7 +23,8 @@ struct Node
 
 	inline Node() {}
 	inline virtual ~Node() {}
-	inline virtual void draw_node(void) {}
+	inline virtual void on_connect(Node* in, Node* out) {}
+	inline virtual void draw(void) {}
 
 	inline void delete_connection(const Connection& connection)
 	{

@@ -3,7 +3,6 @@
 
 #include "modules/node_def.hpp"
 #include "modules/node.hpp"
-#include "core/utils.hpp"
 
 namespace CodeNect
 {
@@ -18,15 +17,19 @@ struct NodeOp : public Node
 		const v_slot_info_t&& out_slots
 	)
 	{
-		m_str_kind = m_kind._to_string();
-		m_name = name;
+		Node::m_kind = m_kind;
+		Node::m_name = name;
 		m_in_slots = in_slots;
 		m_out_slots = out_slots;
 	}
 
 	inline ~NodeOp() {}
 
-	inline void draw_node(void) override {}
+	inline virtual void on_connect(Node* in, Node* out) override
+	{
+	}
+
+	inline void draw(void) override {}
 };
 }
 

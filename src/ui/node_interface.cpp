@@ -86,7 +86,7 @@ void NodeInterface::draw_main(void)
 	ImNodes::EndCanvas();
 }
 
-void NodeInterface::draw_connections(const Node &node)
+void NodeInterface::draw_connections(Node &node)
 {
 	Connection new_connection;
 
@@ -95,6 +95,11 @@ void NodeInterface::draw_connections(const Node &node)
 	{
 		((Node*) new_connection.in_node)->m_connections.push_back(new_connection);
 		((Node*) new_connection.out_node)->m_connections.push_back(new_connection);
+
+		Node* in_node = (Node*)new_connection.in_node;
+		Node* out_node = (Node*)new_connection.out_node;
+
+		node.on_connect(in_node, out_node);
 	}
 
 	for (const Connection& connection : node.m_connections)
@@ -116,9 +121,9 @@ void NodeInterface::draw_nodes(void)
 	{
 		Node* node = *it;
 
-		if (ImNodes::Ez::BeginNode(node, node->m_str_kind, &node->m_pos, &node->m_selected))
+		if (ImNodes::Ez::BeginNode(node, node->m_kind._to_string(), &node->m_pos, &node->m_selected))
 		{
-			node->draw_node();
+			node->draw();
 
 			ImNodes::Ez::InputSlots(node->m_in_slots.data(), node->m_in_slots.size());
 			ImNodes::Ez::OutputSlots(node->m_out_slots.data(), node->m_out_slots.size());

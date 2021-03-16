@@ -56,7 +56,8 @@ void CreateNode::draw_op(void)
 
 	CreateNode::draw_opt_input();
 	CreateNode::draw_slots();
-	CreateNode::can_create = data::op->v_slots_in.size() >= 2;
+	CreateNode::can_create = (data::op->v_slots_in.size() >= 2) &&
+		(data::op->v_slots_out.size() != 0);
 }
 
 void draw_slots_v(const char* str, std::vector<NODE_SLOT> &v)

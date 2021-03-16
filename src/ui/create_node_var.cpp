@@ -18,7 +18,6 @@ void CreateNode::create_var_node(void)
 	out.push_back({data::var->slot._to_string(), data::var->slot});
 
 	NodeVariable* node = new NodeVariable(data::var->buf_name, data::var->value, std::move(in), std::move(out));
-	node->draw_node();
 
 	Nodes::v_nodes.push_back(node);
 	ImNodes::AutoPositionNode(Nodes::v_nodes.back());
