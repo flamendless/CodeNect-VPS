@@ -1,5 +1,5 @@
-#ifndef NODE_DEF_HPP
-#define NODE_DEF_HPP
+#ifndef _NODE_DEF_HPP
+#define _NODE_DEF_HPP
 
 #include <vector>
 #include "ImNodesEz.h"
@@ -16,4 +16,4 @@ typedef std::vector<Connection> v_connection_t;
 typedef std::vector<ImNodes::Ez::SlotInfo> v_slot_info_t;
 }
 
-#endif //NODE_DEF_HPP
+#endif //_NODE_DEF_HPP

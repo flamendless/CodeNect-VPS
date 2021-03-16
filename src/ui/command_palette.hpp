@@ -1,5 +1,5 @@
-#ifndef COMMAND_PALETTE_HPP
-#define COMMAND_PALETTE_HPP
+#ifndef _COMMAND_PALETTE_HPP
+#define _COMMAND_PALETTE_HPP
 
 #include <functional>
 #include <GLFW/glfw3.h>
@@ -29,4 +29,4 @@ struct CommandPalette
 };
 }
 
-#endif //COMMAND_PALETTE_HPP
+#endif //_COMMAND_PALETTE_HPP

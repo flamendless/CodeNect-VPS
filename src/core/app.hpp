@@ -1,5 +1,5 @@
-#ifndef APP_HPP
-#define APP_HPP
+#ifndef _APP_HPP
+#define _APP_HPP
 
 #include <GLFW/glfw3.h>
 #include "imgui.h"
@@ -25,4 +25,4 @@ struct App
 };
 }
 
-#endif //APP_HPP
+#endif //_APP_HPP

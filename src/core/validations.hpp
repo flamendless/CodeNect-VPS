@@ -1,5 +1,5 @@
-#ifndef VALIDATIONS_HPP
-#define VALIDATIONS_HPP
+#ifndef _VALIDATIONS_HPP
+#define _VALIDATIONS_HPP
 
 #include <map>
 #include "plog/Log.h"
@@ -38,4 +38,4 @@ inline int validate_var_name(const char* str)
 }
 }
 
-#endif //VALIDATIONS_HPP
+#endif //_VALIDATIONS_HPP

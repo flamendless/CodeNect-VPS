@@ -1,5 +1,5 @@
-#ifndef NODES_HPP
-#define NODES_HPP
+#ifndef _NODES_HPP
+#define _NODES_HPP
 
 #include <vector>
 #include <map>
@@ -21,4 +21,4 @@ struct Nodes
 };
 };
 
-#endif //NODES_HPP
+#endif //_NODES_HPP

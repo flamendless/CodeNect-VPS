@@ -1,5 +1,5 @@
-#ifndef INPUT_HPP
-#define INPUT_HPP
+#ifndef _INPUT_HPP
+#define _INPUT_HPP
 
 #include <functional>
 #include <GLFW/glfw3.h>
@@ -20,4 +20,4 @@ struct Input
 };
 }
 
-#endif //INPUT_HPP
+#endif //_INPUT_HPP

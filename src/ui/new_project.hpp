@@ -1,5 +1,5 @@
-#ifndef NEW_PROJECT_HPP
-#define NEW_PROJECT_HPP
+#ifndef _NEW_PROJECT_HPP
+#define _NEW_PROJECT_HPP
 
 #include <functional>
 #include "imgui.h"
@@ -22,4 +22,4 @@ struct NewProject
 };
 }
 
-#endif //NEW_PROJECT_HPP
+#endif //_NEW_PROJECT_HPP

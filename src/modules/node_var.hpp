@@ -1,5 +1,5 @@
-#ifndef NODE_VAR_HPP
-#define NODE_VAR_HPP
+#ifndef _NODE_VAR_HPP
+#define _NODE_VAR_HPP
 
 #include "modules/node_def.hpp"
 #include "modules/node.hpp"
@@ -46,4 +46,4 @@ struct NodeVariable : public Node
 };
 }
 
-#endif //NODE_VAR_HPP
+#endif //_NODE_VAR_HPP

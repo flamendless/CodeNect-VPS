@@ -1,5 +1,5 @@
-#ifndef POPUP_HPP
-#define POPUP_HPP
+#ifndef _POPUP_HPP
+#define _POPUP_HPP
 
 #include <functional>
 #include "IconsFontAwesome5.h"
@@ -43,4 +43,4 @@ struct PopupRun : Popup
 };
 }
 
-#endif //POPUP_HPP
+#endif //_POPUP_HPP

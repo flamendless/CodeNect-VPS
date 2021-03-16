@@ -1,5 +1,5 @@
-#ifndef ABOUT_HPP
-#define ABOUT_HPP
+#ifndef _ABOUT_HPP
+#define _ABOUT_HPP
 
 #include "IconsFontAwesome5.h"
 #include "imgui.h"
@@ -19,4 +19,4 @@ struct About
 };
 }
 
-#endif //ABOUT_HPP
+#endif //_ABOUT_HPP

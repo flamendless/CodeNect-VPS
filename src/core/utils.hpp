@@ -1,5 +1,5 @@
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#ifndef _UTILS_HPP
+#define _UTILS_HPP
 
 #include <ctime>
 #include <string>
@@ -111,4 +111,4 @@ inline void open_url(const char* url)
 }
 }
 
-#endif //UTILS_HPP
+#endif //_UTILS_HPP

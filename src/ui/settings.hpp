@@ -1,5 +1,5 @@
-#ifndef SETTINGS_HPP
-#define SETTINGS_HPP
+#ifndef _SETTINGS_HPP
+#define _SETTINGS_HPP
 
 #include "imgui.h"
 
@@ -24,4 +24,4 @@ struct Settings
 };
 }
 
-#endif //SETTINGS_HPP
+#endif //_SETTINGS_HPP

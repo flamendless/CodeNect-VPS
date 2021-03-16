@@ -1,5 +1,5 @@
-#ifndef COMMANDS_HPP
-#define COMMANDS_HPP
+#ifndef _COMMANDS_HPP
+#define _COMMANDS_HPP
 
 #include <string>
 #include <vector>
@@ -57,4 +57,4 @@ struct Commands
 };
 }
 
-#endif //COMMANDS_HPP
+#endif //_COMMANDS_HPP

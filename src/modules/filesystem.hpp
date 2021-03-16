@@ -1,5 +1,5 @@
-#ifndef FILESYSTEM_HPP
-#define FILESYSTEM_HPP
+#ifndef _FILESYSTEM_HPP
+#define _FILESYSTEM_HPP
 
 #include <string>
 #include "core/image.hpp"
@@ -14,4 +14,4 @@ int load_texture_from_file(const char* filename, CodeNect::Image& image);
 }
 }
 
-#endif //FILESYSTEM_HPP
+#endif //_FILESYSTEM_HPP

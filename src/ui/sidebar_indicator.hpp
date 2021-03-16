@@ -1,5 +1,5 @@
-#ifndef SIDEBAR_INDICATOR_HPP
-#define SIDEBAR_INDICATOR_HPP
+#ifndef _SIDEBAR_INDICATOR_HPP
+#define _SIDEBAR_INDICATOR_HPP
 
 #include "imgui.h"
 #include "ui/button.hpp"
@@ -25,4 +25,4 @@ struct SidebarIndicator
 };
 }
 
-#endif //SIDEBAR_INDICATOR_HPP
+#endif //_SIDEBAR_INDICATOR_HPP

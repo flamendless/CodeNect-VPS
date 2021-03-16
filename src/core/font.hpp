@@ -1,5 +1,5 @@
-#ifndef FONT_HPP
-#define FONT_HPP
+#ifndef _FONT_HPP
+#define _FONT_HPP
 
 #include <string>
 #include <map>
@@ -34,4 +34,4 @@ struct Font
 };
 }
 
-#endif //FONT_HPP
+#endif //_FONT_HPP

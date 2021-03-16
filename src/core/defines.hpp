@@ -1,5 +1,5 @@
-#ifndef DEFINES_HPP
-#define DEFINES_HPP
+#ifndef _DEFINES_HPP
+#define _DEFINES_HPP
 
 #define RES_SUCCESS 0
 #define RES_FAIL -1
@@ -33,4 +33,4 @@ typedef std::map<const std::string, CodeNect::CustomFont*> map_fonts;
 typedef std::pair<std::string, std::string> pair_key_filename;
 typedef std::vector<pair_key_filename> vec_filenames;
 
-#endif //DEFINES_HPP
+#endif //_DEFINES_HPP

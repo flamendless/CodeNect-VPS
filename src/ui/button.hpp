@@ -1,5 +1,5 @@
-#ifndef BUTTON_HPP
-#define BUTTON_HPP
+#ifndef _BUTTON_HPP
+#define _BUTTON_HPP
 
 #include "core/image.hpp"
 
@@ -43,4 +43,4 @@ struct Button
 };
 }
 
-#endif //BUTTON_HPP
+#endif //_BUTTON_HPP

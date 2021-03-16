@@ -1,5 +1,5 @@
-#ifndef HELP_HPP
-#define HELP_HPP
+#ifndef _HELP_HPP
+#define _HELP_HPP
 
 #include <vector>
 #include <string>
@@ -28,4 +28,4 @@ struct Help
 };
 }
 
-#endif //HELP_HPP
+#endif //_HELP_HPP

@@ -1,5 +1,5 @@
-#ifndef NODE_HPP
-#define NODE_HPP
+#ifndef _NODE_HPP
+#define _NODE_HPP
 
 #include "ImNodesEz.h"
 #include "plog/Log.h"
@@ -39,4 +39,4 @@ struct Node
 };
 }
 
-#endif //NODE_HPP
+#endif //_NODE_HPP

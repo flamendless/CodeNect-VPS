@@ -1,5 +1,5 @@
-#ifndef NODE_INTERFACE_HPP
-#define NODE_INTERFACE_HPP
+#ifndef _NODE_INTERFACE_HPP
+#define _NODE_INTERFACE_HPP
 
 #include "imgui.h"
 #include "ImNodes.h"
@@ -29,4 +29,4 @@ struct NodeInterface
 };
 }
 
-#endif //NODE_INTERFACE_HPP
+#endif //_NODE_INTERFACE_HPP

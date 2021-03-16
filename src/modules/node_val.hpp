@@ -1,5 +1,5 @@
-#ifndef NODE_VAL_HPP
-#define NODE_VAL_HPP
+#ifndef _NODE_VAL_HPP
+#define _NODE_VAL_HPP
 
 #include "modules/node_def.hpp"
 #include "imgui.h"
@@ -69,4 +69,4 @@ struct NodeValue
 
 }
 
-#endif //NODE_VAL_HPP
+#endif //_NODE_VAL_HPP

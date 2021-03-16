@@ -1,5 +1,5 @@
-#ifndef SIDEBAR_HANDLER_HPP
-#define SIDEBAR_HANDLER_HPP
+#ifndef _SIDEBAR_HANDLER_HPP
+#define _SIDEBAR_HANDLER_HPP
 
 #include "ui/sidebar.hpp"
 #include "ui/sidebar_indicator.hpp"
@@ -16,4 +16,4 @@ struct SidebarHandler
 };
 }
 
-#endif //SIDEBAR_HANDLER_HPP
+#endif //_SIDEBAR_HANDLER_HPP

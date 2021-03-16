@@ -1,5 +1,5 @@
-#ifndef PROJECT_H
-#define PROJECT_H
+#ifndef _PROJECT_H
+#define _PROJECT_H
 
 #include <string>
 #include "ui/new_project.hpp"
@@ -35,4 +35,4 @@ struct Project
 };
 }
 
-#endif //PROJECT_H
+#endif //_PROJECT_H

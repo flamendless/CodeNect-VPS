@@ -1,5 +1,5 @@
-#ifndef CONFIG_HPP
-#define CONFIG_HPP
+#ifndef _CONFIG_HPP
+#define _CONFIG_HPP
 
 #include <string>
 #include "imgui.h"
@@ -74,4 +74,4 @@ struct Config
 };
 }
 
-#endif //CONFIG_HPP
+#endif //_CONFIG_HPP

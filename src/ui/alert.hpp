@@ -1,5 +1,5 @@
-#ifndef ALERT_HPP
-#define ALERT_HPP
+#ifndef _ALERT_HPP
+#define _ALERT_HPP
 
 #include <string>
 #include "imgui.h"
@@ -25,4 +25,4 @@ struct Alert
 };
 }
 
-#endif //ALERT_HPP
+#endif //_ALERT_HPP

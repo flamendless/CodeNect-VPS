@@ -1,5 +1,5 @@
-#ifndef CUSTOM_FONT_HPP
-#define CUSTOM_FONT_HPP
+#ifndef _CUSTOM_FONT_HPP
+#define _CUSTOM_FONT_HPP
 
 #include "imgui.h"
 
@@ -15,4 +15,4 @@ struct CustomFont
 };
 }
 
-#endif //CUSTOM_FONT_HPP
+#endif //_CUSTOM_FONT_HPP

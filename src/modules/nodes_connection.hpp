@@ -1,5 +1,5 @@
-#ifndef NODES_CONNECTION_HPP
-#define NODES_CONNECTION_HPP
+#ifndef _NODES_CONNECTION_HPP
+#define _NODES_CONNECTION_HPP
 
 namespace CodeNect
 {
@@ -26,4 +26,4 @@ struct Connection
 };
 }
 
-#endif //NODES_CONNECTION_HPP
+#endif //_NODES_CONNECTION_HPP

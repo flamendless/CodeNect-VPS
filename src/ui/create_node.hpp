@@ -1,5 +1,5 @@
-#ifndef CREATE_NODE_HPP
-#define CREATE_NODE_HPP
+#ifndef _CREATE_NODE_HPP
+#define _CREATE_NODE_HPP
 
 #include <vector>
 #include <string>
@@ -74,4 +74,4 @@ struct CreateNode
 };
 }
 
-#endif //CREATE_NODE_HPP
+#endif //_CREATE_NODE_HPP
