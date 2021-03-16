@@ -64,13 +64,13 @@ void CommandPalette::keypress(GLFWwindow* window, int key, int scancode, int mod
 		CommandPalette::cur_pos--;
 
 		if (CommandPalette::cur_pos < 0)
-			CommandPalette::cur_pos = CommandPalette::filter.CountGrep;
+			CommandPalette::cur_pos = CommandPalette::filtered;
 	}
 	else if (key == GLFW_KEY_DOWN && CommandPalette::is_open)
 	{
 		CommandPalette::cur_pos++;
 
-		if (CommandPalette::cur_pos > CommandPalette::filter.CountGrep)
+		if (CommandPalette::cur_pos > CommandPalette::filtered)
 			CommandPalette::cur_pos = 0;
 	}
 	else if (key == GLFW_KEY_ENTER && CommandPalette::is_open)
@@ -118,10 +118,9 @@ void CommandPalette::draw(void)
 		ImGui::TextColored(color, "%s", CommandPalette::str_close);
 		ImGui::Separator();
 
-		//TODO CountGrep always is set to 1
-
 		const ImVec2 child_size = ImGui::GetContentRegionAvail();
 		const bool child_is_visible = ImGui::BeginChild("child", child_size);
+		CommandPalette::filtered = -1;
 
 		for (int i = 0; i < Commands::v_cmd.size(); i++)
 		{
@@ -129,23 +128,22 @@ void CommandPalette::draw(void)
 
 			if (CommandPalette::filter.PassFilter(cmd->m_title.c_str()))
 			{
-				if (CommandPalette::filter.CountGrep != 0)
+				CommandPalette::filtered++;
+
+				if (child_is_visible)
 				{
-
-					if (child_is_visible)
+					if (CommandPalette::cur_pos == cur)
 					{
-						if (cur_pos == cur)
-						{
-							ImGui::Text(ICON_FA_ARROW_RIGHT "    %s %s", cmd->m_icon, cmd->m_title.c_str());
-							CommandPalette::cur_cmd = i;
-						}
-						else
-							ImGui::TextColored(color, "%s %s", cmd->m_icon, cmd->m_title.c_str());
-
-						ImGui::SameLine();
-						ImGui::TextColored(color, "(%s)", cmd->m_desc.c_str());
-						cur++;
+						ImGui::Text(ICON_FA_ARROW_RIGHT "    %s %s", cmd->m_icon, cmd->m_title.c_str());
+						CommandPalette::cur_cmd = i;
+						ImGui::SetScrollHereY();
 					}
+					else
+						ImGui::TextColored(color, "%s %s", cmd->m_icon, cmd->m_title.c_str());
+
+					ImGui::SameLine();
+					ImGui::TextColored(color, "(%s)", cmd->m_desc.c_str());
+					cur++;
 				}
 			}
 		}
