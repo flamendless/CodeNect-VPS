@@ -14,10 +14,10 @@ void CreateNode::create_var_node(void)
 	v_slot_info_t&& in = {};
 	v_slot_info_t&& out = {};
 
-	in.push_back({ data::var->slot._to_string(), data::var->slot });
-	out.push_back({ data::var->slot._to_string(), data::var->slot });
+	in.push_back({data::var->slot._to_string(), data::var->slot});
+	out.push_back({data::var->slot._to_string(), data::var->slot});
 
-	NodeVariable* node = new NodeVariable(CreateNode::kind, data::var->buf_name, data::var->value, std::move(in), std::move(out));
+	NodeVariable* node = new NodeVariable(data::var->buf_name, data::var->value, std::move(in), std::move(out));
 	node->draw_node();
 
 	Nodes::v_nodes.push_back(node);
@@ -54,7 +54,8 @@ void CreateNode::draw_var(void)
 			if (ImGui::Selectable(txt, data::var->slot._to_string() == txt))
 			{
 				data::var->slot = slot;
-				data::var->valid_value = false;
+				data::var->valid_value = true;
+				data::var->value.set(slot);
 			}
 
 			ImGui::PopID();
@@ -87,51 +88,30 @@ void CreateNode::draw_opt_bool(void)
 	ImGui::Text("Boolean value:");
 
 	if (ImGui::RadioButton("true", data::var->value.v_bool == true))
-	{
 		data::var->value.set(true);
-		data::var->valid_value = true;
-	}
 
 	ImGui::SameLine();
 
 	if (ImGui::RadioButton("false", data::var->value.v_bool == false))
-	{
 		data::var->value.set(false);
-		data::var->valid_value = true;
-	}
 }
 
 void CreateNode::draw_opt_int(void)
 {
-	static int temp = 0;
-
-	if (ImGui::InputInt("Integer value", &temp))
-	{
-		data::var->value.set(temp);
-		data::var->valid_value = true;
-	}
+	if (ImGui::InputInt("Integer value", &CreateNode::data::var->temp_int))
+		data::var->value.set(CreateNode::data::var->temp_int);
 }
 
 void CreateNode::draw_opt_float(void)
 {
-	static float temp = 0;
-
-	if (ImGui::InputFloat("Float value", &temp))
-	{
-		data::var->value.set(temp);
-		data::var->valid_value = true;
-	}
+	if (ImGui::InputFloat("Float value", &CreateNode::data::var->temp_float))
+		data::var->value.set(CreateNode::data::var->temp_float);
 }
 
 void CreateNode::draw_opt_double(void)
 {
-	static double temp = 0;
-
-	if (ImGui::InputDouble("Double value", &temp))
-	{
-		data::var->value.set(temp);
-		data::var->valid_value = true;
-	}
+	if (ImGui::InputDouble("Double value", &CreateNode::data::var->temp_double))
+		data::var->value.set(CreateNode::data::var->temp_double);
 }
 
 void CreateNode::draw_opt_string(void)
@@ -141,10 +121,7 @@ void CreateNode::draw_opt_string(void)
 		const int len = strlen(data::var->buf_string);
 
 		if (len > 0)
-		{
 			data::var->value.set(data::var->buf_string);
-			data::var->valid_value = true;
-		}
 	}
 }
 }

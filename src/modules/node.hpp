@@ -25,6 +25,7 @@ struct Node
 	inline Node() {}
 	inline virtual ~Node() {}
 	inline virtual void draw_node(void) {}
+
 	inline void delete_connection(const Connection& connection)
 	{
 		for (v_connection_t::iterator it = m_connections.begin(); it != m_connections.end(); ++it)

@@ -19,13 +19,25 @@ struct NodeValue
 		const char* v_string;
 	};
 
-	void set(bool arg){ v_bool = arg; m_slot = NODE_SLOT::BOOL; }
-	void set(int arg){ v_int = arg; m_slot = NODE_SLOT::INTEGER; }
-	void set(float arg){ v_float = arg; m_slot = NODE_SLOT::FLOAT; }
-	void set(double arg){ v_double = arg; m_slot = NODE_SLOT::DOUBLE; }
-	void set(const char* arg){ v_string = arg; m_slot = NODE_SLOT::STRING; }
+	inline void set(bool arg){ v_bool = arg; m_slot = NODE_SLOT::BOOL; }
+	inline void set(int arg){ v_int = arg; m_slot = NODE_SLOT::INTEGER; }
+	inline void set(float arg){ v_float = arg; m_slot = NODE_SLOT::FLOAT; }
+	inline void set(double arg){ v_double = arg; m_slot = NODE_SLOT::DOUBLE; }
+	inline void set(const char* arg){ v_string = arg; m_slot = NODE_SLOT::STRING; }
+	inline void set(NODE_SLOT slot)
+	{
+		switch (slot)
+		{
+			case NODE_SLOT::EMPTY: break;
+			case NODE_SLOT::BOOL: set(true); break;
+			case NODE_SLOT::INTEGER: set(0); break;
+			case NODE_SLOT::FLOAT: set(0); break;
+			case NODE_SLOT::DOUBLE: set(0); break;
+			case NODE_SLOT::STRING: set(""); break;
+		}
+	}
 
-	void* get_value()
+	inline void* get_value()
 	{
 		// void* d = node.m_value.get_value();
 		// const char* str = static_cast<const char*>(d);
@@ -40,7 +52,7 @@ struct NodeValue
 		}
 	}
 
-	const char* get_spec()
+	inline const char* get_spec()
 	{
 		switch (m_slot)
 		{
@@ -53,7 +65,7 @@ struct NodeValue
 		}
 	}
 
-	void draw()
+	inline void draw()
 	{
 		switch (m_slot)
 		{
