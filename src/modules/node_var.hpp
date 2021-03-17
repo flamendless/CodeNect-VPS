@@ -12,6 +12,7 @@ namespace CodeNect
 struct NodeVariable : public Node
 {
 	NodeValue m_value;
+	NodeValue m_value_orig;
 	NODE_KIND m_kind = NODE_KIND::VARIABLE;
 
 	explicit NodeVariable(
@@ -22,12 +23,8 @@ struct NodeVariable : public Node
 	);
 
 	inline ~NodeVariable() {}
-
-	//NOTE:
-	//"in node" is the current node
-	//"out node" is the previous node
-	void change_value(NodeVariable* out);
 	void on_connect(Node* in, Node* out) override;
+	void change_value(NodeVariable* out);
 	void draw(void) override;
 };
 }

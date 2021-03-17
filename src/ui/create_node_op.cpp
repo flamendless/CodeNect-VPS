@@ -3,6 +3,7 @@
 #include "modules/node.hpp"
 #include "modules/nodes.hpp"
 #include "modules/node_op.hpp"
+#include "core/utils.hpp"
 
 namespace CodeNect
 {
@@ -21,7 +22,7 @@ void CreateNode::create_op_node(void)
 		out.push_back({slot._to_string(), slot});
 	}
 
-	NodeOp* node = new NodeOp(data::op->op._to_string(), std::move(in), std::move(out));
+	NodeOp* node = new NodeOp(data::op->op, std::move(in), std::move(out));
 
 	Nodes::v_nodes.push_back(node);
 	ImNodes::AutoPositionNode(Nodes::v_nodes.back());
@@ -56,7 +57,7 @@ void CreateNode::draw_op(void)
 
 	CreateNode::draw_opt_input();
 	CreateNode::draw_slots();
-	CreateNode::can_create = (data::op->v_slots_in.size() >= 2) &&
+	CreateNode::can_create = (data::op->v_slots_in.size() != 0) &&
 		(data::op->v_slots_out.size() != 0);
 }
 
@@ -79,6 +80,9 @@ void draw_slots_v(const char* str, std::vector<NODE_SLOT> &v)
 				it = v.erase(it);
 				pressed = true;
 			}
+
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("click to remove slot type");
 
 			ImGui::PopID();
 			ImGui::SameLine();
@@ -135,20 +139,51 @@ void CreateNode::draw_opt_input(void)
 
 	if (temp_slot != +NODE_SLOT::EMPTY)
 	{
+		const bool res_in = Utils::exists_in_slots(temp_slot, data::op->v_slots_in);
+		const bool res_out = Utils::exists_in_slots(temp_slot, data::op->v_slots_out);
+
 		ImGui::SameLine();
+
+		if (res_in)
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 
 		if (ImGui::SmallButton(ICON_FA_PLUS " in"))
 		{
-			data::op->v_slots_in.push_back(temp_slot);
-			temp_slot = NODE_SLOT::EMPTY;
+			if (!res_in)
+			{
+				data::op->v_slots_in.push_back(temp_slot);
+				temp_slot = NODE_SLOT::EMPTY;
+			}
+		}
+
+		if (res_in)
+		{
+			ImGui::PopStyleVar(1);
+
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Only one input slot of type can be added");
 		}
 
 		ImGui::SameLine();
 
+		if (res_out)
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+
 		if (ImGui::SmallButton(ICON_FA_PLUS " out"))
 		{
-			data::op->v_slots_out.push_back(temp_slot);
-			temp_slot = NODE_SLOT::EMPTY;
+			if (!res_out)
+			{
+				data::op->v_slots_out.push_back(temp_slot);
+				temp_slot = NODE_SLOT::EMPTY;
+			}
+		}
+
+		if (res_out)
+		{
+			ImGui::PopStyleVar(1);
+
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Only one output slot of type can be added");
 		}
 	}
 }

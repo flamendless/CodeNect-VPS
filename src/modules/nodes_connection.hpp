@@ -11,7 +11,7 @@ struct Connection
 	void* out_node;
 	const char* out_slot;
 
-	bool operator==(const Connection& other) const
+	inline bool operator==(const Connection& other) const
 	{
 		return in_node == other.in_node &&
 			in_slot == other.in_slot &&
@@ -19,7 +19,7 @@ struct Connection
 			out_slot == other.out_slot;
 	}
 
-	bool operator!=(const Connection& other) const
+	inline bool operator!=(const Connection& other) const
 	{
 		return !operator ==(other);
 	}

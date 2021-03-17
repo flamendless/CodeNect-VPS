@@ -4,11 +4,24 @@
 #include <ctime>
 #include <string>
 #include "imgui.h"
+#include "ImNodesEz.h"
+#include "modules/node_def.hpp"
 
 namespace CodeNect
 {
 namespace Utils
 {
+inline bool exists_in_slots(NODE_SLOT slot, std::vector<NODE_SLOT> slots)
+{
+	for (NODE_SLOT& _slot : slots)
+	{
+		if (_slot == slot)
+			return true;
+	}
+
+	return false;
+}
+
 inline void center_text(const char* txt)
 {
 	const ImVec2 txt_size = ImGui::CalcTextSize(txt);

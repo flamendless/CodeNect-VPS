@@ -124,10 +124,9 @@ void NodeInterface::draw_nodes(void)
 		if (ImNodes::Ez::BeginNode(node, node->m_kind._to_string(), &node->m_pos, &node->m_selected))
 		{
 			node->draw();
-
+			//order is important
 			ImNodes::Ez::InputSlots(node->m_in_slots.data(), node->m_in_slots.size());
 			ImNodes::Ez::OutputSlots(node->m_out_slots.data(), node->m_out_slots.size());
-
 			NodeInterface::draw_connections(*node);
 		}
 

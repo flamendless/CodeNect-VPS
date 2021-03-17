@@ -8,28 +8,19 @@ namespace CodeNect
 {
 struct NodeOp : public Node
 {
-	NODE_OP op = NODE_OP::EMPTY;
+	NODE_OP m_op = NODE_OP::EMPTY;
 	NODE_KIND m_kind = NODE_KIND::OPERATION;
+	const char* m_icon;
 
-	inline explicit NodeOp(
-		const char* name,
+	explicit NodeOp(
+		NODE_OP op,
 		const v_slot_info_t&& in_slots,
 		const v_slot_info_t&& out_slots
-	)
-	{
-		Node::m_kind = m_kind;
-		Node::m_name = name;
-		m_in_slots = in_slots;
-		m_out_slots = out_slots;
-	}
+	);
 
 	inline ~NodeOp() {}
-
-	inline virtual void on_connect(Node* in, Node* out) override
-	{
-	}
-
-	inline void draw(void) override {}
+	virtual void on_connect(Node* in, Node* out) override;
+	virtual void draw(void) override;
 };
 }
 

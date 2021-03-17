@@ -12,21 +12,16 @@ NodeVariable::NodeVariable(
 	Node::m_kind = m_kind;
 	Node::m_name = name;
 	m_value = value;
+	m_value_orig = value;
 	Node::m_in_slots = in_slots;
 	Node::m_out_slots = out_slots;
 
 	PLOGD << "Created NodeVariable: " << m_name << ", value = " << m_value.get_value_str();
 }
 
-void NodeVariable::change_value(NodeVariable* out)
-{
-	m_value = out->m_value;
-
-	std::string msg = fmt::format("{}'s' value of {} is set to {}'s {}",
-		m_name, m_value.get_value_str(), out->m_name, out->m_value.get_value_str());
-	PLOGD << msg;
-}
-
+//NOTE:
+//"in node" is the current node
+//"out node" is the previous node
 void NodeVariable::on_connect(Node* in, Node* out)
 {
 	NODE_KIND* out_kind = &out->m_kind;
@@ -40,9 +35,18 @@ void NodeVariable::on_connect(Node* in, Node* out)
 	}
 }
 
+void NodeVariable::change_value(NodeVariable* out)
+{
+	m_value = out->m_value;
+
+	std::string msg = fmt::format("{}'s' value of {} is set to {}'s {}",
+		m_name, m_value.get_value_str(), out->m_name, out->m_value.get_value_str());
+	PLOGD << msg;
+}
+
 void NodeVariable::draw(void)
 {
-	if (ImGui::BeginTable("TableNode", 2, ImGuiTableFlags_SizingFixedFit))
+	if (ImGui::BeginTable("TableNode##NodeVar", 2, ImGuiTableFlags_SizingFixedFit))
 	{
 		ImGui::TableNextRow();
 		ImGui::TableNextColumn();
