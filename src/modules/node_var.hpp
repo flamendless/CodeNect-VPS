@@ -23,8 +23,6 @@ struct NodeVariable : public Node
 	);
 
 	inline ~NodeVariable() {}
-	void on_connect(Node* in, Node* out) override;
-	void change_value(NodeVariable* out);
 	void draw(void) override;
 };
 }

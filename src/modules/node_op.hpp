@@ -19,7 +19,6 @@ struct NodeOp : public Node
 	);
 
 	inline ~NodeOp() {}
-	virtual void on_connect(Node* in, Node* out) override;
 	virtual void draw(void) override;
 };
 }

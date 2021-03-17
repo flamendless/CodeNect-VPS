@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 #include <string>
-#include "modules/nodes_connection.hpp"
+#include "modules/connection.hpp"
 #include "ImNodesEz.h"
 #include "modules/node.hpp"
 

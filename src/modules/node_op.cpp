@@ -27,10 +27,6 @@ NodeOp::NodeOp(
 	}
 }
 
-void NodeOp::on_connect(Node* in, Node* out)
-{
-}
-
 void NodeOp::draw(void)
 {
 	if (ImGui::BeginTable("TableNode##NodeOp", 2, ImGuiTableFlags_SizingFixedFit))

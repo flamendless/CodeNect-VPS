@@ -17,6 +17,7 @@
 #include "core/utils.hpp"
 #include "core/font.hpp"
 #include "modules/nodes.hpp"
+#include "modules/node_logic.hpp"
 #include "ui/create_node.hpp"
 
 namespace CodeNect
@@ -99,7 +100,7 @@ void NodeInterface::draw_connections(Node &node)
 		Node* in_node = (Node*)new_connection.in_node;
 		Node* out_node = (Node*)new_connection.out_node;
 
-		node.on_connect(in_node, out_node);
+		NodeLogic::on_connect(in_node, out_node);
 	}
 
 	for (const Connection& connection : node.m_connections)

@@ -5,6 +5,7 @@
 #include "plog/Log.h"
 #include "modules/node_def.hpp"
 #include "modules/node_val.hpp"
+#include "modules/connection.hpp"
 #include "core/defines.hpp"
 
 namespace CodeNect
@@ -23,7 +24,6 @@ struct Node
 
 	inline Node() {}
 	inline virtual ~Node() {}
-	inline virtual void on_connect(Node* in, Node* out) {}
 	inline virtual void draw(void) {}
 
 	inline void delete_connection(const Connection& connection)

@@ -4,7 +4,7 @@
 #include <vector>
 #include "ImNodesEz.h"
 #include "enum.h"
-#include "modules/nodes_connection.hpp"
+#include "modules/connection.hpp"
 
 namespace CodeNect
 {
