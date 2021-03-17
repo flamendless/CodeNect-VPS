@@ -14,10 +14,12 @@
 #define DEFAULT_FONT_SIZE 13
 #define DEFAULT_STYLE "dark"
 
+#define RES_VARNAME_ALREADY_TAKEN -3
 #define RES_VARNAME_CONFLICT_KEYWORD -2
 #define RES_VARNAME_INVALID -1
 #define RES_VARNAME_VALID 1
 #define STR_CONFLICT_KEYWORD "variable name can't be used because it's a reserved keyword"
+#define STR_ALREADY_TAKEN "variable name can't be used because it's already been taken"
 
 #include <map>
 #include <string>

@@ -30,7 +30,15 @@ void CreateNode::draw_var(void)
 	if (len_name == 0)
 		Utils::display_asterisk(true);
 	else
-		Utils::display_asterisk(data::var->res_name == RES_VARNAME_CONFLICT_KEYWORD, STR_CONFLICT_KEYWORD);
+	{
+		switch (data::var->res_name)
+		{
+			case RES_VARNAME_CONFLICT_KEYWORD:
+				Utils::display_asterisk(true, STR_CONFLICT_KEYWORD); break;
+			case RES_VARNAME_ALREADY_TAKEN:
+				Utils::display_asterisk(true, STR_ALREADY_TAKEN); break;
+		}
+	}
 
 	if (ImGui::InputText("Variable Name", data::var->buf_name, IM_ARRAYSIZE(data::var->buf_name), ImGuiInputTextFlags_CharsNoBlank))
 	{
