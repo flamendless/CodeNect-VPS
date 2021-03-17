@@ -1,13 +1,13 @@
-#ifndef _VALIDATIONS_HPP
-#define _VALIDATIONS_HPP
+#ifndef _VALIDATOR_HPP
+#define _VALIDATOR_HPP
 
 namespace CodeNect
 {
-namespace Validations
+namespace Validator
 {
 bool check_var_name_taken(const char* str);
 int validate_var_name(const char* str);
 }
 }
 
-#endif //_VALIDATIONS_HPP
+#endif //_VALIDATOR_HPP

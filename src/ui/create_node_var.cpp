@@ -4,7 +4,7 @@
 #include "modules/nodes.hpp"
 #include "modules/node_var.hpp"
 #include "core/utils.hpp"
-#include "core/validations.hpp"
+#include "core/validator.hpp"
 #include "core/defines.hpp"
 
 namespace CodeNect
@@ -42,11 +42,12 @@ void CreateNode::draw_var(void)
 
 	if (ImGui::InputText("Variable Name", data::var->buf_name, IM_ARRAYSIZE(data::var->buf_name), ImGuiInputTextFlags_CharsNoBlank))
 	{
-		data::var->res_name = Validations::validate_var_name(data::var->buf_name);
+		data::var->res_name = Validator::validate_var_name(data::var->buf_name);
 		data::var->valid_name = data::var->res_name == RES_VARNAME_VALID;
 	}
 
-	Utils::display_asterisk(data::var->slot == +NODE_SLOT::EMPTY);
+	if (data::var->slot == +NODE_SLOT::EMPTY)
+		Utils::display_asterisk(true);
 
 	if (ImGui::BeginCombo("Data Type", data::var->slot._to_string()))
 	{
@@ -72,9 +73,6 @@ void CreateNode::draw_var(void)
 	}
 
 	ImGui::Separator();
-
-	if (data::var->slot != +NODE_SLOT::EMPTY)
-		Utils::display_asterisk(data::var->valid_value == false);
 
 	switch (data::var->slot)
 	{

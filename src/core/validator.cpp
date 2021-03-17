@@ -1,4 +1,4 @@
-#include "core/validations.hpp"
+#include "core/validator.hpp"
 
 #include <map>
 #include "plog/Log.h"
@@ -8,7 +8,7 @@
 
 namespace CodeNect
 {
-namespace Validations
+namespace Validator
 {
 std::map<const std::string, bool> m_reserved_keywords
 {
