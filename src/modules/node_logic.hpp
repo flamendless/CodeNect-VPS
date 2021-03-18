@@ -3,14 +3,17 @@
 
 #include "modules/node.hpp"
 #include "modules/node_var.hpp"
+#include "modules/node_op.hpp"
 #include "modules/connection.hpp"
 
 namespace CodeNect
 {
 namespace NodeLogic
 {
-void change_value(NodeVariable* in, NodeVariable* out);
-void on_connect(Node* in, Node* out);
+void process_var(NodeVariable* node);
+void perform_op(NodeVariable* node, NodeOp* op);
+void op_add(NodeVariable* node, NodeOp* op);
+void process();
 }
 }
 

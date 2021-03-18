@@ -96,11 +96,6 @@ void NodeInterface::draw_connections(Node &node)
 	{
 		((Node*) new_connection.in_node)->m_connections.push_back(new_connection);
 		((Node*) new_connection.out_node)->m_connections.push_back(new_connection);
-
-		Node* in_node = (Node*)new_connection.in_node;
-		Node* out_node = (Node*)new_connection.out_node;
-
-		NodeLogic::on_connect(in_node, out_node);
 	}
 
 	for (const Connection& connection : node.m_connections)
@@ -118,6 +113,8 @@ void NodeInterface::draw_connections(Node &node)
 
 void NodeInterface::draw_nodes(void)
 {
+	NodeLogic::process();
+
 	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin(); it != Nodes::v_nodes.end();)
 	{
 		Node* node = *it;

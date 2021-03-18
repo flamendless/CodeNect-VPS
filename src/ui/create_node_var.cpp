@@ -63,7 +63,7 @@ void CreateNode::draw_var(void)
 			{
 				data::var->slot = slot;
 				data::var->valid_value = true;
-				data::var->value.set(slot);
+				data::var->value.copy(slot);
 			}
 
 			ImGui::PopID();

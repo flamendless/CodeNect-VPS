@@ -11,12 +11,12 @@ NodeVariable::NodeVariable(
 {
 	Node::m_kind = m_kind;
 	Node::m_name = name;
-	m_value = value;
 	m_value_orig = value;
+	m_value = &value;
 	Node::m_in_slots = in_slots;
 	Node::m_out_slots = out_slots;
 
-	PLOGD << "Created NodeVariable: " << m_name << ", value = " << m_value.get_value_str();
+	PLOGD << "Created NodeVariable: " << m_name << ", value = " << m_value->get_value_str();
 }
 
 void NodeVariable::draw(void)
@@ -30,7 +30,11 @@ void NodeVariable::draw(void)
 
 		ImGui::TableNextColumn();
 		ImGui::Text("%s", m_name);
-		m_value.draw();
+
+		if (m_value)
+			m_value->draw();
+		else
+			m_value_orig.draw();
 
 		ImGui::EndTable();
 	}

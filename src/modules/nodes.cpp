@@ -1,6 +1,7 @@
 #include "modules/nodes.hpp"
 #include "modules/node_val.hpp"
 #include "modules/node_var.hpp"
+#include "modules/node_op.hpp"
 
 namespace CodeNect
 {
@@ -11,7 +12,7 @@ Nodes::m_node_t Nodes::m_available_nodes
 		"Test_Int", []() -> Node*
 		{
 			NodeValue value;
-			value.set(11);
+			value.set(1);
 
 			return new NodeVariable("a", value,
 				{
@@ -27,7 +28,7 @@ Nodes::m_node_t Nodes::m_available_nodes
 		"Test_Int2", []() -> Node*
 		{
 			NodeValue value;
-			value.set(15);
+			value.set(2);
 
 			return new NodeVariable("b", value,
 				{
@@ -39,5 +40,34 @@ Nodes::m_node_t Nodes::m_available_nodes
 			);
 		}
 	},
+	{
+		"Test_Res_Int", []() -> Node*
+		{
+			NodeValue value;
+			value.set(0);
+
+			return new NodeVariable("res", value,
+				{
+					{"INTEGER", NODE_SLOT::INTEGER},
+				},
+				{
+					{"INTEGER", NODE_SLOT::INTEGER},
+				}
+			);
+		}
+	},
+	{
+		"Test_Add_Int", []() -> Node*
+		{
+			return new NodeOp(NODE_OP::ADD,
+				{
+					{"INTEGER", NODE_SLOT::INTEGER},
+				},
+				{
+					{"INTEGER", NODE_SLOT::INTEGER},
+				}
+			);
+		}
+	}
 };
 }

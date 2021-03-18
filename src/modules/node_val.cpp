@@ -1,24 +1,60 @@
 #include "modules/node_val.hpp"
 
 #include "imgui.h"
+#include "plog/Log.h"
 
 namespace CodeNect
 {
+NodeValue NodeValue::operator+(NodeValue& rhs)
+{
+	NODE_SLOT* this_slot = &m_slot;
+
+	NodeValue v;
+	v.copy(*this_slot);
+
+	if (*this_slot == +NODE_SLOT::INTEGER)
+	{
+		void* ptr = rhs.get_value();
+		int l = v_int;
+		int r = (int)(size_t)ptr;
+
+		v.set(l + r);
+	}
+
+	return v;
+}
+
 void NodeValue::set(bool arg){ v_bool = arg; m_slot = NODE_SLOT::BOOL; }
 void NodeValue::set(int arg){ v_int = arg; m_slot = NODE_SLOT::INTEGER; }
 void NodeValue::set(float arg){ v_float = arg; m_slot = NODE_SLOT::FLOAT; }
 void NodeValue::set(double arg){ v_double = arg; m_slot = NODE_SLOT::DOUBLE; }
 void NodeValue::set(const char* arg){ v_string = arg; m_slot = NODE_SLOT::STRING; }
-void NodeValue::set(NODE_SLOT slot)
+
+void NodeValue::copy(NODE_SLOT& slot)
 {
 	switch (slot)
 	{
 		case NODE_SLOT::EMPTY: break;
 		case NODE_SLOT::BOOL: set(true); break;
 		case NODE_SLOT::INTEGER: set(0); break;
-		case NODE_SLOT::FLOAT: set(0); break;
-		case NODE_SLOT::DOUBLE: set(0); break;
+		case NODE_SLOT::FLOAT: set((float)0); break;
+		case NODE_SLOT::DOUBLE: set((double)0); break;
 		case NODE_SLOT::STRING: set(""); break;
+	}
+}
+
+void* NodeValue::get_value()
+{
+	// void* d = node.m_value.get_value();
+	// const char* str = static_cast<const char*>(d);
+	switch (m_slot)
+	{
+		case NODE_SLOT::EMPTY: return nullptr; break;
+		case NODE_SLOT::BOOL: return &v_bool; break;
+		case NODE_SLOT::INTEGER: return &v_int; break;
+		case NODE_SLOT::FLOAT: return &v_float; break;
+		case NODE_SLOT::DOUBLE: return &v_double; break;
+		case NODE_SLOT::STRING: return (void*)v_string; break;
 	}
 }
 
