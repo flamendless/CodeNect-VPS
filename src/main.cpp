@@ -54,6 +54,11 @@ int main(int argv, char** args)
 
 	ImGuiIO* imgui_io = &ImGui::GetIO();
 
+	//test
+#ifdef DEBUG_MODE
+	CodeNect::Project::open("test.cn");
+#endif
+
 	while(!glfwWindowShouldClose(CodeNect::App::window))
 	{
 		float dt = imgui_io->DeltaTime;

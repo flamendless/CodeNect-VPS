@@ -2,6 +2,7 @@
 #define _PROJECT_H
 
 #include <string>
+#include "SimpleIni.h"
 #include "ui/new_project.hpp"
 
 namespace CodeNect
@@ -29,7 +30,9 @@ struct Project
 	);
 	static void init_new(void);
 	static int open(void);
+	static int open(const char* filename);
 	static int parse(void);
+	static int parse_nodes(CSimpleIniA& reader);
 	static void draw(void);
 	static void close(void);
 };

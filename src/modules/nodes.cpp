@@ -5,6 +5,7 @@
 
 namespace CodeNect
 {
+bool Nodes::has_built_meta = false;
 std::vector<Node*> Nodes::v_nodes;
 Nodes::m_node_t Nodes::m_available_nodes
 {
@@ -70,4 +71,54 @@ Nodes::m_node_t Nodes::m_available_nodes
 		}
 	}
 };
+
+void Nodes::build_from_meta(const std::vector<NodeMeta*> &meta)
+{
+	for (NodeMeta* nm : meta)
+	{
+		NODE_KIND kind = NODE_KIND::_from_string(nm->m_kind.c_str());
+
+		switch (kind)
+		{
+			case NODE_KIND::EMPTY: break;
+			case NODE_KIND::VARIABLE:
+			{
+				NODE_SLOT value_slot = NODE_SLOT::_from_string(nm->m_value_slot.c_str());
+				NodeValue val;
+
+				switch (value_slot)
+				{
+					case NODE_SLOT::EMPTY: break;
+					case NODE_SLOT::BOOL: val.to_bool(nm->m_value.c_str()); break;
+					case NODE_SLOT::INTEGER: val.to_int(nm->m_value.c_str()); break;
+					case NODE_SLOT::FLOAT: val.to_float(nm->m_value.c_str()); break;
+					case NODE_SLOT::DOUBLE: val.to_double(nm->m_value.c_str()); break;
+					case NODE_SLOT::STRING: val.set(nm->m_value.c_str()); break;
+				}
+
+				v_slot_info_t&& in = {};
+				v_slot_info_t&& out = {};
+
+				for (std::string& input : nm->m_input_slots)
+					in.push_back({input.c_str(), NODE_SLOT::_from_string(input.c_str())});
+
+				for (std::string&  output : nm->m_output_slots)
+					out.push_back({output.c_str(), NODE_SLOT::_from_string(output.c_str())});
+
+				NodeVariable* var = new NodeVariable(nm->m_name.c_str(), val, std::move(in), std::move(out));
+				var->m_pos = ImVec2(nm->x, nm->y);
+				Nodes::v_nodes.push_back(var);
+
+				break;
+			}
+			case NODE_KIND::OPERATION:
+			{
+				break;
+			}
+			case NODE_KIND::IF: break;
+		}
+	}
+
+	Nodes::has_built_meta = true;
+}
 }

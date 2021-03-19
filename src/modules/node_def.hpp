@@ -2,6 +2,7 @@
 #define _NODE_DEF_HPP
 
 #include <vector>
+#include "plog/Log.h"
 #include "ImNodesEz.h"
 #include "enum.h"
 #include "modules/connection.hpp"

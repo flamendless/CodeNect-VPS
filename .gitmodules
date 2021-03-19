@@ -7,9 +7,6 @@
 [submodule "includes/plog"]
 	path = includes/plog
 	url = https://github.com/SergiusTheBest/plog
-[submodule "includes/inih"]
-	path = includes/inih
-	url = https://github.com/jtilly/inih.git
 [submodule "includes/ppk"]
 	path = includes/ppk
 	url = https://github.com/gpakosz/PPK_ASSERT

@@ -26,6 +26,10 @@ struct NodeValue
 	void set(double arg);
 	void set(const char* arg);
 	void copy(NODE_SLOT& slot);
+	void to_bool(const char* str);
+	void to_int(const char* str);
+	void to_float(const char* str);
+	void to_double(const char* str);
 
 	void* get_value();
 	const std::string get_value_str(void);

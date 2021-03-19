@@ -3,7 +3,6 @@
 #include <filesystem>
 #include <ctime>
 #include <GLFW/glfw3.h>
-#include "SimpleIni.h"
 #include "plog/Log.h"
 #include "modules/filesystem.hpp"
 #include "core/app.hpp"
@@ -11,6 +10,8 @@
 #include "core/utils.hpp"
 #include "core/commands.hpp"
 #include "ui/alert.hpp"
+#include "modules/node_meta.hpp"
+#include "modules/nodes.hpp"
 
 namespace CodeNect
 {
@@ -82,6 +83,18 @@ int Project::open(void)
 	return RES_FAIL;
 }
 
+int Project::open(const char* filename)
+{
+	Project::meta.filepath = filename;
+
+	if (Project::parse() == RES_FAIL)
+		return RES_FAIL;
+
+	Project::has_open_proj = true;
+
+	return RES_FAIL;
+}
+
 int Project::parse(void)
 {
 	PLOGI << "Parsing project file...";
@@ -93,7 +106,6 @@ int Project::parse(void)
 	if (res < 0)
 	{
 		PLOGE << "Can't parse project file";
-
 		return RES_FAIL;
 	}
 
@@ -107,7 +119,79 @@ int Project::parse(void)
 	Project::meta.creation_dt = reader.GetValue("meta", "creation_dt", "");
 	PLOGV << "Project Creation Datetime: " << Project::meta.creation_dt;
 
+	int res_nodes = Project::parse_nodes(reader);
+
+	if (res_nodes == RES_FAIL)
+	{
+		PLOGE << "Can't parse project nodes";
+		return RES_FAIL;
+	}
+
 	PLOGI << "Parsed project file successfully";
+
+	return RES_SUCCESS;
+}
+
+int Project::parse_nodes(CSimpleIniA& reader)
+{
+	CSimpleIniA::TNamesDepend sections;
+	reader.GetAllSections(sections);
+
+	std::vector<NodeMeta*> node_meta;
+
+	for (CSimpleIniA::Entry& section : sections)
+	{
+		if (std::string(section.pItem).find(PROJ_NODE_PREFIX, 0) == 0)
+		{
+			const char* name = reader.GetValue(section.pItem, "name");
+			const char* kind = reader.GetValue(section.pItem, "kind");
+			const char* value = reader.GetValue(section.pItem, "value");
+			const char* value_slot = reader.GetValue(section.pItem, "value_slot");
+			const float x = std::stof(reader.GetValue(section.pItem, "x"));
+			const float y = std::stof(reader.GetValue(section.pItem, "y"));
+
+			NodeMeta* nm = new NodeMeta();
+			nm->m_name = name;
+			nm->m_kind = kind;
+			nm->m_value = value;
+			nm->m_value_slot = value_slot;
+			nm->x = x;
+			nm->y = y;
+
+			//get input/output slots
+			CSimpleIniA::TNamesDepend keys;
+			reader.GetAllKeys(section.pItem, keys);
+
+			for (CSimpleIniA::Entry& key : keys)
+			{
+				//find input slots first
+				if (std::string(key.pItem).find(PROJ_INPUT_SLOT_PREFIX, 0) == 0)
+				{
+					const char* slot = reader.GetValue(section.pItem, key.pItem);
+					nm->m_input_slots.push_back(slot);
+				}
+
+				//find output slots second
+				if (std::string(key.pItem).find(PROJ_OUTPUT_SLOT_PREFIX, 0) == 0)
+				{
+					const char* slot = reader.GetValue(section.pItem, key.pItem);
+					nm->m_output_slots.push_back(slot);
+				}
+			}
+
+			node_meta.push_back(nm);
+		}
+	}
+
+	Nodes::build_from_meta(node_meta);
+
+	for (NodeMeta* nm : node_meta)
+	{
+		nm->m_input_slots.clear();
+		nm->m_output_slots.clear();
+	}
+
+	node_meta.clear();
 
 	return RES_SUCCESS;
 }
