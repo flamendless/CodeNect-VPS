@@ -22,6 +22,7 @@
 #define STR_ALREADY_TAKEN "variable name can't be used because it's already been taken"
 
 #define PROJ_NODE_PREFIX "node_"
+#define PROJ_CONNECTION_PREFIX "connection_"
 #define PROJ_INPUT_SLOT_PREFIX "input_"
 #define PROJ_OUTPUT_SLOT_PREFIX "output_"
 

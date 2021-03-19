@@ -31,6 +31,8 @@ struct Project
 	static void init_new(void);
 	static int open(void);
 	static int open(const char* filename);
+	static int save(void);
+	static void save_cmd(void);
 	static int parse(void);
 	static int parse_nodes(CSimpleIniA& reader);
 	static void draw(void);

@@ -18,7 +18,6 @@ void PopupProject::draw(void)
 
 		if (ImGui::MenuItem("New Project"))
 			Project::init_new();
-				// Alert::open(ALERT_TYPE::SUCCESS, "New Project created successfully.\nPlease open the created project file");
 
 		if (ImGui::MenuItem("Open Project"))
 		{
@@ -28,7 +27,18 @@ void PopupProject::draw(void)
 				Alert::open(ALERT_TYPE::ERROR, "Failed to open/read the project file");
 		}
 
-		ImGui::MenuItem("Save Project");
+		if (ImGui::MenuItem("Save Project", NULL, false, Project::has_open_proj))
+		{
+			int res = Project::save();
+
+			if (res == RES_FAIL)
+				Alert::open(ALERT_TYPE::ERROR, "Failed to save project");
+			else
+				Alert::open(ALERT_TYPE::SUCCESS, "Successfully saved project");
+
+			m_is_open = false;
+		}
+
 		ImGui::Separator();
 
 		if (ImGui::MenuItem("Close Project", NULL, false, Project::has_open_proj))

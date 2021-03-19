@@ -11,6 +11,7 @@ struct NodeMeta
 	std::string m_kind;
 	std::string m_value;
 	std::string m_value_slot;
+	std::string m_op;
 	std::vector<std::string> m_input_slots;
 	std::vector<std::string> m_output_slots;
 	float x;
