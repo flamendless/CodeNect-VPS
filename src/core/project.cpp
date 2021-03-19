@@ -148,10 +148,9 @@ int Project::save(void)
 
 	for (Node* node : Nodes::v_nodes)
 	{
-		std::string str_name = node->m_name;
-		std::string str_section = std::string(PROJ_NODE_PREFIX) + str_name + "_" + std::to_string(s_i);
+		std::string str_section = std::string(PROJ_NODE_PREFIX) + std::to_string(s_i);
 		const char* section = str_section.c_str();
-		ini.SetValue(section, "name", str_name.c_str());
+		ini.SetValue(section, "name", node->m_name);
 
 		const char* kind = node->m_kind._to_string();
 		ini.SetValue(section, "kind", kind);
