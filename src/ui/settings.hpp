@@ -21,6 +21,7 @@ struct Settings
 	static void draw_font_select(void);
 	static void draw_sidebar(void);
 	static void draw_command_palette(void);
+	static void draw_node_interface(void);
 };
 }
 

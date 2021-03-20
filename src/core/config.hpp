@@ -20,7 +20,7 @@ struct Config
 	static std::string style;
 	static std::string font;
 	static int font_size;
-	static CSimpleIniA reader;
+	static CSimpleIniA ini;
 	static const char* styles;
 	static const char* fonts[6];
 	static const char* version;
@@ -50,6 +50,7 @@ struct Config
 	struct NodeInterface_c
 	{
 		static ImVec2 pos;
+		static ImVec4 label_color;
 	};
 
 	Config() = delete;
@@ -65,6 +66,7 @@ struct Config
 	static void update_font_size(const std::string& font_size);
 	static void update_command_palette(const ImVec2& size);
 	static void update_sidebar(const int fade_in, const int fade_out);
+	static void update_node_interface(float* label_color);
 	static bool save_user_config(void);
 	static bool reset(void);
 

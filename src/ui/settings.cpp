@@ -27,6 +27,8 @@ struct SettingsData
 	int fade_out;
 	int fade_in_orig;
 	int fade_out_orig;
+
+	float label_color[3];
 } settings_data;
 
 ImGuiWindowFlags Settings::flags =
@@ -57,6 +59,10 @@ void Settings::init(void)
 	settings_data.fade_out = Config::Sidebar_c::fade_out;
 	settings_data.fade_in_orig = settings_data.fade_in;
 	settings_data.fade_out_orig = settings_data.fade_out;
+
+	settings_data.label_color[0] = Config::NodeInterface_c::label_color.w;
+	settings_data.label_color[1] = Config::NodeInterface_c::label_color.x;
+	settings_data.label_color[2] = Config::NodeInterface_c::label_color.y;
 }
 
 void Settings::register_commands(void)
@@ -95,6 +101,8 @@ void Settings::draw(void)
 		Settings::draw_sidebar();
 		ImGui::Separator();
 		Settings::draw_command_palette();
+		ImGui::Separator();
+		Settings::draw_node_interface();
 
 		if ((settings_data.font_size != settings_data.font_size_orig) ||
 			(settings_data.font != settings_data.font_orig))
@@ -179,6 +187,8 @@ void Settings::draw_buttons(void)
 			settings_data.fade_out != settings_data.fade_out_orig)
 			Config::update_sidebar(settings_data.fade_in, settings_data.fade_out);
 
+		Config::update_node_interface(settings_data.label_color);
+
 		bool res = Config::save_user_config();
 		PLOGV << "Save user config: " << res;
 
@@ -240,5 +250,11 @@ void Settings::draw_command_palette(void)
 
 	settings_data.cp_size.x = width;
 	settings_data.cp_size.y = height;
+}
+
+void Settings::draw_node_interface(void)
+{
+	Utils::center_text(ICON_FA_PROJECT_DIAGRAM " Node Interface", true);
+	ImGui::ColorEdit3("Label Color", settings_data.label_color, ImGuiColorEditFlags_Float);
 }
 }
