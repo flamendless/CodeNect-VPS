@@ -182,24 +182,12 @@ int Project::save(void)
 			case NODE_KIND::IF: break;
 		}
 
-		int in_i = 1;
-		int out_i = 1;
+		//save input and output slots
+		Project::save_slots(ini, section, node->m_in_slots, PROJ_INPUT_SLOT_PREFIX);
+		Project::save_slots(ini, section, node->m_out_slots, PROJ_OUTPUT_SLOT_PREFIX);
 
-		for (ImNodes::Ez::SlotInfo& slot : node->m_in_slots)
-		{
-			std::string str_in = std::string(PROJ_INPUT_SLOT_PREFIX) + std::to_string(in_i);
-			const char* in_val = slot.title;
-			ini.SetValue(section, str_in.c_str(), in_val);
-			in_i++;
-		}
-
-		for (ImNodes::Ez::SlotInfo& slot : node->m_out_slots)
-		{
-			std::string str_out = std::string(PROJ_OUTPUT_SLOT_PREFIX) + std::to_string(out_i);
-			const char* out_val = slot.title;
-			ini.SetValue(section, str_out.c_str(), out_val);
-			out_i++;
-		}
+		//save connections
+		Project::save_connections(ini, node->m_connections);
 
 		s_i++;
 	}
@@ -213,6 +201,37 @@ int Project::save(void)
 	PLOGI << "Saved project file";
 
 	return  RES_SUCCESS;
+}
+
+void Project::save_slots(CSimpleIniA& ini, const char* section, v_slot_info_t& slots, const char* prefix)
+{
+	int i = 1;
+
+	for (ImNodes::Ez::SlotInfo& slot : slots)
+	{
+		std::string str = std::string(prefix) + std::to_string(i);
+		const char* val = slot.title;
+		ini.SetValue(section, str.c_str(), val);
+		i++;
+	}
+}
+
+void Project::save_connections(CSimpleIniA& ini, std::vector<Connection>& v_connections)
+{
+	for (Connection& connection : v_connections)
+	{
+		Node* in_node = (Node*)connection.in_node;
+		Node* out_node = (Node*)connection.out_node;
+
+		std::string str_id = std::string(in_node->m_name) + "_" + std::string(out_node->m_name);
+		std::string str_section = std::string(PROJ_CONNECTION_PREFIX) + str_id;
+		const char* section = str_section.c_str();
+
+		ini.SetValue(section, "in_node_name", in_node->m_name);
+		ini.SetValue(section, "in_slot", connection.in_slot);
+		ini.SetValue(section, "out_node_name", out_node->m_name);
+		ini.SetValue(section, "out_slot", connection.out_slot);
+	}
 }
 
 int Project::parse(void)
@@ -239,88 +258,102 @@ int Project::parse(void)
 	Project::meta.creation_dt = ini.GetValue("meta", "creation_dt", "");
 	PLOGV << "Project Creation Datetime: " << Project::meta.creation_dt;
 
-	int res_nodes = Project::parse_nodes(ini);
+	CSimpleIniA::TNamesDepend sections;
+	ini.GetAllSections(sections);
+	std::vector<NodeMeta*> v_node_meta;
+	std::vector<ConnectionMeta*> v_connection_meta;
 
-	if (res_nodes == RES_FAIL)
+	for (CSimpleIniA::Entry& section : sections)
 	{
-		PLOGE << "Can't parse project nodes";
-		return RES_FAIL;
+		std::string str_section = section.pItem;
+
+		if (str_section.find(PROJ_NODE_PREFIX, 0) == 0)
+			Project::parse_nodes(ini, v_node_meta, section.pItem);
+		else if (str_section.find(PROJ_CONNECTION_PREFIX, 0) == 0)
+			Project::parse_connections(ini, v_connection_meta, section.pItem);
 	}
+
+	Nodes::build_from_meta(v_node_meta);
+	Nodes::build_from_meta(v_connection_meta);
+
+	//cleanup
+	for (NodeMeta* nm : v_node_meta)
+	{
+		nm->m_input_slots.clear();
+		nm->m_output_slots.clear();
+	}
+
+	v_node_meta.clear();
+	v_connection_meta.clear();
 
 	PLOGI << "Parsed project file successfully";
 
 	return RES_SUCCESS;
 }
 
-int Project::parse_nodes(CSimpleIniA& ini)
+void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta, const char* section)
 {
-	CSimpleIniA::TNamesDepend sections;
-	ini.GetAllSections(sections);
+	PLOGV << "Parsing node section: " << section;
 
-	std::vector<NodeMeta*> node_meta;
+	const char* name = ini.GetValue(section, "name");
+	const char* kind = ini.GetValue(section, "kind");
+	const char* value = ini.GetValue(section, "value", "0");
+	const char* value_slot = ini.GetValue(section, "value_slot", "EMPTY");
+	const char* op = ini.GetValue(section, "op", "EMPTY");
+	const float x = std::stof(ini.GetValue(section, "x", "300"));
+	const float y = std::stof(ini.GetValue(section, "y", "300"));
 
-	for (CSimpleIniA::Entry& section : sections)
+	NodeMeta* nm = new NodeMeta();
+	nm->m_name = name;
+	nm->m_kind = kind;
+	nm->m_value = value;
+	nm->m_value_slot = value_slot;
+	nm->m_op = op;
+	nm->x = x;
+	nm->y = y;
+
+	//get input/output slots
+	CSimpleIniA::TNamesDepend keys;
+	ini.GetAllKeys(section, keys);
+
+	for (CSimpleIniA::Entry& key : keys)
 	{
-		std::string str_section = section.pItem;
+		std::string str_key = key.pItem;
 
-		if (std::string(str_section).find(PROJ_NODE_PREFIX, 0) == 0)
+		//find input slots first
+		if (str_key.find(PROJ_INPUT_SLOT_PREFIX, 0) == 0)
 		{
-			const char* name = ini.GetValue(section.pItem, "name");
-			const char* kind = ini.GetValue(section.pItem, "kind");
-			const char* value = ini.GetValue(section.pItem, "value", "0");
-			const char* value_slot = ini.GetValue(section.pItem, "value_slot", "EMPTY");
-			const char* op = ini.GetValue(section.pItem, "op", "EMPTY");
-			const float x = std::stof(ini.GetValue(section.pItem, "x", "300"));
-			const float y = std::stof(ini.GetValue(section.pItem, "y", "300"));
-
-			NodeMeta* nm = new NodeMeta();
-			nm->m_name = name;
-			nm->m_kind = kind;
-			nm->m_value = value;
-			nm->m_value_slot = value_slot;
-			nm->m_op = op;
-			nm->x = x;
-			nm->y = y;
-
-			//get input/output slots
-			CSimpleIniA::TNamesDepend keys;
-			ini.GetAllKeys(section.pItem, keys);
-
-			for (CSimpleIniA::Entry& key : keys)
-			{
-				//find input slots first
-				if (std::string(key.pItem).find(PROJ_INPUT_SLOT_PREFIX, 0) == 0)
-				{
-					const char* slot = ini.GetValue(section.pItem, key.pItem);
-					nm->m_input_slots.push_back(slot);
-				}
-
-				//find output slots second
-				if (std::string(key.pItem).find(PROJ_OUTPUT_SLOT_PREFIX, 0) == 0)
-				{
-					const char* slot = ini.GetValue(section.pItem, key.pItem);
-					nm->m_output_slots.push_back(slot);
-				}
-			}
-
-			node_meta.push_back(nm);
+			const char* slot = ini.GetValue(section, key.pItem);
+			nm->m_input_slots.push_back(slot);
 		}
-		else if (str_section.find(PROJ_CONNECTION_PREFIX, 0) == 0)
+
+		//find output slots second
+		if (str_key.find(PROJ_OUTPUT_SLOT_PREFIX, 0) == 0)
 		{
+			const char* slot = ini.GetValue(section, key.pItem);
+			nm->m_output_slots.push_back(slot);
 		}
 	}
 
-	Nodes::build_from_meta(node_meta);
+	v_node_meta.push_back(nm);
+}
 
-	for (NodeMeta* nm : node_meta)
-	{
-		nm->m_input_slots.clear();
-		nm->m_output_slots.clear();
-	}
+void Project::parse_connections(CSimpleIniA& ini, std::vector<ConnectionMeta*>& v_connection_meta, const char* section)
+{
+	PLOGV << "Parsing connection section: " << section;
 
-	node_meta.clear();
+	const char* in_name = ini.GetValue(section, "in_node_name");
+	const char* out_name = ini.GetValue(section, "out_node_name");
+	const char* in_slot = ini.GetValue(section, "in_slot");
+	const char* out_slot = ini.GetValue(section, "out_slot");
 
-	return RES_SUCCESS;
+	ConnectionMeta* cm = new ConnectionMeta();
+	cm->m_in_name = in_name;
+	cm->m_in_slot = in_slot;
+	cm->m_out_name = out_name;
+	cm->m_out_slot = out_slot;
+
+	v_connection_meta.push_back(cm);
 }
 
 void Project::draw(void)

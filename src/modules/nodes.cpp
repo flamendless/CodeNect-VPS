@@ -65,9 +65,9 @@ void Nodes::build_slots(NodeMeta& meta, v_slot_info_t& in, v_slot_info_t& out)
 		out.push_back({output.c_str(), NODE_SLOT::_from_string(output.c_str())});
 }
 
-void Nodes::build_from_meta(const std::vector<NodeMeta*> &meta)
+void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 {
-	for (NodeMeta* nm : meta)
+	for (NodeMeta* nm : v_node_meta)
 	{
 		NODE_KIND kind = NODE_KIND::_from_string(nm->m_kind.c_str());
 
@@ -118,5 +118,39 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &meta)
 	}
 
 	Nodes::has_built_meta = true;
+}
+
+Node* Nodes::find_by_name(const char* name)
+{
+	for (Node* node : Nodes::v_nodes)
+	{
+		if (std::strcmp(node->m_name, name) == 0)
+			return node;
+	}
+
+	PLOGE << "Can't find node by name: " << name;
+
+	return nullptr;
+}
+
+void Nodes::build_from_meta(const std::vector<ConnectionMeta*> &v_connection_meta)
+{
+	for (ConnectionMeta* cm : v_connection_meta)
+	{
+		Node* in_node = Nodes::find_by_name(cm->m_in_name.c_str());
+		Node* out_node = Nodes::find_by_name(cm->m_out_name.c_str());
+
+		if (in_node && out_node)
+		{
+			Connection connection;
+			connection.in_node = in_node;
+			connection.in_slot = cm->m_in_slot.c_str();
+			connection.out_node = out_node;
+			connection.out_slot = cm->m_out_slot.c_str();
+
+			in_node->m_connections.push_back(connection);
+			out_node->m_connections.push_back(connection);
+		}
+	}
 }
 }

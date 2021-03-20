@@ -19,6 +19,17 @@ struct NodeMeta
 
 	inline NodeMeta() {}
 };
+
+struct ConnectionMeta
+{
+	std::string m_in_name;
+	std::string m_in_slot;
+
+	std::string m_out_name;
+	std::string m_out_slot;
+
+	inline ConnectionMeta() {}
+};
 }
 
 #endif //_NODE_META_HPP

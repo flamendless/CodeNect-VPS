@@ -20,8 +20,10 @@ struct Nodes
 	static m_node_t m_available_nodes;
 
 	Nodes() = delete;
+	static Node* find_by_name(const char* name);
 	static void build_slots(NodeMeta& meta, v_slot_info_t& in, v_slot_info_t& out);
-	static void build_from_meta(const std::vector<NodeMeta*> &meta);
+	static void build_from_meta(const std::vector<NodeMeta*> &v_node_meta);
+	static void build_from_meta(const std::vector<ConnectionMeta*> &v_connection_meta);
 };
 };
 
