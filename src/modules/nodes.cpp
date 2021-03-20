@@ -95,6 +95,7 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 
 				NodeVariable* node_var = new NodeVariable(nm->m_name.c_str(), val, std::move(in), std::move(out));
 				node_var->m_pos = ImVec2(nm->x, nm->y);
+				node_var->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_var);
 
 				break;
@@ -109,6 +110,7 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 
 				NodeOp* node_op = new NodeOp(op, std::move(in), std::move(out));
 				node_op->m_pos = ImVec2(nm->x, nm->y);
+				node_op->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_op);
 
 				break;

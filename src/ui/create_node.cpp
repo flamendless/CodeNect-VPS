@@ -67,10 +67,27 @@ void CreateNode::draw(void)
 		}
 
 		ImGui::Separator();
+		CreateNode::draw_desc();
+		ImGui::Separator();
 		CreateNode::draw_buttons();
 
 		ImGui::End();
 	}
+}
+
+void CreateNode::draw_desc(void)
+{
+	char* buf = nullptr;
+
+	switch (CreateNode::kind)
+	{
+		case NODE_KIND::EMPTY: break;
+		case NODE_KIND::VARIABLE: buf = data::var->buf_desc; break;
+		case NODE_KIND::OPERATION: buf = data::op->buf_desc; break;
+		case NODE_KIND::IF: break;
+	}
+
+	ImGui::InputText("Description", buf, BUF_SIZE * 2);
 }
 
 void CreateNode::draw_buttons(void)

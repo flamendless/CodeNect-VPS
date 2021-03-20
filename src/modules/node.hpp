@@ -17,6 +17,7 @@ struct Node
 
 	NODE_KIND m_kind = NODE_KIND::EMPTY;
 	const char* m_name;
+	const char* m_desc = "";
 
 	v_connection_t m_connections{};
 	v_slot_info_t m_in_slots{};
@@ -24,19 +25,9 @@ struct Node
 
 	inline Node() {}
 	inline virtual ~Node() {}
-	inline virtual void draw(void) {}
 
-	inline void delete_connection(const Connection& connection)
-	{
-		for (v_connection_t::iterator it = m_connections.begin(); it != m_connections.end(); ++it)
-		{
-			if (connection == *it)
-			{
-				m_connections.erase(it);
-				break;
-			}
-		}
-	}
+	virtual void draw(void);
+	void delete_connection(const Connection& connection);
 };
 }
 

@@ -23,6 +23,7 @@ void CreateNode::create_op_node(void)
 	}
 
 	NodeOp* node = new NodeOp(data::op->op, std::move(in), std::move(out));
+	node->m_desc = data::op->buf_desc;
 
 	Nodes::v_nodes.push_back(node);
 	ImNodes::AutoPositionNode(Nodes::v_nodes.back());

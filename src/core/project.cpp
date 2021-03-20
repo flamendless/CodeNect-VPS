@@ -159,6 +159,7 @@ int Project::save(void)
 		std::string str_y = std::to_string(node->m_pos.y);
 		ini.SetValue(section, "x", str_x.c_str());
 		ini.SetValue(section, "y", str_y.c_str());
+		ini.SetValue(section, "desc", node->m_desc);
 
 		switch (node->m_kind)
 		{
@@ -302,6 +303,7 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 	const char* op = ini.GetValue(section, "op", "EMPTY");
 	const float x = std::stof(ini.GetValue(section, "x", "300"));
 	const float y = std::stof(ini.GetValue(section, "y", "300"));
+	const char* desc = ini.GetValue(section, "desc", "");
 
 	NodeMeta* nm = new NodeMeta();
 	nm->m_name = name;
@@ -311,6 +313,7 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 	nm->m_op = op;
 	nm->x = x;
 	nm->y = y;
+	nm->m_desc = desc;
 
 	//get input/output slots
 	CSimpleIniA::TNamesDepend keys;

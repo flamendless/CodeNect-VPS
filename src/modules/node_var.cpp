@@ -1,5 +1,7 @@
 #include "modules/node_var.hpp"
 
+#include "core/config.hpp"
+
 namespace CodeNect
 {
 NodeVariable::NodeVariable(
@@ -25,8 +27,9 @@ void NodeVariable::draw(void)
 	{
 		ImGui::TableNextRow();
 		ImGui::TableNextColumn();
-		ImGui::Text("Name:");
-		ImGui::Text("Value:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Name:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Value:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
 
 		ImGui::TableNextColumn();
 		ImGui::Text("%s", m_name);
@@ -35,6 +38,8 @@ void NodeVariable::draw(void)
 			m_value->draw();
 		else
 			m_value_orig.draw();
+
+		ImGui::Text("%s", m_desc);
 
 		ImGui::EndTable();
 	}

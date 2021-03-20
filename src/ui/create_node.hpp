@@ -11,14 +11,6 @@
 
 namespace CodeNect
 {
-struct Variable
-{
-	const char* m_name;
-	const char* m_comment = "";
-	NODE_SLOT m_type = NODE_SLOT::EMPTY;
-	std::string m_value;
-};
-
 struct TempVarData
 {
 	NODE_SLOT slot = NODE_SLOT::EMPTY;
@@ -28,6 +20,7 @@ struct TempVarData
 	bool valid_value = false;
 	int res_name = RES_VARNAME_INVALID;
 	NodeValue value;
+	char buf_desc[BUF_SIZE * 2] = "";
 
 	int temp_int = 0;
 	float temp_float = 0;
@@ -39,7 +32,8 @@ struct TempOperationData
 	std::vector<NODE_SLOT> v_slots_in;
 	std::vector<NODE_SLOT> v_slots_out;
 	NODE_OP op = NODE_OP::EMPTY;
-	NodeValue value;
+	// NodeValue value;
+	char buf_desc[BUF_SIZE * 2] = "";
 	bool valid_op = false;
 };
 
@@ -65,6 +59,7 @@ struct CreateNode
 	static void create_op_node(void);
 
 	static void draw(void);
+	static void draw_desc(void);
 	static void draw_buttons(void);
 
 	//variable node

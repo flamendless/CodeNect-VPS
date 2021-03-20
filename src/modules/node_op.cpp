@@ -2,6 +2,7 @@
 
 #include "IconsFontAwesome5.h"
 #include "core/utils.hpp"
+#include "core/config.hpp"
 
 namespace CodeNect
 {
@@ -33,10 +34,12 @@ void NodeOp::draw(void)
 	{
 		ImGui::TableNextRow();
 		ImGui::TableNextColumn();
-		ImGui::Text("Operation:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Op:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
 
 		ImGui::TableNextColumn();
 		ImGui::Text("%s %s", m_op._to_string(), m_icon);
+		ImGui::Text("%s", m_desc);
 
 		ImGui::EndTable();
 	}
