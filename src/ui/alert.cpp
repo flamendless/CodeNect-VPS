@@ -4,6 +4,8 @@
 #include "IconsFontAwesome5.h"
 #include "core/config.hpp"
 #include "core/font.hpp"
+#include "core/defines.hpp"
+#include "modules/input.hpp"
 
 namespace CodeNect
 {
@@ -16,6 +18,24 @@ ImGuiWindowFlags Alert::flags =
 	ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
 	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
 
+int Alert::init(void)
+{
+	Input::register_key_event(Alert::keypress);
+
+	return RES_SUCCESS;
+}
+
+bool Alert::keypress(int key, int scancode, int mods)
+{
+	if (!Alert::is_open)
+		return false;
+
+	if (key == GLFW_KEY_ENTER)
+		Alert::close();
+
+	return true;
+}
+
 void Alert::open(ALERT_TYPE type, std::string msg)
 {
 	Alert::type = type;
@@ -23,7 +43,13 @@ void Alert::open(ALERT_TYPE type, std::string msg)
 	Alert::is_open = true;
 }
 
-void Alert::draw()
+void Alert::close(void)
+{
+	Alert::is_open = false;
+	ImGui::CloseCurrentPopup();
+}
+
+void Alert::draw(void)
 {
 	if (Alert::is_open)
 		ImGui::OpenPopup("AlertPopup");
@@ -43,10 +69,7 @@ void Alert::draw()
 		ImGui::Separator();
 
 		if (ImGui::Button(ICON_FA_TIMES " Close"))
-		{
-			Alert::is_open = false;
-			ImGui::CloseCurrentPopup();
-		}
+			Alert::close();
 
 		ImGui::EndPopup();
 	}

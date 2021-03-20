@@ -2,6 +2,7 @@
 #define _ALERT_HPP
 
 #include <string>
+#include <GLFW/glfw3.h>
 #include "imgui.h"
 
 namespace CodeNect
@@ -20,8 +21,11 @@ struct Alert
 	static ImGuiWindowFlags flags;
 
 	Alert() = delete;
+	static int init(void);
+	static bool keypress(int key, int scancode, int mods);
 	static void open(ALERT_TYPE type, std::string msg);
-	static void draw();
+	static void close(void);
+	static void draw(void);
 };
 }
 

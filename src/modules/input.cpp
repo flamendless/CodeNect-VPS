@@ -5,13 +5,21 @@
 namespace CodeNect
 {
 std::vector<keycallback_t> Input::v_keypresses;
-// std::vector<keycallback_t> Input::v_keyreleases;
+std::vector<keycallback_t> Input::v_keyreleases;
 
-void Input::register_keypress(keycallback_t fn)
+void Input::register_key_event(keycallback_t fn, bool press)
 {
-	PLOGD << "Registered keypress callback";
 
-	Input::v_keypresses.push_back(fn);
+	if (press)
+	{
+		PLOGD << "Registered keypress callback";
+		Input::v_keypresses.push_back(fn);
+	}
+	else
+	{
+		PLOGD << "Registered keyrelease callback";
+		Input::v_keyreleases.push_back(fn);
+	}
 }
 
 void Input::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -20,14 +28,17 @@ void Input::key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	{
 		for (keycallback_t cb : Input::v_keypresses)
 		{
-			cb(window, key, scancode, mods);
+			bool captured = cb(key, scancode, mods);
+
+			if (captured)
+				break;
 		}
 	}
 	// else if (action == GLFW_RELEASE)
 	// {
 	// 	for (keycallback_t cb : Input::v_keyreleases)
 	// 	{
-	// 		cb(window, key, scancode, mods);
+	// 		cb(key, scancode, mods);
 	// 	}
 	// }
 }

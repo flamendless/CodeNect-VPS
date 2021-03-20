@@ -24,7 +24,7 @@ struct CommandPalette
 	static int init(void);
 	static void open(void);
 	static void close(void);
-	static void keypress(GLFWwindow* window, int key, int scancode, int mods);
+	static bool keypress(int key, int scancode, int mods);
 	static void draw(void);
 };
 }

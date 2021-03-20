@@ -7,15 +7,15 @@
 
 namespace CodeNect
 {
-typedef std::function<void(GLFWwindow* window, int key, int scancode, int mods)> keycallback_t;
+typedef std::function<bool(int key, int scancode, int mods)> keycallback_t;
 
 struct Input
 {
 	static std::vector<keycallback_t> v_keypresses;
-	// static std::vector<keycallback_t> v_keyreleases;
+	static std::vector<keycallback_t> v_keyreleases;
 
 	Input() = delete;
-	static void register_keypress(keycallback_t fn);
+	static void register_key_event(keycallback_t fn, bool press = true);
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 };
 }

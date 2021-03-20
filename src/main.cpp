@@ -27,6 +27,7 @@ int main(int argv, char** args)
 
 	//Command Palette
 	if (CodeNect::CommandPalette::init() != RES_SUCCESS) return -1;
+	if (CodeNect::Alert::init() != RES_SUCCESS) return -1;
 
 	CodeNect::App::register_commands();
 	CodeNect::Project::register_commands();

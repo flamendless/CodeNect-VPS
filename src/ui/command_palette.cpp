@@ -27,7 +27,7 @@ int CommandPalette::filtered = -1;
 
 int CommandPalette::init(void)
 {
-	Input::register_keypress(CommandPalette::keypress);
+	Input::register_key_event(CommandPalette::keypress);
 
 	return RES_SUCCESS;
 }
@@ -49,7 +49,7 @@ void CommandPalette::close(void)
 	PLOGV << "Command Palette closed";
 }
 
-void CommandPalette::keypress(GLFWwindow* window, int key, int scancode, int mods)
+bool CommandPalette::keypress(int key, int scancode, int mods)
 {
 	if (key == GLFW_KEY_P && mods == (GLFW_MOD_SHIFT | GLFW_MOD_CONTROL))
 	{
@@ -76,7 +76,7 @@ void CommandPalette::keypress(GLFWwindow* window, int key, int scancode, int mod
 	else if (key == GLFW_KEY_ENTER && CommandPalette::is_open)
 	{
 		if (CommandPalette::cur_cmd == -1)
-			return;
+			return true;
 
 		const Command* cmd = Commands::v_cmd[CommandPalette::cur_cmd];
 		cmd->run();
@@ -87,7 +87,11 @@ void CommandPalette::keypress(GLFWwindow* window, int key, int scancode, int mod
 			CommandPalette::close();
 
 		PLOGV << "Command launched: " << cmd->m_title;
+
+		return true;
 	}
+
+	return false;
 }
 
 void CommandPalette::draw(void)
