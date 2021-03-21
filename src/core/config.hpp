@@ -22,7 +22,6 @@ struct Config
 	static std::string font;
 	static int font_size;
 	static CSimpleIniA ini;
-	static const char* styles;
 	static const char* fonts[6];
 	static const char* version;
 
@@ -52,6 +51,8 @@ struct Config
 	{
 		static ImVec2 pos;
 		static ImVec2 item_inner_spacing;
+		static ImVec4 color_dark;
+		static ImVec4 color_light;
 		static ImVec4 label_color;
 		static ImVec4 title_color;
 	};
@@ -60,6 +61,7 @@ struct Config
 	static int init(void);
 	static bool load_user_config(void);
 	static bool load_default_config(void);
+	static void set_style(int idx);
 	static void init_general(void);
 	static void init_sidebar(void);
 	static void init_command_palette(void);

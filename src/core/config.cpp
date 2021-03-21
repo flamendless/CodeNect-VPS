@@ -18,7 +18,6 @@ std::string Config::font;
 int Config::font_size;
 CSimpleIniA Config::ini;
 
-const char* Config::styles = "Dark\0Light\0Classic\0";
 const char* Config::fonts[6] = {
 	"ProggyClean", "ProggyTiny", "DroidSans",
 	"CousineRegular", "KarlaRegular", "RobotoMedium"
@@ -44,8 +43,10 @@ ImVec2 Config::CommandPalette_c::size;
 //NodeInterface_c
 ImVec2 Config::NodeInterface_c::pos;
 ImVec2 Config::NodeInterface_c::item_inner_spacing = ImVec2(8, 8);
-ImVec4 Config::NodeInterface_c::label_color = ImVec4(1, 1, 0, 1);
-ImVec4 Config::NodeInterface_c::title_color = ImVec4(1, 1, 0, 1);
+ImVec4 Config::NodeInterface_c::color_dark = ImVec4(1, 1, 0, 1);
+ImVec4 Config::NodeInterface_c::color_light = ImVec4(1, 0, 0, 1);
+ImVec4 Config::NodeInterface_c::title_color = Config::NodeInterface_c::color_dark;
+ImVec4 Config::NodeInterface_c::label_color = Config::NodeInterface_c::color_dark;
 
 int Config::init(void)
 {
@@ -100,6 +101,31 @@ bool Config::load_default_config(void)
 	}
 
 	return true;
+}
+
+void Config::set_style(int idx)
+{
+	if (idx == -1)
+		idx = (STYLE::_from_string(Config::style.c_str()))._to_index();
+
+	if (idx == 1)
+	{
+		Config::NodeInterface_c::title_color = Config::NodeInterface_c::color_dark;
+		Config::NodeInterface_c::label_color = Config::NodeInterface_c::color_dark;
+		ImGui::StyleColorsDark();
+	}
+	else if (idx == 2)
+	{
+		Config::NodeInterface_c::title_color = Config::NodeInterface_c::color_light;
+		Config::NodeInterface_c::label_color = Config::NodeInterface_c::color_light;
+		ImGui::StyleColorsLight();
+	}
+	else if (idx == 3)
+	{
+		Config::NodeInterface_c::title_color = Config::NodeInterface_c::color_dark;
+		Config::NodeInterface_c::label_color = Config::NodeInterface_c::color_dark;
+		ImGui::StyleColorsClassic();
+	}
 }
 
 void Config::init_general(void)
@@ -207,11 +233,11 @@ void Config::init_node_interface(void)
 
 void Config::update_style(StyleData& style_data)
 {
-	switch (style_data.style_idx)
+	switch (style_data.style._to_index())
 	{
-		case 0: ini.SetValue("general", "style", "dark"); break;
-		case 1: ini.SetValue("general", "style", "light"); break;
-		case 2: ini.SetValue("general", "style", "classic"); break;
+		case 1: ini.SetValue("general", "style", "DARK"); break;
+		case 2: ini.SetValue("general", "style", "LIGHT"); break;
+		case 3: ini.SetValue("general", "style", "CLASSIC"); break;
 	}
 
 	std::string str_font_size = std::to_string(style_data.font_size);

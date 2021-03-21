@@ -3,13 +3,16 @@
 
 #include <string>
 #include "imgui.h"
+#include "enum.h"
 
 namespace CodeNect
 {
+BETTER_ENUM(STYLE, int, EMPTY = 0, DARK, LIGHT, CLASSIC)
+
 struct StyleData
 {
 	bool changed = false;
-	int style_idx = -1;
+	STYLE style = STYLE::EMPTY;
 	int font_size = -1;
 	std::string font;
 };

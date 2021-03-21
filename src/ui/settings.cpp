@@ -35,13 +35,7 @@ void Settings::init(void)
 	sb_data.changed = false;
 	ni_data.changed = false;
 
-	if (Config::style == "dark")
-		style_data.style_idx = 0;
-	else if (Config::style == "light")
-		style_data.style_idx = 1;
-	else if (Config::style == "classic")
-		style_data.style_idx = 2;
-
+	style_data.style = STYLE::_from_string(Config::style.c_str());
 	style_data.font_size = Config::font_size;
 	style_data.font = Config::font;
 	cp_data.size = Config::CommandPalette_c::size;
@@ -122,17 +116,29 @@ void Settings::draw(void)
 
 void Settings::draw_theme_select(void)
 {
-	if (ImGui::Combo(ICON_FA_PALETTE " Theme", &style_data.style_idx, Config::styles))
+	if (ImGui::BeginCombo(ICON_FA_PALETTE " Theme", style_data.style._to_string()))
 	{
-		switch (style_data.style_idx)
+		for (STYLE style : STYLE::_values())
 		{
-			case 0: ImGui::StyleColorsDark(); break;
-			case 1: ImGui::StyleColorsLight(); break;
-			case 2: ImGui::StyleColorsClassic(); break;
+			const char* txt = style._to_string();
+
+			if (style == +STYLE::EMPTY)
+				continue;
+
+			ImGui::PushID(style);
+
+			if (ImGui::Selectable(txt, style_data.style._to_string() == txt))
+			{
+				style_data.style = style;
+				NodeInterface::has_changed_theme = true;
+				style_data.changed = true;
+				Config::set_style(style._to_index());
+			}
+
+			ImGui::PopID();
 		}
 
-		NodeInterface::has_changed_theme = true;
-		style_data.changed = true;
+		ImGui::EndCombo();
 	}
 }
 
