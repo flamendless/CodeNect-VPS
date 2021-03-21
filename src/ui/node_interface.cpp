@@ -23,6 +23,7 @@
 namespace CodeNect
 {
 bool NodeInterface::is_open = true;
+bool NodeInterface::has_changed_theme = false;
 ImVec2 NodeInterface::pos;
 ImVec2 NodeInterface::size;
 
@@ -38,6 +39,8 @@ const char* NodeInterface::str = ICON_FA_PROJECT_DIAGRAM " Welcome to CodeNect";
 const char* NodeInterface::str2 = ICON_FA_ANGLE_LEFT " Hover on the left side to access the sidebar";
 const char* NodeInterface::str3 = ICON_FA_TERMINAL " Press <Ctrl+P> to access the command palette";
 
+ImNodes::CanvasState* canvas;
+
 bool NodeInterface::init(void)
 {
 	const ImVec2 pos = Config::NodeInterface_c::pos;
@@ -47,6 +50,8 @@ bool NodeInterface::init(void)
 	NodeInterface::pos = pos;
 	NodeInterface::size = ImVec2(w, h);
 	NodeInterface::center_pos = ImVec2((float)w/2, (float)h/2);
+
+	canvas = new ImNodes::CanvasState();
 
 	return RES_SUCCESS;
 }
@@ -78,9 +83,13 @@ void NodeInterface::draw_startup(void)
 
 void NodeInterface::draw_main(void)
 {
-	static ImNodes::CanvasState canvas{};
+	if (NodeInterface::has_changed_theme)
+	{
+		canvas = new ImNodes::CanvasState();
+		NodeInterface::has_changed_theme = false;
+	}
 
-	ImNodes::BeginCanvas(&canvas);
+	ImNodes::BeginCanvas(canvas);
 
 	if (Nodes::has_built_meta)
 	{
@@ -91,7 +100,7 @@ void NodeInterface::draw_main(void)
 	}
 
 	NodeInterface::draw_nodes();
-	NodeInterface::draw_nodes_context_menu(canvas);
+	NodeInterface::draw_nodes_context_menu(*canvas);
 	CreateNode::draw();
 	ImNodes::EndCanvas();
 }
@@ -128,8 +137,12 @@ void NodeInterface::draw_nodes(void)
 	{
 		Node* node = *it;
 
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, Config::NodeInterface_c::item_inner_spacing);
+		ImGui::PushStyleColor(ImGuiCol_Text, Config::NodeInterface_c::title_color);
+
 		if (ImNodes::Ez::BeginNode(node, node->m_kind._to_string(), &node->m_pos, &node->m_selected))
 		{
+			ImGui::PopStyleColor(1);
 			node->draw();
 			//order is important
 			ImNodes::Ez::InputSlots(node->m_in_slots.data(), node->m_in_slots.size());
@@ -138,6 +151,8 @@ void NodeInterface::draw_nodes(void)
 		}
 
 		ImNodes::Ez::EndNode();
+
+		ImGui::PopStyleVar(1);
 
 		if (node->m_selected && ImGui::IsKeyPressedMap(ImGuiKey_Delete))
 		{

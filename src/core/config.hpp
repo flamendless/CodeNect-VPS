@@ -5,6 +5,7 @@
 #include "imgui.h"
 #include "SimpleIni.h"
 #include "core/defines.hpp"
+#include "core/settings_data.hpp"
 
 namespace CodeNect
 {
@@ -50,7 +51,9 @@ struct Config
 	struct NodeInterface_c
 	{
 		static ImVec2 pos;
+		static ImVec2 item_inner_spacing;
 		static ImVec4 label_color;
+		static ImVec4 title_color;
 	};
 
 	Config() = delete;
@@ -61,12 +64,10 @@ struct Config
 	static void init_sidebar(void);
 	static void init_command_palette(void);
 	static void init_node_interface(void);
-	static void update_style(const int style_idx);
-	static void update_font(const std::string& font);
-	static void update_font_size(const std::string& font_size);
-	static void update_command_palette(const ImVec2& size);
-	static void update_sidebar(const int fade_in, const int fade_out);
-	static void update_node_interface(float* label_color);
+	static void update_style(StyleData& style_data);
+	static void update_command_palette(CommandPaletteData& cp_data);
+	static void update_sidebar(SidebarData& sb_data);
+	static void update_node_interface(NodeInterfaceData& ni_data);
 	static bool save_user_config(void);
 	static bool reset(void);
 

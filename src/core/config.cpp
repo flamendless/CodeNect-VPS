@@ -43,7 +43,9 @@ ImVec2 Config::CommandPalette_c::size;
 
 //NodeInterface_c
 ImVec2 Config::NodeInterface_c::pos;
+ImVec2 Config::NodeInterface_c::item_inner_spacing = ImVec2(8, 8);
 ImVec4 Config::NodeInterface_c::label_color = ImVec4(1, 1, 0, 1);
+ImVec4 Config::NodeInterface_c::title_color = ImVec4(1, 1, 0, 1);
 
 int Config::init(void)
 {
@@ -188,70 +190,90 @@ void Config::init_node_interface(void)
 {
 	const int x = std::stoi(ini.GetValue("node_interface", "pos_x", "-1"));
 	const int y = std::stoi(ini.GetValue("node_interface", "pos_y", "-1"));
+	const int iis_x = std::stoi(ini.GetValue("node_interface", "item_inner_spacing_x", "8"));
+	const int iis_y = std::stoi(ini.GetValue("node_interface", "item_inner_spacing_y", "8"));
 	const float lc_r = std::stof(ini.GetValue("node_interface", "lc_r", "1"));
 	const float lc_g = std::stof(ini.GetValue("node_interface", "lc_g", "1"));
 	const float lc_b = std::stof(ini.GetValue("node_interface", "lc_b", "0"));
+	const float tc_r = std::stof(ini.GetValue("node_interface", "tc_r", "1"));
+	const float tc_g = std::stof(ini.GetValue("node_interface", "tc_g", "1"));
+	const float tc_b = std::stof(ini.GetValue("node_interface", "tc_b", "0"));
 
 	Config::NodeInterface_c::pos = ImVec2(x, y);
+	Config::NodeInterface_c::item_inner_spacing = ImVec2(iis_x, iis_y);
 	Config::NodeInterface_c::label_color = ImVec4(lc_r, lc_g, lc_b, 1);
+	Config::NodeInterface_c::title_color = ImVec4(tc_r, tc_g, tc_b, 1);
 }
 
-void Config::update_style(const int style_idx)
+void Config::update_style(StyleData& style_data)
 {
-	switch (style_idx)
+	switch (style_data.style_idx)
 	{
 		case 0: ini.SetValue("general", "style", "dark"); break;
 		case 1: ini.SetValue("general", "style", "light"); break;
 		case 2: ini.SetValue("general", "style", "classic"); break;
 	}
+
+	std::string str_font_size = std::to_string(style_data.font_size);
+
+	ini.SetValue("general", "font", style_data.font.c_str());
+	ini.SetValue("general", "font_size", str_font_size.c_str());
 }
 
-void Config::update_font(const std::string& font)
+void Config::update_command_palette(CommandPaletteData& cp_data)
 {
-	ini.SetValue("general", "font", font.c_str());
-}
-
-void Config::update_font_size(const std::string& font_size)
-{
-	ini.SetValue("general", "font_size", font_size.c_str());
-}
-
-void Config::update_command_palette(const ImVec2& size)
-{
-	std::string width = std::to_string(size.x);
-	std::string height = std::to_string(size.y);
+	std::string width = std::to_string(cp_data.size.x);
+	std::string height = std::to_string(cp_data.size.y);
 
 	ini.SetValue("command_palette", "width", width.c_str());
 	ini.SetValue("command_palette", "height", height.c_str());
 
-	Config::CommandPalette_c::size = size;
+	Config::CommandPalette_c::size = cp_data.size;
 }
 
-void Config::update_sidebar(const int fade_in, const int fade_out)
+void Config::update_sidebar(SidebarData& sb_data)
 {
-	std::string str_fade_in = std::to_string(fade_in);
-	std::string str_fade_out = std::to_string(fade_out);
+	std::string str_fade_in = std::to_string(sb_data.fade_in);
+	std::string str_fade_out = std::to_string(sb_data.fade_out);
 
 	ini.SetValue("sidebar_handler", "fade_in", str_fade_in.c_str());
 	ini.SetValue("sidebar_handler", "fade_out", str_fade_out.c_str());
 
-	Config::Sidebar_c::fade_in = fade_in;
-	Config::Sidebar_c::fade_out = fade_out;
+	Config::Sidebar_c::fade_in = sb_data.fade_in;
+	Config::Sidebar_c::fade_out = sb_data.fade_out;
 }
 
-void Config::update_node_interface(float* label_color)
+void Config::update_node_interface(NodeInterfaceData& ni_data)
 {
-	float lc_r = label_color[0];
-	float lc_g = label_color[1];
-	float lc_b = label_color[2];
+	float tc_r = ni_data.title_color[0];
+	float tc_g = ni_data.title_color[1];
+	float tc_b = ni_data.title_color[2];
+	float lc_r = ni_data.label_color[0];
+	float lc_g = ni_data.label_color[1];
+	float lc_b = ni_data.label_color[2];
+	int iis_x = ni_data.item_inner_spacing[0];
+	int iis_y = ni_data.item_inner_spacing[1];
+
+	std::string str_iis_x = std::to_string(iis_x);
+	std::string str_iis_y = std::to_string(iis_y);
+	std::string str_tc_r = std::to_string(tc_r);
+	std::string str_tc_g = std::to_string(tc_g);
+	std::string str_tc_b = std::to_string(tc_b);
 	std::string str_lc_r = std::to_string(lc_r);
 	std::string str_lc_g = std::to_string(lc_g);
 	std::string str_lc_b = std::to_string(lc_b);
 
+	ini.SetValue("node_interface", "item_inner_spacing_x", str_iis_x.c_str());
+	ini.SetValue("node_interface", "item_inner_spacing_y", str_iis_y.c_str());
+	ini.SetValue("node_interface", "tc_r", str_tc_r.c_str());
+	ini.SetValue("node_interface", "tc_g", str_tc_g.c_str());
+	ini.SetValue("node_interface", "tc_b", str_tc_b.c_str());
 	ini.SetValue("node_interface", "lc_r", str_lc_r.c_str());
 	ini.SetValue("node_interface", "lc_g", str_lc_g.c_str());
 	ini.SetValue("node_interface", "lc_b", str_lc_b.c_str());
 
+	Config::NodeInterface_c::item_inner_spacing = ImVec2(iis_x, iis_y);
+	Config::NodeInterface_c::title_color = ImVec4(tc_r, tc_g, tc_b, 1);
 	Config::NodeInterface_c::label_color = ImVec4(lc_r, lc_g, lc_b, 1);
 }
 

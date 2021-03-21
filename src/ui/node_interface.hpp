@@ -11,6 +11,7 @@ struct NodeInterface
 {
 	static ImGuiWindowFlags flags;
 	static bool is_open;
+	static bool has_changed_theme;
 	static ImVec2 pos;
 	static ImVec2 size;
 	static ImVec2 center_pos;

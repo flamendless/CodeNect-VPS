@@ -15,6 +15,7 @@ struct Settings
 	static void init(void);
 	static void register_commands(void);
 	static void open(void);
+	static void reset_values(void);
 	static void draw(void);
 	static void draw_buttons(void);
 	static void draw_theme_select(void);
