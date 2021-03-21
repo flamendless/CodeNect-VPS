@@ -270,6 +270,10 @@ void Settings::draw_buttons(void)
 		else
 			Alert::open(ALERT_TYPE::ERROR, "We encountered an error! Sorry about that.");
 
+		style_data.changed = false;
+		cp_data.changed = false;
+		sb_data.changed = false;
+		ni_data.changed = false;
 		was_changed = false;
 	}
 
@@ -277,7 +281,6 @@ void Settings::draw_buttons(void)
 
 	if (ImGui::Button(ICON_FA_UNDO " Restore Defaults"))
 	{
-		Settings::reset_values();
 		bool res = Config::reset();
 		PLOGV << "Restore defaults: " << res;
 
@@ -285,6 +288,13 @@ void Settings::draw_buttons(void)
 			Alert::open(ALERT_TYPE::SUCCESS, "Configurations restored to defaults! Please restart to see the changes.");
 		else
 			Alert::open(ALERT_TYPE::ERROR, "We encountered an error! Sorry about that.");
+
+		Settings::reset_values();
+		style_data.changed = false;
+		cp_data.changed = false;
+		sb_data.changed = false;
+		ni_data.changed = false;
+		was_changed = false;
 	}
 
 	ImGui::SameLine();
@@ -294,6 +304,11 @@ void Settings::draw_buttons(void)
 		if (was_changed)
 			Settings::reset_values();
 
+		style_data.changed = false;
+		cp_data.changed = false;
+		sb_data.changed = false;
+		ni_data.changed = false;
+		was_changed = false;
 		Settings::is_open = false;
 	}
 }
