@@ -6,9 +6,7 @@
 #include "core/defines.hpp"
 #include "modules/nodes.hpp"
 
-namespace CodeNect
-{
-namespace Validator
+namespace CodeNect::Validator
 {
 std::map<const std::string, bool> m_reserved_keywords
 {
@@ -46,6 +44,5 @@ int validate_var_name(const char* str)
 		return RES_VARNAME_ALREADY_TAKEN;
 
 	return RES_VARNAME_VALID;
-}
 }
 }

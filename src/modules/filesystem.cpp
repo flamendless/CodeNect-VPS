@@ -12,9 +12,7 @@
 #include "stb_image.h"
 #include "core/defines.hpp"
 
-namespace CodeNect
-{
-namespace Filesystem
+namespace CodeNect::Filesystem
 {
 std::string current_path = std::filesystem::current_path();
 
@@ -94,6 +92,5 @@ int load_texture_from_file(const char* filename, CodeNect::Image& image)
 	image.size = ImVec2(img_width, img_height);
 
 	return RES_SUCCESS;
-}
 }
 }
