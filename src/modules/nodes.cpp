@@ -5,10 +5,9 @@
 
 namespace CodeNect
 {
+int Nodes::op_id = 0;
 bool Nodes::has_built_meta = false;
 std::vector<Node*> Nodes::v_nodes;
-std::vector<NodeVariable*> Nodes::v_nodes_var;
-std::vector<NodeOperation*> Nodes::v_nodes_op;
 
 Nodes::m_node_t Nodes::m_available_nodes
 {
@@ -89,7 +88,7 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 					case NODE_SLOT::INTEGER: val.to_int(nm->m_value.c_str()); break;
 					case NODE_SLOT::FLOAT: val.to_float(nm->m_value.c_str()); break;
 					case NODE_SLOT::DOUBLE: val.to_double(nm->m_value.c_str()); break;
-					case NODE_SLOT::STRING: val.set(nm->m_value.c_str()); break;
+					case NODE_SLOT::STRING: val.set(nm->m_value); break;
 				}
 
 				v_slot_info_t&& in = {};
@@ -100,7 +99,6 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				node_var->m_pos = ImVec2(nm->x, nm->y);
 				node_var->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_var);
-				Nodes::v_nodes_var.push_back(node_var);
 
 				break;
 			}
@@ -116,7 +114,6 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				node_op->m_pos = ImVec2(nm->x, nm->y);
 				node_op->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_op);
-				Nodes::v_nodes_op.push_back(node_op);
 
 				break;
 			}

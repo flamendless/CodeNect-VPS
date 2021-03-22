@@ -29,10 +29,8 @@ struct TempVarData
 
 struct TempOperationData
 {
-	std::vector<NODE_SLOT> v_slots_in;
-	std::vector<NODE_SLOT> v_slots_out;
 	NODE_OP op = NODE_OP::EMPTY;
-	// NodeValue value;
+	NODE_SLOT slot = NODE_SLOT::EMPTY;
 	char buf_desc[BUF_SIZE * 2] = "";
 	bool valid_op = false;
 };
@@ -72,7 +70,6 @@ struct CreateNode
 
 	//operation node
 	static void draw_op(void);
-	static void draw_slots(void);
 	static void draw_opt_input(void);
 };
 }

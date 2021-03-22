@@ -3,6 +3,7 @@
 #include "IconsFontAwesome5.h"
 #include "core/utils.hpp"
 #include "core/config.hpp"
+#include "modules/nodes.hpp"
 
 namespace CodeNect
 {
@@ -12,8 +13,14 @@ NodeOperation::NodeOperation(
 	const v_slot_info_t&& out_slots
 )
 {
+	Nodes::op_id++;
+
 	Node::m_kind = m_kind;
-	Node::m_name = op._to_string();
+
+	std::string str_op = op._to_string();
+	std::string* str_id = new std::string(str_op + "_" + std::to_string(Nodes::op_id));
+
+	Node::m_name = str_id->c_str();
 	m_op = op;
 	m_in_slots = in_slots;
 	m_out_slots = out_slots;
@@ -26,6 +33,8 @@ NodeOperation::NodeOperation(
 		case NODE_OP::MUL: m_icon = ICON_FA_TIMES; break;
 		case NODE_OP::DIV: m_icon = ICON_FA_DIVIDE; break;
 	}
+
+	PLOGD << "Created NodeOperation: " << m_name << ", op = " << m_op._to_string();
 }
 
 void NodeOperation::draw(void)

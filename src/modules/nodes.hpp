@@ -17,12 +17,10 @@ struct Nodes
 {
 	typedef std::map<std::string, Node*(*)()> m_node_t;
 
+	static int op_id;
 	static bool has_built_meta;
 
 	static std::vector<Node*> v_nodes;
-	static std::vector<NodeVariable*> v_nodes_var;
-	static std::vector<NodeOperation*> v_nodes_op;
-
 	static m_node_t m_available_nodes;
 
 	Nodes() = delete;

@@ -5,11 +5,113 @@
 
 namespace CodeNect
 {
-void NodeValue::set(bool arg){ v_bool = arg; m_slot = NODE_SLOT::BOOL; }
-void NodeValue::set(int arg){ v_int = arg; m_slot = NODE_SLOT::INTEGER; }
-void NodeValue::set(float arg){ v_float = arg; m_slot = NODE_SLOT::FLOAT; }
-void NodeValue::set(double arg){ v_double = arg; m_slot = NODE_SLOT::DOUBLE; }
-void NodeValue::set(const char* arg){ v_string = arg; m_slot = NODE_SLOT::STRING; }
+void NodeValue::add(NodeValue& other)
+{
+	switch (m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: break;
+		case NODE_SLOT::INTEGER: std::get<int>(data) += std::get<int>(other.data); break;
+		case NODE_SLOT::FLOAT: std::get<float>(data) += std::get<float>(other.data); break;
+		case NODE_SLOT::DOUBLE: std::get<double>(data) += std::get<double>(other.data); break;
+		case NODE_SLOT::STRING:
+		{
+			std::string str_a = std::get<std::string>(data);
+			std::string str_b = std::get<std::string>(other.data);
+			std::string str = str_a + str_b;
+			data = str_a + str_b;
+			break;
+		}
+	}
+}
+
+void NodeValue::sub(NodeValue& other)
+{
+	switch (m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: break;
+		case NODE_SLOT::INTEGER: std::get<int>(data) -= std::get<int>(other.data); break;
+		case NODE_SLOT::FLOAT: std::get<float>(data) -= std::get<float>(other.data); break;
+		case NODE_SLOT::DOUBLE: std::get<double>(data) -= std::get<double>(other.data); break;
+		case NODE_SLOT::STRING: break;
+	}
+}
+
+void NodeValue::mul(NodeValue& other)
+{
+	switch (m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: break;
+		case NODE_SLOT::INTEGER:
+		{
+			if (std::get<int>(data) == 0) data = 1;
+			std::get<int>(data) *= std::get<int>(other.data);
+			break;
+		}
+		case NODE_SLOT::FLOAT:
+		{
+			if (std::get<float>(data) == 0) data = (float)1;
+			std::get<float>(data) *= std::get<float>(other.data);
+			break;
+		}
+		case NODE_SLOT::DOUBLE:
+		{
+			if (std::get<double>(data) == 0) data = (double)1;
+			std::get<double>(data) *= std::get<double>(other.data);
+			break;
+		}
+		case NODE_SLOT::STRING: break;
+	}
+}
+
+void NodeValue::div(NodeValue& other)
+{
+	switch (m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: break;
+		case NODE_SLOT::INTEGER:
+		{
+			if (std::get<int>(data) == 0) data = 1;
+			std::get<int>(data) /= std::get<int>(other.data);
+			break;
+		}
+		case NODE_SLOT::FLOAT:
+		{
+			if (std::get<float>(data) == 0) data = (float)1;
+			std::get<float>(data) /= std::get<float>(other.data);
+			break;
+		}
+		case NODE_SLOT::DOUBLE:
+		{
+			if (std::get<double>(data) == 0) data = (double)1;
+			std::get<double>(data) /= std::get<double>(other.data);
+			break;
+		}
+		case NODE_SLOT::STRING: break;
+	}
+}
+
+void NodeValue::set(bool arg){ data = arg; m_slot = NODE_SLOT::BOOL; }
+void NodeValue::set(int arg){ data = arg; m_slot = NODE_SLOT::INTEGER; }
+void NodeValue::set(float arg){ data = arg; m_slot = NODE_SLOT::FLOAT; }
+void NodeValue::set(double arg){ data = arg; m_slot = NODE_SLOT::DOUBLE; }
+void NodeValue::set(std::string arg){ data = arg; m_slot = NODE_SLOT::STRING; }
+
+void NodeValue::copy(NodeValue& val)
+{
+	switch (val.m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: set(std::get<bool>(val.data)); break;
+		case NODE_SLOT::INTEGER: set(std::get<int>(val.data)); break;
+		case NODE_SLOT::FLOAT: set(std::get<float>(val.data)); break;
+		case NODE_SLOT::DOUBLE: set(std::get<double>(val.data)); break;
+		case NODE_SLOT::STRING: set(std::get<std::string>(val.data)); break;
+	}
+}
 
 void NodeValue::copy(NODE_SLOT& slot)
 {
@@ -20,7 +122,7 @@ void NodeValue::copy(NODE_SLOT& slot)
 		case NODE_SLOT::INTEGER: set(0); break;
 		case NODE_SLOT::FLOAT: set((float)0); break;
 		case NODE_SLOT::DOUBLE: set((double)0); break;
-		case NODE_SLOT::STRING: set(""); break;
+		case NODE_SLOT::STRING: set(std::string()); break;
 	}
 }
 
@@ -59,11 +161,11 @@ void* NodeValue::get_value()
 	switch (m_slot)
 	{
 		case NODE_SLOT::EMPTY: return nullptr; break;
-		case NODE_SLOT::BOOL: return &v_bool; break;
-		case NODE_SLOT::INTEGER: return &v_int; break;
-		case NODE_SLOT::FLOAT: return &v_float; break;
-		case NODE_SLOT::DOUBLE: return &v_double; break;
-		case NODE_SLOT::STRING: return (void*)v_string; break;
+		case NODE_SLOT::BOOL: return &std::get<bool>(data); break;
+		case NODE_SLOT::INTEGER: return &std::get<int>(data); break;
+		case NODE_SLOT::FLOAT: return &std::get<float>(data); break;
+		case NODE_SLOT::DOUBLE: return &std::get<double>(data); break;
+		case NODE_SLOT::STRING: return (void*)std::get<std::string>(data).c_str(); break;
 	}
 }
 
@@ -72,11 +174,11 @@ const std::string NodeValue::get_value_str(void)
 	switch (m_slot)
 	{
 		case NODE_SLOT::EMPTY: return "empty"; break;
-		case NODE_SLOT::BOOL: return v_bool ? "true" : "false"; break;
-		case NODE_SLOT::INTEGER: return std::to_string(v_int); break;
-		case NODE_SLOT::FLOAT: return std::to_string(v_float); break;
-		case NODE_SLOT::DOUBLE: return std::to_string(v_double); break;
-		case NODE_SLOT::STRING: return v_string; break;
+		case NODE_SLOT::BOOL: return std::get<bool>(data) ? "true" : "false"; break;
+		case NODE_SLOT::INTEGER: return std::to_string(std::get<int>(data)); break;
+		case NODE_SLOT::FLOAT: return std::to_string(std::get<float>(data)); break;
+		case NODE_SLOT::DOUBLE: return std::to_string(std::get<double>(data)); break;
+		case NODE_SLOT::STRING: return std::get<std::string>(data).c_str(); break;
 	}
 }
 
@@ -98,11 +200,11 @@ void NodeValue::draw(void)
 	switch (m_slot)
 	{
 		case NODE_SLOT::EMPTY: ImGui::Text("Empty?! (this should be an error)"); break;
-		case NODE_SLOT::BOOL: ImGui::Text("%s", v_bool ? "true" : "false"); break;
-		case NODE_SLOT::INTEGER: ImGui::Text("%d", v_int); break;
-		case NODE_SLOT::FLOAT: ImGui::Text("%f", v_float); break;
-		case NODE_SLOT::DOUBLE: ImGui::Text("%.8lf", v_double); break;
-		case NODE_SLOT::STRING: ImGui::Text("%s", v_string); break;
+		case NODE_SLOT::BOOL: ImGui::Text("%s", std::get<bool>(data) ? "true" : "false"); break;
+		case NODE_SLOT::INTEGER: ImGui::Text("%d", std::get<int>(data)); break;
+		case NODE_SLOT::FLOAT: ImGui::Text("%f", std::get<float>(data)); break;
+		case NODE_SLOT::DOUBLE: ImGui::Text("%.8lf", std::get<double>(data)); break;
+		case NODE_SLOT::STRING: ImGui::Text("%s", std::get<std::string>(data).c_str()); break;
 	}
 }
 }

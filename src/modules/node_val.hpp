@@ -1,6 +1,7 @@
 #ifndef _NODE_VAL_HPP
 #define _NODE_VAL_HPP
 
+#include <variant>
 #include "modules/node_def.hpp"
 
 namespace CodeNect
@@ -9,20 +10,19 @@ struct NodeValue
 {
 	NODE_SLOT m_slot = NODE_SLOT::EMPTY;
 
-	union
-	{
-		bool v_bool;
-		int v_int;
-		float v_float;
-		double v_double;
-		const char* v_string;
-	};
+	std::variant<bool, int, float, double, std::string> data;
+
+	void add(NodeValue& to_add);
+	void sub(NodeValue& to_sub);
+	void mul(NodeValue& to_mul);
+	void div(NodeValue& to_div);
 
 	void set(bool arg);
 	void set(int arg);
 	void set(float arg);
 	void set(double arg);
-	void set(const char* arg);
+	void set(std::string arg);
+	void copy(NodeValue& val);
 	void copy(NODE_SLOT& slot);
 	void to_bool(const char* str);
 	void to_int(const char* str);

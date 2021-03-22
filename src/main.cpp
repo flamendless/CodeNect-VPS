@@ -60,6 +60,8 @@ int main(int argv, char** args)
 	CodeNect::Project::open("test.cn");
 #endif
 
+	PLOGI << "Initialization is complete";
+
 	while(!glfwWindowShouldClose(CodeNect::App::window))
 	{
 		float dt = imgui_io->DeltaTime;

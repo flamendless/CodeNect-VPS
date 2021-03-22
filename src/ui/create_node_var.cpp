@@ -21,7 +21,6 @@ void CreateNode::create_var_node(void)
 	node->m_desc = data::var->buf_desc;
 
 	Nodes::v_nodes.push_back(node);
-	Nodes::v_nodes_var.push_back(node);
 	ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 }
 
@@ -94,12 +93,12 @@ void CreateNode::draw_opt_bool(void)
 {
 	ImGui::Text("Boolean value:");
 
-	if (ImGui::RadioButton("true", data::var->value.v_bool == true))
+	if (ImGui::RadioButton("true", std::get<bool>(data::var->value.data) == true))
 		data::var->value.set(true);
 
 	ImGui::SameLine();
 
-	if (ImGui::RadioButton("false", data::var->value.v_bool == false))
+	if (ImGui::RadioButton("true", std::get<bool>(data::var->value.data) == false))
 		data::var->value.set(false);
 }
 
@@ -125,10 +124,8 @@ void CreateNode::draw_opt_string(void)
 {
 	if (ImGui::InputText("String value", data::var->buf_string, IM_ARRAYSIZE(data::var->buf_string)))
 	{
-		const int len = strlen(data::var->buf_string);
-
-		if (len > 0)
-			data::var->value.set(data::var->buf_string);
+		std::string str = std::string(data::var->buf_string);
+		data::var->value.set(str);
 	}
 }
 }

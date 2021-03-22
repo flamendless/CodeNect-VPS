@@ -11,9 +11,9 @@ namespace CodeNect
 {
 struct NodeVariable : public Node
 {
-	NodeValue* m_value = nullptr;
-	NodeValue m_value_orig;
 	NODE_KIND m_kind = NODE_KIND::VARIABLE;
+	NodeValue m_value_orig;
+	NodeValue m_value;
 
 	explicit NodeVariable(
 		const char* name,

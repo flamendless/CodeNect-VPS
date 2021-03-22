@@ -61,6 +61,9 @@ int Project::on_create_new(const char* filename, const char* title, const char* 
 	if (writer.SaveFile(file.c_str()) < 0)
 		return RES_FAIL;
 
+	Nodes::v_nodes.clear();
+	Project::open(file.c_str());
+
 	return RES_SUCCESS;
 }
 
@@ -78,6 +81,8 @@ int Project::open(void)
 	if (res)
 	{
 		PLOGV << "Opened: " << Project::meta.filepath;
+		Nodes::op_id = 0;
+		Nodes::v_nodes.clear();
 
 		if (Project::parse() == RES_FAIL)
 			return RES_FAIL;
@@ -93,6 +98,8 @@ int Project::open(void)
 int Project::open(const char* filename)
 {
 	Project::meta.filepath = filename;
+	Nodes::op_id = 0;
+	Nodes::v_nodes.clear();
 
 	if (Project::parse() == RES_FAIL)
 		return RES_FAIL;
@@ -237,7 +244,7 @@ void Project::save_connections(CSimpleIniA& ini, std::vector<Connection>& v_conn
 
 int Project::parse(void)
 {
-	PLOGI << "Parsing project file...";
+	PLOGI << "Parsing project file..." << Project::meta.filepath;
 
 	CSimpleIniA ini;
 	ini.SetUnicode();
