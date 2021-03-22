@@ -1,91 +1,52 @@
 #include "modules/node_logic.hpp"
 #include "modules/nodes.hpp"
 
-namespace CodeNect
+namespace CodeNect::NodeLogic
 {
-namespace NodeLogic
+void process(void)
 {
-void process()
-{
-	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin(); it != Nodes::v_nodes.end(); it++)
-	{
-		Node* node = *it;
+	NodeLogic::process_var();
+	NodeLogic::process_op();
+}
 
-		switch (node->m_kind)
+//this only processes the variable-variable connection such as assignment
+//of value
+void process_var(void)
+{
+	for (std::vector<NodeVariable*>::iterator it = Nodes::v_nodes_var.begin();
+		it != Nodes::v_nodes_var.end();
+		it++)
+	{
+		NodeVariable* node_var = *it;
+
+		//set to original value
+		node_var->m_value = &node_var->m_value_orig;
+
+		//go through each connection
+		for (const Connection& connection : node_var->m_connections)
 		{
-			case NODE_KIND::EMPTY: break;
-			case NODE_KIND::VARIABLE: NodeLogic::process_var((NodeVariable*)node); break;
-			case NODE_KIND::OPERATION: break;
-			case NODE_KIND::IF: break;
+			//in node is the "to"/"target" node (rhs)
+			//out node is the "from" (lhs)
+			Node* in_node = (Node*)connection.in_node;
+			Node* out_node = (Node*)connection.out_node;
+			NODE_KIND* in_kind = &in_node->m_kind;
+			NODE_KIND* out_kind = &out_node->m_kind;
+
+			bool is_in_var = *in_kind == +NODE_KIND::VARIABLE;
+			bool is_out_var = *out_kind == +NODE_KIND::VARIABLE;
+
+			if (is_in_var && is_out_var)
+			{
+				NodeVariable* out_node_var = (NodeVariable*)out_node;
+
+				if (node_var != out_node)
+					node_var->m_value = out_node_var->m_value;
+			}
 		}
 	}
 }
 
-void process_var(NodeVariable* node)
+void process_op(void)
 {
-	node->m_value = &node->m_value_orig;
-
-	//out node is "from"
-	//in node is "to"
-	for (const Connection& connection : node->m_connections)
-	{
-		Node* in_node = (Node*)connection.in_node;
-		Node* out_node = (Node*)connection.out_node;
-		NODE_KIND* in_kind = &in_node->m_kind;
-		NODE_KIND* out_kind = &out_node->m_kind;
-
-		if (*in_kind == +NODE_KIND::VARIABLE && *out_kind == +NODE_KIND::VARIABLE)
-		{
-			NodeVariable* out_node_var = (NodeVariable*)out_node;
-
-			if (out_node_var != node)
-				node->m_value = out_node_var->m_value;
-		}
-		else if (*in_kind == +NODE_KIND::VARIABLE && *out_kind == +NODE_KIND::OPERATION)
-		{
-			// NodeVariable* in_node_var = (NodeVariable*)in_node;
-			NodeOp* out_node_op = (NodeOp*)out_node;
-
-			perform_op(node, out_node_op);
-		}
-	}
-}
-
-//node here is the ouput "result" node
-void op_add(NodeVariable* node, NodeOp* op)
-{
-	NODE_SLOT* out_slot = &node->m_value->m_slot;
-	NodeValue res;
-	res.copy(*out_slot);
-
-	for (const Connection connection : op->m_connections)
-	{
-		Node* in_node = (Node*)connection.in_node;
-		Node* out_node = (Node*)connection.out_node;
-		NODE_KIND* in_kind = &in_node->m_kind;
-		NODE_KIND* out_kind = &out_node->m_kind;
-
-		if (*in_kind == +NODE_KIND::OPERATION && *out_kind == +NODE_KIND::VARIABLE)
-		{
-			NodeVariable* out_node_var = (NodeVariable*)out_node;
-
-			res = res + *out_node_var->m_value;
-		}
-	}
-
-	node->m_value = &res;
-}
-
-void perform_op(NodeVariable* node, NodeOp* op)
-{
-	switch (op->m_op)
-	{
-		case NODE_OP::EMPTY: break;
-		case NODE_OP::ADD: op_add(node, op); break;
-		case NODE_OP::SUB: break;
-		case NODE_OP::MUL: break;
-		case NODE_OP::DIV: break;
-	}
-}
 }
 }

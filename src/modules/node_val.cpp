@@ -5,25 +5,6 @@
 
 namespace CodeNect
 {
-NodeValue NodeValue::operator+(NodeValue& rhs)
-{
-	NODE_SLOT* this_slot = &m_slot;
-
-	NodeValue v;
-	v.copy(*this_slot);
-
-	if (*this_slot == +NODE_SLOT::INTEGER)
-	{
-		void* ptr = rhs.get_value();
-		int l = v_int;
-		int r = (int)(size_t)ptr;
-
-		v.set(l + r);
-	}
-
-	return v;
-}
-
 void NodeValue::set(bool arg){ v_bool = arg; m_slot = NODE_SLOT::BOOL; }
 void NodeValue::set(int arg){ v_int = arg; m_slot = NODE_SLOT::INTEGER; }
 void NodeValue::set(float arg){ v_float = arg; m_slot = NODE_SLOT::FLOAT; }
@@ -41,6 +22,34 @@ void NodeValue::copy(NODE_SLOT& slot)
 		case NODE_SLOT::DOUBLE: set((double)0); break;
 		case NODE_SLOT::STRING: set(""); break;
 	}
+}
+
+void NodeValue::to_bool(const char* str)
+{
+	if (std::strcmp(str, "true") == 0)
+		set(true);
+	else if (std::strcmp(str, "false") == 0)
+		set(false);
+	else
+		PLOGE << "unable to convert '" << str << "' to bool";
+}
+
+void NodeValue::to_int(const char* str)
+{
+	int i = std::stoi(str);
+	set(i);
+}
+
+void NodeValue::to_float(const char* str)
+{
+	float i = std::stof(str);
+	set(i);
+}
+
+void NodeValue::to_double(const char* str)
+{
+	double i = std::stod(str);
+	set(i);
 }
 
 void* NodeValue::get_value()

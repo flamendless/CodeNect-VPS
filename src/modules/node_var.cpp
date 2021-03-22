@@ -14,7 +14,7 @@ NodeVariable::NodeVariable(
 	Node::m_kind = m_kind;
 	Node::m_name = name;
 	m_value_orig = value;
-	m_value = &value;
+	m_value = &m_value_orig;
 	Node::m_in_slots = in_slots;
 	Node::m_out_slots = out_slots;
 
@@ -28,13 +28,15 @@ void NodeVariable::draw(void)
 		ImGui::TableNextRow();
 		ImGui::TableNextColumn();
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Name:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Type:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Value:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
 
 		ImGui::TableNextColumn();
 		ImGui::Text("%s", m_name);
+		ImGui::Text("%s", m_value_orig.m_slot._to_string());
 
-		if (m_value)
+		if (m_value != nullptr)
 			m_value->draw();
 		else
 			m_value_orig.draw();

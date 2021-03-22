@@ -18,8 +18,6 @@ struct NodeValue
 		const char* v_string;
 	};
 
-	NodeValue operator+(NodeValue& rhs);
-
 	void set(bool arg);
 	void set(int arg);
 	void set(float arg);

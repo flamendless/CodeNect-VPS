@@ -7,6 +7,9 @@ namespace CodeNect
 {
 bool Nodes::has_built_meta = false;
 std::vector<Node*> Nodes::v_nodes;
+std::vector<NodeVariable*> Nodes::v_nodes_var;
+std::vector<NodeOperation*> Nodes::v_nodes_op;
+
 Nodes::m_node_t Nodes::m_available_nodes
 {
 	{
@@ -48,7 +51,7 @@ Nodes::m_node_t Nodes::m_available_nodes
 	{
 		"Test_Add_Int", []() -> Node*
 		{
-			return new NodeOp(NODE_OP::ADD,
+			return new NodeOperation(NODE_OP::ADD,
 				{{"INTEGER", NODE_SLOT::INTEGER}},
 				{{"INTEGER", NODE_SLOT::INTEGER}}
 			);
@@ -97,6 +100,7 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				node_var->m_pos = ImVec2(nm->x, nm->y);
 				node_var->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_var);
+				Nodes::v_nodes_var.push_back(node_var);
 
 				break;
 			}
@@ -108,10 +112,11 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				v_slot_info_t&& out = {};
 				Nodes::build_slots(*nm, in, out);
 
-				NodeOp* node_op = new NodeOp(op, std::move(in), std::move(out));
+				NodeOperation* node_op = new NodeOperation(op, std::move(in), std::move(out));
 				node_op->m_pos = ImVec2(nm->x, nm->y);
 				node_op->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_op);
+				Nodes::v_nodes_op.push_back(node_op);
 
 				break;
 			}

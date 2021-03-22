@@ -6,19 +6,19 @@
 
 namespace CodeNect
 {
-struct NodeOp : public Node
+struct NodeOperation : public Node
 {
 	NODE_OP m_op = NODE_OP::EMPTY;
 	NODE_KIND m_kind = NODE_KIND::OPERATION;
 	const char* m_icon;
 
-	explicit NodeOp(
+	explicit NodeOperation(
 		NODE_OP op,
 		const v_slot_info_t&& in_slots,
 		const v_slot_info_t&& out_slots
 	);
 
-	inline ~NodeOp() {}
+	inline ~NodeOperation() {}
 	virtual void draw(void) override;
 };
 }

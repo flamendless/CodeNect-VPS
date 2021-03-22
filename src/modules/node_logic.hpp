@@ -6,15 +6,11 @@
 #include "modules/node_op.hpp"
 #include "modules/connection.hpp"
 
-namespace CodeNect
+namespace CodeNect::NodeLogic
 {
-namespace NodeLogic
-{
-void process_var(NodeVariable* node);
-void perform_op(NodeVariable* node, NodeOp* op);
-void op_add(NodeVariable* node, NodeOp* op);
-void process();
-}
+void process(void);
+void process_var(void);
+void process_op(void);
 }
 
 #endif //_NODE_LOGIC_HPP

@@ -175,7 +175,7 @@ int Project::save(void)
 			}
 			case NODE_KIND::OPERATION:
 			{
-				NodeOp* node_op = (NodeOp*)node;
+				NodeOperation* node_op = (NodeOperation*)node;
 				const char* op = node_op->m_op._to_string();
 				ini.SetValue(section, "op", op);
 				break;

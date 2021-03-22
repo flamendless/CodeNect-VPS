@@ -202,11 +202,19 @@ void NodeInterface::draw_nodes_context_menu(ImNodes::CanvasState& canvas)
 
 		for (const std::pair<const std::string, Node*(*)()>& desc : Nodes::m_available_nodes)
 		{
-
 			if (ImGui::MenuItem(desc.first.c_str()))
 			{
 				Node* node = desc.second();
 				Nodes::v_nodes.push_back(node);
+
+				switch (node->m_kind)
+				{
+					case NODE_KIND::EMPTY: break;
+					case NODE_KIND::VARIABLE: Nodes::v_nodes_var.push_back((NodeVariable*)node); break;
+					case NODE_KIND::OPERATION: Nodes::v_nodes_op.push_back((NodeOperation*)node); break;
+					case NODE_KIND::IF: break;
+				}
+
 				ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 			}
 		}

@@ -8,6 +8,8 @@
 #include "ImNodesEz.h"
 #include "modules/node.hpp"
 #include "modules/node_meta.hpp"
+#include "modules/node_var.hpp"
+#include "modules/node_op.hpp"
 
 namespace CodeNect
 {
@@ -16,7 +18,11 @@ struct Nodes
 	typedef std::map<std::string, Node*(*)()> m_node_t;
 
 	static bool has_built_meta;
+
 	static std::vector<Node*> v_nodes;
+	static std::vector<NodeVariable*> v_nodes_var;
+	static std::vector<NodeOperation*> v_nodes_op;
+
 	static m_node_t m_available_nodes;
 
 	Nodes() = delete;

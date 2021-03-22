@@ -6,7 +6,7 @@
 
 namespace CodeNect
 {
-NodeOp::NodeOp(
+NodeOperation::NodeOperation(
 	NODE_OP op,
 	const v_slot_info_t&& in_slots,
 	const v_slot_info_t&& out_slots
@@ -28,9 +28,9 @@ NodeOp::NodeOp(
 	}
 }
 
-void NodeOp::draw(void)
+void NodeOperation::draw(void)
 {
-	if (ImGui::BeginTable("TableNode##NodeOp", 2, ImGuiTableFlags_SizingFixedFit))
+	if (ImGui::BeginTable("TableNode##NodeOperation", 2, ImGuiTableFlags_SizingFixedFit))
 	{
 		ImGui::TableNextRow();
 		ImGui::TableNextColumn();

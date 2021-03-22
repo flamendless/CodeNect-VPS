@@ -66,7 +66,6 @@ void CreateNode::draw(void)
 			case NODE_KIND::IF: break;
 		}
 
-		ImGui::Separator();
 		CreateNode::draw_desc();
 		ImGui::Separator();
 		CreateNode::draw_buttons();
@@ -88,6 +87,7 @@ void CreateNode::draw_desc(void)
 	}
 
 	ImGui::InputText("Description", buf, BUF_SIZE * 2);
+	Utils::help_marker("This will serve as comments", true);
 }
 
 void CreateNode::draw_buttons(void)
