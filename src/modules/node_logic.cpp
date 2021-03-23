@@ -142,7 +142,7 @@ void process_op(void)
 			}
 		}
 
-		if (res.v_vars.size() == 0)
+		if (res.v_vars.size() < 2)
 			continue;
 
 		//here we are sure that they are of the same slot
