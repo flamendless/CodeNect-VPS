@@ -13,8 +13,18 @@ void draw_node(Node* node)
 	switch(*kind)
 	{
 		case NODE_KIND::EMPTY: break;
-		case NODE_KIND::VARIABLE: NodeRenderer::draw_node_var((NodeVariable*)node); break;
-		case NODE_KIND::OPERATION: NodeRenderer::draw_node_op((NodeOperation*)node); break;
+		case NODE_KIND::VARIABLE:
+		{
+			NodeVariable* node_var = static_cast<NodeVariable*>(node);
+			NodeRenderer::draw_node_var(node_var);
+			break;
+		}
+		case NODE_KIND::OPERATION:
+		{
+			NodeOperation* node_op = static_cast<NodeOperation*>(node);
+			NodeRenderer::draw_node_op(node_op);
+			break;
+		}
 		case NODE_KIND::IF: break;
 	}
 }
@@ -116,7 +126,7 @@ void draw_connected(Node& node)
 
 			if (is_in_op && is_out_var)
 			{
-				NodeVariable* node_var = (NodeVariable*)out_node;
+				NodeVariable* node_var = static_cast<NodeVariable*>(out_node);
 
 				if (ImGui::TreeNode(node_var->m_name))
 				{

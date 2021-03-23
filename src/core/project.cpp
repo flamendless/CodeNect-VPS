@@ -173,7 +173,7 @@ int Project::save(void)
 			case NODE_KIND::EMPTY: break;
 			case NODE_KIND::VARIABLE:
 			{
-				NodeVariable* node_var = (NodeVariable*)node;
+				NodeVariable* node_var = static_cast<NodeVariable*>(node);
 				const char* value_slot = node_var->m_value_orig.m_slot._to_string();
 				std::string str_value = node_var->m_value_orig.get_value_str();
 				ini.SetValue(section, "value_slot", value_slot);
@@ -182,7 +182,7 @@ int Project::save(void)
 			}
 			case NODE_KIND::OPERATION:
 			{
-				NodeOperation* node_op = (NodeOperation*)node;
+				NodeOperation* node_op = static_cast<NodeOperation*>(node);
 				const char* op = node_op->m_op._to_string();
 				ini.SetValue(section, "op", op);
 				break;

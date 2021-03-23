@@ -66,7 +66,7 @@ void Nodes::delete_node(Node* node)
 
 	if (*kind == +NODE_KIND::VARIABLE)
 	{
-		NodeVariable* _node_var = (NodeVariable*)node;
+		NodeVariable* target_node = static_cast<NodeVariable*>(node);
 
 		for (std::vector<NodeVariable*>::iterator it = Nodes::v_nodes_var.begin();
 			it != Nodes::v_nodes_var.end();
@@ -74,7 +74,7 @@ void Nodes::delete_node(Node* node)
 		{
 			NodeVariable* node_var = *it;
 
-			if (node_var == _node_var)
+			if (node_var == target_node)
 			{
 				it = Nodes::v_nodes_var.erase(it);
 				break;
@@ -83,14 +83,15 @@ void Nodes::delete_node(Node* node)
 	}
 	else if (*kind == +NODE_KIND::OPERATION)
 	{
+		NodeOperation* target_node = static_cast<NodeOperation*>(node);
+
 		for (std::vector<NodeOperation*>::iterator it = Nodes::v_nodes_op.begin();
 			it != Nodes::v_nodes_op.end();
 			it++)
 		{
 			NodeOperation* node_op = *it;
-			Node* _node = (Node*)node_op;
 
-			if (_node == node)
+			if (node_op == target_node)
 			{
 				it = Nodes::v_nodes_op.erase(it);
 				break;

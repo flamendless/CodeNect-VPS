@@ -35,8 +35,8 @@ void process_var(void)
 		{
 			//in node is the "to"/"target" node (rhs)
 			//out node is the "from" (lhs)
-			Node* in_node = (Node*)connection.in_node;
-			Node* out_node = (Node*)connection.out_node;
+			Node* in_node = static_cast<Node*>(connection.in_node);
+			Node* out_node = static_cast<Node*>(connection.out_node);
 			NODE_KIND* in_kind = &in_node->m_kind;
 			NODE_KIND* out_kind = &out_node->m_kind;
 
@@ -45,7 +45,7 @@ void process_var(void)
 
 			if (is_in_var && is_out_var)
 			{
-				NodeVariable* out_node_var = (NodeVariable*)out_node;
+				NodeVariable* out_node_var = static_cast<NodeVariable*>(out_node);
 
 				if (node_var != out_node)
 					node_var->m_value = out_node_var->m_value;
@@ -69,8 +69,8 @@ void process_op(void)
 		//get the resulting node_var
 		for (const Connection& connection : node_op->m_connections)
 		{
-			Node* in_node = (Node*)connection.in_node;
-			Node* out_node = (Node*)connection.out_node;
+			Node* in_node = static_cast<Node*>(connection.in_node);
+			Node* out_node = static_cast<Node*>(connection.out_node);
 			NODE_KIND* in_kind = &in_node->m_kind;
 			NODE_KIND* out_kind = &out_node->m_kind;
 			bool is_out_op = *out_kind == +NODE_KIND::OPERATION;
@@ -78,7 +78,7 @@ void process_op(void)
 
 			if (is_out_op && is_in_var)
 			{
-				NodeVariable* node_var_res = (NodeVariable*)in_node;
+				NodeVariable* node_var_res = static_cast<NodeVariable*>(in_node);
 				res.node_var_res = node_var_res;
 				res.slot_res = node_var_res->m_value_orig.m_slot;
 				break;
@@ -91,8 +91,8 @@ void process_op(void)
 		//get all the lhs of the node_op
 		for (const Connection& connection : node_op->m_connections)
 		{
-			Node* in_node = (Node*)connection.in_node;
-			Node* out_node = (Node*)connection.out_node;
+			Node* in_node = static_cast<Node*>(connection.in_node);
+			Node* out_node = static_cast<Node*>(connection.out_node);
 			NODE_KIND* in_kind = &in_node->m_kind;
 			NODE_KIND* out_kind = &out_node->m_kind;
 			bool is_in_op = *in_kind == +NODE_KIND::OPERATION;
@@ -100,13 +100,10 @@ void process_op(void)
 
 			if (is_in_op && is_out_var)
 			{
-				NodeVariable* node_var = (NodeVariable*)out_node;
+				NodeVariable* node_var = static_cast<NodeVariable*>(out_node);
 
 				if (node_var->m_value_orig.m_slot == res.slot_res)
-				{
-					NodeVariable* node_var = (NodeVariable*)out_node;
 					res.v_vars.push_back(node_var);
-				}
 			}
 		}
 
