@@ -21,25 +21,4 @@ NodeVariable::NodeVariable(
 
 	PLOGD << "Created NodeVariable: " << m_name << ", value = " << m_value_orig.get_value_str();
 }
-
-void NodeVariable::draw(void)
-{
-	if (ImGui::BeginTable("TableNode##NodeVar", 2, ImGuiTableFlags_SizingFixedFit))
-	{
-		ImGui::TableNextRow();
-		ImGui::TableNextColumn();
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Name:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Type:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Value:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
-
-		ImGui::TableNextColumn();
-		ImGui::Text("%s", m_name);
-		ImGui::Text("%s", m_value_orig.m_slot._to_string());
-		m_value.draw();
-		ImGui::Text("%s", m_desc);
-
-		ImGui::EndTable();
-	}
-}
 }

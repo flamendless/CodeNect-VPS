@@ -36,21 +36,4 @@ NodeOperation::NodeOperation(
 
 	PLOGD << "Created NodeOperation: " << m_name << ", op = " << m_op._to_string();
 }
-
-void NodeOperation::draw(void)
-{
-	if (ImGui::BeginTable("TableNode##NodeOperation", 2, ImGuiTableFlags_SizingFixedFit))
-	{
-		ImGui::TableNextRow();
-		ImGui::TableNextColumn();
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Op:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
-
-		ImGui::TableNextColumn();
-		ImGui::Text("%s %s", m_op._to_string(), m_icon);
-		ImGui::Text("%s", m_desc);
-
-		ImGui::EndTable();
-	}
-}
 }

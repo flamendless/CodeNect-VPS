@@ -26,7 +26,6 @@ struct Node
 	inline Node() {}
 	inline virtual ~Node() {}
 
-	virtual void draw(void);
 	void delete_connection(const Connection& connection);
 };
 }

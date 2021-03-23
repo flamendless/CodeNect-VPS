@@ -18,6 +18,7 @@
 #include "core/font.hpp"
 #include "modules/nodes.hpp"
 #include "modules/node_logic.hpp"
+#include "modules/node_renderer.hpp"
 #include "ui/create_node.hpp"
 
 namespace CodeNect
@@ -105,30 +106,6 @@ void NodeInterface::draw_main(void)
 	ImNodes::EndCanvas();
 }
 
-void NodeInterface::draw_connections(Node &node)
-{
-	Connection new_connection;
-
-	if (ImNodes::GetNewConnection(&new_connection.in_node, &new_connection.in_slot,
-			&new_connection.out_node, &new_connection.out_slot))
-	{
-		((Node*) new_connection.in_node)->m_connections.push_back(new_connection);
-		((Node*) new_connection.out_node)->m_connections.push_back(new_connection);
-	}
-
-	for (const Connection& connection : node.m_connections)
-	{
-		if (connection.out_node != &node) continue;
-
-		if (!ImNodes::Connection(connection.in_node, connection.in_slot,
-				connection.out_node, connection.out_slot))
-		{
-			((Node*) connection.in_node)->delete_connection(connection);
-			((Node*) connection.out_node)->delete_connection(connection);
-		}
-	}
-}
-
 void NodeInterface::draw_nodes(void)
 {
 	NodeLogic::process();
@@ -143,11 +120,12 @@ void NodeInterface::draw_nodes(void)
 		if (ImNodes::Ez::BeginNode(node, node->m_kind._to_string(), &node->m_pos, &node->m_selected))
 		{
 			ImGui::PopStyleColor(1);
-			node->draw();
+			NodeRenderer::draw_node(node);
 			//order is important
 			ImNodes::Ez::InputSlots(node->m_in_slots.data(), node->m_in_slots.size());
 			ImNodes::Ez::OutputSlots(node->m_out_slots.data(), node->m_out_slots.size());
-			NodeInterface::draw_connections(*node);
+			NodeRenderer::draw_connections(*node);
+			NodeRenderer::draw_connected(*node);
 		}
 
 		ImNodes::Ez::EndNode();

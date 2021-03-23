@@ -32,7 +32,6 @@ struct NodeValue
 	void* get_value();
 	const std::string get_value_str(void);
 	const char* get_spec(void);
-	void draw(void);
 };
 
 }

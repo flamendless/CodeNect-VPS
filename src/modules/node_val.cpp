@@ -194,17 +194,4 @@ const char* NodeValue::get_spec(void)
 		case NODE_SLOT::STRING: return "%s"; break;
 	}
 }
-
-void NodeValue::draw(void)
-{
-	switch (m_slot)
-	{
-		case NODE_SLOT::EMPTY: ImGui::Text("Empty?! (this should be an error)"); break;
-		case NODE_SLOT::BOOL: ImGui::Text("%s", std::get<bool>(data) ? "true" : "false"); break;
-		case NODE_SLOT::INTEGER: ImGui::Text("%d", std::get<int>(data)); break;
-		case NODE_SLOT::FLOAT: ImGui::Text("%f", std::get<float>(data)); break;
-		case NODE_SLOT::DOUBLE: ImGui::Text("%.8lf", std::get<double>(data)); break;
-		case NODE_SLOT::STRING: ImGui::Text("%s", std::get<std::string>(data).c_str()); break;
-	}
-}
 }

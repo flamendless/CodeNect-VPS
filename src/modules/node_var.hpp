@@ -23,7 +23,6 @@ struct NodeVariable : public Node
 	);
 
 	inline ~NodeVariable() {}
-	void draw(void) override;
 };
 }
 

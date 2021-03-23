@@ -19,7 +19,6 @@ struct NodeOperation : public Node
 	);
 
 	inline ~NodeOperation() {}
-	virtual void draw(void) override;
 };
 }
 
