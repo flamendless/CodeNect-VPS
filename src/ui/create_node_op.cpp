@@ -19,6 +19,7 @@ void CreateNode::create_op_node(void)
 	node->m_desc = data::op->buf_desc;
 
 	Nodes::v_nodes.push_back(node);
+	Nodes::v_nodes_op.push_back(node);
 	ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 }
 

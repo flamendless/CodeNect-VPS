@@ -11,50 +11,18 @@ struct Result
 	NODE_SLOT slot_res = NODE_SLOT::EMPTY;
 };
 
-std::vector<NodeVariable*> v_nodes_var;
-std::vector<NodeOperation*> v_nodes_op;
-
 void process(void)
 {
-	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
-		it != Nodes::v_nodes.end();
-		it++)
-	{
-		Node* node = *it;
-		NODE_KIND* kind = &node->m_kind;
-
-		switch (*kind)
-		{
-			case NODE_KIND::EMPTY: break;
-			case NODE_KIND::VARIABLE:
-			{
-				NodeVariable* node_var = (NodeVariable*)node;
-				v_nodes_var.push_back(node_var);
-				break;
-			}
-			case NODE_KIND::OPERATION:
-			{
-				NodeOperation* node_op = (NodeOperation*)node;
-				v_nodes_op.push_back(node_op);
-				break;
-			}
-			case NODE_KIND::IF: break;
-		}
-	}
-
 	NodeLogic::process_var();
 	NodeLogic::process_op();
-
-	v_nodes_var.clear();
-	v_nodes_op.clear();
 }
 
 //this only processes the variable-variable connection such as assignment
 //of value
 void process_var(void)
 {
-	for (std::vector<NodeVariable*>::iterator it = v_nodes_var.begin();
-		it != v_nodes_var.end();
+	for (std::vector<NodeVariable*>::iterator it = Nodes::v_nodes_var.begin();
+		it != Nodes::v_nodes_var.end();
 		it++)
 	{
 		NodeVariable* node_var = *it;
@@ -88,8 +56,8 @@ void process_var(void)
 
 void process_op(void)
 {
-	for (std::vector<NodeOperation*>::iterator it = v_nodes_op.begin();
-		it != v_nodes_op.end();
+	for (std::vector<NodeOperation*>::iterator it = Nodes::v_nodes_op.begin();
+		it != Nodes::v_nodes_op.end();
 		it++)
 	{
 		NodeOperation* node_op = *it;

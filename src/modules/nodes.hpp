@@ -21,9 +21,13 @@ struct Nodes
 	static bool has_built_meta;
 
 	static std::vector<Node*> v_nodes;
+	static std::vector<NodeVariable*> v_nodes_var;
+	static std::vector<NodeOperation*> v_nodes_op;
+
 	static m_node_t m_available_nodes;
 
 	Nodes() = delete;
+	static void delete_node(Node* node);
 	static Node* find_by_name(const char* name);
 	static void build_slots(NodeMeta& meta, v_slot_info_t& in, v_slot_info_t& out);
 	static void build_from_meta(const std::vector<NodeMeta*> &v_node_meta);

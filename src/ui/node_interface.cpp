@@ -143,6 +143,9 @@ void NodeInterface::draw_nodes(void)
 			}
 
 			node->m_connections.clear();
+
+			//delete node
+			Nodes::delete_node(node);
 			delete node;
 			it = Nodes::v_nodes.erase(it);
 		}
@@ -184,6 +187,15 @@ void NodeInterface::draw_nodes_context_menu(ImNodes::CanvasState& canvas)
 			{
 				Node* node = desc.second();
 				Nodes::v_nodes.push_back(node);
+
+				switch (node->m_kind)
+				{
+					case NODE_KIND::EMPTY: break;
+					case NODE_KIND::VARIABLE: Nodes::v_nodes_var.push_back((NodeVariable*)node); break;
+					case NODE_KIND::OPERATION: Nodes::v_nodes_op.push_back((NodeOperation*)node); break;
+					case NODE_KIND::IF: break;
+				}
+
 				ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 			}
 		}
