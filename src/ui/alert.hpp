@@ -1,6 +1,7 @@
 #ifndef _ALERT_HPP
 #define _ALERT_HPP
 
+#include <functional>
 #include <string>
 #include <GLFW/glfw3.h>
 #include "imgui.h"
@@ -18,7 +19,10 @@ struct Alert
 	static ALERT_TYPE type;
 	static std::string message;
 	static bool is_open;
+	static bool has_cb;
 	static ImGuiWindowFlags flags;
+
+	static std::function<void(void)> fn_custom_draw;
 
 	Alert() = delete;
 	static int init(void);

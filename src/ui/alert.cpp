@@ -12,11 +12,13 @@ namespace CodeNect
 ALERT_TYPE Alert::type;
 std::string Alert::message;
 bool Alert::is_open = false;
+bool Alert::has_cb = false;
 ImGuiWindowFlags Alert::flags =
 	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
 	ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
 	ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
 	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
+std::function<void(void)> Alert::fn_custom_draw;
 
 int Alert::init(void)
 {
@@ -45,6 +47,8 @@ void Alert::open(ALERT_TYPE type, std::string msg)
 
 void Alert::close(void)
 {
+	Alert::has_cb = false;
+	Alert::fn_custom_draw = nullptr;
 	Alert::is_open = false;
 	ImGui::CloseCurrentPopup();
 }
@@ -68,8 +72,13 @@ void Alert::draw(void)
 		ImGui::Text("%s", Alert::message.c_str());
 		ImGui::Separator();
 
-		if (ImGui::Button(ICON_FA_TIMES " Close"))
-			Alert::close();
+		if (Alert::has_cb)
+			Alert::fn_custom_draw();
+		else
+		{
+			if (ImGui::Button(ICON_FA_TIMES " Close"))
+				Alert::close();
+		}
 
 		ImGui::EndPopup();
 	}

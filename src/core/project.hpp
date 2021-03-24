@@ -20,6 +20,7 @@ struct ProjectMeta
 
 struct Project
 {
+	static unsigned int nodes_count;
 	static bool has_open_proj;
 	static ProjectMeta meta;
 	static NewProject new_proj;
@@ -43,6 +44,7 @@ struct Project
 	static void parse_connections(CSimpleIniA& ini, std::vector<ConnectionMeta*>& v_connection_meta, const char* section);
 	static void draw(void);
 	static void close(void);
+	static bool has_unsaved_changes(void);
 };
 }
 

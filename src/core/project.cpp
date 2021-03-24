@@ -22,6 +22,7 @@ bool Project::has_open_proj = true;
 #else
 bool Project::has_open_proj = false;
 #endif
+unsigned int Project::nodes_count = 0;
 ProjectMeta Project::meta {};
 NewProject Project::new_proj;
 
@@ -112,6 +113,7 @@ int Project::open(const char* filename)
 void Project::save_cmd(void)
 {
 	int res = Project::save();
+	Project::nodes_count = Nodes::v_nodes.size();
 
 	if (res == RES_FAIL)
 		Alert::open(ALERT_TYPE::ERROR, "Failed to save project");
@@ -293,6 +295,7 @@ int Project::parse(void)
 
 	v_node_meta.clear();
 	v_connection_meta.clear();
+	Project::nodes_count = Nodes::v_nodes.size();
 
 	PLOGI << "Parsed project file successfully";
 
@@ -385,5 +388,31 @@ void Project::close(void)
 	Project::meta.creation_dt.clear();
 
 	PLOGV << "Project closed";
+}
+
+bool Project::has_unsaved_changes(void)
+{
+	if (Project::nodes_count != Nodes::v_nodes.size())
+	{
+		Alert::open(ALERT_TYPE::ERROR, "There are unsaved changes. Are you sure you want to quti?");
+		Alert::has_cb = true;
+		Alert::fn_custom_draw = []()
+		{
+			if (ImGui::Button(ICON_FA_SIGN_OUT_ALT " Quit"))
+			{
+				Project::nodes_count = Nodes::v_nodes.size();
+				glfwSetWindowShouldClose(App::window, GL_TRUE);
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button(ICON_FA_TIMES " Cancel"))
+				Alert::close();
+		};
+
+		return true;
+	}
+
+	return false;
 }
 }

@@ -17,6 +17,8 @@
 #include "core/config.hpp"
 #include "core/defines.hpp"
 #include "modules/input.hpp"
+#include "core/project.hpp"
+#include "ui/alert.hpp"
 
 namespace CodeNect
 {
@@ -28,17 +30,27 @@ void glfw_error_callback(int error, const char* desc)
 	PLOGE << log;
 }
 
+void glfw_close_callback(GLFWwindow* window)
+{
+	if (Project::has_unsaved_changes())
+		glfwSetWindowShouldClose(window, GL_FALSE);
+	else
+		glfwSetWindowShouldClose(window, GL_TRUE);
+}
+
 void App::register_commands(void)
 {
 	Command* cmd_quit = new Command("Quit CodeNect", "quit the software", ICON_FA_TIMES_CIRCLE);
 	cmd_quit->set_fn(App::quit_app);
+	cmd_quit->m_close_command_palette = true;
 
 	Commands::register_cmd(*cmd_quit);
 }
 
 void App::quit_app()
 {
-	glfwSetWindowShouldClose(App::window, GL_TRUE);
+	if (!Project::has_unsaved_changes())
+		glfwSetWindowShouldClose(App::window, GL_TRUE);
 }
 
 void App::init(void)
@@ -71,6 +83,7 @@ void App::init_window(void)
 	App::window = glfwCreateWindow(CodeNect::Config::win_width, CodeNect::Config::win_height,
 		CodeNect::Config::app_title.c_str(), NULL, NULL);
 
+	glfwSetWindowCloseCallback(App::window, glfw_close_callback);
 	glfwSetKeyCallback(App::window, Input::key_callback);
 	glfwMakeContextCurrent(App::window);
 	glfwSwapInterval(CodeNect::Config::vsync);
