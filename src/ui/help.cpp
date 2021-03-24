@@ -23,16 +23,19 @@ Help::pair_t Help::v_items
 	std::make_pair<const char*, const char*>(ICON_FA_GITHUB " Github:", "https://github.com/flamendless/CodeNect-VPS"),
 };
 
+using help_t = std::tuple<const char*, const char*, const char*>;
+
 Help::tuple_t Help::v_key_items
 {
-	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " LMB", "select node", "left mouse button"),
-	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " RMB", "open nodes menu", "right mouse button"),
-	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " 2xLMB", "delete hovered connection", "hovering on a connection and then double left clicking will remove the connection"),
-	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " LMB + Drag", "move node", "hold left mouse button then drag"),
-	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " MMB + Drag", "pan view", "hold middle mouse button then drag"),
-	std::make_tuple<const char*, const char*, const char*>(ICON_FA_MOUSE " Ctrl + Scroll Wheel", "zoom in/out", "hold 'ctrl' key in then scroll middle mouse button/wheel"),
-	std::make_tuple<const char*, const char*, const char*>(ICON_FA_BACKSPACE " Delete Key", "delete selected node", "'del' key in keyboard"),
-	std::make_tuple<const char*, const char*, const char*>(ICON_FA_KEYBOARD " Enter/Return Key", "close alert popup window", "'Enter'/'Return' key in keyboard"),
+	help_t(ICON_FA_MOUSE " LMB", "select node", "left mouse button inside a node"),
+	help_t(ICON_FA_MOUSE " RMB in canvas", "open node interface menu", "right mouse button click in the canvas"),
+	help_t(ICON_FA_MOUSE " RMB in Node", "open nodes menu", "right mouse button click in the node"),
+	help_t(ICON_FA_MOUSE " 2xLMB", "delete hovered connection", "hovering on a connection and then double left clicking will remove the connection"),
+	help_t(ICON_FA_MOUSE " LMB + Drag", "move node", "hold left mouse button then drag"),
+	help_t(ICON_FA_MOUSE " MMB + Drag", "pan view", "hold middle mouse button then drag"),
+	help_t(ICON_FA_MOUSE " Ctrl + Scroll Wheel", "zoom in/out", "hold 'ctrl' key in then scroll middle mouse button/wheel"),
+	help_t(ICON_FA_BACKSPACE " Delete Key", "delete selected node", "'del' key in keyboard"),
+	help_t(ICON_FA_KEYBOARD " Enter/Return Key", "close alert popup window", "'Enter'/'Return' key in keyboard"),
 };
 
 void Help::register_commands(void)

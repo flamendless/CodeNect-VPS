@@ -40,6 +40,7 @@ const char* NodeInterface::str = ICON_FA_PROJECT_DIAGRAM " Welcome to CodeNect";
 const char* NodeInterface::str2 = ICON_FA_ANGLE_LEFT " Hover on the left side to access the sidebar";
 const char* NodeInterface::str3 = ICON_FA_TERMINAL " Press <Ctrl+P> to access the command palette";
 
+Node* current_node;
 ImNodes::CanvasState* canvas;
 
 bool NodeInterface::init(void)
@@ -101,7 +102,8 @@ void NodeInterface::draw_main(void)
 	}
 
 	NodeInterface::draw_nodes();
-	NodeInterface::draw_nodes_context_menu(*canvas);
+	NodeInterface::draw_nodes_context_menu();
+	NodeInterface::draw_context_menu(*canvas);
 	CreateNode::draw();
 	ImNodes::EndCanvas();
 }
@@ -126,13 +128,20 @@ void NodeInterface::draw_nodes(void)
 			ImNodes::Ez::OutputSlots(node->m_out_slots.data(), node->m_out_slots.size());
 			NodeRenderer::draw_connections(*node);
 			NodeRenderer::draw_connected(*node);
+
 		}
-
 		ImNodes::Ez::EndNode();
-
 		ImGui::PopStyleVar(1);
 
-		if (node->m_selected && ImGui::IsKeyPressedMap(ImGuiKey_Delete))
+		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+		{
+			current_node = node;
+			node->m_selected = true;
+			ImGui::FocusWindow(ImGui::GetCurrentWindow());
+			ImGui::OpenPopup("NodesContextMenu");
+		}
+
+		if (node->m_to_delete || (node->m_selected && ImGui::IsKeyPressedMap(ImGuiKey_Delete)))
 		{
 			for (Connection& connection : node->m_connections)
 			{
@@ -145,9 +154,11 @@ void NodeInterface::draw_nodes(void)
 			node->m_connections.clear();
 
 			//delete node
+			PLOGD << "Deleted node: " << node->m_name;
 			Nodes::delete_node(node);
 			delete node;
 			it = Nodes::v_nodes.erase(it);
+			current_node = nullptr;
 		}
 		else
 			++it;
@@ -156,13 +167,30 @@ void NodeInterface::draw_nodes(void)
 	if (ImGui::IsMouseReleased(1) && ImGui::IsWindowHovered() && !ImGui::IsMouseDragging(1))
 	{
 		ImGui::FocusWindow(ImGui::GetCurrentWindow());
-		ImGui::OpenPopup("NodesContextMenu");
+		ImGui::OpenPopup("NodesInterfaceContextMenu");
 	}
 }
 
-void NodeInterface::draw_nodes_context_menu(ImNodes::CanvasState& canvas)
+void NodeInterface::draw_nodes_context_menu(void)
 {
 	if (ImGui::BeginPopup("NodesContextMenu"))
+	{
+		if (ImGui::MenuItem("Edit"))
+		{
+			CreateNode::edit(current_node);
+			ImGui::CloseCurrentPopup();
+		}
+
+		if (ImGui::MenuItem("Delete"))
+			current_node->m_to_delete = true;
+
+		ImGui::EndPopup();
+	}
+}
+
+void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
+{
+	if (ImGui::BeginPopup("NodesInterfaceContextMenu"))
 	{
 		if (ImGui::BeginMenu("New Node"))
 		{

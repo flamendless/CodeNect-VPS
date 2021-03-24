@@ -11,29 +11,46 @@ namespace CodeNect
 {
 void CreateNode::create_var_node(void)
 {
-	v_slot_info_t&& in = {};
-	v_slot_info_t&& out = {};
+	if (CreateNode::is_edit_mode)
+	{
+		TempVarData* var = std::get<TempVarData*>(data);
+		NodeVariable* node_var = static_cast<NodeVariable*>(CreateNode::node_to_edit);
 
-	in.push_back({data::var->slot._to_string(), data::var->slot});
-	out.push_back({data::var->slot._to_string(), data::var->slot});
+		node_var->m_name = var->buf_name;
+		node_var->m_desc = var->buf_desc;
+		node_var->m_value_orig.copy(var->value);
 
-	NodeVariable* node = new NodeVariable(data::var->buf_name, data::var->value, std::move(in), std::move(out));
-	node->m_desc = data::var->buf_desc;
+		PLOGD << "Edited NodeVariable: " << node_var->m_name;
+	}
+	else
+	{
+		v_slot_info_t&& in = {};
+		v_slot_info_t&& out = {};
 
-	Nodes::v_nodes.push_back(node);
-	Nodes::v_nodes_var.push_back(node);
-	ImNodes::AutoPositionNode(Nodes::v_nodes.back());
+		TempVarData* var = std::get<TempVarData*>(data);
+
+		in.push_back({var->slot._to_string(), var->slot});
+		out.push_back({var->slot._to_string(), var->slot});
+
+		NodeVariable* node = new NodeVariable(var->buf_name, var->value, std::move(in), std::move(out));
+		node->m_desc = var->buf_desc;
+
+		Nodes::v_nodes.push_back(node);
+		Nodes::v_nodes_var.push_back(node);
+		ImNodes::AutoPositionNode(Nodes::v_nodes.back());
+	}
 }
 
 void CreateNode::draw_var(void)
 {
-	const int len_name = strlen(data::var->buf_name);
+	TempVarData* var = std::get<TempVarData*>(data);
+	const int len_name = strlen(var->buf_name);
 
 	if (len_name == 0)
 		Utils::display_asterisk(true);
 	else
 	{
-		switch (data::var->res_name)
+		switch (var->res_name)
 		{
 			case RES_VARNAME_CONFLICT_KEYWORD:
 				Utils::display_asterisk(true, STR_CONFLICT_KEYWORD); break;
@@ -42,41 +59,53 @@ void CreateNode::draw_var(void)
 		}
 	}
 
-	if (ImGui::InputText("Variable Name", data::var->buf_name, IM_ARRAYSIZE(data::var->buf_name), ImGuiInputTextFlags_CharsNoBlank))
+	if (ImGui::InputText("Variable Name", var->buf_name, IM_ARRAYSIZE(var->buf_name), ImGuiInputTextFlags_CharsNoBlank))
 	{
-		data::var->res_name = Validator::validate_var_name(data::var->buf_name);
-		data::var->valid_name = data::var->res_name == RES_VARNAME_VALID;
+		var->res_name = Validator::validate_var_name(var->buf_name);
+		var->valid_name = var->res_name == RES_VARNAME_VALID;
+
+		if (CreateNode::is_edit_mode)
+		{
+			if (std::strcmp(var->buf_name, CreateNode::node_to_edit->m_name) == 0)
+			{
+				var->res_name = RES_VARNAME_VALID;
+				var->valid_name = true;
+			}
+		}
 	}
 
-	if (data::var->slot == +NODE_SLOT::EMPTY)
+	if (var->slot == +NODE_SLOT::EMPTY)
 		Utils::display_asterisk(true);
 
-	if (ImGui::BeginCombo("Data Type", data::var->slot._to_string()))
+	if (!CreateNode::is_edit_mode)
 	{
-		for (NODE_SLOT slot : NODE_SLOT::_values())
+		if (ImGui::BeginCombo("Data Type", var->slot._to_string()))
 		{
-			if (slot == +NODE_SLOT::EMPTY)
-				continue;
-
-			ImGui::PushID(slot);
-			const char* txt = slot._to_string();
-
-			if (ImGui::Selectable(txt, data::var->slot._to_string() == txt))
+			for (NODE_SLOT slot : NODE_SLOT::_values())
 			{
-				data::var->slot = slot;
-				data::var->valid_value = true;
-				data::var->value.copy(slot);
+				if (slot == +NODE_SLOT::EMPTY)
+					continue;
+
+				ImGui::PushID(slot);
+				const char* txt = slot._to_string();
+
+				if (ImGui::Selectable(txt, var->slot._to_string() == txt))
+				{
+					var->slot = slot;
+					var->valid_value = true;
+					var->value.copy(slot);
+				}
+
+				ImGui::PopID();
 			}
 
-			ImGui::PopID();
+			ImGui::EndCombo();
 		}
-
-		ImGui::EndCombo();
 	}
 
 	ImGui::Separator();
 
-	switch (data::var->slot)
+	switch (var->slot)
 	{
 		case NODE_SLOT::EMPTY: break;
 		case NODE_SLOT::BOOL: CreateNode::draw_opt_bool(); break;
@@ -87,46 +116,56 @@ void CreateNode::draw_var(void)
 	}
 
 	// finalize
-	CreateNode::can_create = data::var->valid_name && data::var->valid_value;
+	CreateNode::can_create = var->valid_name && var->valid_value;
 }
 
 void CreateNode::draw_opt_bool(void)
 {
+	TempVarData* var = std::get<TempVarData*>(data);
+
 	ImGui::Text("Boolean value:");
 
-	if (ImGui::RadioButton("true", std::get<bool>(data::var->value.data) == true))
-		data::var->value.set(true);
+	if (ImGui::RadioButton("true", std::get<bool>(var->value.data) == true))
+		var->value.set(true);
 
 	ImGui::SameLine();
 
-	if (ImGui::RadioButton("true", std::get<bool>(data::var->value.data) == false))
-		data::var->value.set(false);
+	if (ImGui::RadioButton("true", std::get<bool>(var->value.data) == false))
+		var->value.set(false);
 }
 
 void CreateNode::draw_opt_int(void)
 {
-	if (ImGui::InputInt("Integer value", &CreateNode::data::var->temp_int))
-		data::var->value.set(CreateNode::data::var->temp_int);
+	TempVarData* var = std::get<TempVarData*>(data);
+
+	if (ImGui::InputInt("Integer value", &var->temp_int))
+		var->value.set(var->temp_int);
 }
 
 void CreateNode::draw_opt_float(void)
 {
-	if (ImGui::InputFloat("Float value", &CreateNode::data::var->temp_float))
-		data::var->value.set(CreateNode::data::var->temp_float);
+	TempVarData* var = std::get<TempVarData*>(data);
+
+	if (ImGui::InputFloat("Float value", &var->temp_float))
+		var->value.set(var->temp_float);
 }
 
 void CreateNode::draw_opt_double(void)
 {
-	if (ImGui::InputDouble("Double value", &CreateNode::data::var->temp_double))
-		data::var->value.set(CreateNode::data::var->temp_double);
+	TempVarData* var = std::get<TempVarData*>(data);
+
+	if (ImGui::InputDouble("Double value", &var->temp_double))
+		var->value.set(var->temp_double);
 }
 
 void CreateNode::draw_opt_string(void)
 {
-	if (ImGui::InputText("String value", data::var->buf_string, IM_ARRAYSIZE(data::var->buf_string)))
+	TempVarData* var = std::get<TempVarData*>(data);
+
+	if (ImGui::InputText("String value", var->buf_string, IM_ARRAYSIZE(var->buf_string)))
 	{
-		std::string str = std::string(data::var->buf_string);
-		data::var->value.set(str);
+		std::string str = std::string(var->buf_string);
+		var->value.set(str);
 	}
 }
 }

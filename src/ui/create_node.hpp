@@ -1,57 +1,33 @@
 #ifndef _CREATE_NODE_HPP
 #define _CREATE_NODE_HPP
 
+#include <variant>
 #include <vector>
 #include <string>
 #include "imgui.h"
 #include "enum.h"
 #include "IconsFontAwesome5.h"
 #include "modules/node.hpp"
-#include "core/defines.hpp"
+#include "core/temp_data.hpp"
 
 namespace CodeNect
 {
-struct TempVarData
-{
-	NODE_SLOT slot = NODE_SLOT::EMPTY;
-	char buf_name[BUF_SIZE] = "";
-	char buf_string[BUF_SIZE * 2] = "";
-	bool valid_name = false;
-	bool valid_value = false;
-	int res_name = RES_VARNAME_INVALID;
-	NodeValue value;
-	char buf_desc[BUF_SIZE * 2] = "";
-
-	int temp_int = 0;
-	float temp_float = 0;
-	double temp_double = 0;
-};
-
-struct TempOperationData
-{
-	NODE_OP op = NODE_OP::EMPTY;
-	NODE_SLOT slot = NODE_SLOT::EMPTY;
-	char buf_desc[BUF_SIZE * 2] = "";
-	bool valid_op = false;
-};
-
 struct CreateNode
 {
 	static ImGuiWindowFlags flags;
+	static bool is_first;
 	static bool is_open;
 	static bool is_pos_locked;
+	static bool is_edit_mode;
 	static const char* title;
 	static NODE_KIND kind;
+	static Node* node_to_edit;
 	static bool can_create;
-
-	union data
-	{
-		static TempVarData* var;
-		static TempOperationData* op;
-	};
+	static std::variant<TempVarData*, TempOperationData*> data;
 
 	CreateNode() = delete;
 	static void open(NODE_KIND kind);
+	static void edit(Node* node);
 	static void close(void);
 	static void create_var_node(void);
 	static void create_op_node(void);

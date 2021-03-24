@@ -108,6 +108,9 @@ void draw_connected(Node& node)
 	if (node.m_kind != +NODE_KIND::OPERATION)
 		return;
 
+	if (node.m_connections.size() < 2)
+		return;
+
 	// ImGui::Separator();
 
 	if (ImGui::TreeNode("Input Order"))

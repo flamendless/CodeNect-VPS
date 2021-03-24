@@ -10,35 +10,106 @@ ImGuiWindowFlags CreateNode::flags =
 	ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings |
 	ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollWithMouse |
 	ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove;
+bool CreateNode::is_first = false;
 bool CreateNode::is_open = false;
 bool CreateNode::is_pos_locked = true;
+bool CreateNode::is_edit_mode = false;
 const char* CreateNode::title = ICON_FA_PLUS_SQUARE "Create Node";
 NODE_KIND CreateNode::kind = NODE_KIND::EMPTY;
+Node* CreateNode::node_to_edit;
 bool CreateNode::can_create = false;
-TempVarData* CreateNode::data::var;
-TempOperationData* CreateNode::data::op;
-
-bool first = false;
+std::variant<TempVarData*, TempOperationData*> CreateNode::data;
 
 void CreateNode::open(NODE_KIND kind)
 {
 	switch (kind)
 	{
 		case NODE_KIND::EMPTY: break;
-		case NODE_KIND::VARIABLE: CreateNode::data::var = new TempVarData(); break;
-		case NODE_KIND::OPERATION: CreateNode::data::op = new TempOperationData(); break;
+		case NODE_KIND::VARIABLE:
+		{
+			CreateNode::data = new TempVarData();
+			break;
+		}
+		case NODE_KIND::OPERATION:
+		{
+			CreateNode::data = new TempOperationData(); break;
+			break;
+		}
 		case NODE_KIND::IF: break;
 	}
 
 	CreateNode::kind = kind;
 	CreateNode::is_open = true;
-	first = true;
+	CreateNode::is_first = true;
+}
+
+void CreateNode::edit(Node* node)
+{
+	switch (node->m_kind)
+	{
+		case NODE_KIND::EMPTY: break;
+		case NODE_KIND::VARIABLE:
+		{
+			NodeVariable* node_var = static_cast<NodeVariable*>(node);
+			NodeValue* val = &node_var->m_value_orig;
+			NODE_SLOT slot = NODE_SLOT::_from_string(node_var->m_out_slots[0].title);
+			TempVarData* temp = new TempVarData();
+
+			std::strcpy(temp->buf_name, node_var->m_name);
+			std::strcpy(temp->buf_desc, node_var->m_desc);
+			temp->slot = slot;
+			temp->value.copy(*val);
+			temp->valid_value = true;
+			temp->valid_name = true;
+
+			switch (slot)
+			{
+				case NODE_SLOT::EMPTY: break;
+				case NODE_SLOT::BOOL: break;
+				case NODE_SLOT::INTEGER: temp->temp_int = std::get<int>(val->data); break;
+				case NODE_SLOT::FLOAT: temp->temp_float = std::get<float>(val->data); break;
+				case NODE_SLOT::DOUBLE: temp->temp_double = std::get<double>(val->data); break;
+				case NODE_SLOT::STRING: std::strcpy(temp->buf_string, std::get<std::string>(val->data).c_str()); break;
+			}
+
+			CreateNode::node_to_edit = node;
+			CreateNode::data = temp;
+			break;
+		}
+		case NODE_KIND::OPERATION:
+		{
+			NodeOperation* node_op = static_cast<NodeOperation*>(node);
+			TempOperationData* temp = new TempOperationData();
+			NODE_SLOT slot = NODE_SLOT::_from_string(node_op->m_out_slots[0].title);
+
+			std::strcpy(temp->buf_desc, node_op->m_desc);
+			temp->slot = slot;
+			temp->op = node_op->m_op;
+			temp->valid_op = true;
+
+			CreateNode::node_to_edit = node;
+			CreateNode::data = temp;
+			break;
+		}
+		case NODE_KIND::IF: break;
+	}
+
+	CreateNode::kind = node->m_kind;
+	CreateNode::is_open = true;
+	CreateNode::is_edit_mode = true;
+	CreateNode::is_first = true;
 }
 
 void CreateNode::close(void)
 {
 	CreateNode::kind = NODE_KIND::EMPTY;
 	CreateNode::is_open = false;
+
+	if (CreateNode::is_edit_mode)
+	{
+		CreateNode::is_edit_mode = false;
+		CreateNode::node_to_edit = nullptr;
+	}
 }
 
 void CreateNode::draw(void)
@@ -46,11 +117,11 @@ void CreateNode::draw(void)
 	if (!CreateNode::is_open)
 		return;
 
-	if (first)
+	if (CreateNode::is_first)
 	{
 		ImVec2 center_pos(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
 		ImGui::SetNextWindowPos(center_pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
-		first = false;
+		CreateNode::is_first = false;
 	}
 
 	if (ImGui::Begin(CreateNode::title, &CreateNode::is_open, CreateNode::flags))
@@ -81,8 +152,8 @@ void CreateNode::draw_desc(void)
 	switch (CreateNode::kind)
 	{
 		case NODE_KIND::EMPTY: break;
-		case NODE_KIND::VARIABLE: buf = data::var->buf_desc; break;
-		case NODE_KIND::OPERATION: buf = data::op->buf_desc; break;
+		case NODE_KIND::VARIABLE: buf = std::get<TempVarData*>(data)->buf_desc; break;
+		case NODE_KIND::OPERATION: buf = std::get<TempOperationData*>(data)->buf_desc; break;
 		case NODE_KIND::IF: break;
 	}
 
@@ -95,7 +166,12 @@ void CreateNode::draw_buttons(void)
 	if (!CreateNode::can_create)
 		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 
-	if (ImGui::Button(ICON_FA_CHECK " Create"))
+	const char* str = ICON_FA_CHECK " Create";
+
+	if (CreateNode::is_edit_mode)
+		str = ICON_FA_CHECK " Edit";
+
+	if (ImGui::Button(str))
 	{
 		if (CreateNode::can_create)
 		{

@@ -13,6 +13,7 @@ namespace CodeNect
 struct Node
 {
 	bool m_selected = false;
+	bool m_to_delete = false;
 	ImVec2 m_pos{};
 
 	NODE_KIND m_kind = NODE_KIND::EMPTY;
