@@ -59,7 +59,7 @@ void draw_node_val(NodeValue* node_val)
 		case NODE_SLOT::INTEGER: ImGui::Text("%d", std::get<int>(node_val->data)); break;
 		case NODE_SLOT::FLOAT: ImGui::Text("%f", std::get<float>(node_val->data)); break;
 		case NODE_SLOT::DOUBLE: ImGui::Text("%.8lf", std::get<double>(node_val->data)); break;
-		case NODE_SLOT::STRING: ImGui::Text("%s", std::get<std::string>(node_val->data).c_str()); break;
+		case NODE_SLOT::STRING: ImGui::Text("\"%s\"", std::get<std::string>(node_val->data).c_str()); break;
 	}
 }
 
@@ -103,12 +103,14 @@ void draw_connections(Node& node)
 	}
 }
 
-void draw_connected(Node& node)
+void draw_connected(Node* node)
 {
-	if (node.m_kind != +NODE_KIND::OPERATION)
+	if (node->m_kind != +NODE_KIND::OPERATION)
 		return;
 
-	if (node.m_connections.size() < 2)
+	NodeOperation* node_op = static_cast<NodeOperation*>(node);
+
+	if (!node_op->has_valid_connections)
 		return;
 
 	// ImGui::Separator();
@@ -117,7 +119,7 @@ void draw_connected(Node& node)
 	{
 		Utils::help_marker("This affects the result of the operation", true);
 
-		for (const Connection& connection : node.m_connections)
+		for (const Connection& connection : node->m_connections)
 		{
 			Node* in_node = (Node*)connection.in_node;
 			Node* out_node = (Node*)connection.out_node;
@@ -131,24 +133,9 @@ void draw_connected(Node& node)
 			{
 				NodeVariable* node_var = static_cast<NodeVariable*>(out_node);
 
-				if (ImGui::TreeNode(node_var->m_name))
-				{
-					if (ImGui::BeginTable("TableNode##ConnectedToOp", 2, ImGuiTableFlags_SizingFixedFit))
-					{
-						ImGui::TableNextRow();
-						ImGui::TableNextColumn();
-						ImGui::TextColored(Config::NodeInterface_c::label_color, "Name:");
-						ImGui::TextColored(Config::NodeInterface_c::label_color, "Value:");
-
-						ImGui::TableNextColumn();
-						ImGui::Text("%s", node_var->m_name);
-						NodeRenderer::draw_node_val(&node_var->m_value);
-
-						ImGui::EndTable();
-					}
-
-					ImGui::TreePop();
-				}
+				ImGui::Text("%s = ", node_var->m_name);
+				ImGui::SameLine();
+				NodeRenderer::draw_node_val(&node_var->m_value);
 			}
 		}
 

@@ -46,19 +46,16 @@ void NodeValue::mul(NodeValue& other)
 		case NODE_SLOT::BOOL: break;
 		case NODE_SLOT::INTEGER:
 		{
-			if (std::get<int>(data) == 0) data = 1;
 			std::get<int>(data) *= std::get<int>(other.data);
 			break;
 		}
 		case NODE_SLOT::FLOAT:
 		{
-			if (std::get<float>(data) == 0) data = (float)1;
 			std::get<float>(data) *= std::get<float>(other.data);
 			break;
 		}
 		case NODE_SLOT::DOUBLE:
 		{
-			if (std::get<double>(data) == 0) data = (double)1;
 			std::get<double>(data) *= std::get<double>(other.data);
 			break;
 		}
@@ -74,19 +71,16 @@ void NodeValue::div(NodeValue& other)
 		case NODE_SLOT::BOOL: break;
 		case NODE_SLOT::INTEGER:
 		{
-			if (std::get<int>(data) == 0) data = 1;
 			std::get<int>(data) /= std::get<int>(other.data);
 			break;
 		}
 		case NODE_SLOT::FLOAT:
 		{
-			if (std::get<float>(data) == 0) data = (float)1;
 			std::get<float>(data) /= std::get<float>(other.data);
 			break;
 		}
 		case NODE_SLOT::DOUBLE:
 		{
-			if (std::get<double>(data) == 0) data = (double)1;
 			std::get<double>(data) /= std::get<double>(other.data);
 			break;
 		}

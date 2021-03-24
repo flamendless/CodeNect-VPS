@@ -33,6 +33,7 @@ void process_var(void)
 		//go through each connection
 		for (const Connection& connection : node_var->m_connections)
 		{
+			//check for node_var -> node_var
 			//in node is the "to"/"target" node (rhs)
 			//out node is the "from" (lhs)
 			Node* in_node = static_cast<Node*>(connection.in_node);
@@ -61,6 +62,7 @@ void process_op(void)
 		it++)
 	{
 		NodeOperation* node_op = *it;
+		node_op->has_valid_connections = false;
 
 		//store all the node_vars connected to this node_op
 		Result res;
@@ -85,6 +87,7 @@ void process_op(void)
 			}
 		}
 
+		//make sure that there is a "resulting" var connected
 		if (res.slot_res == +NODE_SLOT::EMPTY)
 			continue;
 
@@ -112,39 +115,51 @@ void process_op(void)
 
 		//here we are sure that they are of the same slot
 		// process the v_vars and perform the operation
+		node_op->has_valid_connections = true;
 		NODE_OP* op = &node_op->m_op;
 		NodeVariable* res_var = res.node_var_res;
-		NodeValue* res_val = &res_var->m_value;
+
+		NodeValue result;
+		bool is_first = true;
 
 		for (NodeVariable* node_var : res.v_vars)
 		{
 			NodeValue* current_value = &node_var->m_value;
+
+			if (is_first)
+			{
+				result.copy(*current_value);
+				is_first = false;
+				continue;
+			}
 
 			switch (*op)
 			{
 				case NODE_OP::EMPTY: break;
 				case NODE_OP::ADD:
 				{
-					res_val->add(*current_value);
+					result.add(*current_value);
 					break;
 				}
 				case NODE_OP::SUB:
 				{
-					res_val->sub(*current_value);
+					result.sub(*current_value);
 					break;
 				}
 				case NODE_OP::MUL:
 				{
-					res_val->mul(*current_value);
+					result.mul(*current_value);
 					break;
 				}
 				case NODE_OP::DIV:
 				{
-					res_val->div(*current_value);
+					result.div(*current_value);
 					break;
 				}
 			}
 		}
+
+		res_var->m_value.copy(result);
 	}
 }
 }

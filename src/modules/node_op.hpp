@@ -11,6 +11,7 @@ struct NodeOperation : public Node
 	NODE_OP m_op = NODE_OP::EMPTY;
 	NODE_KIND m_kind = NODE_KIND::OPERATION;
 	const char* m_icon;
+	bool has_valid_connections = false;
 
 	explicit NodeOperation(
 		NODE_OP op,

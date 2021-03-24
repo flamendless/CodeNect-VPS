@@ -127,8 +127,7 @@ void NodeInterface::draw_nodes(void)
 			ImNodes::Ez::InputSlots(node->m_in_slots.data(), node->m_in_slots.size());
 			ImNodes::Ez::OutputSlots(node->m_out_slots.data(), node->m_out_slots.size());
 			NodeRenderer::draw_connections(*node);
-			NodeRenderer::draw_connected(*node);
-
+			NodeRenderer::draw_connected(node);
 		}
 		ImNodes::Ez::EndNode();
 		ImGui::PopStyleVar(1);
