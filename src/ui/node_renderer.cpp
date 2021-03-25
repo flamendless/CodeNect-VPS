@@ -105,21 +105,30 @@ void draw_connections(Node& node)
 {
 	Connection new_connection;
 
+	//query new connection
 	if (ImNodes::GetNewConnection(&new_connection.in_node, &new_connection.in_slot,
 			&new_connection.out_node, &new_connection.out_slot))
 	{
-		((Node*) new_connection.in_node)->m_connections.push_back(new_connection);
-		((Node*) new_connection.out_node)->m_connections.push_back(new_connection);
+		Node* in_node = static_cast<Node*>(new_connection.in_node);
+		Node* out_node = static_cast<Node*>(new_connection.out_node);
+
+		in_node->new_connection(new_connection);
+		out_node->new_connection(new_connection);
 	}
 
 	for (const Connection& connection : node.m_connections)
 	{
 		if (connection.out_node != &node) continue;
+
+		//query removed connection
 		if (!ImNodes::Connection(connection.in_node, connection.in_slot,
 				connection.out_node, connection.out_slot))
 		{
-			((Node*) connection.in_node)->delete_connection(connection);
-			((Node*) connection.out_node)->delete_connection(connection);
+			Node* in_node = static_cast<Node*>(new_connection.in_node);
+			Node* out_node = static_cast<Node*>(new_connection.out_node);
+
+			in_node->delete_connection(connection);
+			out_node->delete_connection(connection);
 		}
 	}
 }

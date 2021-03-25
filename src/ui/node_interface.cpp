@@ -129,6 +129,7 @@ void NodeInterface::draw_nodes(void)
 			NodeRenderer::draw_connections(*node);
 			NodeRenderer::draw_connected(node);
 		}
+
 		ImNodes::Ez::EndNode();
 		ImGui::PopStyleVar(1);
 

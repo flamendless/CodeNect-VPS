@@ -2,6 +2,11 @@
 
 namespace CodeNect
 {
+void Node::new_connection(const Connection& new_connection)
+{
+	m_connections.push_back(new_connection);
+}
+
 void Node::delete_connection(const Connection& connection)
 {
 	for (v_connection_t::iterator it = m_connections.begin(); it != m_connections.end(); ++it)

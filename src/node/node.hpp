@@ -30,6 +30,7 @@ struct Node
 		PLOGD << "Deleted node: " << m_kind._to_string() << ", " << m_name;
 	}
 
+	void new_connection(const Connection& new_connection);
 	void delete_connection(const Connection& connection);
 };
 }
