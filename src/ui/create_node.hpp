@@ -29,14 +29,17 @@ struct CreateNode
 	static void open(NODE_KIND kind);
 	static void edit(Node* node);
 	static void close(void);
+
+	//creation
 	static void create_var_node(void);
 	static void create_op_node(void);
+	static void create_cast_node(void);
 
 	static void draw(void);
 	static void draw_desc(void);
 	static void draw_buttons(void);
 
-	//variable node
+	//NodeVariable
 	static void draw_var(void);
 	static void draw_opt_bool(void);
 	static void draw_opt_int(void);
@@ -44,9 +47,12 @@ struct CreateNode
 	static void draw_opt_double(void);
 	static void draw_opt_string(void);
 
-	//operation node
+	//NodeOperation
 	static void draw_op(void);
 	static void draw_opt_input(void);
+
+	//NodeCast
+	static void draw_cast(void);
 };
 }
 

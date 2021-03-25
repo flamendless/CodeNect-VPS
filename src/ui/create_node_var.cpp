@@ -129,7 +129,7 @@ void CreateNode::draw_opt_bool(void)
 
 	ImGui::SameLine();
 
-	if (ImGui::RadioButton("true", std::get<bool>(var->value.data) == false))
+	if (ImGui::RadioButton("false", std::get<bool>(var->value.data) == false))
 		var->value.set(false);
 }
 

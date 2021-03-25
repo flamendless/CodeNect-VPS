@@ -25,7 +25,12 @@ void draw_node(Node* node)
 			NodeRenderer::draw_node_op(node_op);
 			break;
 		}
-		case NODE_KIND::CAST: break;
+		case NODE_KIND::CAST:
+		{
+			NodeCast* node_cast = static_cast<NodeCast*>(node);
+			NodeRenderer::draw_node_cast(node_cast);
+			break;
+		}
 		case NODE_KIND::IF: break;
 	}
 }
@@ -76,6 +81,21 @@ void draw_node_op(NodeOperation* node_op)
 		ImGui::TableNextColumn();
 		ImGui::Text("%s %s", node_op->m_op._to_string(), node_op->m_icon);
 		ImGui::Text("%s", node_op->m_desc);
+
+		ImGui::EndTable();
+	}
+}
+
+void draw_node_cast(NodeCast* node_cast)
+{
+	if (ImGui::BeginTable("TableNode##NodeCast", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+
+		ImGui::TableNextColumn();
+		ImGui::Text("%s", node_cast->m_desc);
 
 		ImGui::EndTable();
 	}
