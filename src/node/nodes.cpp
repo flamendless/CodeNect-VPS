@@ -11,51 +11,18 @@ std::vector<Node*> Nodes::v_nodes;
 
 Nodes::m_node_t Nodes::m_available_nodes
 {
-	{
-		"Test_Int", []() -> Node*
-		{
-			NodeValue value;
-			value.set(1);
-
-			return new NodeVariable("a", value,
-				{{"INTEGER", NODE_SLOT::INTEGER}},
-				{{"INTEGER", NODE_SLOT::INTEGER}}
-			);
-		}
-	},
-	{
-		"Test_Int2", []() -> Node*
-		{
-			NodeValue value;
-			value.set(2);
-
-			return new NodeVariable("b", value,
-				{{"INTEGER", NODE_SLOT::INTEGER}},
-				{{"INTEGER", NODE_SLOT::INTEGER}}
-			);
-		}
-	},
-	{
-		"Test_Res_Int", []() -> Node*
-		{
-			NodeValue value;
-			value.set(0);
-
-			return new NodeVariable("res", value,
-				{{"INTEGER", NODE_SLOT::INTEGER}},
-				{{"INTEGER", NODE_SLOT::INTEGER}}
-			);
-		}
-	},
-	{
-		"Test_Add_Int", []() -> Node*
-		{
-			return new NodeOperation(NODE_OP::ADD,
-				{{"INTEGER", NODE_SLOT::INTEGER}},
-				{{"INTEGER", NODE_SLOT::INTEGER}}
-			);
-		}
-	}
+	// {
+	// 	"Test_Int", []() -> Node*
+	// 	{
+	// 		NodeValue value;
+	// 		value.set(1);
+    //
+	// 		return new NodeVariable("a", value,
+	// 			{{"INTEGER", NODE_SLOT::INTEGER}},
+	// 			{{"INTEGER", NODE_SLOT::INTEGER}}
+	// 		);
+	// 	}
+	// },
 };
 
 void Nodes::delete_node(std::vector<Node*>::iterator& it)
@@ -130,6 +97,7 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				Nodes::build_slots(*nm, in, out);
 
 				NodeCast* node_cast = new NodeCast(std::move(in), std::move(out));
+				node_cast->m_name = nm->m_name.c_str();
 				node_cast->m_pos = ImVec2(nm->x, nm->y);
 				node_cast->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_cast);
@@ -171,8 +139,8 @@ void Nodes::build_from_meta(const std::vector<ConnectionMeta*> &v_connection_met
 			connection.out_node = out_node;
 			connection.out_slot = cm->m_out_slot.c_str();
 
-			in_node->m_connections.push_back(connection);
-			out_node->m_connections.push_back(connection);
+			in_node->new_connection(connection);
+			out_node->new_connection(connection);
 		}
 	}
 }

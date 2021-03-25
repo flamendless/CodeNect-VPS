@@ -83,6 +83,7 @@ int Project::open(void)
 	{
 		PLOGV << "Opened: " << Project::meta.filepath;
 		Nodes::op_id = 0;
+		Nodes::cast_id = 0;
 		Nodes::v_nodes.clear();
 
 		if (Project::parse() == RES_FAIL)
@@ -100,6 +101,7 @@ int Project::open(const char* filename)
 {
 	Project::meta.filepath = filename;
 	Nodes::op_id = 0;
+	Nodes::cast_id = 0;
 	Nodes::v_nodes.clear();
 
 	if (Project::parse() == RES_FAIL)
@@ -235,8 +237,8 @@ void Project::save_connections(CSimpleIniA& ini, std::vector<Connection>& v_conn
 {
 	for (Connection& connection : v_connections)
 	{
-		Node* in_node = (Node*)connection.in_node;
-		Node* out_node = (Node*)connection.out_node;
+		Node* in_node = static_cast<Node*>(connection.in_node);
+		Node* out_node = static_cast<Node*>(connection.out_node);
 
 		std::string str_id = std::string(in_node->m_name) + "_" + std::string(out_node->m_name);
 		std::string str_section = std::string(PROJ_CONNECTION_PREFIX) + str_id;
