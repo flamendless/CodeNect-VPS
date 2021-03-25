@@ -156,7 +156,7 @@ void CreateNode::draw(void)
 			case NODE_KIND::EMPTY: break;
 			case NODE_KIND::VARIABLE: CreateNode::draw_var(); break;
 			case NODE_KIND::OPERATION: CreateNode::draw_op(); break;
-			case NODE_KIND::CAST: break;
+			case NODE_KIND::CAST: CreateNode::draw_cast(); break;
 			case NODE_KIND::IF: break;
 		}
 
@@ -177,7 +177,7 @@ void CreateNode::draw_desc(void)
 		case NODE_KIND::EMPTY: break;
 		case NODE_KIND::VARIABLE: buf = std::get<TempVarData*>(data)->buf_desc; break;
 		case NODE_KIND::OPERATION: buf = std::get<TempOperationData*>(data)->buf_desc; break;
-		case NODE_KIND::CAST: break;
+		case NODE_KIND::CAST: buf = std::get<TempCastData*>(data)->buf_desc; break;
 		case NODE_KIND::IF: break;
 	}
 
@@ -204,7 +204,7 @@ void CreateNode::draw_buttons(void)
 				case NODE_KIND::EMPTY: break;
 				case NODE_KIND::VARIABLE: CreateNode::create_var_node(); break;
 				case NODE_KIND::OPERATION: CreateNode::create_op_node(); break;
-				case NODE_KIND::CAST: break;
+				case NODE_KIND::CAST: CreateNode::create_cast_node(); break;
 				case NODE_KIND::IF: break;
 			}
 

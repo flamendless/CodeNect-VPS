@@ -217,16 +217,6 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 			{
 				Node* node = desc.second();
 				Nodes::v_nodes.push_back(node);
-
-				// switch (node->m_kind)
-				// {
-				// 	case NODE_KIND::EMPTY: break;
-				// 	case NODE_KIND::VARIABLE: Nodes::v_nodes_var.push_back((NodeVariable*)node); break;
-				// 	case NODE_KIND::OPERATION: Nodes::v_nodes_op.push_back((NodeOperation*)node); break;
-				// 	case NODE_KIND::CAST: Nodes::v_nodes_cast.push_back((NodeCast*)node); break;
-				// 	case NODE_KIND::IF: break;
-				// }
-
 				ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 			}
 		}

@@ -15,6 +15,7 @@ void process(void)
 {
 	NodeLogic::process_var();
 	NodeLogic::process_op();
+	NodeLogic::process_cast();
 }
 
 //this only processes the variable-variable connection such as assignment
@@ -41,16 +42,11 @@ void process_var(void)
 			//out node is the "from" (lhs)
 			Node* in_node = static_cast<Node*>(connection.in_node);
 			Node* out_node = static_cast<Node*>(connection.out_node);
-			NODE_KIND* in_kind = &in_node->m_kind;
-			NODE_KIND* out_kind = &out_node->m_kind;
+			NodeVariable* in_node_var = dynamic_cast<NodeVariable*>(in_node);
+			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
 
-			bool is_in_var = *in_kind == +NODE_KIND::VARIABLE;
-			bool is_out_var = *out_kind == +NODE_KIND::VARIABLE;
-
-			if (is_in_var && is_out_var)
+			if (in_node_var && out_node_var)
 			{
-				NodeVariable* out_node_var = static_cast<NodeVariable*>(out_node);
-
 				if (node_var != out_node)
 					node_var->m_value = out_node_var->m_value;
 			}
@@ -80,16 +76,13 @@ void process_op(void)
 		{
 			Node* in_node = static_cast<Node*>(connection.in_node);
 			Node* out_node = static_cast<Node*>(connection.out_node);
-			NODE_KIND* in_kind = &in_node->m_kind;
-			NODE_KIND* out_kind = &out_node->m_kind;
-			bool is_out_op = *out_kind == +NODE_KIND::OPERATION;
-			bool is_in_var = *in_kind == +NODE_KIND::VARIABLE;
+			NodeVariable* in_node_var = dynamic_cast<NodeVariable*>(in_node);
+			NodeOperation* out_node_op = dynamic_cast<NodeOperation*>(out_node);
 
-			if (is_out_op && is_in_var)
+			if (in_node_var && out_node_op)
 			{
-				NodeVariable* node_var_res = static_cast<NodeVariable*>(in_node);
-				res.node_var_res = node_var_res;
-				res.slot_res = node_var_res->m_value_orig.m_slot;
+				res.node_var_res = in_node_var;
+				res.slot_res = in_node_var->m_value_orig.m_slot;
 				break;
 			}
 		}
@@ -103,17 +96,13 @@ void process_op(void)
 		{
 			Node* in_node = static_cast<Node*>(connection.in_node);
 			Node* out_node = static_cast<Node*>(connection.out_node);
-			NODE_KIND* in_kind = &in_node->m_kind;
-			NODE_KIND* out_kind = &out_node->m_kind;
-			bool is_in_op = *in_kind == +NODE_KIND::OPERATION;
-			bool is_out_var = *out_kind == +NODE_KIND::VARIABLE;
+			NodeOperation* in_node_op = dynamic_cast<NodeOperation*>(in_node);
+			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
 
-			if (is_in_op && is_out_var)
+			if (in_node_op && out_node_var)
 			{
-				NodeVariable* node_var = static_cast<NodeVariable*>(out_node);
-
-				if (node_var->m_value_orig.m_slot == res.slot_res)
-					res.v_vars.push_back(node_var);
+				if (out_node_var->m_value_orig.m_slot == res.slot_res)
+					res.v_vars.push_back(out_node_var);
 			}
 		}
 
@@ -125,7 +114,6 @@ void process_op(void)
 		node_op->has_valid_connections = true;
 		NODE_OP* op = &node_op->m_op;
 		NodeVariable* res_var = res.node_var_res;
-
 		NodeValue result;
 		bool is_first = true;
 
@@ -143,30 +131,67 @@ void process_op(void)
 			switch (*op)
 			{
 				case NODE_OP::EMPTY: break;
-				case NODE_OP::ADD:
-				{
-					result.add(*current_value);
-					break;
-				}
-				case NODE_OP::SUB:
-				{
-					result.sub(*current_value);
-					break;
-				}
-				case NODE_OP::MUL:
-				{
-					result.mul(*current_value);
-					break;
-				}
-				case NODE_OP::DIV:
-				{
-					result.div(*current_value);
-					break;
-				}
+				case NODE_OP::ADD: result.add(*current_value); break;
+				case NODE_OP::SUB: result.sub(*current_value); break;
+				case NODE_OP::MUL: result.mul(*current_value); break;
+				case NODE_OP::DIV: result.div(*current_value); break;
 			}
 		}
 
 		res_var->m_value.copy(result);
+	}
+}
+
+void process_cast(void)
+{
+	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
+		it != Nodes::v_nodes.end();
+		it++)
+	{
+		NodeCast* node_cast = dynamic_cast<NodeCast*>(*it);
+
+		if (!node_cast)
+			continue;
+
+		//store the result
+		NodeVariable* res_node_var;
+		NodeVariable* from_node_var;
+
+		//make preliminary checks
+		if (node_cast->m_connections.size() < 2)
+			continue;
+
+		//make sure node_cast has a connected node_var for the result
+		for (const Connection& connection : node_cast->m_connections)
+		{
+			Node* in_node = static_cast<Node*>(connection.in_node);
+			Node* out_node = static_cast<Node*>(connection.out_node);
+
+			NodeVariable* in_node_var = dynamic_cast<NodeVariable*>(in_node);
+			NodeCast* out_node_cast = dynamic_cast<NodeCast*>(out_node);
+
+			NodeCast* in_node_cast = dynamic_cast<NodeCast*>(in_node);
+			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
+
+			if (in_node_var && out_node_cast)
+			{
+				res_node_var = in_node_var;
+				continue;
+			}
+
+			if (in_node_cast && out_node_var)
+			{
+				from_node_var = out_node_var;
+				continue;
+			}
+		}
+
+		if (!res_node_var || !from_node_var)
+			continue;
+
+		NodeValue* from_val = &from_node_var->m_value;
+		NodeValue* res_val = &res_node_var->m_value;
+		res_val->cast_from(*from_val);
 	}
 }
 }

@@ -11,6 +11,7 @@ namespace CodeNect::NodeLogic
 void process(void);
 void process_var(void);
 void process_op(void);
+void process_cast(void);
 }
 
 #endif //_NODE_LOGIC_HPP

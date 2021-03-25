@@ -17,6 +17,7 @@ struct NodeValue
 	void mul(NodeValue& to_mul);
 	void div(NodeValue& to_div);
 
+	void cast_from(NodeValue& from_val);
 	void set(bool arg);
 	void set(int arg);
 	void set(float arg);

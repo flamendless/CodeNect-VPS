@@ -1,7 +1,7 @@
 #ifndef _TEMP_DATA_HPP
 #define _TEMP_DATA_HPP
 
-#include "modules/node.hpp"
+#include "node/node.hpp"
 #include "core/defines.hpp"
 
 namespace CodeNect
@@ -28,6 +28,14 @@ struct TempOperationData
 	NODE_SLOT slot = NODE_SLOT::EMPTY;
 	char buf_desc[BUF_SIZE * 2] = "";
 	bool valid_op = false;
+};
+
+struct TempCastData
+{
+	NODE_SLOT slot_in = NODE_SLOT::EMPTY;
+	NODE_SLOT slot_out = NODE_SLOT::EMPTY;
+	char buf_desc[BUF_SIZE * 2] = "";
+	bool valid_cast = false;
 };
 }
 

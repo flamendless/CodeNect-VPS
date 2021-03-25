@@ -88,6 +88,63 @@ void NodeValue::div(NodeValue& other)
 	}
 }
 
+void NodeValue::cast_from(NodeValue& from_val)
+{
+	switch (from_val.m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::STRING: break;
+		case NODE_SLOT::BOOL:
+		{
+			bool from_v = std::get<bool>(from_val.data);
+
+			if (m_slot == +NODE_SLOT::INTEGER)
+				this->set(from_v ? 1 : 0);
+			else if (m_slot == +NODE_SLOT::STRING)
+			{
+				this->set(std::string(from_v == true ? "true" : "false"));
+			}
+			break;
+		}
+		case NODE_SLOT::INTEGER:
+		{
+			int from_v = std::get<int>(from_val.data);
+
+			if (m_slot == +NODE_SLOT::FLOAT)
+				this->set((float)from_v);
+			else if (m_slot == +NODE_SLOT::DOUBLE)
+				this->set((double)from_v);
+			else if (m_slot == +NODE_SLOT::STRING)
+				this->set(std::to_string(from_v));
+			break;
+		}
+		case NODE_SLOT::FLOAT:
+		{
+			float from_v = std::get<float>(from_val.data);
+
+			if (m_slot == +NODE_SLOT::INTEGER)
+				this->set((int)from_v);
+			else if (m_slot == +NODE_SLOT::DOUBLE)
+				this->set((double)from_v);
+			else if (m_slot == +NODE_SLOT::STRING)
+				this->set(std::to_string(from_v));
+			break;
+		}
+		case NODE_SLOT::DOUBLE:
+		{
+			double from_v = std::get<double>(from_val.data);
+
+			if (m_slot == +NODE_SLOT::INTEGER)
+				this->set((int)from_v);
+			else if (m_slot == +NODE_SLOT::FLOAT)
+				this->set((float)from_v);
+			else if (m_slot == +NODE_SLOT::STRING)
+				this->set(std::to_string(from_v));
+			break;
+		}
+	}
+}
+
 void NodeValue::set(bool arg){ data = arg; m_slot = NODE_SLOT::BOOL; }
 void NodeValue::set(int arg){ data = arg; m_slot = NODE_SLOT::INTEGER; }
 void NodeValue::set(float arg){ data = arg; m_slot = NODE_SLOT::FLOAT; }
