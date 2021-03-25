@@ -194,4 +194,30 @@ void process_cast(void)
 		res_val->cast_from(*from_val);
 	}
 }
+
+bool validate_node_cast(Node* in_node, Node* out_node)
+{
+	//check if new connection from node_var to node_cast
+	NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+	NodeCast* node_cast = dynamic_cast<NodeCast*>(in_node);
+
+	if (node_var && node_cast)
+	{
+		//check if there is already a connection
+		for (const Connection& connection : node_cast->m_connections)
+		{
+			NodeVariable* node_var = dynamic_cast<NodeVariable*>((Node*)connection.out_node);
+			NodeCast* node_cast = dynamic_cast<NodeCast*>((Node*)connection.in_node);
+
+			if (node_var && node_cast)
+			{
+				node_var->delete_connection(connection);
+				node_cast->delete_connection(connection);
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
 }

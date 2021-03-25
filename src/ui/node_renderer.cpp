@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "core/config.hpp"
 #include "core/utils.hpp"
+#include "node/node_logic.hpp"
 
 namespace CodeNect::NodeRenderer
 {
@@ -112,8 +113,15 @@ void draw_connections(Node& node)
 		Node* in_node = static_cast<Node*>(new_connection.in_node);
 		Node* out_node = static_cast<Node*>(new_connection.out_node);
 
-		in_node->new_connection(new_connection);
-		out_node->new_connection(new_connection);
+		bool can_add = true;
+		// bool valid_node_cast = NodeLogic::validate_node_cast(in_node, out_node);
+		NodeLogic::validate_node_cast(in_node, out_node);
+
+		if (can_add)
+		{
+			in_node->new_connection(new_connection);
+			out_node->new_connection(new_connection);
+		}
 	}
 
 	for (const Connection& connection : node.m_connections)
@@ -124,8 +132,8 @@ void draw_connections(Node& node)
 		if (!ImNodes::Connection(connection.in_node, connection.in_slot,
 				connection.out_node, connection.out_slot))
 		{
-			Node* in_node = static_cast<Node*>(new_connection.in_node);
-			Node* out_node = static_cast<Node*>(new_connection.out_node);
+			Node* in_node = static_cast<Node*>(connection.in_node);
+			Node* out_node = static_cast<Node*>(connection.out_node);
 
 			in_node->delete_connection(connection);
 			out_node->delete_connection(connection);
