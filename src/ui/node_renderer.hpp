@@ -1,10 +1,10 @@
 #ifndef _NODE_RENDERER_HPP
 #define _NODE_RENDERER_HPP
 
-#include "modules/node.hpp"
-#include "modules/node_var.hpp"
-#include "modules/node_val.hpp"
-#include "modules/node_op.hpp"
+#include "node/node.hpp"
+#include "node/node_var.hpp"
+#include "node/node_val.hpp"
+#include "node/node_op.hpp"
 
 namespace CodeNect::NodeRenderer
 {

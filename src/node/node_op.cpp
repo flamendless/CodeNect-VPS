@@ -1,9 +1,10 @@
-#include "modules/node_op.hpp"
+#include "node/node_op.hpp"
 
 #include "IconsFontAwesome5.h"
+#include "plog/Log.h"
 #include "core/utils.hpp"
 #include "core/config.hpp"
-#include "modules/nodes.hpp"
+#include "node/nodes.hpp"
 
 namespace CodeNect
 {
@@ -19,8 +20,8 @@ NodeOperation::NodeOperation(
 
 	std::string str_op = op._to_string();
 	std::string* str_id = new std::string(str_op + "_" + std::to_string(Nodes::op_id));
-
 	Node::m_name = str_id->c_str();
+
 	m_op = op;
 	m_in_slots = in_slots;
 	m_out_slots = out_slots;

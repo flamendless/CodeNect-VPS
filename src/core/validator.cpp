@@ -4,7 +4,7 @@
 #include "plog/Log.h"
 #include "verbalexpressions.hpp"
 #include "core/defines.hpp"
-#include "modules/nodes.hpp"
+#include "node/nodes.hpp"
 
 namespace CodeNect::Validator
 {

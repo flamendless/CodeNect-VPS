@@ -1,15 +1,13 @@
-#include "modules/nodes.hpp"
-#include "modules/node_val.hpp"
-#include "modules/node_var.hpp"
-#include "modules/node_op.hpp"
+#include "node/nodes.hpp"
+
+#include "node/node_val.hpp"
 
 namespace CodeNect
 {
-int Nodes::op_id = 0;
+unsigned int Nodes::op_id = 0;
+unsigned int Nodes::cast_id = 0;
 bool Nodes::has_built_meta = false;
 std::vector<Node*> Nodes::v_nodes;
-std::vector<NodeVariable*> Nodes::v_nodes_var;
-std::vector<NodeOperation*> Nodes::v_nodes_op;
 
 Nodes::m_node_t Nodes::m_available_nodes
 {
@@ -60,44 +58,10 @@ Nodes::m_node_t Nodes::m_available_nodes
 	}
 };
 
-void Nodes::delete_node(Node* node)
+void Nodes::delete_node(std::vector<Node*>::iterator& it)
 {
-	NODE_KIND* kind = &node->m_kind;
-
-	if (*kind == +NODE_KIND::VARIABLE)
-	{
-		NodeVariable* target_node = static_cast<NodeVariable*>(node);
-
-		for (std::vector<NodeVariable*>::iterator it = Nodes::v_nodes_var.begin();
-			it != Nodes::v_nodes_var.end();
-			it++)
-		{
-			NodeVariable* node_var = *it;
-
-			if (node_var == target_node)
-			{
-				it = Nodes::v_nodes_var.erase(it);
-				break;
-			}
-		}
-	}
-	else if (*kind == +NODE_KIND::OPERATION)
-	{
-		NodeOperation* target_node = static_cast<NodeOperation*>(node);
-
-		for (std::vector<NodeOperation*>::iterator it = Nodes::v_nodes_op.begin();
-			it != Nodes::v_nodes_op.end();
-			it++)
-		{
-			NodeOperation* node_op = *it;
-
-			if (node_op == target_node)
-			{
-				it = Nodes::v_nodes_op.erase(it);
-				break;
-			}
-		}
-	}
+	delete *it;
+	it = Nodes::v_nodes.erase(it);
 }
 
 void Nodes::build_slots(NodeMeta& meta, v_slot_info_t& in, v_slot_info_t& out)
@@ -141,7 +105,6 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				node_var->m_pos = ImVec2(nm->x, nm->y);
 				node_var->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_var);
-				Nodes::v_nodes_var.push_back(node_var);
 
 				break;
 			}
@@ -157,7 +120,19 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				node_op->m_pos = ImVec2(nm->x, nm->y);
 				node_op->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_op);
-				Nodes::v_nodes_op.push_back(node_op);
+
+				break;
+			}
+			case NODE_KIND::CAST:
+			{
+				v_slot_info_t&& in = {};
+				v_slot_info_t&& out = {};
+				Nodes::build_slots(*nm, in, out);
+
+				NodeCast* node_cast = new NodeCast(std::move(in), std::move(out));
+				node_cast->m_pos = ImVec2(nm->x, nm->y);
+				node_cast->m_desc = nm->m_desc.c_str();
+				Nodes::v_nodes.push_back(node_cast);
 
 				break;
 			}

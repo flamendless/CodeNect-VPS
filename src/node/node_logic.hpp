@@ -1,10 +1,10 @@
 #ifndef _NODE_LOGIC_HPP
 #define _NODE_LOGIC_HPP
 
-#include "modules/node.hpp"
-#include "modules/node_var.hpp"
-#include "modules/node_op.hpp"
-#include "modules/connection.hpp"
+#include "node/connection.hpp"
+#include "node/node.hpp"
+#include "node/node_var.hpp"
+#include "node/node_op.hpp"
 
 namespace CodeNect::NodeLogic
 {

@@ -1,4 +1,4 @@
-#include "modules/node.hpp"
+#include "node/node.hpp"
 
 namespace CodeNect
 {

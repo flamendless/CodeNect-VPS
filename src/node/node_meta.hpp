@@ -1,7 +1,8 @@
 #ifndef _NODE_META_HPP
 #define _NODE_META_HPP
 
-#include "modules/node_def.hpp"
+#include <string>
+#include "node/node_def.hpp"
 
 namespace CodeNect
 {

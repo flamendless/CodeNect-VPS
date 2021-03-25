@@ -1,4 +1,4 @@
-#include "modules/node_renderer.hpp"
+#include "ui/node_renderer.hpp"
 
 #include "imgui.h"
 #include "core/config.hpp"
@@ -25,6 +25,7 @@ void draw_node(Node* node)
 			NodeRenderer::draw_node_op(node_op);
 			break;
 		}
+		case NODE_KIND::CAST: break;
 		case NODE_KIND::IF: break;
 	}
 }

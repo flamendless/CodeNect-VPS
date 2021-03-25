@@ -2,7 +2,7 @@
 #define _NODE_VAL_HPP
 
 #include <variant>
-#include "modules/node_def.hpp"
+#include "node/node_def.hpp"
 
 namespace CodeNect
 {

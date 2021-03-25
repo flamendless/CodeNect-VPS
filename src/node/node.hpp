@@ -3,9 +3,9 @@
 
 #include "ImNodesEz.h"
 #include "plog/Log.h"
-#include "modules/node_def.hpp"
-#include "modules/node_val.hpp"
-#include "modules/connection.hpp"
+#include "node/node_def.hpp"
+#include "node/node_val.hpp"
+#include "node/connection.hpp"
 #include "core/defines.hpp"
 
 namespace CodeNect
@@ -25,7 +25,10 @@ struct Node
 	v_slot_info_t m_out_slots{};
 
 	inline Node() {}
-	inline virtual ~Node() {}
+	inline virtual ~Node()
+	{
+		PLOGD << "Deleted node: " << m_kind._to_string() << ", " << m_name;
+	}
 
 	void delete_connection(const Connection& connection);
 };

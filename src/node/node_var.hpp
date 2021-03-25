@@ -3,9 +3,9 @@
 
 #include "fmt/format.h"
 #include "plog/Log.h"
-#include "modules/node_def.hpp"
-#include "modules/node.hpp"
-#include "modules/node_val.hpp"
+#include "node/node_def.hpp"
+#include "node/node.hpp"
+#include "node/node_val.hpp"
 
 namespace CodeNect
 {

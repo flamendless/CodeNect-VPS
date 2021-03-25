@@ -3,7 +3,7 @@
 
 #include "imgui.h"
 #include "ImNodes.h"
-#include "modules/node.hpp"
+#include "node/node.hpp"
 
 namespace CodeNect
 {

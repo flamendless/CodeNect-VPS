@@ -1,8 +1,8 @@
 #include "ui/create_node.hpp"
 
 #include "imgui.h"
-#include "modules/nodes.hpp"
-#include "modules/node_var.hpp"
+#include "node/nodes.hpp"
+#include "node/node_var.hpp"
 #include "core/utils.hpp"
 #include "core/validator.hpp"
 #include "core/defines.hpp"
@@ -36,7 +36,6 @@ void CreateNode::create_var_node(void)
 		node->m_desc = var->buf_desc;
 
 		Nodes::v_nodes.push_back(node);
-		Nodes::v_nodes_var.push_back(node);
 		ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 	}
 }

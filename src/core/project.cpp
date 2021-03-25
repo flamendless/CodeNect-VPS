@@ -10,10 +10,10 @@
 #include "core/utils.hpp"
 #include "core/commands.hpp"
 #include "ui/alert.hpp"
-#include "modules/node_meta.hpp"
-#include "modules/nodes.hpp"
-#include "modules/node_var.hpp"
-#include "modules/node_op.hpp"
+#include "node/node_meta.hpp"
+#include "node/nodes.hpp"
+#include "node/node_var.hpp"
+#include "node/node_op.hpp"
 
 namespace CodeNect
 {
@@ -187,6 +187,11 @@ int Project::save(void)
 				NodeOperation* node_op = static_cast<NodeOperation*>(node);
 				const char* op = node_op->m_op._to_string();
 				ini.SetValue(section, "op", op);
+				break;
+			}
+			case NODE_KIND::CAST:
+			{
+				// NodeCast* node_cast = static_cast<NodeCast*>(node);
 				break;
 			}
 			case NODE_KIND::IF: break;

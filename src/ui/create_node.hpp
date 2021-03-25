@@ -7,7 +7,7 @@
 #include "imgui.h"
 #include "enum.h"
 #include "IconsFontAwesome5.h"
-#include "modules/node.hpp"
+#include "node/node.hpp"
 #include "core/temp_data.hpp"
 
 namespace CodeNect
@@ -23,7 +23,7 @@ struct CreateNode
 	static NODE_KIND kind;
 	static Node* node_to_edit;
 	static bool can_create;
-	static std::variant<TempVarData*, TempOperationData*> data;
+	static std::variant<TempVarData*, TempOperationData*, TempCastData*> data;
 
 	CreateNode() = delete;
 	static void open(NODE_KIND kind);

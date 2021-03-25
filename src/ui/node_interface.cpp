@@ -16,9 +16,9 @@
 #include "core/config.hpp"
 #include "core/utils.hpp"
 #include "core/font.hpp"
-#include "modules/nodes.hpp"
-#include "modules/node_logic.hpp"
-#include "modules/node_renderer.hpp"
+#include "node/nodes.hpp"
+#include "node/node_logic.hpp"
+#include "ui/node_renderer.hpp"
 #include "ui/create_node.hpp"
 
 namespace CodeNect
@@ -153,10 +153,7 @@ void NodeInterface::draw_nodes(void)
 			node->m_connections.clear();
 
 			//delete node
-			PLOGD << "Deleted node: " << node->m_name;
-			Nodes::delete_node(node);
-			delete node;
-			it = Nodes::v_nodes.erase(it);
+			Nodes::delete_node(it);
 			current_node = nullptr;
 		}
 		else
@@ -205,6 +202,12 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 				ImGui::CloseCurrentPopup();
 			}
 
+			if (ImGui::MenuItem("Cast/Convert"))
+			{
+				CreateNode::open(NODE_KIND::CAST);
+				ImGui::CloseCurrentPopup();
+			}
+
 			ImGui::EndMenu();
 		}
 
@@ -215,13 +218,14 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 				Node* node = desc.second();
 				Nodes::v_nodes.push_back(node);
 
-				switch (node->m_kind)
-				{
-					case NODE_KIND::EMPTY: break;
-					case NODE_KIND::VARIABLE: Nodes::v_nodes_var.push_back((NodeVariable*)node); break;
-					case NODE_KIND::OPERATION: Nodes::v_nodes_op.push_back((NodeOperation*)node); break;
-					case NODE_KIND::IF: break;
-				}
+				// switch (node->m_kind)
+				// {
+				// 	case NODE_KIND::EMPTY: break;
+				// 	case NODE_KIND::VARIABLE: Nodes::v_nodes_var.push_back((NodeVariable*)node); break;
+				// 	case NODE_KIND::OPERATION: Nodes::v_nodes_op.push_back((NodeOperation*)node); break;
+				// 	case NODE_KIND::CAST: Nodes::v_nodes_cast.push_back((NodeCast*)node); break;
+				// 	case NODE_KIND::IF: break;
+				// }
 
 				ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 			}

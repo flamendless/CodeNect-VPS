@@ -1,7 +1,8 @@
 #include "ui/create_node.hpp"
 
 #include "core/utils.hpp"
-#include "modules/nodes.hpp"
+#include "node/nodes.hpp"
+#include "node/node_cast.hpp"
 
 namespace CodeNect
 {
@@ -18,7 +19,7 @@ const char* CreateNode::title = ICON_FA_PLUS_SQUARE "Create Node";
 NODE_KIND CreateNode::kind = NODE_KIND::EMPTY;
 Node* CreateNode::node_to_edit;
 bool CreateNode::can_create = false;
-std::variant<TempVarData*, TempOperationData*> CreateNode::data;
+std::variant<TempVarData*, TempOperationData*, TempCastData*> CreateNode::data;
 
 void CreateNode::open(NODE_KIND kind)
 {
@@ -33,6 +34,11 @@ void CreateNode::open(NODE_KIND kind)
 		case NODE_KIND::OPERATION:
 		{
 			CreateNode::data = new TempOperationData(); break;
+			break;
+		}
+		case NODE_KIND::CAST:
+		{
+			CreateNode::data = new TempCastData(); break;
 			break;
 		}
 		case NODE_KIND::IF: break;
@@ -91,6 +97,22 @@ void CreateNode::edit(Node* node)
 			CreateNode::data = temp;
 			break;
 		}
+		case NODE_KIND::CAST:
+		{
+			NodeCast* node_cast = static_cast<NodeCast*>(node);
+			TempCastData* temp = new TempCastData();
+			NODE_SLOT slot_in = NODE_SLOT::_from_string(node_cast->m_in_slots[0].title);
+			NODE_SLOT slot_out = NODE_SLOT::_from_string(node_cast->m_out_slots[0].title);
+
+			std::strcpy(temp->buf_desc, node_cast->m_desc);
+			temp->slot_in = slot_in;
+			temp->slot_out = slot_out;
+			temp->valid_cast = true;
+
+			CreateNode::node_to_edit = node;
+			CreateNode::data = temp;
+			break;
+		}
 		case NODE_KIND::IF: break;
 	}
 
@@ -134,6 +156,7 @@ void CreateNode::draw(void)
 			case NODE_KIND::EMPTY: break;
 			case NODE_KIND::VARIABLE: CreateNode::draw_var(); break;
 			case NODE_KIND::OPERATION: CreateNode::draw_op(); break;
+			case NODE_KIND::CAST: break;
 			case NODE_KIND::IF: break;
 		}
 
@@ -154,6 +177,7 @@ void CreateNode::draw_desc(void)
 		case NODE_KIND::EMPTY: break;
 		case NODE_KIND::VARIABLE: buf = std::get<TempVarData*>(data)->buf_desc; break;
 		case NODE_KIND::OPERATION: buf = std::get<TempOperationData*>(data)->buf_desc; break;
+		case NODE_KIND::CAST: break;
 		case NODE_KIND::IF: break;
 	}
 
@@ -180,6 +204,7 @@ void CreateNode::draw_buttons(void)
 				case NODE_KIND::EMPTY: break;
 				case NODE_KIND::VARIABLE: CreateNode::create_var_node(); break;
 				case NODE_KIND::OPERATION: CreateNode::create_op_node(); break;
+				case NODE_KIND::CAST: break;
 				case NODE_KIND::IF: break;
 			}
 

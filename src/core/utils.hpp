@@ -5,7 +5,7 @@
 #include <string>
 #include "imgui.h"
 #include "ImNodesEz.h"
-#include "modules/node_def.hpp"
+#include "node/node_def.hpp"
 
 namespace CodeNect::Utils
 {

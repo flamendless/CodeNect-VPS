@@ -1,8 +1,8 @@
 #ifndef _NODE_OP_HPP
 #define _NODE_OP_HPP
 
-#include "modules/node_def.hpp"
-#include "modules/node.hpp"
+#include "node/node_def.hpp"
+#include "node/node.hpp"
 
 namespace CodeNect
 {

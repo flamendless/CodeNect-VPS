@@ -3,9 +3,9 @@
 
 #include <string>
 #include "SimpleIni.h"
-#include "modules/connection.hpp"
-#include "modules/node_def.hpp"
-#include "modules/node_meta.hpp"
+#include "node/connection.hpp"
+#include "node/node_def.hpp"
+#include "node/node_meta.hpp"
 #include "ui/new_project.hpp"
 
 namespace CodeNect

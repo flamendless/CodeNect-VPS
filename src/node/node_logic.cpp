@@ -1,5 +1,5 @@
-#include "modules/node_logic.hpp"
-#include "modules/nodes.hpp"
+#include "node/node_logic.hpp"
+#include "node/nodes.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -21,11 +21,14 @@ void process(void)
 //of value
 void process_var(void)
 {
-	for (std::vector<NodeVariable*>::iterator it = Nodes::v_nodes_var.begin();
-		it != Nodes::v_nodes_var.end();
+	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
+		it != Nodes::v_nodes.end();
 		it++)
 	{
-		NodeVariable* node_var = *it;
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(*it);
+
+		if (!node_var)
+			continue;
 
 		//set to original value
 		node_var->m_value = node_var->m_value_orig;
@@ -57,11 +60,15 @@ void process_var(void)
 
 void process_op(void)
 {
-	for (std::vector<NodeOperation*>::iterator it = Nodes::v_nodes_op.begin();
-		it != Nodes::v_nodes_op.end();
+	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
+		it != Nodes::v_nodes.end();
 		it++)
 	{
-		NodeOperation* node_op = *it;
+		NodeOperation* node_op = dynamic_cast<NodeOperation*>(*it);
+
+		if (!node_op)
+			continue;
+
 		node_op->has_valid_connections = false;
 
 		//store all the node_vars connected to this node_op
