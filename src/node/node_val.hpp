@@ -18,6 +18,14 @@ struct NodeValue
 	void div(NodeValue& to_div);
 
 	void cast_from(NodeValue& from_val);
+
+	bool is_eq_to(NodeValue& other);
+	bool is_neq_to(NodeValue& other);
+	bool is_lt_to(NodeValue& other);
+	bool is_gt_to(NodeValue& other);
+	bool is_lte_to(NodeValue& other);
+	bool is_gte_to(NodeValue& other);
+
 	void set(bool arg);
 	void set(int arg);
 	void set(float arg);

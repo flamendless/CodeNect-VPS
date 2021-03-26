@@ -90,7 +90,6 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				node_var->m_pos = ImVec2(nm->x, nm->y);
 				node_var->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_var);
-
 				break;
 			}
 			case NODE_KIND::OPERATION:
@@ -104,7 +103,6 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				node_op->m_pos = ImVec2(nm->x, nm->y);
 				node_op->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_op);
-
 				break;
 			}
 			case NODE_KIND::CAST:
@@ -118,7 +116,6 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				node_cast->m_pos = ImVec2(nm->x, nm->y);
 				node_cast->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_cast);
-
 				break;
 			}
 			case NODE_KIND::COMPARISON:
@@ -129,11 +126,11 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				Nodes::build_slots(*nm, in, out);
 
 				NodeComparison* node_cmp = new NodeComparison(cmp, std::move(in), std::move(out));
+				node_cmp->m_str = NodeComparison::m_cmp_str[cmp._to_string()];
 				node_cmp->m_name = nm->m_name.c_str();
 				node_cmp->m_pos = ImVec2(nm->x, nm->y);
 				node_cmp->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_cmp);
-
 				break;
 			}
 			case NODE_KIND::IF: break;

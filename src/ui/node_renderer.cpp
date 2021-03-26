@@ -9,9 +9,7 @@ namespace CodeNect::NodeRenderer
 {
 void draw_node(Node* node)
 {
-	NODE_KIND* kind = &node->m_kind;
-
-	switch(*kind)
+	switch(node->m_kind)
 	{
 		case NODE_KIND::EMPTY: break;
 		case NODE_KIND::VARIABLE:
@@ -34,8 +32,8 @@ void draw_node(Node* node)
 		}
 		case NODE_KIND::COMPARISON:
 		{
-			// NodeCast* node_cast = static_cast<NodeCast*>(node);
-			// NodeRenderer::draw_node_cast(node_cast);
+			NodeComparison* node_cmp = static_cast<NodeComparison*>(node);
+			NodeRenderer::draw_node_cmp(node_cmp);
 			break;
 		}
 		case NODE_KIND::IF: break;
@@ -58,7 +56,6 @@ void draw_node_var(NodeVariable* node_var)
 		ImGui::Text("%s", node_var->m_value_orig.m_slot._to_string());
 		NodeRenderer::draw_node_val(&node_var->m_value);
 		ImGui::Text("%s", node_var->m_desc);
-
 		ImGui::EndTable();
 	}
 }
@@ -88,9 +85,10 @@ void draw_node_op(NodeOperation* node_op)
 		ImGui::TableNextColumn();
 		ImGui::Text("%s %s", node_op->m_op._to_string(), node_op->m_icon);
 		ImGui::Text("%s", node_op->m_desc);
-
 		ImGui::EndTable();
 	}
+
+	NodeRenderer::draw_connected_op(node_op);
 }
 
 void draw_node_cast(NodeCast* node_cast)
@@ -103,9 +101,26 @@ void draw_node_cast(NodeCast* node_cast)
 
 		ImGui::TableNextColumn();
 		ImGui::Text("%s", node_cast->m_desc);
-
 		ImGui::EndTable();
 	}
+}
+
+void draw_node_cmp(NodeComparison* node_cmp)
+{
+	if (ImGui::BeginTable("TableNode##NodeComparison", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Type:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+
+		ImGui::TableNextColumn();
+		ImGui::Text("%s", node_cmp->m_str.c_str());
+		ImGui::Text("%s", node_cmp->m_desc);
+		ImGui::EndTable();
+	}
+
+	NodeRenderer::draw_connected_cmp(node_cmp);
 }
 
 void draw_connections(Node& node)
@@ -147,43 +162,92 @@ void draw_connections(Node& node)
 	}
 }
 
-void draw_connected(Node* node)
+void draw_connected_op(NodeOperation* node_op)
 {
-	if (node->m_kind != +NODE_KIND::OPERATION)
+	if (!node_op->m_has_valid_connections)
 		return;
 
-	NodeOperation* node_op = static_cast<NodeOperation*>(node);
+	std::vector<NodeVariable*> v_vars;
 
-	if (!node_op->has_valid_connections)
-		return;
-
-	// ImGui::Separator();
-
-	if (ImGui::TreeNode("Input Order"))
+	for (const Connection& connection : node_op->m_connections)
 	{
-		Utils::help_marker("This affects the result of the operation", true);
+		Node* in_node = (Node*)connection.in_node;
+		Node* out_node = (Node*)connection.out_node;
+		NodeOperation* node_op = dynamic_cast<NodeOperation*>(in_node);
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
 
-		for (const Connection& connection : node->m_connections)
+		if (node_op && node_var)
+			v_vars.push_back(node_var);
+	}
+
+	std::string str_var;
+	std::string str_val;
+	const char* op = node_op->get_op();
+
+	for (int i = 0; i < v_vars.size(); i++)
+	{
+		NodeVariable* node_var = v_vars[i];
+		str_var.append(node_var->m_name);
+		str_val.append(node_var->m_value.get_value_str());
+
+		if (i < v_vars.size() - 1)
 		{
-			Node* in_node = (Node*)connection.in_node;
-			Node* out_node = (Node*)connection.out_node;
-			NODE_KIND* in_kind = &in_node->m_kind;
-			NODE_KIND* out_kind = &out_node->m_kind;
+			str_var.append(" ");
+			str_var.append(op);
+			str_var.append(" ");
 
-			bool is_in_op = *in_kind == +NODE_KIND::OPERATION;
-			bool is_out_var = *out_kind == +NODE_KIND::VARIABLE;
+			str_val.append(" ");
+			str_val.append(op);
+			str_val.append(" ");
+		}
+	}
 
-			if (is_in_op && is_out_var)
+	ImGui::TextColored(Config::NodeInterface_c::label_color, "Expression:");
+	ImGui::Indent();
+	ImGui::BulletText("%s", str_var.c_str());
+	ImGui::BulletText("%s", str_val.c_str());
+}
+
+void draw_connected_cmp(NodeComparison* node_cmp)
+{
+	if (!node_cmp->m_has_valid_connections)
+		return;
+
+	NodeVariable* node_var_a = nullptr;
+	NodeVariable* node_var_b = nullptr;
+
+	for (const Connection& connection : node_cmp->m_connections)
+	{
+		Node* in_node = (Node*)connection.in_node;
+		Node* out_node = (Node*)connection.out_node;
+		NodeComparison* node_cmp = dynamic_cast<NodeComparison*>(in_node);
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+
+		if (node_cmp && node_var)
+		{
+			if (!node_var_a)
 			{
-				NodeVariable* node_var = static_cast<NodeVariable*>(out_node);
+				node_var_a = node_var;
+				continue;
+			}
 
-				ImGui::Text("%s = ", node_var->m_name);
-				ImGui::SameLine();
-				NodeRenderer::draw_node_val(&node_var->m_value);
+			if (!node_var_b)
+			{
+				node_var_b = node_var;
+				continue;
 			}
 		}
+	}
 
-		ImGui::TreePop();
+	if (node_var_a && node_var_b)
+	{
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Expression:");
+		ImGui::Indent();
+		ImGui::BulletText("%s %s %s", node_var_a->m_name, node_cmp->get_cmp_op(), node_var_b->m_name);
+		ImGui::BulletText("%s %s %s",
+			node_var_a->m_value.get_value_str().c_str(),
+			node_cmp->get_cmp_op(),
+			node_var_b->m_value.get_value_str().c_str());
 	}
 }
 }

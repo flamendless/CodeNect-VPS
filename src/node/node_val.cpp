@@ -145,6 +145,107 @@ void NodeValue::cast_from(NodeValue& from_val)
 	}
 }
 
+bool NodeValue::is_eq_to(NodeValue& other)
+{
+	switch (m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL:
+		{
+			return std::get<bool>(data) == std::get<bool>(other.data);
+			break;
+		}
+		case NODE_SLOT::INTEGER:
+		{
+			return std::get<int>(data) == std::get<int>(other.data);
+			break;
+		}
+		case NODE_SLOT::FLOAT:
+		{
+			return std::get<float>(data) == std::get<float>(other.data);
+			break;
+		}
+		case NODE_SLOT::DOUBLE:
+		{
+			return std::get<double>(data) == std::get<double>(other.data);
+			break;
+		}
+		case NODE_SLOT::STRING:
+		{
+			return std::get<std::string>(data).compare(std::get<std::string>(other.data)) == 0;
+			break;
+		}
+	}
+	return false;
+}
+
+bool NodeValue::is_neq_to(NodeValue& other)
+{
+	return is_eq_to(other) == false;
+}
+
+bool NodeValue::is_lt_to(NodeValue& other)
+{
+	switch (m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: break;
+		case NODE_SLOT::INTEGER:
+		{
+			return std::get<int>(data) < std::get<int>(other.data);
+			break;
+		}
+		case NODE_SLOT::FLOAT:
+		{
+			return std::get<float>(data) < std::get<float>(other.data);
+			break;
+		}
+		case NODE_SLOT::DOUBLE:
+		{
+			return std::get<double>(data) < std::get<double>(other.data);
+			break;
+		}
+		case NODE_SLOT::STRING: break;
+	}
+	return false;
+}
+
+bool NodeValue::is_gt_to(NodeValue& other)
+{
+	return is_lt_to(other) == false && is_eq_to(other) == false;
+}
+
+bool NodeValue::is_lte_to(NodeValue& other)
+{
+	switch (m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: break;
+		case NODE_SLOT::INTEGER:
+		{
+			return std::get<int>(data) <= std::get<int>(other.data);
+			break;
+		}
+		case NODE_SLOT::FLOAT:
+		{
+			return std::get<float>(data) <= std::get<float>(other.data);
+			break;
+		}
+		case NODE_SLOT::DOUBLE:
+		{
+			return std::get<double>(data) <= std::get<double>(other.data);
+			break;
+		}
+		case NODE_SLOT::STRING: break;
+	}
+	return false;
+}
+
+bool NodeValue::is_gte_to(NodeValue& other)
+{
+	return is_eq_to(other) == true || is_lt_to(other) == false;
+}
+
 void NodeValue::set(bool arg){ data = arg; m_slot = NODE_SLOT::BOOL; }
 void NodeValue::set(int arg){ data = arg; m_slot = NODE_SLOT::INTEGER; }
 void NodeValue::set(float arg){ data = arg; m_slot = NODE_SLOT::FLOAT; }
@@ -229,7 +330,13 @@ const std::string NodeValue::get_value_str(void)
 		case NODE_SLOT::INTEGER: return std::to_string(std::get<int>(data)); break;
 		case NODE_SLOT::FLOAT: return std::to_string(std::get<float>(data)); break;
 		case NODE_SLOT::DOUBLE: return std::to_string(std::get<double>(data)); break;
-		case NODE_SLOT::STRING: return std::get<std::string>(data).c_str(); break;
+		case NODE_SLOT::STRING:
+		{
+			std::string str = "\"";
+			str.append(std::get<std::string>(data));
+			str.append("\"");
+			return str.c_str();
+		}
 	}
 }
 

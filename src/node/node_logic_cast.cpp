@@ -1,6 +1,8 @@
 #include "node/node_logic.hpp"
 
 #include "node/nodes.hpp"
+#include "node/node_var.hpp"
+#include "node/node_cast.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -16,8 +18,8 @@ void process_cast(void)
 			continue;
 
 		//store the result
-		NodeVariable* res_node_var;
-		NodeVariable* from_node_var;
+		NodeVariable* res_node_var = nullptr;
+		NodeVariable* from_node_var = nullptr;
 
 		//make preliminary checks
 		if (node_cast->m_connections.size() < 2)
@@ -26,6 +28,9 @@ void process_cast(void)
 		//make sure node_cast has a connected node_var for the result
 		for (const Connection& connection : node_cast->m_connections)
 		{
+			if (res_node_var && from_node_var)
+				break;
+
 			Node* in_node = static_cast<Node*>(connection.in_node);
 			Node* out_node = static_cast<Node*>(connection.out_node);
 

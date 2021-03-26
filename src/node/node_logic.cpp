@@ -8,5 +8,6 @@ void process(void)
 	NodeLogic::process_var();
 	NodeLogic::process_op();
 	NodeLogic::process_cast();
+	NodeLogic::process_cmp();
 }
 }

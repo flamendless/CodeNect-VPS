@@ -131,6 +131,7 @@ void CreateNode::edit(Node* node)
 
 			std::strcpy(temp->buf_desc, node_cmp->m_desc);
 			temp->slot_in = slot_in;
+			temp->str = NodeComparison::m_cmp_str[cmp._to_string()];
 			temp->cmp = cmp;
 			temp->valid_cmp = true;
 

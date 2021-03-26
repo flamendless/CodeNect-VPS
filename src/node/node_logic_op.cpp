@@ -1,6 +1,8 @@
 #include "node/node_logic.hpp"
 
 #include "node/nodes.hpp"
+#include "node/node_var.hpp"
+#include "node/node_op.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -23,7 +25,7 @@ void process_op(void)
 		if (!node_op)
 			continue;
 
-		node_op->has_valid_connections = false;
+		node_op->m_has_valid_connections = false;
 
 		//store all the node_vars connected to this node_op
 		Result res;
@@ -69,7 +71,7 @@ void process_op(void)
 
 		//here we are sure that they are of the same slot
 		// process the v_vars and perform the operation
-		node_op->has_valid_connections = true;
+		node_op->m_has_valid_connections = true;
 		NODE_OP* op = &node_op->m_op;
 		NodeVariable* res_var = res.node_var_res;
 		NodeValue result;

@@ -36,4 +36,18 @@ NodeOperation::NodeOperation(
 
 	PLOGD << "Created NodeOperation: " << m_name << ", op = " << m_op._to_string();
 }
+
+const char* NodeOperation::get_op(void)
+{
+	switch (m_op)
+	{
+		case NODE_OP::EMPTY: break;
+		case NODE_OP::ADD: return "+"; break;
+		case NODE_OP::SUB: return "-"; break;
+		case NODE_OP::MUL: return "*"; break;
+		case NODE_OP::DIV: return "/"; break;
+	}
+
+	return "";
+}
 }

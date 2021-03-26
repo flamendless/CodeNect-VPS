@@ -12,6 +12,8 @@ void CreateNode::create_cmp_node(void)
 		TempComparisonData* tmp = std::get<TempComparisonData*>(data);
 		NodeComparison* node_cmp = static_cast<NodeComparison*>(CreateNode::node_to_edit);
 
+		node_cmp->m_cmp = tmp->cmp;
+		node_cmp->m_str = tmp->str;
 		node_cmp->m_desc = tmp->buf_desc;
 
 		PLOGD << "Edited NodeComparison: " << node_cmp->m_name;
@@ -28,6 +30,7 @@ void CreateNode::create_cmp_node(void)
 		out.push_back({slot_out._to_string(), slot_out});
 
 		NodeComparison* node = new NodeComparison(tmp->cmp, std::move(in), std::move(out));
+		node->m_str = tmp->str;
 		node->m_desc = tmp->buf_desc;
 
 		Nodes::v_nodes.push_back(node);
@@ -39,23 +42,26 @@ void CreateNode::draw_cmp(void)
 {
 	TempComparisonData* tmp = std::get<TempComparisonData*>(data);
 
-	if (ImGui::BeginCombo("Input Type", tmp->slot_in._to_string()))
+	if (!CreateNode::is_edit_mode)
 	{
-		for (NODE_SLOT slot : NODE_SLOT::_values())
+		if (ImGui::BeginCombo("Input Type", tmp->slot_in._to_string()))
 		{
-			if (slot == +NODE_SLOT::EMPTY)
-				continue;
+			for (NODE_SLOT slot : NODE_SLOT::_values())
+			{
+				if (slot == +NODE_SLOT::EMPTY)
+					continue;
 
-			ImGui::PushID(slot);
-			const char* txt = slot._to_string();
+				ImGui::PushID(slot);
+				const char* txt = slot._to_string();
 
-			if (ImGui::Selectable(txt, tmp->slot_in._to_string() == txt))
-				tmp->slot_in = slot;
+				if (ImGui::Selectable(txt, tmp->slot_in._to_string() == txt))
+					tmp->slot_in = slot;
 
-			ImGui::PopID();
+				ImGui::PopID();
+			}
+
+			ImGui::EndCombo();
 		}
-
-		ImGui::EndCombo();
 	}
 
 	if (tmp->slot_in == +NODE_SLOT::EMPTY)
@@ -68,18 +74,17 @@ void CreateNode::draw_cmp(void)
 			if (cmp == +NODE_CMP::EMPTY)
 				continue;
 
-			//if input slot type is string, it can not be compared with:
+			//if input slot type is string or boolean, it can not be compared with:
 			//GT, LT, GTE, LTE
-			if (tmp->slot_in == +NODE_SLOT::STRING)
+			if (tmp->slot_in == +NODE_SLOT::STRING || tmp->slot_in == +NODE_SLOT::BOOL)
 			{
 				if (!(cmp == +NODE_CMP::EQ || cmp == +NODE_CMP::NEQ))
 					continue;
 			}
 
+
 			ImGui::PushID(cmp);
-			const std::pair<const char*, const char*> info = m_cmp_str[cmp._to_string()];
-			std::string str = std::string(info.first) + " " + std::string(info.second);
-			const char* txt = str.c_str();
+			const char* txt = NodeComparison::m_cmp_str[cmp._to_string()];
 
 			if (ImGui::Selectable(txt, tmp->cmp._to_string() == txt))
 			{

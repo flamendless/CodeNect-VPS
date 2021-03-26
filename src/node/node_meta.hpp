@@ -25,6 +25,7 @@ struct NodeMeta
 	std::string m_op;
 
 	//NodeComparison
+	std::string m_cmp_str;
 	std::string m_cmp;
 
 	inline NodeMeta() {}

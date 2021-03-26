@@ -1,6 +1,7 @@
 #include "node/node_logic.hpp"
 
 #include "node/nodes.hpp"
+#include "node/node_var.hpp"
 
 namespace CodeNect::NodeLogic
 {
