@@ -1,14 +1,22 @@
 #include "node/nodes.hpp"
 
 #include "node/node_val.hpp"
+#include "node/node_var.hpp"
+#include "node/node_op.hpp"
+#include "node/node_cast.hpp"
+#include "node/node_cmp.hpp"
 
 namespace CodeNect
 {
-unsigned int Nodes::op_id = 0;
-unsigned int Nodes::cast_id = 0;
 bool Nodes::has_built_meta = false;
 std::vector<Node*> Nodes::v_nodes;
-
+std::map<std::string, unsigned int> Nodes::m_ids
+{
+	{"OPERATION", 0},
+	{"CAST", 0},
+	{"IF", 0},
+	{"COMPARISON", 0},
+};
 Nodes::m_node_t Nodes::m_available_nodes
 {
 	// {
@@ -24,6 +32,16 @@ Nodes::m_node_t Nodes::m_available_nodes
 	// 	}
 	// },
 };
+
+void Nodes::reset(void)
+{
+	for (std::pair<const std::string, unsigned int>& e : Nodes::m_ids)
+	{
+		e.second = 0;
+	}
+
+	Nodes::v_nodes.clear();
+}
 
 void Nodes::delete_node(std::vector<Node*>::iterator& it)
 {
@@ -78,7 +96,6 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 			case NODE_KIND::OPERATION:
 			{
 				NODE_OP op = NODE_OP::_from_string(nm->m_op.c_str());
-
 				v_slot_info_t&& in = {};
 				v_slot_info_t&& out = {};
 				Nodes::build_slots(*nm, in, out);
@@ -101,6 +118,21 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				node_cast->m_pos = ImVec2(nm->x, nm->y);
 				node_cast->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_cast);
+
+				break;
+			}
+			case NODE_KIND::COMPARISON:
+			{
+				NODE_CMP cmp = NODE_CMP::_from_string(nm->m_cmp.c_str());
+				v_slot_info_t&& in = {};
+				v_slot_info_t&& out = {};
+				Nodes::build_slots(*nm, in, out);
+
+				NodeComparison* node_cmp = new NodeComparison(cmp, std::move(in), std::move(out));
+				node_cmp->m_name = nm->m_name.c_str();
+				node_cmp->m_pos = ImVec2(nm->x, nm->y);
+				node_cmp->m_desc = nm->m_desc.c_str();
+				Nodes::v_nodes.push_back(node_cmp);
 
 				break;
 			}

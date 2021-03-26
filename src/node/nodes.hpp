@@ -8,9 +8,6 @@
 #include "node/connection.hpp"
 #include "node/node.hpp"
 #include "node/node_meta.hpp"
-#include "node/node_var.hpp"
-#include "node/node_op.hpp"
-#include "node/node_cast.hpp"
 
 namespace CodeNect
 {
@@ -18,16 +15,13 @@ struct Nodes
 {
 	typedef std::map<std::string, Node*(*)()> m_node_t;
 
-	static unsigned int op_id;
-	static unsigned int cast_id;
-
 	static bool has_built_meta;
-
 	static std::vector<Node*> v_nodes;
-
+	static std::map<std::string, unsigned int> m_ids;
 	static m_node_t m_available_nodes;
 
 	Nodes() = delete;
+	static void reset(void);
 	static void delete_node(std::vector<Node*>::iterator& it);
 	static Node* find_by_name(const char* name);
 	static void build_slots(NodeMeta& meta, v_slot_info_t& in, v_slot_info_t& out);

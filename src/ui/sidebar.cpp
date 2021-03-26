@@ -27,15 +27,6 @@ int Sidebar::init(void)
 {
 	if (Sidebar::load_images() != RES_SUCCESS) return RES_FAIL;
 
-	// for (auto const& value : sidebar_images)
-	// for (std::pair<const std::string, const CodeNect::Image>& value : Sidebar::sidebar_images)
-	// {
-	// 	const std::string& key = value.first;
-	// 	const CodeNect::Image& image = value.second;
-    //
-	// 	PLOGV << key << " = "  << image.texture;
-	// }
-
 	btn_project = m_ui_buttons["project"];
 	btn_run = m_ui_buttons["run"];
 	btn_settings = m_ui_buttons["settings"];

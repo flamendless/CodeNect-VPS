@@ -14,6 +14,7 @@
 #include "node/nodes.hpp"
 #include "node/node_var.hpp"
 #include "node/node_op.hpp"
+#include "node/node_cmp.hpp"
 
 namespace CodeNect
 {
@@ -82,9 +83,7 @@ int Project::open(void)
 	if (res)
 	{
 		PLOGV << "Opened: " << Project::meta.filepath;
-		Nodes::op_id = 0;
-		Nodes::cast_id = 0;
-		Nodes::v_nodes.clear();
+		Nodes::reset();
 
 		if (Project::parse() == RES_FAIL)
 			return RES_FAIL;
@@ -100,9 +99,7 @@ int Project::open(void)
 int Project::open(const char* filename)
 {
 	Project::meta.filepath = filename;
-	Nodes::op_id = 0;
-	Nodes::cast_id = 0;
-	Nodes::v_nodes.clear();
+	Nodes::reset();
 
 	if (Project::parse() == RES_FAIL)
 		return RES_FAIL;
@@ -191,9 +188,12 @@ int Project::save(void)
 				ini.SetValue(section, "op", op);
 				break;
 			}
-			case NODE_KIND::CAST:
+			case NODE_KIND::CAST: break;
+			case NODE_KIND::COMPARISON:
 			{
-				// NodeCast* node_cast = static_cast<NodeCast*>(node);
+				NodeComparison* node_cmp = static_cast<NodeComparison*>(node);
+				const char* cmp = node_cmp->m_cmp._to_string();
+				ini.SetValue(section, "cmp", cmp);
 				break;
 			}
 			case NODE_KIND::IF: break;
@@ -315,22 +315,24 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 
 	const char* name = ini.GetValue(section, "name");
 	const char* kind = ini.GetValue(section, "kind");
-	const char* value = ini.GetValue(section, "value", "0");
-	const char* value_slot = ini.GetValue(section, "value_slot", "EMPTY");
-	const char* op = ini.GetValue(section, "op", "EMPTY");
 	const float x = std::stof(ini.GetValue(section, "x", "300"));
 	const float y = std::stof(ini.GetValue(section, "y", "300"));
 	const char* desc = ini.GetValue(section, "desc", "");
+	const char* value = ini.GetValue(section, "value", "0");
+	const char* value_slot = ini.GetValue(section, "value_slot", "EMPTY");
+	const char* op = ini.GetValue(section, "op", "EMPTY");
+	const char* cmp = ini.GetValue(section, "cmp", "EMPTY");
 
 	NodeMeta* nm = new NodeMeta();
 	nm->m_name = name;
 	nm->m_kind = kind;
-	nm->m_value = value;
-	nm->m_value_slot = value_slot;
-	nm->m_op = op;
 	nm->x = x;
 	nm->y = y;
 	nm->m_desc = desc;
+	nm->m_value = value;
+	nm->m_value_slot = value_slot;
+	nm->m_op = op;
+	nm->m_cmp = cmp;
 
 	//get input/output slots
 	CSimpleIniA::TNamesDepend keys;
