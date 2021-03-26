@@ -37,6 +37,15 @@ struct TempCastData
 	char buf_desc[BUF_SIZE * 2] = "";
 	bool valid_cast = false;
 };
+
+struct TempComparisonData
+{
+	NODE_SLOT slot_in = NODE_SLOT::EMPTY;
+	NODE_CMP cmp = NODE_CMP::EMPTY;
+	char buf_desc[BUF_SIZE * 2] = "";
+	bool valid_cmp = false;
+	std::string str = "EMPTY";
+};
 }
 
 #endif //_TEMP_DATA_HPP

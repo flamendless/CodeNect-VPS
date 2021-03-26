@@ -14,12 +14,11 @@ NodeOperation::NodeOperation(
 	const v_slot_info_t&& out_slots
 )
 {
-	Nodes::op_id++;
-
+	const unsigned int id = ++Nodes::m_ids["OPERATION"];
 	Node::m_kind = m_kind;
 
 	std::string str_op = op._to_string();
-	std::string* str_id = new std::string(str_op + "_" + std::to_string(Nodes::op_id));
+	std::string* str_id = new std::string(str_op + "_" + std::to_string(id));
 	Node::m_name = str_id->c_str();
 
 	m_op = op;

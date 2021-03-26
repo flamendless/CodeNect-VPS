@@ -23,7 +23,8 @@ struct CreateNode
 	static NODE_KIND kind;
 	static Node* node_to_edit;
 	static bool can_create;
-	static std::variant<TempVarData*, TempOperationData*, TempCastData*> data;
+	static std::variant<TempVarData*, TempOperationData*,
+		TempCastData*, TempComparisonData*> data;
 
 	CreateNode() = delete;
 	static void open(NODE_KIND kind);
@@ -34,6 +35,7 @@ struct CreateNode
 	static void create_var_node(void);
 	static void create_op_node(void);
 	static void create_cast_node(void);
+	static void create_cmp_node(void);
 
 	static void draw(void);
 	static void draw_desc(void);
@@ -53,6 +55,9 @@ struct CreateNode
 
 	//NodeCast
 	static void draw_cast(void);
+
+	//NodeComparison
+	static void draw_cmp(void);
 };
 }
 

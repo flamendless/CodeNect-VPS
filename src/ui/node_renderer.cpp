@@ -32,6 +32,12 @@ void draw_node(Node* node)
 			NodeRenderer::draw_node_cast(node_cast);
 			break;
 		}
+		case NODE_KIND::COMPARISON:
+		{
+			// NodeCast* node_cast = static_cast<NodeCast*>(node);
+			// NodeRenderer::draw_node_cast(node_cast);
+			break;
+		}
 		case NODE_KIND::IF: break;
 	}
 }

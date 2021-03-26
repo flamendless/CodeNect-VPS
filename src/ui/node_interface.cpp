@@ -209,6 +209,12 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 				ImGui::CloseCurrentPopup();
 			}
 
+			if (ImGui::MenuItem("Comparison"))
+			{
+				CreateNode::open(NODE_KIND::COMPARISON);
+				ImGui::CloseCurrentPopup();
+			}
+
 			ImGui::EndMenu();
 		}
 

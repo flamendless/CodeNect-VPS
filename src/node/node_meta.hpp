@@ -10,14 +10,22 @@ struct NodeMeta
 {
 	std::string m_name;
 	std::string m_kind;
-	std::string m_value;
-	std::string m_value_slot;
-	std::string m_op;
 	std::string m_desc;
 	std::vector<std::string> m_input_slots;
 	std::vector<std::string> m_output_slots;
 	float x;
 	float y;
+
+	//these are based depending on the kind of node
+	//NodeVariable
+	std::string m_value;
+	std::string m_value_slot;
+
+	//NodeOperation
+	std::string m_op;
+
+	//NodeComparison
+	std::string m_cmp;
 
 	inline NodeMeta() {}
 };

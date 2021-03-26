@@ -2,7 +2,10 @@
 
 #include "core/utils.hpp"
 #include "node/nodes.hpp"
+#include "node/node_var.hpp"
+#include "node/node_op.hpp"
 #include "node/node_cast.hpp"
+#include "node/node_cmp.hpp"
 
 namespace CodeNect
 {
@@ -19,7 +22,8 @@ const char* CreateNode::title = ICON_FA_PLUS_SQUARE "Create Node";
 NODE_KIND CreateNode::kind = NODE_KIND::EMPTY;
 Node* CreateNode::node_to_edit;
 bool CreateNode::can_create = false;
-std::variant<TempVarData*, TempOperationData*, TempCastData*> CreateNode::data;
+std::variant<TempVarData*, TempOperationData*,
+	TempCastData*, TempComparisonData*> CreateNode::data;
 
 void CreateNode::open(NODE_KIND kind)
 {
@@ -39,6 +43,11 @@ void CreateNode::open(NODE_KIND kind)
 		case NODE_KIND::CAST:
 		{
 			CreateNode::data = new TempCastData(); break;
+			break;
+		}
+		case NODE_KIND::COMPARISON:
+		{
+			CreateNode::data = new TempComparisonData(); break;
 			break;
 		}
 		case NODE_KIND::IF: break;
@@ -113,6 +122,22 @@ void CreateNode::edit(Node* node)
 			CreateNode::data = temp;
 			break;
 		}
+		case NODE_KIND::COMPARISON:
+		{
+			NodeComparison* node_cmp = static_cast<NodeComparison*>(node);
+			TempComparisonData* temp = new TempComparisonData();
+			NODE_SLOT slot_in = NODE_SLOT::_from_string(node_cmp->m_in_slots[0].title);
+			NODE_CMP cmp = node_cmp->m_cmp;
+
+			std::strcpy(temp->buf_desc, node_cmp->m_desc);
+			temp->slot_in = slot_in;
+			temp->cmp = cmp;
+			temp->valid_cmp = true;
+
+			CreateNode::node_to_edit = node;
+			CreateNode::data = temp;
+			break;
+		}
 		case NODE_KIND::IF: break;
 	}
 
@@ -157,6 +182,7 @@ void CreateNode::draw(void)
 			case NODE_KIND::VARIABLE: CreateNode::draw_var(); break;
 			case NODE_KIND::OPERATION: CreateNode::draw_op(); break;
 			case NODE_KIND::CAST: CreateNode::draw_cast(); break;
+			case NODE_KIND::COMPARISON: CreateNode::draw_cmp(); break;
 			case NODE_KIND::IF: break;
 		}
 
@@ -178,6 +204,7 @@ void CreateNode::draw_desc(void)
 		case NODE_KIND::VARIABLE: buf = std::get<TempVarData*>(data)->buf_desc; break;
 		case NODE_KIND::OPERATION: buf = std::get<TempOperationData*>(data)->buf_desc; break;
 		case NODE_KIND::CAST: buf = std::get<TempCastData*>(data)->buf_desc; break;
+		case NODE_KIND::COMPARISON: buf = std::get<TempComparisonData*>(data)->buf_desc; break;
 		case NODE_KIND::IF: break;
 	}
 
@@ -205,6 +232,7 @@ void CreateNode::draw_buttons(void)
 				case NODE_KIND::VARIABLE: CreateNode::create_var_node(); break;
 				case NODE_KIND::OPERATION: CreateNode::create_op_node(); break;
 				case NODE_KIND::CAST: CreateNode::create_cast_node(); break;
+				case NODE_KIND::COMPARISON: CreateNode::create_cmp_node(); break;
 				case NODE_KIND::IF: break;
 			}
 
