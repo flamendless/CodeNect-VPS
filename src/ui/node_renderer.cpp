@@ -168,6 +168,13 @@ void draw_connections(Node& node)
 	{
 		if (connection.out_node != &node) continue;
 
+		ImGuiStyle& imgui_style = ImGui::GetStyle();
+
+		if (connection.is_valid)
+			ImGui::PushStyleColor(ImGuiCol_PlotLines, imgui_style.Colors[ImGuiCol_PlotLines]);
+		else
+			ImGui::PushStyleColor(ImGuiCol_PlotLines, ImVec4(1, 0, 0, 1));
+
 		//query removed connection
 		if (!ImNodes::Connection(connection.in_node, connection.in_slot,
 				connection.out_node, connection.out_slot))
@@ -178,6 +185,8 @@ void draw_connections(Node& node)
 			in_node->delete_connection(connection);
 			out_node->delete_connection(connection);
 		}
+
+		ImGui::PopStyleColor(1);
 	}
 }
 
@@ -207,7 +216,7 @@ void draw_connected_op(NodeOperation* node_op)
 	{
 		NodeVariable* node_var = v_vars[i];
 		str_var.append(node_var->m_name);
-		str_val.append(node_var->m_value.get_value_str());
+		str_val.append(node_var->m_value.get_value_str_ex());
 
 		if (i < v_vars.size() - 1)
 		{
@@ -264,9 +273,9 @@ void draw_connected_cmp(NodeComparison* node_cmp)
 		ImGui::Indent();
 		ImGui::BulletText("%s %s %s", node_var_a->m_name, node_cmp->get_cmp_op(), node_var_b->m_name);
 		ImGui::BulletText("%s %s %s",
-			node_var_a->m_value.get_value_str().c_str(),
+			node_var_a->m_value.get_value_str_ex().c_str(),
 			node_cmp->get_cmp_op(),
-			node_var_b->m_value.get_value_str().c_str());
+			node_var_b->m_value.get_value_str_ex().c_str());
 	}
 }
 }

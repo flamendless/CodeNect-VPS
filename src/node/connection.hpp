@@ -11,6 +11,10 @@ struct Connection
 	void* out_node;
 	const char* out_slot;
 
+	//this determines the data flow
+	//used in node_branch
+	bool is_valid = true;
+
 	bool operator==(const Connection& other) const;
 	bool operator!=(const Connection& other) const;
 };

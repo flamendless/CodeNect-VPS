@@ -15,6 +15,7 @@ struct NodeComparison : public Node
 
 	bool m_has_valid_connections = false;
 	std::string m_str;
+	bool current_res = false;
 
 	explicit NodeComparison(
 		NODE_CMP cmp,

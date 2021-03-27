@@ -40,6 +40,7 @@ struct NodeValue
 
 	void* get_value();
 	const std::string get_value_str(void);
+	const std::string get_value_str_ex(void);
 	const char* get_spec(void);
 };
 

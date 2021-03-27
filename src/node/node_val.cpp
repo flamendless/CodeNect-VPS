@@ -330,12 +330,27 @@ const std::string NodeValue::get_value_str(void)
 		case NODE_SLOT::INTEGER: return std::to_string(std::get<int>(data)); break;
 		case NODE_SLOT::FLOAT: return std::to_string(std::get<float>(data)); break;
 		case NODE_SLOT::DOUBLE: return std::to_string(std::get<double>(data)); break;
+		case NODE_SLOT::STRING: return std::get<std::string>(data).c_str(); break;
+	}
+}
+
+const std::string NodeValue::get_value_str_ex(void)
+{
+	switch (m_slot)
+	{
+		case NODE_SLOT::EMPTY: return "empty"; break;
+		case NODE_SLOT::BOOL: return std::get<bool>(data) ? "true" : "false"; break;
+		case NODE_SLOT::INTEGER: return std::to_string(std::get<int>(data)); break;
+		case NODE_SLOT::FLOAT: return std::to_string(std::get<float>(data)); break;
+		case NODE_SLOT::DOUBLE: return std::to_string(std::get<double>(data)); break;
 		case NODE_SLOT::STRING:
 		{
-			std::string str = "\"";
+			std::string str;
+			str.append("\"");
 			str.append(std::get<std::string>(data));
 			str.append("\"");
 			return str.c_str();
+			break;
 		}
 	}
 }

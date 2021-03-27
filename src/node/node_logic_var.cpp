@@ -24,6 +24,9 @@ void process_var(void)
 		//go through each connection
 		for (const Connection& connection : node_var->m_connections)
 		{
+			if (!connection.is_valid)
+				continue;
+
 			//check for node_var -> node_var
 			//in node is the "to"/"target" node (rhs)
 			//out node is the "from" (lhs)
