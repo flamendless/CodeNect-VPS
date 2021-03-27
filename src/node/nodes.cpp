@@ -5,6 +5,7 @@
 #include "node/node_op.hpp"
 #include "node/node_cast.hpp"
 #include "node/node_cmp.hpp"
+#include "node/node_branch.hpp"
 
 namespace CodeNect
 {
@@ -14,23 +15,14 @@ std::map<std::string, unsigned int> Nodes::m_ids
 {
 	{"OPERATION", 0},
 	{"CAST", 0},
-	{"IF", 0},
 	{"COMPARISON", 0},
+	{"BRANCH", 0},
 };
 Nodes::m_node_t Nodes::m_available_nodes
 {
-	// {
-	// 	"Test_Int", []() -> Node*
-	// 	{
-	// 		NodeValue value;
-	// 		value.set(1);
-    //
-	// 		return new NodeVariable("a", value,
-	// 			{{"INTEGER", NODE_SLOT::INTEGER}},
-	// 			{{"INTEGER", NODE_SLOT::INTEGER}}
-	// 		);
-	// 	}
-	// },
+	{
+		"Branch", []() -> Node* {return new NodeBranch();}
+	},
 };
 
 void Nodes::reset(void)
@@ -133,7 +125,15 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				Nodes::v_nodes.push_back(node_cmp);
 				break;
 			}
-			case NODE_KIND::IF: break;
+			case NODE_KIND::BRANCH:
+			{
+				NodeBranch* node_branch = new NodeBranch();
+				node_branch->m_name = nm->m_name.c_str();
+				node_branch->m_pos = ImVec2(nm->x, nm->y);
+				node_branch->m_desc = nm->m_desc.c_str();
+				Nodes::v_nodes.push_back(node_branch);
+				break;
+			}
 		}
 	}
 

@@ -1,5 +1,5 @@
-#ifndef _NODE_IF_COMPARISON
-#define _NODE_IF_COMPARISON
+#ifndef _NODE_CMP_COMPARISON
+#define _NODE_CMP_COMPARISON
 
 #include "node/node_def.hpp"
 #include "node/node.hpp"
@@ -27,4 +27,4 @@ struct NodeComparison : public Node
 };
 }
 
-#endif //_NODE_IF_COMPARISON
+#endif //_NODE_CMP_COMPARISON

@@ -6,6 +6,7 @@
 #include "node/node_op.hpp"
 #include "node/node_cast.hpp"
 #include "node/node_cmp.hpp"
+#include "node/node_branch.hpp"
 
 namespace CodeNect
 {
@@ -22,8 +23,10 @@ const char* CreateNode::title = ICON_FA_PLUS_SQUARE "Create Node";
 NODE_KIND CreateNode::kind = NODE_KIND::EMPTY;
 Node* CreateNode::node_to_edit;
 bool CreateNode::can_create = false;
-std::variant<TempVarData*, TempOperationData*,
-	TempCastData*, TempComparisonData*> CreateNode::data;
+std::variant<
+	TempVarData*, TempOperationData*,
+	TempCastData*, TempComparisonData*,
+	TempBranchData*> CreateNode::data;
 
 void CreateNode::open(NODE_KIND kind)
 {
@@ -37,20 +40,25 @@ void CreateNode::open(NODE_KIND kind)
 		}
 		case NODE_KIND::OPERATION:
 		{
-			CreateNode::data = new TempOperationData(); break;
+			CreateNode::data = new TempOperationData();
 			break;
 		}
 		case NODE_KIND::CAST:
 		{
-			CreateNode::data = new TempCastData(); break;
+			CreateNode::data = new TempCastData();
 			break;
 		}
 		case NODE_KIND::COMPARISON:
 		{
-			CreateNode::data = new TempComparisonData(); break;
+			CreateNode::data = new TempComparisonData();
 			break;
 		}
-		case NODE_KIND::IF: break;
+		case NODE_KIND::BRANCH:
+		{
+			CreateNode::data = new TempBranchData();
+			CreateNode::can_create = true;
+			break;
+		}
 	}
 
 	CreateNode::kind = kind;
@@ -139,7 +147,18 @@ void CreateNode::edit(Node* node)
 			CreateNode::data = temp;
 			break;
 		}
-		case NODE_KIND::IF: break;
+		case NODE_KIND::BRANCH:
+		{
+			NodeBranch* node_branch = static_cast<NodeBranch*>(node);
+			TempBranchData* temp = new TempBranchData();
+
+			std::strcpy(temp->buf_desc, node_branch->m_desc);
+			temp->valid_branch = true;
+
+			CreateNode::node_to_edit = node;
+			CreateNode::data = temp;
+			break;
+		}
 	}
 
 	CreateNode::kind = node->m_kind;
@@ -184,7 +203,7 @@ void CreateNode::draw(void)
 			case NODE_KIND::OPERATION: CreateNode::draw_op(); break;
 			case NODE_KIND::CAST: CreateNode::draw_cast(); break;
 			case NODE_KIND::COMPARISON: CreateNode::draw_cmp(); break;
-			case NODE_KIND::IF: break;
+			case NODE_KIND::BRANCH: break;
 		}
 
 		CreateNode::draw_desc();
@@ -206,7 +225,7 @@ void CreateNode::draw_desc(void)
 		case NODE_KIND::OPERATION: buf = std::get<TempOperationData*>(data)->buf_desc; break;
 		case NODE_KIND::CAST: buf = std::get<TempCastData*>(data)->buf_desc; break;
 		case NODE_KIND::COMPARISON: buf = std::get<TempComparisonData*>(data)->buf_desc; break;
-		case NODE_KIND::IF: break;
+		case NODE_KIND::BRANCH: buf = std::get<TempBranchData*>(data)->buf_desc; break;
 	}
 
 	ImGui::InputText("Description", buf, BUF_SIZE * 2);
@@ -234,7 +253,7 @@ void CreateNode::draw_buttons(void)
 				case NODE_KIND::OPERATION: CreateNode::create_op_node(); break;
 				case NODE_KIND::CAST: CreateNode::create_cast_node(); break;
 				case NODE_KIND::COMPARISON: CreateNode::create_cmp_node(); break;
-				case NODE_KIND::IF: break;
+				case NODE_KIND::BRANCH: CreateNode::create_branch_node(); break;
 			}
 
 			CreateNode::close();

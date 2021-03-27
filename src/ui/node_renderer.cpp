@@ -36,7 +36,25 @@ void draw_node(Node* node)
 			NodeRenderer::draw_node_cmp(node_cmp);
 			break;
 		}
-		case NODE_KIND::IF: break;
+		case NODE_KIND::BRANCH:
+		{
+			NodeBranch* node_branch = static_cast<NodeBranch*>(node);
+			NodeRenderer::draw_node_branch(node_branch);
+			break;
+		}
+	}
+}
+
+void draw_node_val(NodeValue* node_val)
+{
+	switch (node_val->m_slot)
+	{
+		case NODE_SLOT::EMPTY: ImGui::Text("Empty?! (this should be an error)"); break;
+		case NODE_SLOT::BOOL: ImGui::Text("%s", std::get<bool>(node_val->data) ? "true" : "false"); break;
+		case NODE_SLOT::INTEGER: ImGui::Text("%d", std::get<int>(node_val->data)); break;
+		case NODE_SLOT::FLOAT: ImGui::Text("%f", std::get<float>(node_val->data)); break;
+		case NODE_SLOT::DOUBLE: ImGui::Text("%.8lf", std::get<double>(node_val->data)); break;
+		case NODE_SLOT::STRING: ImGui::Text("\"%s\"", std::get<std::string>(node_val->data).c_str()); break;
 	}
 }
 
@@ -57,19 +75,6 @@ void draw_node_var(NodeVariable* node_var)
 		NodeRenderer::draw_node_val(&node_var->m_value);
 		ImGui::Text("%s", node_var->m_desc);
 		ImGui::EndTable();
-	}
-}
-
-void draw_node_val(NodeValue* node_val)
-{
-	switch (node_val->m_slot)
-	{
-		case NODE_SLOT::EMPTY: ImGui::Text("Empty?! (this should be an error)"); break;
-		case NODE_SLOT::BOOL: ImGui::Text("%s", std::get<bool>(node_val->data) ? "true" : "false"); break;
-		case NODE_SLOT::INTEGER: ImGui::Text("%d", std::get<int>(node_val->data)); break;
-		case NODE_SLOT::FLOAT: ImGui::Text("%f", std::get<float>(node_val->data)); break;
-		case NODE_SLOT::DOUBLE: ImGui::Text("%.8lf", std::get<double>(node_val->data)); break;
-		case NODE_SLOT::STRING: ImGui::Text("\"%s\"", std::get<std::string>(node_val->data).c_str()); break;
 	}
 }
 
@@ -121,6 +126,20 @@ void draw_node_cmp(NodeComparison* node_cmp)
 	}
 
 	NodeRenderer::draw_connected_cmp(node_cmp);
+}
+
+void draw_node_branch(NodeBranch* node_branch)
+{
+	if (ImGui::BeginTable("TableNode##NodeBranch", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+
+		ImGui::TableNextColumn();
+		ImGui::Text("%s", node_branch->m_desc);
+		ImGui::EndTable();
+	}
 }
 
 void draw_connections(Node& node)

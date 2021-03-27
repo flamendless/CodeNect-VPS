@@ -214,6 +214,12 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 				ImGui::CloseCurrentPopup();
 			}
 
+			if (ImGui::MenuItem("Branch"))
+			{
+				CreateNode::open(NODE_KIND::BRANCH);
+				ImGui::CloseCurrentPopup();
+			}
+
 			ImGui::EndMenu();
 		}
 

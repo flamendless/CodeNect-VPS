@@ -46,6 +46,12 @@ struct TempComparisonData
 	bool valid_cmp = false;
 	std::string str = "EMPTY";
 };
+
+struct TempBranchData
+{
+	char buf_desc[BUF_SIZE * 2] = "";
+	bool valid_branch = false;
+};
 }
 
 #endif //_TEMP_DATA_HPP
