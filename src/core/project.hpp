@@ -21,6 +21,8 @@ struct ProjectMeta
 struct Project
 {
 	static unsigned int nodes_count;
+	static unsigned int connections_count;
+
 	static bool has_open_proj;
 	static ProjectMeta meta;
 	static NewProject new_proj;

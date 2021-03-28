@@ -173,4 +173,19 @@ void Nodes::build_from_meta(const std::vector<ConnectionMeta*> &v_connection_met
 		}
 	}
 }
+
+unsigned int Nodes::count_connections(void)
+{
+	unsigned int n = 0;
+
+	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
+		it != Nodes::v_nodes.end();
+		it++)
+	{
+		Node* node = *it;
+		n += node->m_connections.size();
+	}
+
+	return n;
+}
 }

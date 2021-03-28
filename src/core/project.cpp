@@ -24,6 +24,7 @@ bool Project::has_open_proj = true;
 bool Project::has_open_proj = false;
 #endif
 unsigned int Project::nodes_count = 0;
+unsigned int Project::connections_count = 0;
 ProjectMeta Project::meta {};
 NewProject Project::new_proj;
 
@@ -113,6 +114,7 @@ void Project::save_cmd(void)
 {
 	int res = Project::save();
 	Project::nodes_count = Nodes::v_nodes.size();
+	Project::connections_count = Nodes::count_connections();
 
 	if (res == RES_FAIL)
 		Alert::open(ALERT_TYPE::ERROR, "Failed to save project");
@@ -196,7 +198,7 @@ int Project::save(void)
 				ini.SetValue(section, "cmp", cmp);
 				break;
 			}
-			case NODE_KIND::IF: break;
+			case NODE_KIND::BRANCH: break;
 		}
 
 		//save input and output slots
@@ -303,6 +305,7 @@ int Project::parse(void)
 	v_node_meta.clear();
 	v_connection_meta.clear();
 	Project::nodes_count = Nodes::v_nodes.size();
+	Project::connections_count = Nodes::count_connections();
 
 	PLOGI << "Parsed project file successfully";
 
@@ -401,7 +404,8 @@ void Project::close(void)
 
 bool Project::has_unsaved_changes(void)
 {
-	if (Project::nodes_count != Nodes::v_nodes.size())
+	if (Project::nodes_count != Nodes::v_nodes.size() ||
+		Project::connections_count != Nodes::count_connections())
 	{
 		Alert::open(ALERT_TYPE::ERROR, "There are unsaved changes. Are you sure you want to quti?");
 		Alert::has_cb = true;
