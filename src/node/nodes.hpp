@@ -29,6 +29,6 @@ struct Nodes
 	static void build_from_meta(const std::vector<ConnectionMeta*> &v_connection_meta);
 	static unsigned int count_connections(void);
 };
-};
+}
 
 #endif //_NODES_HPP
