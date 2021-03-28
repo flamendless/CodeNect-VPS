@@ -1,5 +1,6 @@
 #include "node/node_val.hpp"
 
+#include "ppk_assert.h"
 #include "imgui.h"
 #include "plog/Log.h"
 
@@ -319,6 +320,9 @@ void* NodeValue::get_value()
 		case NODE_SLOT::DOUBLE: return &std::get<double>(data); break;
 		case NODE_SLOT::STRING: return (void*)std::get<std::string>(data).c_str(); break;
 	}
+
+	PPK_ASSERT(false, "This should not be reached");
+	return nullptr;
 }
 
 const std::string NodeValue::get_value_str(void)
@@ -353,6 +357,9 @@ const std::string NodeValue::get_value_str_ex(void)
 			break;
 		}
 	}
+
+	PPK_ASSERT(false, "This should not be reached");
+	return "";
 }
 
 const char* NodeValue::get_spec(void)
@@ -366,5 +373,8 @@ const char* NodeValue::get_spec(void)
 		case NODE_SLOT::DOUBLE: return "%lf"; break;
 		case NODE_SLOT::STRING: return "%s"; break;
 	}
+
+	PPK_ASSERT(false, "This should not be reached");
+	return "";
 }
 }
