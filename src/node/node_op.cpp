@@ -15,7 +15,7 @@ NodeOperation::NodeOperation(
 	const v_slot_info_t&& out_slots
 )
 {
-	PPK_ASSERT(op == +NODE_OP::EMPTY, "Passsed NODE_OP should not be EMPTY");
+	PPK_ASSERT(op != +NODE_OP::EMPTY, "Passsed NODE_OP should not be EMPTY");
 
 	const unsigned int id = ++Nodes::m_ids["OPERATION"];
 	Node::m_kind = m_kind;

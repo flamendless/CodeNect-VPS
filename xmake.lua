@@ -2,7 +2,8 @@ target("CodeNect")
 	set_basename("CodeNect_$(mode)_$(arch)")
 	set_languages("cxx17")
 	set_kind("binary")
-	add_cxxflags("-g", "-Wall", "-Werror", "-Wformat", "-pedantic")
+	add_cxxflags("-g", "-Wformat", "-pedantic")
+	set_warnings("all", "error")
 
 	--source files
 	add_files("src/*.cpp")

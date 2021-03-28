@@ -22,7 +22,7 @@ NodeComparison::NodeComparison(
 	const v_slot_info_t&& out_slots
 )
 {
-	PPK_ASSERT(cmp == +NODE_CMP::EMPTY, "Passsed NODE_CMP should not be EMPTY");
+	PPK_ASSERT(cmp != +NODE_CMP::EMPTY, "Passsed NODE_CMP should not be EMPTY");
 
 	const unsigned int id = ++Nodes::m_ids["COMPARISON"];
 	Node::m_kind = m_kind;

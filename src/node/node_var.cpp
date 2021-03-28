@@ -12,7 +12,7 @@ NodeVariable::NodeVariable(
 	const v_slot_info_t&& out_slots
 )
 {
-	PPK_ASSERT(value.m_slot == +NODE_SLOT::EMPTY, "Passsed NodeValue's m_slot should not be EMPTY");
+	PPK_ASSERT(value.m_slot != +NODE_SLOT::EMPTY, "Passsed NodeValue's m_slot should not be EMPTY");
 
 	Node::m_kind = m_kind;
 	Node::m_name = name;
