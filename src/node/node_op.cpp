@@ -1,5 +1,6 @@
 #include "node/node_op.hpp"
 
+#include "ppk_assert.h"
 #include "IconsFontAwesome5.h"
 #include "plog/Log.h"
 #include "core/utils.hpp"
@@ -14,6 +15,8 @@ NodeOperation::NodeOperation(
 	const v_slot_info_t&& out_slots
 )
 {
+	PPK_ASSERT(op == +NODE_OP::EMPTY, "Passsed NODE_OP should not be EMPTY");
+
 	const unsigned int id = ++Nodes::m_ids["OPERATION"];
 	Node::m_kind = m_kind;
 

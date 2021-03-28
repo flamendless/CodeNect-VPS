@@ -1,5 +1,6 @@
 #include "node/node_cmp.hpp"
 
+#include "ppk_assert.h"
 #include "plog/Log.h"
 #include "node/nodes.hpp"
 
@@ -21,6 +22,8 @@ NodeComparison::NodeComparison(
 	const v_slot_info_t&& out_slots
 )
 {
+	PPK_ASSERT(cmp == +NODE_CMP::EMPTY, "Passsed NODE_CMP should not be EMPTY");
+
 	const unsigned int id = ++Nodes::m_ids["COMPARISON"];
 	Node::m_kind = m_kind;
 
