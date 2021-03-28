@@ -79,18 +79,30 @@ void process_branch(void)
 		if (res)
 		{
 			for (Connection* c_true : v_c_true)
+			{
 				c_true->is_valid = true;
+				c_true->color = COLOR_TYPE::TRUE;
+			}
 
 			for (Connection* c_false : v_c_false)
+			{
 				c_false->is_valid = false;
+				c_false->color = COLOR_TYPE::FALSE;
+			}
 		}
 		else
 		{
 			for (Connection* c_true : v_c_true)
+			{
 				c_true->is_valid = false;
+				c_true->color = COLOR_TYPE::FALSE;
+			}
 
 			for (Connection* c_false : v_c_false)
+			{
 				c_false->is_valid = true;
+				c_false->color = COLOR_TYPE::TRUE;
+			}
 		}
 	}
 }

@@ -55,6 +55,10 @@ struct Config
 		static ImVec4 color_light;
 		static ImVec4 label_color;
 		static ImVec4 title_color;
+		static ImVec4 color_connection_default;
+		static ImVec4 color_connection_true;
+		static ImVec4 color_connection_false;
+		static ImVec4 color_connection_hovered;
 	};
 
 	Config() = delete;

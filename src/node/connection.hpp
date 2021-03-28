@@ -3,6 +3,8 @@
 
 namespace CodeNect
 {
+enum COLOR_TYPE { DEFAULT = 0, TRUE, FALSE };
+
 struct Connection
 {
 	void* in_node;
@@ -13,6 +15,7 @@ struct Connection
 
 	//this determines the data flow
 	//used in node_branch
+	COLOR_TYPE color = COLOR_TYPE::DEFAULT;
 	bool is_valid = true;
 
 	bool operator==(const Connection& other) const;

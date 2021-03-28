@@ -164,16 +164,16 @@ void draw_connections(Node& node)
 		}
 	}
 
+	ImNodes::CanvasState* canvas = ImNodes::GetCurrentCanvas();
+
 	for (const Connection& connection : node.m_connections)
 	{
 		if (connection.out_node != &node) continue;
 
-		ImGuiStyle& imgui_style = ImGui::GetStyle();
-
-		if (connection.is_valid)
-			ImGui::PushStyleColor(ImGuiCol_PlotLines, imgui_style.Colors[ImGuiCol_PlotLines]);
-		else
-			ImGui::PushStyleColor(ImGuiCol_PlotLines, ImVec4(1, 0, 0, 1));
+		if (connection.color == COLOR_TYPE::FALSE)
+			canvas->Colors[ImNodes::ColConnection] = Config::NodeInterface_c::color_connection_false;
+		else if (connection.color == COLOR_TYPE::TRUE)
+			canvas->Colors[ImNodes::ColConnection] = Config::NodeInterface_c::color_connection_true;
 
 		//query removed connection
 		if (!ImNodes::Connection(connection.in_node, connection.in_slot,
@@ -186,7 +186,7 @@ void draw_connections(Node& node)
 			out_node->delete_connection(connection);
 		}
 
-		ImGui::PopStyleColor(1);
+		canvas->Colors[ImNodes::ColConnection] = Config::NodeInterface_c::color_connection_default;
 	}
 }
 

@@ -47,6 +47,10 @@ ImVec4 Config::NodeInterface_c::color_dark = ImVec4(1, 1, 0, 1);
 ImVec4 Config::NodeInterface_c::color_light = ImVec4(1, 0, 0, 1);
 ImVec4 Config::NodeInterface_c::title_color = Config::NodeInterface_c::color_dark;
 ImVec4 Config::NodeInterface_c::label_color = Config::NodeInterface_c::color_dark;
+ImVec4 Config::NodeInterface_c::color_connection_default;
+ImVec4 Config::NodeInterface_c::color_connection_true;
+ImVec4 Config::NodeInterface_c::color_connection_false;
+ImVec4 Config::NodeInterface_c::color_connection_hovered;
 
 int Config::init(void)
 {
@@ -224,11 +228,28 @@ void Config::init_node_interface(void)
 	const float tc_r = std::stof(ini.GetValue("node_interface", "tc_r", "1"));
 	const float tc_g = std::stof(ini.GetValue("node_interface", "tc_g", "1"));
 	const float tc_b = std::stof(ini.GetValue("node_interface", "tc_b", "0"));
+	const float d_r = std::stof(ini.GetValue("connection", "d_r", "0.39"));
+	const float d_g = std::stof(ini.GetValue("connection", "d_g", "0.39"));
+	const float d_b = std::stof(ini.GetValue("connection", "d_b", "0.39"));
+	const float t_r = std::stof(ini.GetValue("connection", "t_r", "0"));
+	const float t_g = std::stof(ini.GetValue("connection", "t_g", "1"));
+	const float t_b = std::stof(ini.GetValue("connection", "t_b", "0"));
+	const float f_r = std::stof(ini.GetValue("connection", "f_r", "1"));
+	const float f_g = std::stof(ini.GetValue("connection", "f_g", "0"));
+	const float f_b = std::stof(ini.GetValue("connection", "f_b", "0"));
+	const float h_r = std::stof(ini.GetValue("connection", "h_r", "1"));
+	const float h_g = std::stof(ini.GetValue("connection", "h_g", "0.43"));
+	const float h_b = std::stof(ini.GetValue("connection", "h_b", "0.35"));
 
 	Config::NodeInterface_c::pos = ImVec2(x, y);
 	Config::NodeInterface_c::item_inner_spacing = ImVec2(iis_x, iis_y);
 	Config::NodeInterface_c::label_color = ImVec4(lc_r, lc_g, lc_b, 1);
 	Config::NodeInterface_c::title_color = ImVec4(tc_r, tc_g, tc_b, 1);
+
+	Config::NodeInterface_c::color_connection_default = ImVec4(d_r, d_g, d_b, 1);
+	Config::NodeInterface_c::color_connection_true = ImVec4(t_r, t_g, t_b, 1);
+	Config::NodeInterface_c::color_connection_false = ImVec4(f_r, f_g, f_b, 0.5);
+	Config::NodeInterface_c::color_connection_hovered = ImVec4(h_r, h_g, h_b, 1);
 }
 
 void Config::update_style(StyleData& style_data)
