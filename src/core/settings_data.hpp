@@ -39,10 +39,6 @@ struct NodeInterfaceData
 	float title_color_orig[3];
 	int item_inner_spacing[2];
 	int item_inner_spacing_orig[2];
-	float connection_color_default[3];
-	float connection_color_true[3];
-	float connection_color_false[3];
-	float connection_color_hovered[3];
 };
 }
 

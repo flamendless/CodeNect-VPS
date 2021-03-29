@@ -61,19 +61,6 @@ void Settings::init(void)
 	ni_data.label_color_orig[2] = Config::NodeInterface_c::label_color.z;
 	ni_data.item_inner_spacing_orig[0] = Config::NodeInterface_c::item_inner_spacing.x;
 	ni_data.item_inner_spacing_orig[1] = Config::NodeInterface_c::item_inner_spacing.y;
-
-	ni_data.connection_color_default[0] = Config::NodeInterface_c::connection_color_default.x;
-	ni_data.connection_color_default[1] = Config::NodeInterface_c::connection_color_default.y;
-	ni_data.connection_color_default[2] = Config::NodeInterface_c::connection_color_default.z;
-	ni_data.connection_color_true[0] = Config::NodeInterface_c::connection_color_true.x;
-	ni_data.connection_color_true[1] = Config::NodeInterface_c::connection_color_true.y;
-	ni_data.connection_color_true[2] = Config::NodeInterface_c::connection_color_true.z;
-	ni_data.connection_color_false[0] = Config::NodeInterface_c::connection_color_false.x;
-	ni_data.connection_color_false[1] = Config::NodeInterface_c::connection_color_false.y;
-	ni_data.connection_color_false[2] = Config::NodeInterface_c::connection_color_false.z;
-	ni_data.connection_color_hovered[0] = Config::NodeInterface_c::connection_color_hovered.x;
-	ni_data.connection_color_hovered[1] = Config::NodeInterface_c::connection_color_hovered.y;
-	ni_data.connection_color_hovered[2] = Config::NodeInterface_c::connection_color_hovered.z;
 }
 
 void Settings::register_commands(void)
@@ -282,41 +269,6 @@ void Settings::draw_node_interface(void)
 	{
 		Config::NodeInterface_c::item_inner_spacing.x = ni_data.item_inner_spacing[0];
 		Config::NodeInterface_c::item_inner_spacing.y = ni_data.item_inner_spacing[1];
-		ni_data.changed = true;
-	}
-
-	ImGui::Separator();
-	Utils::center_text(ICON_FA_LINK " Connection", true);
-
-	if (ImGui::ColorEdit3("Default Color", ni_data.connection_color_default, ImGuiColorEditFlags_Float))
-	{
-		Config::NodeInterface_c::connection_color_default.x = ni_data.connection_color_default[0];
-		Config::NodeInterface_c::connection_color_default.y = ni_data.connection_color_default[1];
-		Config::NodeInterface_c::connection_color_default.z = ni_data.connection_color_default[2];
-		ni_data.changed = true;
-	}
-
-	if (ImGui::ColorEdit3("True Color", ni_data.connection_color_true, ImGuiColorEditFlags_Float))
-	{
-		Config::NodeInterface_c::connection_color_true.x = ni_data.connection_color_true[0];
-		Config::NodeInterface_c::connection_color_true.y = ni_data.connection_color_true[1];
-		Config::NodeInterface_c::connection_color_true.z = ni_data.connection_color_true[2];
-		ni_data.changed = true;
-	}
-
-	if (ImGui::ColorEdit3("False Color", ni_data.connection_color_false, ImGuiColorEditFlags_Float))
-	{
-		Config::NodeInterface_c::connection_color_false.x = ni_data.connection_color_false[0];
-		Config::NodeInterface_c::connection_color_false.y = ni_data.connection_color_false[1];
-		Config::NodeInterface_c::connection_color_false.z = ni_data.connection_color_false[2];
-		ni_data.changed = true;
-	}
-
-	if (ImGui::ColorEdit3("Hovered Color", ni_data.connection_color_hovered, ImGuiColorEditFlags_Float))
-	{
-		Config::NodeInterface_c::connection_color_hovered.x = ni_data.connection_color_hovered[0];
-		Config::NodeInterface_c::connection_color_hovered.y = ni_data.connection_color_hovered[1];
-		Config::NodeInterface_c::connection_color_hovered.z = ni_data.connection_color_hovered[2];
 		ni_data.changed = true;
 	}
 }
