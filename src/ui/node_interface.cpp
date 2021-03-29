@@ -116,12 +116,13 @@ void NodeInterface::draw_nodes(void)
 	{
 		Node* node = *it;
 
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, Config::NodeInterface_c::item_inner_spacing);
-		ImGui::PushStyleColor(ImGuiCol_Text, Config::NodeInterface_c::title_color);
+		//style node
+		NodeRenderer::push_node_style();
+		NodeRenderer::push_node_color(node);
 
 		if (ImNodes::Ez::BeginNode(node, node->m_kind._to_string(), &node->m_pos, &node->m_selected))
 		{
-			ImGui::PopStyleColor(1);
+			NodeRenderer::pop_node_color();
 			NodeRenderer::draw_node(node);
 			//order is important
 			ImNodes::Ez::InputSlots(node->m_in_slots.data(), node->m_in_slots.size());
@@ -130,7 +131,7 @@ void NodeInterface::draw_nodes(void)
 		}
 
 		ImNodes::Ez::EndNode();
-		ImGui::PopStyleVar(1);
+		NodeRenderer::pop_node_style();
 
 		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
 		{

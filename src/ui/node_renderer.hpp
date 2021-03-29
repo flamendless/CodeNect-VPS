@@ -23,6 +23,11 @@ void draw_node_branch(NodeBranch* node_branch);
 void draw_connections(Node& node);
 void draw_connected_op(NodeOperation* node_op);
 void draw_connected_cmp(NodeComparison* node_cmp);
+
+void push_node_style(void);
+void pop_node_style(void);
+void push_node_color(Node* node);
+void pop_node_color(void);
 }
 
 #endif //_NODE_RENDERER_HPP

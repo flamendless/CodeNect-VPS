@@ -4,6 +4,7 @@
 #include "core/config.hpp"
 #include "core/utils.hpp"
 #include "node/node_logic.hpp"
+#include "node/node_colors.hpp"
 
 namespace CodeNect::NodeRenderer
 {
@@ -165,17 +166,17 @@ void draw_connections(Node& node)
 	}
 
 	ImNodes::CanvasState* canvas = ImNodes::GetCurrentCanvas();
-	canvas->Colors[ImNodes::ColConnectionActive] = Config::NodeInterface_c::connection_color_hovered;
-	canvas->Colors[ImNodes::ColConnection] = Config::NodeInterface_c::connection_color_default;
+	canvas->Colors[ImNodes::ColConnectionActive] = NodeColors::Connection::HOVERED;
+	canvas->Colors[ImNodes::ColConnection] = NodeColors::Connection::DEFAULT;
 
 	for (const Connection& connection : node.m_connections)
 	{
 		if (connection.out_node != &node) continue;
 
 		if (connection.color == COLOR_TYPE::FALSE)
-			canvas->Colors[ImNodes::ColConnection] = Config::NodeInterface_c::connection_color_false;
+			canvas->Colors[ImNodes::ColConnection] = NodeColors::Connection::FALSE;
 		else if (connection.color == COLOR_TYPE::TRUE)
-			canvas->Colors[ImNodes::ColConnection] = Config::NodeInterface_c::connection_color_true;
+			canvas->Colors[ImNodes::ColConnection] = NodeColors::Connection::TRUE;
 
 		//query removed connection
 		if (!ImNodes::Connection(connection.in_node, connection.in_slot,
@@ -188,7 +189,7 @@ void draw_connections(Node& node)
 			out_node->delete_connection(connection);
 		}
 
-		canvas->Colors[ImNodes::ColConnection] = Config::NodeInterface_c::connection_color_default;
+		canvas->Colors[ImNodes::ColConnection] = NodeColors::Connection::DEFAULT;
 	}
 }
 
@@ -279,5 +280,28 @@ void draw_connected_cmp(NodeComparison* node_cmp)
 			node_cmp->get_cmp_op(),
 			node_var_b->m_value.get_value_str_ex().c_str());
 	}
+}
+
+void push_node_style(void)
+{
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, Config::NodeInterface_c::item_inner_spacing);
+}
+
+void pop_node_style(void)
+{
+	ImGui::PopStyleVar(1);
+}
+
+void push_node_color(Node* node)
+{
+	ImNodes::CanvasState* canvas = ImNodes::GetCurrentCanvas();
+	ImGui::PushStyleColor(ImGuiCol_Text, Config::NodeInterface_c::title_color);
+	ImVec4* node_color = &NodeColors::m_kind[node->m_kind._to_string()];
+	canvas->Colors[ImNodes::ColNodeBorder] = *node_color;
+}
+
+void pop_node_color(void)
+{
+	ImGui::PopStyleColor(1);
 }
 }
