@@ -47,10 +47,10 @@ ImVec4 Config::NodeInterface_c::color_dark = ImVec4(1, 1, 0, 1);
 ImVec4 Config::NodeInterface_c::color_light = ImVec4(1, 0, 0, 1);
 ImVec4 Config::NodeInterface_c::title_color = Config::NodeInterface_c::color_dark;
 ImVec4 Config::NodeInterface_c::label_color = Config::NodeInterface_c::color_dark;
-ImVec4 Config::NodeInterface_c::color_connection_default;
-ImVec4 Config::NodeInterface_c::color_connection_true;
-ImVec4 Config::NodeInterface_c::color_connection_false;
-ImVec4 Config::NodeInterface_c::color_connection_hovered;
+ImVec4 Config::NodeInterface_c::connection_color_default;
+ImVec4 Config::NodeInterface_c::connection_color_true;
+ImVec4 Config::NodeInterface_c::connection_color_false;
+ImVec4 Config::NodeInterface_c::connection_color_hovered;
 
 int Config::init(void)
 {
@@ -246,10 +246,10 @@ void Config::init_node_interface(void)
 	Config::NodeInterface_c::label_color = ImVec4(lc_r, lc_g, lc_b, 1);
 	Config::NodeInterface_c::title_color = ImVec4(tc_r, tc_g, tc_b, 1);
 
-	Config::NodeInterface_c::color_connection_default = ImVec4(d_r, d_g, d_b, 1);
-	Config::NodeInterface_c::color_connection_true = ImVec4(t_r, t_g, t_b, 1);
-	Config::NodeInterface_c::color_connection_false = ImVec4(f_r, f_g, f_b, 0.5);
-	Config::NodeInterface_c::color_connection_hovered = ImVec4(h_r, h_g, h_b, 1);
+	Config::NodeInterface_c::connection_color_default = ImVec4(d_r, d_g, d_b, 1);
+	Config::NodeInterface_c::connection_color_true = ImVec4(t_r, t_g, t_b, 1);
+	Config::NodeInterface_c::connection_color_false = ImVec4(f_r, f_g, f_b, 0.5);
+	Config::NodeInterface_c::connection_color_hovered = ImVec4(h_r, h_g, h_b, 1);
 }
 
 void Config::update_style(StyleData& style_data)
@@ -300,6 +300,18 @@ void Config::update_node_interface(NodeInterfaceData& ni_data)
 	float lc_b = ni_data.label_color[2];
 	int iis_x = ni_data.item_inner_spacing[0];
 	int iis_y = ni_data.item_inner_spacing[1];
+	float ccd_r = ni_data.connection_color_default[0];
+	float ccd_g = ni_data.connection_color_default[1];
+	float ccd_b = ni_data.connection_color_default[2];
+	float cct_r = ni_data.connection_color_true[0];
+	float cct_g = ni_data.connection_color_true[1];
+	float cct_b = ni_data.connection_color_true[2];
+	float ccf_r = ni_data.connection_color_false[0];
+	float ccf_g = ni_data.connection_color_false[1];
+	float ccf_b = ni_data.connection_color_false[2];
+	float cch_r = ni_data.connection_color_hovered[0];
+	float cch_g = ni_data.connection_color_hovered[1];
+	float cch_b = ni_data.connection_color_hovered[2];
 
 	std::string str_iis_x = std::to_string(iis_x);
 	std::string str_iis_y = std::to_string(iis_y);
@@ -309,6 +321,18 @@ void Config::update_node_interface(NodeInterfaceData& ni_data)
 	std::string str_lc_r = std::to_string(lc_r);
 	std::string str_lc_g = std::to_string(lc_g);
 	std::string str_lc_b = std::to_string(lc_b);
+	std::string str_ccd_r = std::to_string(ccd_r);
+	std::string str_ccd_g = std::to_string(ccd_g);
+	std::string str_ccd_b = std::to_string(ccd_b);
+	std::string str_cct_r = std::to_string(cct_r);
+	std::string str_cct_g = std::to_string(cct_g);
+	std::string str_cct_b = std::to_string(cct_b);
+	std::string str_ccf_r = std::to_string(ccf_r);
+	std::string str_ccf_g = std::to_string(ccf_g);
+	std::string str_ccf_b = std::to_string(ccf_b);
+	std::string str_cch_r = std::to_string(cch_r);
+	std::string str_cch_g = std::to_string(cch_g);
+	std::string str_cch_b = std::to_string(cch_b);
 
 	ini.SetValue("node_interface", "item_inner_spacing_x", str_iis_x.c_str());
 	ini.SetValue("node_interface", "item_inner_spacing_y", str_iis_y.c_str());
@@ -318,10 +342,34 @@ void Config::update_node_interface(NodeInterfaceData& ni_data)
 	ini.SetValue("node_interface", "lc_r", str_lc_r.c_str());
 	ini.SetValue("node_interface", "lc_g", str_lc_g.c_str());
 	ini.SetValue("node_interface", "lc_b", str_lc_b.c_str());
+	ini.SetValue("connection", "d_r", str_ccd_r.c_str());
+	ini.SetValue("connection", "d_g", str_ccd_g.c_str());
+	ini.SetValue("connection", "d_b", str_ccd_b.c_str());
+	ini.SetValue("connection", "t_r", str_cct_r.c_str());
+	ini.SetValue("connection", "t_g", str_cct_g.c_str());
+	ini.SetValue("connection", "t_b", str_cct_b.c_str());
+	ini.SetValue("connection", "f_r", str_ccf_r.c_str());
+	ini.SetValue("connection", "f_g", str_ccf_g.c_str());
+	ini.SetValue("connection", "f_b", str_ccf_b.c_str());
+	ini.SetValue("connection", "h_r", str_cch_r.c_str());
+	ini.SetValue("connection", "h_g", str_cch_g.c_str());
+	ini.SetValue("connection", "h_b", str_cch_b.c_str());
 
 	Config::NodeInterface_c::item_inner_spacing = ImVec2(iis_x, iis_y);
 	Config::NodeInterface_c::title_color = ImVec4(tc_r, tc_g, tc_b, 1);
 	Config::NodeInterface_c::label_color = ImVec4(lc_r, lc_g, lc_b, 1);
+	Config::NodeInterface_c::connection_color_default.x = ccd_r;
+	Config::NodeInterface_c::connection_color_default.y = ccd_g;
+	Config::NodeInterface_c::connection_color_default.z = ccd_b;
+	Config::NodeInterface_c::connection_color_true.x = cct_r;
+	Config::NodeInterface_c::connection_color_true.y = cct_g;
+	Config::NodeInterface_c::connection_color_true.z = cct_b;
+	Config::NodeInterface_c::connection_color_false.x = ccf_r;
+	Config::NodeInterface_c::connection_color_false.y = ccf_g;
+	Config::NodeInterface_c::connection_color_false.z = ccf_b;
+	Config::NodeInterface_c::connection_color_hovered.x = cch_r;
+	Config::NodeInterface_c::connection_color_hovered.y = cch_g;
+	Config::NodeInterface_c::connection_color_hovered.z = cch_b;
 }
 
 bool Config::save_user_config(void)

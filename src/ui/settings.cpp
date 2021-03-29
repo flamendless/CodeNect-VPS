@@ -25,6 +25,8 @@ ImGuiWindowFlags Settings::flags =
 	ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
 	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
 bool Settings::is_open = false;
+bool Settings::is_first = false;
+bool Settings::is_pos_locked = true;
 const char* Settings::title = ICON_FA_COG " SETTINGS";
 
 void Settings::init(void)
@@ -59,6 +61,19 @@ void Settings::init(void)
 	ni_data.label_color_orig[2] = Config::NodeInterface_c::label_color.z;
 	ni_data.item_inner_spacing_orig[0] = Config::NodeInterface_c::item_inner_spacing.x;
 	ni_data.item_inner_spacing_orig[1] = Config::NodeInterface_c::item_inner_spacing.y;
+
+	ni_data.connection_color_default[0] = Config::NodeInterface_c::connection_color_default.x;
+	ni_data.connection_color_default[1] = Config::NodeInterface_c::connection_color_default.y;
+	ni_data.connection_color_default[2] = Config::NodeInterface_c::connection_color_default.z;
+	ni_data.connection_color_true[0] = Config::NodeInterface_c::connection_color_true.x;
+	ni_data.connection_color_true[1] = Config::NodeInterface_c::connection_color_true.y;
+	ni_data.connection_color_true[2] = Config::NodeInterface_c::connection_color_true.z;
+	ni_data.connection_color_false[0] = Config::NodeInterface_c::connection_color_false.x;
+	ni_data.connection_color_false[1] = Config::NodeInterface_c::connection_color_false.y;
+	ni_data.connection_color_false[2] = Config::NodeInterface_c::connection_color_false.z;
+	ni_data.connection_color_hovered[0] = Config::NodeInterface_c::connection_color_hovered.x;
+	ni_data.connection_color_hovered[1] = Config::NodeInterface_c::connection_color_hovered.y;
+	ni_data.connection_color_hovered[2] = Config::NodeInterface_c::connection_color_hovered.z;
 }
 
 void Settings::register_commands(void)
@@ -73,8 +88,23 @@ void Settings::register_commands(void)
 void Settings::open(void)
 {
 	Settings::init();
+	Settings::is_first = true;
 	Settings::is_open = true;
 	PLOGD << "Opened Settings window";
+}
+
+void Settings::close(void)
+{
+	if (was_changed)
+		Settings::reset_values();
+
+	style_data.changed = false;
+	cp_data.changed = false;
+	sb_data.changed = false;
+	ni_data.changed = false;
+	was_changed = false;
+	Settings::is_open = false;
+	Settings::is_first = true;
 }
 
 void Settings::draw(void)
@@ -82,8 +112,12 @@ void Settings::draw(void)
 	if (!Settings::is_open)
 		return;
 
-	ImVec2 center_pos(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
-	ImGui::SetNextWindowPos(center_pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+	if (Settings::is_first)
+	{
+		ImVec2 center_pos(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
+		ImGui::SetNextWindowPos(center_pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+		Settings::is_first = false;
+	}
 
 	if (ImGui::Begin("Settings", &Settings::is_open, Settings::flags))
 	{
@@ -250,6 +284,41 @@ void Settings::draw_node_interface(void)
 		Config::NodeInterface_c::item_inner_spacing.y = ni_data.item_inner_spacing[1];
 		ni_data.changed = true;
 	}
+
+	ImGui::Separator();
+	Utils::center_text(ICON_FA_LINK " Connection", true);
+
+	if (ImGui::ColorEdit3("Default Color", ni_data.connection_color_default, ImGuiColorEditFlags_Float))
+	{
+		Config::NodeInterface_c::connection_color_default.x = ni_data.connection_color_default[0];
+		Config::NodeInterface_c::connection_color_default.y = ni_data.connection_color_default[1];
+		Config::NodeInterface_c::connection_color_default.z = ni_data.connection_color_default[2];
+		ni_data.changed = true;
+	}
+
+	if (ImGui::ColorEdit3("True Color", ni_data.connection_color_true, ImGuiColorEditFlags_Float))
+	{
+		Config::NodeInterface_c::connection_color_true.x = ni_data.connection_color_true[0];
+		Config::NodeInterface_c::connection_color_true.y = ni_data.connection_color_true[1];
+		Config::NodeInterface_c::connection_color_true.z = ni_data.connection_color_true[2];
+		ni_data.changed = true;
+	}
+
+	if (ImGui::ColorEdit3("False Color", ni_data.connection_color_false, ImGuiColorEditFlags_Float))
+	{
+		Config::NodeInterface_c::connection_color_false.x = ni_data.connection_color_false[0];
+		Config::NodeInterface_c::connection_color_false.y = ni_data.connection_color_false[1];
+		Config::NodeInterface_c::connection_color_false.z = ni_data.connection_color_false[2];
+		ni_data.changed = true;
+	}
+
+	if (ImGui::ColorEdit3("Hovered Color", ni_data.connection_color_hovered, ImGuiColorEditFlags_Float))
+	{
+		Config::NodeInterface_c::connection_color_hovered.x = ni_data.connection_color_hovered[0];
+		Config::NodeInterface_c::connection_color_hovered.y = ni_data.connection_color_hovered[1];
+		Config::NodeInterface_c::connection_color_hovered.z = ni_data.connection_color_hovered[2];
+		ni_data.changed = true;
+	}
 }
 
 void Settings::draw_buttons(void)
@@ -306,17 +375,22 @@ void Settings::draw_buttons(void)
 	ImGui::SameLine();
 
 	if (ImGui::Button(ICON_FA_TIMES " Close"))
-	{
-		if (was_changed)
-			Settings::reset_values();
+		Settings::close();
 
-		style_data.changed = false;
-		cp_data.changed = false;
-		sb_data.changed = false;
-		ni_data.changed = false;
-		was_changed = false;
-		Settings::is_open = false;
+	ImGui::SameLine();
+
+	const char* icon = Settings::is_pos_locked ? ICON_FA_LOCK : ICON_FA_LOCK_OPEN;
+
+	if (ImGui::Checkbox(icon, &Settings::is_pos_locked))
+	{
+		if (Settings::is_pos_locked)
+			Settings::flags |= ImGuiWindowFlags_NoMove;
+		else
+			Settings::flags &= ~ImGuiWindowFlags_NoMove;
 	}
+
+	if (ImGui::IsItemHovered())
+		ImGui::SetTooltip("Lock/Unlock the position of this window");
 }
 
 void Settings::reset_values(void)

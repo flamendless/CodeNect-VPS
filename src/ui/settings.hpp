@@ -9,12 +9,15 @@ struct Settings
 {
 	static ImGuiWindowFlags flags;
 	static bool is_open;
+	static bool is_first;
+	static bool is_pos_locked;
 	static const char* title;
 
 	Settings() = delete;
 	static void init(void);
 	static void register_commands(void);
 	static void open(void);
+	static void close(void);
 	static void reset_values(void);
 	static void draw(void);
 	static void draw_buttons(void);

@@ -165,15 +165,17 @@ void draw_connections(Node& node)
 	}
 
 	ImNodes::CanvasState* canvas = ImNodes::GetCurrentCanvas();
+	canvas->Colors[ImNodes::ColConnectionActive] = Config::NodeInterface_c::connection_color_hovered;
+	canvas->Colors[ImNodes::ColConnection] = Config::NodeInterface_c::connection_color_default;
 
 	for (const Connection& connection : node.m_connections)
 	{
 		if (connection.out_node != &node) continue;
 
 		if (connection.color == COLOR_TYPE::FALSE)
-			canvas->Colors[ImNodes::ColConnection] = Config::NodeInterface_c::color_connection_false;
+			canvas->Colors[ImNodes::ColConnection] = Config::NodeInterface_c::connection_color_false;
 		else if (connection.color == COLOR_TYPE::TRUE)
-			canvas->Colors[ImNodes::ColConnection] = Config::NodeInterface_c::color_connection_true;
+			canvas->Colors[ImNodes::ColConnection] = Config::NodeInterface_c::connection_color_true;
 
 		//query removed connection
 		if (!ImNodes::Connection(connection.in_node, connection.in_slot,
@@ -186,7 +188,7 @@ void draw_connections(Node& node)
 			out_node->delete_connection(connection);
 		}
 
-		canvas->Colors[ImNodes::ColConnection] = Config::NodeInterface_c::color_connection_default;
+		canvas->Colors[ImNodes::ColConnection] = Config::NodeInterface_c::connection_color_default;
 	}
 }
 
