@@ -22,6 +22,7 @@ struct Nodes
 
 	Nodes() = delete;
 	static void reset(void);
+	static const char* get_id(const char* id);
 	static void delete_node(std::vector<Node*>::iterator& it);
 	static Node* find_by_name(const char* name);
 	static void build_slots(NodeMeta& meta, v_slot_info_t& in, v_slot_info_t& out);

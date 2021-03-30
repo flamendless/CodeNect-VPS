@@ -7,13 +7,8 @@ namespace CodeNect
 {
 NodeBranch::NodeBranch()
 {
-	const unsigned int id = ++Nodes::m_ids["BRANCH"];
 	Node::m_kind = m_kind;
-
-	std::string str_branch = m_kind._to_string();
-	std::string* str_id = new std::string(str_branch + "_" + std::to_string(id));
-	Node::m_name = str_id->c_str();
-
+	Node::m_name = Nodes::get_id(m_kind._to_string());
 	NODE_SLOT slot_in = NODE_SLOT::BOOL;
 	NODE_SLOT b_true = NODE_SLOT::BOOL;
 	NODE_SLOT b_false = NODE_SLOT::BOOL;

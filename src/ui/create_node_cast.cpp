@@ -5,15 +5,14 @@
 
 namespace CodeNect
 {
-void CreateNode::create_cast_node(void)
+void CreateNode::create_node_cast(void)
 {
+	TempCastData* cast = std::get<TempCastData*>(data);
+
 	if (CreateNode::is_edit_mode)
 	{
-		TempCastData* cast = std::get<TempCastData*>(data);
 		NodeCast* node_cast = static_cast<NodeCast*>(CreateNode::node_to_edit);
-
 		node_cast->m_desc = cast->buf_desc;
-
 		PLOGD << "Edited NodeCast: " << node_cast->m_name;
 	}
 	else
@@ -21,14 +20,11 @@ void CreateNode::create_cast_node(void)
 		v_slot_info_t&& in = {};
 		v_slot_info_t&& out = {};
 
-		TempCastData* cast = std::get<TempCastData*>(data);
-
 		in.push_back({cast->slot_in._to_string(), cast->slot_in});
 		out.push_back({cast->slot_out._to_string(), cast->slot_out});
 
 		NodeCast* node = new NodeCast(std::move(in), std::move(out));
 		node->m_desc = cast->buf_desc;
-
 		Nodes::v_nodes.push_back(node);
 		ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 	}

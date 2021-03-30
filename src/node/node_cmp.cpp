@@ -24,13 +24,8 @@ NodeComparison::NodeComparison(
 {
 	PPK_ASSERT(cmp != +NODE_CMP::EMPTY, "Passsed NODE_CMP should not be EMPTY");
 
-	const unsigned int id = ++Nodes::m_ids["COMPARISON"];
 	Node::m_kind = m_kind;
-
-	std::string str_cmp = m_kind._to_string();
-	std::string* str_id = new std::string(str_cmp + "_" + std::to_string(id));
-	Node::m_name = str_id->c_str();
-
+	Node::m_name = Nodes::get_id(m_kind._to_string());
 	m_cmp = cmp;
 	m_in_slots = in_slots;
 	m_out_slots = out_slots;

@@ -17,13 +17,8 @@ NodeOperation::NodeOperation(
 {
 	PPK_ASSERT(op != +NODE_OP::EMPTY, "Passsed NODE_OP should not be EMPTY");
 
-	const unsigned int id = ++Nodes::m_ids["OPERATION"];
 	Node::m_kind = m_kind;
-
-	std::string str_op = op._to_string();
-	std::string* str_id = new std::string(str_op + "_" + std::to_string(id));
-	Node::m_name = str_id->c_str();
-
+	Node::m_name = Nodes::get_id(op._to_string());
 	m_op = op;
 	m_in_slots = in_slots;
 	m_out_slots = out_slots;

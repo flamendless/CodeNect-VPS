@@ -5,25 +5,22 @@
 
 namespace CodeNect
 {
-void CreateNode::create_cmp_node(void)
+void CreateNode::create_node_cmp(void)
 {
+	TempComparisonData* tmp = std::get<TempComparisonData*>(data);
+
 	if (CreateNode::is_edit_mode)
 	{
-		TempComparisonData* tmp = std::get<TempComparisonData*>(data);
 		NodeComparison* node_cmp = static_cast<NodeComparison*>(CreateNode::node_to_edit);
-
 		node_cmp->m_cmp = tmp->cmp;
 		node_cmp->m_str = tmp->str;
 		node_cmp->m_desc = tmp->buf_desc;
-
 		PLOGD << "Edited NodeComparison: " << node_cmp->m_name;
 	}
 	else
 	{
 		v_slot_info_t&& in = {};
 		v_slot_info_t&& out = {};
-
-		TempComparisonData* tmp = std::get<TempComparisonData*>(data);
 		NODE_SLOT slot_out = NODE_SLOT::BOOL;
 
 		in.push_back({tmp->slot_in._to_string(), tmp->slot_in});
@@ -32,7 +29,6 @@ void CreateNode::create_cmp_node(void)
 		NodeComparison* node = new NodeComparison(tmp->cmp, std::move(in), std::move(out));
 		node->m_str = tmp->str;
 		node->m_desc = tmp->buf_desc;
-
 		Nodes::v_nodes.push_back(node);
 		ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 	}

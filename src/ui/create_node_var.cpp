@@ -9,17 +9,16 @@
 
 namespace CodeNect
 {
-void CreateNode::create_var_node(void)
+void CreateNode::create_node_var(void)
 {
+	TempVarData* var = std::get<TempVarData*>(data);
+
 	if (CreateNode::is_edit_mode)
 	{
-		TempVarData* var = std::get<TempVarData*>(data);
 		NodeVariable* node_var = static_cast<NodeVariable*>(CreateNode::node_to_edit);
-
 		node_var->m_name = var->buf_name;
 		node_var->m_desc = var->buf_desc;
 		node_var->m_value_orig.copy(var->value);
-
 		PLOGD << "Edited NodeVariable: " << node_var->m_name;
 	}
 	else
@@ -27,14 +26,11 @@ void CreateNode::create_var_node(void)
 		v_slot_info_t&& in = {};
 		v_slot_info_t&& out = {};
 
-		TempVarData* var = std::get<TempVarData*>(data);
-
 		in.push_back({var->slot._to_string(), var->slot});
 		out.push_back({var->slot._to_string(), var->slot});
 
 		NodeVariable* node = new NodeVariable(var->buf_name, var->value, std::move(in), std::move(out));
 		node->m_desc = var->buf_desc;
-
 		Nodes::v_nodes.push_back(node);
 		ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 	}

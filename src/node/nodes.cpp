@@ -6,6 +6,7 @@
 #include "node/node_cast.hpp"
 #include "node/node_cmp.hpp"
 #include "node/node_branch.hpp"
+#include "node/node_print.hpp"
 
 namespace CodeNect
 {
@@ -17,6 +18,7 @@ std::map<std::string, unsigned int> Nodes::m_ids
 	{"CAST", 0},
 	{"COMPARISON", 0},
 	{"BRANCH", 0},
+	{"PRINT", 0},
 };
 Nodes::m_node_t Nodes::m_available_nodes
 {
@@ -24,6 +26,14 @@ Nodes::m_node_t Nodes::m_available_nodes
 		"Branch", []() -> Node* {return new NodeBranch();}
 	},
 };
+
+const char* Nodes::get_id(const char* id)
+{
+	unsigned int uid = ++Nodes::m_ids[id];
+	std::string* str_id = new std::string(std::string(id) + "_" + std::to_string(uid));
+
+	return str_id->c_str();
+}
 
 void Nodes::reset(void)
 {
@@ -132,6 +142,10 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				node_branch->m_pos = ImVec2(nm->x, nm->y);
 				node_branch->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_branch);
+				break;
+			}
+			case NODE_KIND::PRINT:
+			{
 				break;
 			}
 		}

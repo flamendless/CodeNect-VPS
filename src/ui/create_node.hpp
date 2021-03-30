@@ -26,7 +26,7 @@ struct CreateNode
 	static std::variant<
 			TempVarData*, TempOperationData*,
 			TempCastData*, TempComparisonData*,
-			TempBranchData*
+			TempBranchData*, TempPrintData*
 		>data;
 
 	CreateNode() = delete;
@@ -35,11 +35,12 @@ struct CreateNode
 	static void close(void);
 
 	//creation
-	static void create_var_node(void);
-	static void create_op_node(void);
-	static void create_cast_node(void);
-	static void create_cmp_node(void);
-	static void create_branch_node(void);
+	static void create_node_var(void);
+	static void create_node_op(void);
+	static void create_node_cast(void);
+	static void create_node_cmp(void);
+	static void create_node_branch(void);
+	static void create_node_print(void);
 
 	static void draw(void);
 	static void draw_desc(void);
@@ -62,6 +63,9 @@ struct CreateNode
 
 	//NodeComparison
 	static void draw_cmp(void);
+
+	//NodePrint
+	static void draw_print(void);
 };
 }
 
