@@ -14,7 +14,7 @@ void CreateNode::create_node_op(void)
 	if (CreateNode::is_edit_mode)
 	{
 		NodeOperation* node_op = static_cast<NodeOperation*>(CreateNode::node_to_edit);
-		node_op->m_desc = op->buf_desc;
+		node_op->m_desc = CreateNode::buf_desc;
 		PLOGD << "Edited NodeOperation: " << node_op->m_name;
 	}
 	else
@@ -26,7 +26,7 @@ void CreateNode::create_node_op(void)
 		out.push_back({op->slot._to_string(), op->slot});
 
 		NodeOperation* node = new NodeOperation(op->op, std::move(in), std::move(out));
-		node->m_desc = op->buf_desc;
+		node->set_desc(CreateNode::buf_desc);
 		Nodes::v_nodes.push_back(node);
 		ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 	}

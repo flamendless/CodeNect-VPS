@@ -7,7 +7,7 @@
 #include "node/node_cast.hpp"
 #include "node/node_cmp.hpp"
 #include "node/node_branch.hpp"
-#include "node/node_print.hpp"
+#include "node/node_action.hpp"
 
 namespace CodeNect
 {
@@ -29,6 +29,7 @@ std::variant<
 		TempCastData*, TempComparisonData*,
 		TempBranchData*, TempPrintData*
 	>CreateNode::data;
+char CreateNode::buf_desc[BUF_SIZE * 2] = "";
 
 void CreateNode::open(NODE_KIND kind)
 {
@@ -60,16 +61,28 @@ void CreateNode::open(NODE_KIND kind)
 			CreateNode::data = new TempBranchData();
 			break;
 		}
-		case NODE_KIND::PRINT:
+		case NODE_KIND::ACTION: break;
+	}
+
+	CreateNode::buf_desc[0] = '\0';
+	CreateNode::kind = kind;
+	CreateNode::is_open = true;
+	CreateNode::is_first = true;
+}
+
+void CreateNode::open(NODE_ACTION action)
+{
+	switch (action)
+	{
+		case NODE_ACTION::EMPTY: break;
+		case NODE_ACTION::PRINT:
 		{
 			CreateNode::data = new TempPrintData();
 			break;
 		}
 	}
 
-	CreateNode::kind = kind;
-	CreateNode::is_open = true;
-	CreateNode::is_first = true;
+	CreateNode::open(NODE_KIND::ACTION);
 }
 
 void CreateNode::edit(Node* node)
@@ -85,7 +98,6 @@ void CreateNode::edit(Node* node)
 			TempVarData* temp = new TempVarData();
 
 			std::strcpy(temp->buf_name, node_var->m_name);
-			std::strcpy(temp->buf_desc, node_var->m_desc);
 			temp->slot = slot;
 			temp->value.copy(*val);
 			temp->valid_value = true;
@@ -111,7 +123,6 @@ void CreateNode::edit(Node* node)
 			TempOperationData* temp = new TempOperationData();
 			NODE_SLOT slot = NODE_SLOT::_from_string(node_op->m_out_slots[0].title);
 
-			std::strcpy(temp->buf_desc, node_op->m_desc);
 			temp->slot = slot;
 			temp->op = node_op->m_op;
 			temp->valid_op = true;
@@ -127,7 +138,6 @@ void CreateNode::edit(Node* node)
 			NODE_SLOT slot_in = NODE_SLOT::_from_string(node_cast->m_in_slots[0].title);
 			NODE_SLOT slot_out = NODE_SLOT::_from_string(node_cast->m_out_slots[0].title);
 
-			std::strcpy(temp->buf_desc, node_cast->m_desc);
 			temp->slot_in = slot_in;
 			temp->slot_out = slot_out;
 			temp->valid_cast = true;
@@ -143,7 +153,6 @@ void CreateNode::edit(Node* node)
 			NODE_SLOT slot_in = NODE_SLOT::_from_string(node_cmp->m_in_slots[0].title);
 			NODE_CMP cmp = node_cmp->m_cmp;
 
-			std::strcpy(temp->buf_desc, node_cmp->m_desc);
 			temp->slot_in = slot_in;
 			temp->str = NodeComparison::m_cmp_str[cmp._to_string()];
 			temp->cmp = cmp;
@@ -158,27 +167,36 @@ void CreateNode::edit(Node* node)
 			NodeBranch* node_branch = static_cast<NodeBranch*>(node);
 			TempBranchData* temp = new TempBranchData();
 
-			std::strcpy(temp->buf_desc, node_branch->m_desc);
 			temp->valid_branch = true;
 
 			CreateNode::node_to_edit = node;
 			CreateNode::data = temp;
 			break;
 		}
-		case NODE_KIND::PRINT:
+		case NODE_KIND::ACTION:
 		{
-			NodePrint* node_print = static_cast<NodePrint*>(node);
-			TempPrintData* temp = new TempPrintData();
+			NodeAction* node_action = static_cast<NodeAction*>(node);
 
-			std::strcpy(temp->buf_desc, node_print->m_desc);
-			temp->valid_print = true;
+			switch (node_action->m_action)
+			{
+				case NODE_ACTION::EMPTY: break;
+				case NODE_ACTION::PRINT:
+				{
+					TempPrintData* temp = new TempPrintData();
 
-			CreateNode::node_to_edit = node;
-			CreateNode::data = temp;
+					temp->valid_print = true;
+
+					CreateNode::node_to_edit = node;
+					CreateNode::data = temp;
+					break;
+				}
+			}
+
 			break;
 		}
 	}
 
+	std::strcpy(CreateNode::buf_desc, node->m_desc);
 	CreateNode::kind = node->m_kind;
 	CreateNode::is_open = true;
 	CreateNode::is_edit_mode = true;
@@ -222,7 +240,7 @@ void CreateNode::draw(void)
 			case NODE_KIND::CAST: CreateNode::draw_cast(); break;
 			case NODE_KIND::COMPARISON: CreateNode::draw_cmp(); break;
 			case NODE_KIND::BRANCH: break;
-			case NODE_KIND::PRINT: CreateNode::draw_print(); break;
+			case NODE_KIND::ACTION: break;
 		}
 
 		CreateNode::draw_desc();
@@ -235,20 +253,7 @@ void CreateNode::draw(void)
 
 void CreateNode::draw_desc(void)
 {
-	char* buf = nullptr;
-
-	switch (CreateNode::kind)
-	{
-		case NODE_KIND::EMPTY: break;
-		case NODE_KIND::VARIABLE: buf = std::get<TempVarData*>(data)->buf_desc; break;
-		case NODE_KIND::OPERATION: buf = std::get<TempOperationData*>(data)->buf_desc; break;
-		case NODE_KIND::CAST: buf = std::get<TempCastData*>(data)->buf_desc; break;
-		case NODE_KIND::COMPARISON: buf = std::get<TempComparisonData*>(data)->buf_desc; break;
-		case NODE_KIND::BRANCH: buf = std::get<TempBranchData*>(data)->buf_desc; break;
-		case NODE_KIND::PRINT: buf = std::get<TempPrintData*>(data)->buf_desc; break;
-	}
-
-	ImGui::InputText("Description", buf, BUF_SIZE * 2);
+	ImGui::InputText("Description", CreateNode::buf_desc, IM_ARRAYSIZE(CreateNode::buf_desc));
 	Utils::help_marker("This will serve as comments", true);
 }
 
@@ -274,7 +279,7 @@ void CreateNode::draw_buttons(void)
 				case NODE_KIND::CAST: CreateNode::create_node_cast(); break;
 				case NODE_KIND::COMPARISON: CreateNode::create_node_cmp(); break;
 				case NODE_KIND::BRANCH: CreateNode::create_node_branch(); break;
-				case NODE_KIND::PRINT: CreateNode::create_node_print(); break;
+				case NODE_KIND::ACTION: break;
 			}
 
 			CreateNode::close();

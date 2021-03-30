@@ -15,7 +15,6 @@ struct TempVarData
 	bool valid_value = false;
 	int res_name = RES_VARNAME_INVALID;
 	NodeValue value;
-	char buf_desc[BUF_SIZE * 2] = "";
 
 	int temp_int = 0;
 	float temp_float = 0;
@@ -26,7 +25,6 @@ struct TempOperationData
 {
 	NODE_OP op = NODE_OP::EMPTY;
 	NODE_SLOT slot = NODE_SLOT::EMPTY;
-	char buf_desc[BUF_SIZE * 2] = "";
 	bool valid_op = false;
 };
 
@@ -34,7 +32,6 @@ struct TempCastData
 {
 	NODE_SLOT slot_in = NODE_SLOT::EMPTY;
 	NODE_SLOT slot_out = NODE_SLOT::EMPTY;
-	char buf_desc[BUF_SIZE * 2] = "";
 	bool valid_cast = false;
 };
 
@@ -42,21 +39,18 @@ struct TempComparisonData
 {
 	NODE_SLOT slot_in = NODE_SLOT::EMPTY;
 	NODE_CMP cmp = NODE_CMP::EMPTY;
-	char buf_desc[BUF_SIZE * 2] = "";
 	bool valid_cmp = false;
 	std::string str = "EMPTY";
 };
 
 struct TempBranchData
 {
-	char buf_desc[BUF_SIZE * 2] = "";
 	bool valid_branch = false;
 };
 
 struct TempPrintData
 {
 	char buf_str[BUF_SIZE * 2] = "";
-	char buf_desc[BUF_SIZE * 2] = "";
 	bool valid_print = false;
 };
 }

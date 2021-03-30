@@ -12,7 +12,7 @@ void CreateNode::create_node_cast(void)
 	if (CreateNode::is_edit_mode)
 	{
 		NodeCast* node_cast = static_cast<NodeCast*>(CreateNode::node_to_edit);
-		node_cast->m_desc = cast->buf_desc;
+		node_cast->m_desc = CreateNode::buf_desc;
 		PLOGD << "Edited NodeCast: " << node_cast->m_name;
 	}
 	else
@@ -24,7 +24,7 @@ void CreateNode::create_node_cast(void)
 		out.push_back({cast->slot_out._to_string(), cast->slot_out});
 
 		NodeCast* node = new NodeCast(std::move(in), std::move(out));
-		node->m_desc = cast->buf_desc;
+		node->set_desc(CreateNode::buf_desc);
 		Nodes::v_nodes.push_back(node);
 		ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 	}

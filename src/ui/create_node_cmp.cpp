@@ -14,7 +14,7 @@ void CreateNode::create_node_cmp(void)
 		NodeComparison* node_cmp = static_cast<NodeComparison*>(CreateNode::node_to_edit);
 		node_cmp->m_cmp = tmp->cmp;
 		node_cmp->m_str = tmp->str;
-		node_cmp->m_desc = tmp->buf_desc;
+		node_cmp->m_desc = CreateNode::buf_desc;
 		PLOGD << "Edited NodeComparison: " << node_cmp->m_name;
 	}
 	else
@@ -28,7 +28,7 @@ void CreateNode::create_node_cmp(void)
 
 		NodeComparison* node = new NodeComparison(tmp->cmp, std::move(in), std::move(out));
 		node->m_str = tmp->str;
-		node->m_desc = tmp->buf_desc;
+		node->set_desc(CreateNode::buf_desc);
 		Nodes::v_nodes.push_back(node);
 		ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 	}

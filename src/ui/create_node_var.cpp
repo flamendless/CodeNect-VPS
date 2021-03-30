@@ -17,7 +17,7 @@ void CreateNode::create_node_var(void)
 	{
 		NodeVariable* node_var = static_cast<NodeVariable*>(CreateNode::node_to_edit);
 		node_var->m_name = var->buf_name;
-		node_var->m_desc = var->buf_desc;
+		node_var->m_desc = CreateNode::buf_desc;
 		node_var->m_value_orig.copy(var->value);
 		PLOGD << "Edited NodeVariable: " << node_var->m_name;
 	}
@@ -30,7 +30,7 @@ void CreateNode::create_node_var(void)
 		out.push_back({var->slot._to_string(), var->slot});
 
 		NodeVariable* node = new NodeVariable(var->buf_name, var->value, std::move(in), std::move(out));
-		node->m_desc = var->buf_desc;
+		node->set_desc(CreateNode::buf_desc);
 		Nodes::v_nodes.push_back(node);
 		ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 	}

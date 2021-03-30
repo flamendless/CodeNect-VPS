@@ -2,6 +2,12 @@
 
 namespace CodeNect
 {
+void Node::set_desc(char* desc)
+{
+	std::string* str = new std::string(desc);
+	m_desc = str->c_str();
+}
+
 void Node::new_connection(const Connection& new_connection)
 {
 	m_connections.push_back(new_connection);
