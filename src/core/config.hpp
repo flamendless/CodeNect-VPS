@@ -57,6 +57,12 @@ struct Config
 		static ImVec4 title_color;
 	};
 
+	struct Inspector_c
+	{
+		static ImVec2 padding;
+		static ImVec2 size;
+	};
+
 	Config() = delete;
 	static int init(void);
 	static bool load_user_config(void);
@@ -66,6 +72,7 @@ struct Config
 	static void init_sidebar(void);
 	static void init_command_palette(void);
 	static void init_node_interface(void);
+	static void init_inspector(void);
 	static void update_style(StyleData& style_data);
 	static void update_command_palette(CommandPaletteData& cp_data);
 	static void update_sidebar(SidebarData& sb_data);
@@ -76,6 +83,7 @@ struct Config
 	typedef Config::Sidebar_c Sidebar_c;
 	typedef Config::CommandPalette_c CommandPalette_c;
 	typedef Config::NodeInterface_c NodeInterface_c;
+	typedef Config::Inspector_c Inspector_c;
 };
 }
 

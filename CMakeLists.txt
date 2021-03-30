@@ -32,8 +32,8 @@ add_executable(CodeNect
 	src/node/node_logic.cpp
 	src/node/node_logic_op.cpp
 	src/node/node_logic_var.cpp
+	src/node/node_action.cpp
 	src/node/node_op.cpp
-	src/node/node_print.cpp
 	src/node/node_renderer.cpp
 	src/node/nodes.cpp
 	src/node/node_val.cpp
@@ -49,15 +49,16 @@ add_executable(CodeNect
 	src/ui/create_node_cmp.cpp
 	src/ui/create_node.cpp
 	src/ui/create_node_op.cpp
-	src/ui/create_node_print.cpp
 	src/ui/create_node_var.cpp
 	src/ui/help.cpp
+	src/ui/inspector.cpp
 	src/ui/new_project.cpp
 	src/ui/node_interface.cpp
 	src/ui/settings.cpp
 	src/ui/sidebar.cpp
 	src/ui/sidebar_handler.cpp
 	src/ui/sidebar_indicator.cpp
+
 	# dearimgui
 	includes/imgui/imgui.cpp
 	includes/imgui/imgui_demo.cpp

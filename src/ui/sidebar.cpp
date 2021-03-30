@@ -8,6 +8,7 @@
 #include "core/config.hpp"
 #include "ui/button.hpp"
 #include "popups/popup.hpp"
+#include "ui/inspector.hpp"
 #include "ui/settings.hpp"
 #include "ui/about.hpp"
 #include "ui/help.hpp"
@@ -16,6 +17,7 @@ namespace CodeNect
 {
 Button* btn_project;
 Button* btn_run;
+Button* btn_inspector;
 Button* btn_settings;
 Button* btn_about;
 Button* btn_help;
@@ -29,6 +31,7 @@ int Sidebar::init(void)
 
 	btn_project = m_ui_buttons["project"];
 	btn_run = m_ui_buttons["run"];
+	btn_inspector = m_ui_buttons["inspector"];
 	btn_settings = m_ui_buttons["settings"];
 	btn_about = m_ui_buttons["about"];
 	btn_help = m_ui_buttons["help"];
@@ -134,24 +137,38 @@ void Sidebar::manage_popups(void)
 		popup_run.m_is_open = false;
 	}
 
-	if (Settings::is_open)
+	if (Inspector::is_open)
 	{
 		btn_project->m_hoverable = false;
 		btn_run->m_hoverable = false;
+		btn_inspector->m_hoverable = true;
+		btn_settings->m_hoverable = false;
+		btn_about->m_hoverable = false;
+		btn_help->m_hoverable = false;
+	}
+	else if (Settings::is_open)
+	{
+		btn_project->m_hoverable = false;
+		btn_run->m_hoverable = false;
+		btn_inspector->m_hoverable = false;
 		btn_settings->m_hoverable = true;
 		btn_about->m_hoverable = false;
+		btn_help->m_hoverable = false;
 	}
 	else if (About::is_open)
 	{
 		btn_project->m_hoverable = false;
 		btn_run->m_hoverable = false;
+		btn_inspector->m_hoverable = false;
 		btn_settings->m_hoverable = false;
 		btn_about->m_hoverable = true;
+		btn_help->m_hoverable = false;
 	}
 	else if (Help::is_open)
 	{
 		btn_project->m_hoverable = false;
 		btn_run->m_hoverable = false;
+		btn_inspector->m_hoverable = false;
 		btn_settings->m_hoverable = false;
 		btn_about->m_hoverable = false;
 		btn_help->m_hoverable = true;
@@ -181,6 +198,7 @@ void Sidebar::draw(void)
 
 	m_has_opened = btn_project->m_is_open ||
 		btn_run->m_is_open ||
+		btn_inspector->m_is_open ||
 		btn_settings->m_is_open ||
 		btn_about->m_is_open ||
 		btn_help->m_is_open;
@@ -199,6 +217,10 @@ void Sidebar::draw_sidebar(void)
 
 		popup_run.m_pos = ImGui::GetCursorPos();
 		btn_run->draw();
+
+		btn_inspector->draw();
+		if (!m_has_opened && btn_inspector->m_is_clicked)
+			Inspector::is_open = true;
 
 		static const int btn_after = 3;
 		const int isy = CodeNect::Config::Sidebar_c::item_spacing.y;

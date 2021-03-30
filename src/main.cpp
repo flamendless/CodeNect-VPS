@@ -13,6 +13,7 @@
 #include "ui/settings.hpp"
 #include "ui/about.hpp"
 #include "ui/help.hpp"
+#include "ui/inspector.hpp"
 
 int main(int argv, char** args)
 {
@@ -34,6 +35,10 @@ int main(int argv, char** args)
 	CodeNect::Settings::register_commands();
 	CodeNect::About::register_commands();
 	CodeNect::Help::register_commands();
+
+	//Inspector
+	if (CodeNect::Inspector::init() != RES_SUCCESS) return -1;
+	CodeNect::Inspector::register_commands();
 
 	//Sidebar
 	CodeNect::Sidebar sidebar;
@@ -57,7 +62,7 @@ int main(int argv, char** args)
 
 	//test
 #ifdef DEBUG_MODE
-	CodeNect::Project::open("test.cn");
+	CodeNect::Project::open("test_branch.cn");
 #endif
 
 	PLOGI << "Initialization is complete";
@@ -84,6 +89,8 @@ int main(int argv, char** args)
 		CodeNect::Project::draw();
 		CodeNect::CommandPalette::draw();
 		CodeNect::Alert::draw();
+
+		CodeNect::Inspector::draw();
 
 		app.render_end();
 	}
