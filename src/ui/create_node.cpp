@@ -7,6 +7,7 @@
 #include "node/node_cast.hpp"
 #include "node/node_cmp.hpp"
 #include "node/node_branch.hpp"
+#include "node/node_print.hpp"
 
 namespace CodeNect
 {
@@ -24,9 +25,10 @@ NODE_KIND CreateNode::kind = NODE_KIND::EMPTY;
 Node* CreateNode::node_to_edit;
 bool CreateNode::can_create = false;
 std::variant<
-	TempVarData*, TempOperationData*,
-	TempCastData*, TempComparisonData*,
-	TempBranchData*> CreateNode::data;
+		TempVarData*, TempOperationData*,
+		TempCastData*, TempComparisonData*,
+		TempBranchData*, TempPrintData*
+	>CreateNode::data;
 
 void CreateNode::open(NODE_KIND kind)
 {
@@ -56,7 +58,11 @@ void CreateNode::open(NODE_KIND kind)
 		case NODE_KIND::BRANCH:
 		{
 			CreateNode::data = new TempBranchData();
-			CreateNode::can_create = true;
+			break;
+		}
+		case NODE_KIND::PRINT:
+		{
+			CreateNode::data = new TempPrintData();
 			break;
 		}
 	}
@@ -159,6 +165,18 @@ void CreateNode::edit(Node* node)
 			CreateNode::data = temp;
 			break;
 		}
+		case NODE_KIND::PRINT:
+		{
+			NodePrint* node_print = static_cast<NodePrint*>(node);
+			TempPrintData* temp = new TempPrintData();
+
+			std::strcpy(temp->buf_desc, node_print->m_desc);
+			temp->valid_print = true;
+
+			CreateNode::node_to_edit = node;
+			CreateNode::data = temp;
+			break;
+		}
 	}
 
 	CreateNode::kind = node->m_kind;
@@ -204,6 +222,7 @@ void CreateNode::draw(void)
 			case NODE_KIND::CAST: CreateNode::draw_cast(); break;
 			case NODE_KIND::COMPARISON: CreateNode::draw_cmp(); break;
 			case NODE_KIND::BRANCH: break;
+			case NODE_KIND::PRINT: CreateNode::draw_print(); break;
 		}
 
 		CreateNode::draw_desc();
@@ -226,6 +245,7 @@ void CreateNode::draw_desc(void)
 		case NODE_KIND::CAST: buf = std::get<TempCastData*>(data)->buf_desc; break;
 		case NODE_KIND::COMPARISON: buf = std::get<TempComparisonData*>(data)->buf_desc; break;
 		case NODE_KIND::BRANCH: buf = std::get<TempBranchData*>(data)->buf_desc; break;
+		case NODE_KIND::PRINT: buf = std::get<TempPrintData*>(data)->buf_desc; break;
 	}
 
 	ImGui::InputText("Description", buf, BUF_SIZE * 2);
@@ -249,11 +269,12 @@ void CreateNode::draw_buttons(void)
 			switch (CreateNode::kind)
 			{
 				case NODE_KIND::EMPTY: break;
-				case NODE_KIND::VARIABLE: CreateNode::create_var_node(); break;
-				case NODE_KIND::OPERATION: CreateNode::create_op_node(); break;
-				case NODE_KIND::CAST: CreateNode::create_cast_node(); break;
-				case NODE_KIND::COMPARISON: CreateNode::create_cmp_node(); break;
-				case NODE_KIND::BRANCH: CreateNode::create_branch_node(); break;
+				case NODE_KIND::VARIABLE: CreateNode::create_node_var(); break;
+				case NODE_KIND::OPERATION: CreateNode::create_node_op(); break;
+				case NODE_KIND::CAST: CreateNode::create_node_cast(); break;
+				case NODE_KIND::COMPARISON: CreateNode::create_node_cmp(); break;
+				case NODE_KIND::BRANCH: CreateNode::create_node_branch(); break;
+				case NODE_KIND::PRINT: CreateNode::create_node_print(); break;
 			}
 
 			CreateNode::close();

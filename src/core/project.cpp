@@ -199,6 +199,7 @@ int Project::save(void)
 				break;
 			}
 			case NODE_KIND::BRANCH: break;
+			case NODE_KIND::PRINT: break;
 		}
 
 		//save input and output slots

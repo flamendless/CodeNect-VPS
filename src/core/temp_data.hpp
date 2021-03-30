@@ -52,6 +52,13 @@ struct TempBranchData
 	char buf_desc[BUF_SIZE * 2] = "";
 	bool valid_branch = false;
 };
+
+struct TempPrintData
+{
+	char buf_str[BUF_SIZE * 2] = "";
+	char buf_desc[BUF_SIZE * 2] = "";
+	bool valid_print = false;
+};
 }
 
 #endif //_TEMP_DATA_HPP

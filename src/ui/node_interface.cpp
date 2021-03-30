@@ -189,7 +189,7 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 {
 	if (ImGui::BeginPopup("NodesInterfaceContextMenu"))
 	{
-		if (ImGui::BeginMenu("New Node"))
+		if (ImGui::BeginMenu("Basic Node"))
 		{
 			if (ImGui::MenuItem("Variable"))
 			{
@@ -218,6 +218,18 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 			if (ImGui::MenuItem("Branch"))
 			{
 				CreateNode::open(NODE_KIND::BRANCH);
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Action Node"))
+		{
+
+			if (ImGui::MenuItem("Print"))
+			{
+				CreateNode::open(NODE_KIND::PRINT);
 				ImGui::CloseCurrentPopup();
 			}
 

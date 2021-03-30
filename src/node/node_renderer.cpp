@@ -43,6 +43,10 @@ void draw_node(Node* node)
 			NodeRenderer::draw_node_branch(node_branch);
 			break;
 		}
+		case NODE_KIND::PRINT:
+		{
+			break;
+		}
 	}
 }
 
@@ -178,6 +182,7 @@ void draw_connections(Node& node)
 		else if (connection.color == COLOR_TYPE::TRUE)
 			canvas->Colors[ImNodes::ColConnection] = NodeColors::Connection::TRUE;
 
+		//draw connection
 		//query removed connection
 		if (!ImNodes::Connection(connection.in_node, connection.in_slot,
 				connection.out_node, connection.out_slot))
