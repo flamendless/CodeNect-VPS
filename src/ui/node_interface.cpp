@@ -18,7 +18,7 @@
 #include "core/font.hpp"
 #include "node/nodes.hpp"
 #include "node/node_logic.hpp"
-#include "ui/node_renderer.hpp"
+#include "node/node_renderer.hpp"
 #include "ui/create_node.hpp"
 
 namespace CodeNect

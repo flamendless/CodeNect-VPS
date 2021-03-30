@@ -1,4 +1,4 @@
-#include "ui/node_renderer.hpp"
+#include "node/node_renderer.hpp"
 
 #include "imgui.h"
 #include "core/config.hpp"
