@@ -6,3 +6,4 @@ assets/
 .ninja_deps
 .ninja_log
 build.ninja
+bin/
