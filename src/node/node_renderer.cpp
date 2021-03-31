@@ -43,8 +43,19 @@ void draw_node(Node* node)
 			NodeRenderer::draw_node_branch(node_branch);
 			break;
 		}
-		case NODE_KIND::PRINT:
+		case NODE_KIND::ACTION:
 		{
+			NodeAction* node_action = static_cast<NodeAction*>(node);
+			switch (node_action->m_action)
+			{
+				case NODE_ACTION::EMPTY: break;
+				case NODE_ACTION::PRINT:
+				{
+					NodePrint* node_print = static_cast<NodePrint*>(node);
+					NodeRenderer::draw_node_print(node_print);
+					break;
+				}
+			}
 			break;
 		}
 	}
@@ -145,6 +156,29 @@ void draw_node_branch(NodeBranch* node_branch)
 		ImGui::Text("%s", node_branch->m_desc);
 		ImGui::EndTable();
 	}
+}
+
+void draw_node_print(NodePrint* node_print)
+{
+	if (ImGui::BeginTable("TableNode##NodePrint", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Action:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Output:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+
+		ImGui::TableNextColumn();
+		ImGui::Text("%s", node_print->m_action._to_string());
+		ImGui::Text("%s", node_print->m_str.c_str());
+		ImGui::Text("%s", node_print->m_desc);
+		ImGui::EndTable();
+	}
+
+	ImGui::Checkbox("Override", &node_print->m_override);
+	Utils::help_marker("Should the input string be overriden by the input slot", true);
+	ImGui::Checkbox("Append New Line", &node_print->m_append_newline);
+	Utils::help_marker("Should the output string be appended with newline/nextline", true);
 }
 
 void draw_connections(Node& node)

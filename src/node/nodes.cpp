@@ -1,5 +1,6 @@
 #include "node/nodes.hpp"
 
+#include "core/utils.hpp"
 #include "node/node_val.hpp"
 #include "node/node_var.hpp"
 #include "node/node_op.hpp"
@@ -144,8 +145,19 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				Nodes::v_nodes.push_back(node_branch);
 				break;
 			}
-			case NODE_KIND::PRINT:
+			case NODE_KIND::ACTION:
 			{
+				v_slot_info_t&& in = {};
+				v_slot_info_t&& out = {};
+				Nodes::build_slots(*nm, in, out);
+				std::string str = nm->m_orig_str;
+				NodePrint* node_print = new NodePrint(str, std::move(in), std::move(out));
+				node_print->m_name = nm->m_name.c_str();
+				node_print->m_pos = ImVec2(nm->x, nm->y);
+				node_print->m_desc = nm->m_desc.c_str();
+				node_print->m_override = Utils::bool_from_string(nm->m_override.c_str());
+				node_print->m_append_newline = Utils::bool_from_string(nm->m_append_newline.c_str());
+				Nodes::v_nodes.push_back(node_print);
 				break;
 			}
 		}

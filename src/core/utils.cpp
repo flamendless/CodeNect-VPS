@@ -112,4 +112,14 @@ void open_url(const char* url)
 #elif OS_WIN
 #endif
 }
+
+bool bool_from_string(const char* str)
+{
+	if (std::strcmp(str, "true") == 0)
+		return true;
+	else if (std::strcmp(str, "false") == 0)
+		return false;
+
+	return false;
+}
 }

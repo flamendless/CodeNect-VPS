@@ -1,5 +1,6 @@
 #include "ui/create_node.hpp"
 
+#include "plog/Log.h"
 #include "node/nodes.hpp"
 #include "node/node_cmp.hpp"
 

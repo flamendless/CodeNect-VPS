@@ -19,6 +19,7 @@ void display_asterisk(bool ref, const char* str);
 void display_asterisk(bool ref);
 std::string time_now(void);
 void open_url(const char* url);
+bool bool_from_string(const char* str);
 }
 
 #endif //_UTILS_HPP

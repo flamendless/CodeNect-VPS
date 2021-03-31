@@ -20,17 +20,21 @@ struct CreateNode
 	static bool is_pos_locked;
 	static bool is_edit_mode;
 	static const char* title;
+
 	static NODE_KIND kind;
+	static NODE_ACTION action;
+
 	static Node* node_to_edit;
 	static bool can_create;
 	static std::variant<
 			TempVarData*, TempOperationData*,
 			TempCastData*, TempComparisonData*,
-			TempBranchData*, TempPrintData*
+			TempBranchData*, TempActionData*
 		>data;
+	static char buf_desc[BUF_SIZE * 2];
 
 	CreateNode() = delete;
-	static void open(NODE_KIND kind);
+	static void open(NODE_KIND kind, NODE_ACTION action = NODE_ACTION::EMPTY);
 	static void edit(Node* node);
 	static void close(void);
 

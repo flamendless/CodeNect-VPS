@@ -25,5 +25,6 @@ std::map<std::string, ImVec4> NodeColors::m_kind
 	{"CAST", NodeColors::Lookup::LIGHT_BLUE},
 	{"COMPARISON", NodeColors::Lookup::PINK},
 	{"BRANCH", NodeColors::Lookup::GREEN},
+	{"ACTION", NodeColors::Lookup::ORANGE},
 };
 }

@@ -132,5 +132,7 @@ void App::shutdown(void)
 	ImGui::DestroyContext();
 	glfwDestroyWindow(App::window);
 	glfwTerminate();
+
+	PLOGI << "Application closed successfully";
 }
 }

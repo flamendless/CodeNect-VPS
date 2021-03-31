@@ -48,10 +48,17 @@ struct TempBranchData
 	bool valid_branch = false;
 };
 
-struct TempPrintData
+struct TempActionData
 {
+	//print
 	char buf_str[BUF_SIZE * 2] = "";
-	bool valid_print = false;
+	bool is_override = false;
+	bool is_append_newline = false;
+
+	NODE_SLOT slot_in = NODE_SLOT::EMPTY;
+	NODE_SLOT slot_out = NODE_SLOT::EMPTY;
+
+	bool valid_action = false;
 };
 }
 

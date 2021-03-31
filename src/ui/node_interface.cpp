@@ -229,7 +229,7 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 
 			if (ImGui::MenuItem("Print"))
 			{
-				CreateNode::open(NODE_KIND::PRINT);
+				CreateNode::open(NODE_KIND::ACTION, NODE_ACTION::PRINT);
 				ImGui::CloseCurrentPopup();
 			}
 

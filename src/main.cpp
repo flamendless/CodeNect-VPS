@@ -61,7 +61,7 @@ int main(int argv, char** args)
 	ImGuiIO* imgui_io = &ImGui::GetIO();
 
 	//test
-#ifdef DEBUG_MODE
+#if DEBUG_MODE
 	CodeNect::Project::open("test_branch.cn");
 #endif
 

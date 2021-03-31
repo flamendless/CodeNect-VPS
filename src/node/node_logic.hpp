@@ -12,6 +12,7 @@ void process_op(void);
 void process_cast(void);
 void process_cmp(void);
 void process_branch(void);
+void process_print(void);
 bool validate_node_cast(Node* in_node, Node* out_node);
 }
 

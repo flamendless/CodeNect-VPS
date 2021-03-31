@@ -1,16 +1,18 @@
 #ifndef _NODE_PRINT_HPP
 #define _NODE_PRINT_HPP
 
-#include "node/node_def.hpp"
-#include "node/node.hpp"
+#include "node/node_action.hpp"
 
 namespace CodeNect
 {
-struct NodePrint : public Node
+struct NodePrint : public NodeAction
 {
-	NODE_KIND m_kind = NODE_KIND::PRINT;
-	std::string m_string;
+	NODE_ACTION m_action = NODE_ACTION::PRINT;
+
+	std::string m_orig_str = "";
+	std::string m_str;
 	bool m_append_newline = false;
+	bool m_override = false;
 
 	explicit NodePrint(
 		std::string str,

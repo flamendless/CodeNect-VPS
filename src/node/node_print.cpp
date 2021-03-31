@@ -1,5 +1,6 @@
 #include "node/node_print.hpp"
 
+#include "ppk_assert.h"
 #include "plog/Log.h"
 #include "node/nodes.hpp"
 
@@ -11,12 +12,15 @@ NodePrint::NodePrint(
 	const v_slot_info_t&& out_slots
 )
 {
-	Node::m_kind = m_kind;
-	Node::m_name = Nodes::get_id(m_kind._to_string());
-	m_string = str;
+	NodeAction::m_action = m_action;
+	Node::m_kind = NodeAction::m_kind;
+	Node::m_name = Nodes::get_id(m_action._to_string());
+
+	m_orig_str = str;
 	m_in_slots = in_slots;
 	m_out_slots = out_slots;
 
-	PLOGD << "Created NodePrint: " << m_name;
+	PPK_ASSERT(NodeAction::m_action != +NODE_ACTION::EMPTY, "NODE_ACTION must not be EMPTY");
+	PLOGD << "Created NodeAction: " << m_name << ", " << Node::m_kind._to_string();
 }
 }

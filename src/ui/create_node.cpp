@@ -8,6 +8,7 @@
 #include "node/node_cmp.hpp"
 #include "node/node_branch.hpp"
 #include "node/node_action.hpp"
+#include "node/node_print.hpp"
 
 namespace CodeNect
 {
@@ -22,16 +23,17 @@ bool CreateNode::is_pos_locked = true;
 bool CreateNode::is_edit_mode = false;
 const char* CreateNode::title = ICON_FA_PLUS_SQUARE "Create Node";
 NODE_KIND CreateNode::kind = NODE_KIND::EMPTY;
+NODE_ACTION CreateNode::action = NODE_ACTION::EMPTY;
 Node* CreateNode::node_to_edit;
 bool CreateNode::can_create = false;
 std::variant<
 		TempVarData*, TempOperationData*,
 		TempCastData*, TempComparisonData*,
-		TempBranchData*, TempPrintData*
+		TempBranchData*, TempActionData*
 	>CreateNode::data;
 char CreateNode::buf_desc[BUF_SIZE * 2] = "";
 
-void CreateNode::open(NODE_KIND kind)
+void CreateNode::open(NODE_KIND kind, NODE_ACTION action)
 {
 	switch (kind)
 	{
@@ -61,28 +63,18 @@ void CreateNode::open(NODE_KIND kind)
 			CreateNode::data = new TempBranchData();
 			break;
 		}
-		case NODE_KIND::ACTION: break;
+		case NODE_KIND::ACTION:
+		{
+			CreateNode::data = new TempActionData();
+			CreateNode::action = action;
+			break;
+		}
 	}
 
 	CreateNode::buf_desc[0] = '\0';
 	CreateNode::kind = kind;
 	CreateNode::is_open = true;
 	CreateNode::is_first = true;
-}
-
-void CreateNode::open(NODE_ACTION action)
-{
-	switch (action)
-	{
-		case NODE_ACTION::EMPTY: break;
-		case NODE_ACTION::PRINT:
-		{
-			CreateNode::data = new TempPrintData();
-			break;
-		}
-	}
-
-	CreateNode::open(NODE_KIND::ACTION);
 }
 
 void CreateNode::edit(Node* node)
@@ -176,22 +168,24 @@ void CreateNode::edit(Node* node)
 		case NODE_KIND::ACTION:
 		{
 			NodeAction* node_action = static_cast<NodeAction*>(node);
+			TempActionData* temp = new TempActionData();
 
 			switch (node_action->m_action)
 			{
 				case NODE_ACTION::EMPTY: break;
 				case NODE_ACTION::PRINT:
 				{
-					TempPrintData* temp = new TempPrintData();
-
-					temp->valid_print = true;
-
-					CreateNode::node_to_edit = node;
-					CreateNode::data = temp;
+					NodePrint* node_print = static_cast<NodePrint*>(node);
+					std::strcpy(temp->buf_str, node_print->m_orig_str.c_str());
+					temp->is_append_newline = node_print->m_append_newline;
+					temp->is_override = node_print->m_override;
 					break;
 				}
 			}
 
+			temp->valid_action = true;
+			CreateNode::node_to_edit = node;
+			CreateNode::data = temp;
 			break;
 		}
 	}
@@ -206,6 +200,7 @@ void CreateNode::edit(Node* node)
 void CreateNode::close(void)
 {
 	CreateNode::kind = NODE_KIND::EMPTY;
+	CreateNode::action = NODE_ACTION::EMPTY;
 	CreateNode::is_open = false;
 
 	if (CreateNode::is_edit_mode)
@@ -240,7 +235,15 @@ void CreateNode::draw(void)
 			case NODE_KIND::CAST: CreateNode::draw_cast(); break;
 			case NODE_KIND::COMPARISON: CreateNode::draw_cmp(); break;
 			case NODE_KIND::BRANCH: break;
-			case NODE_KIND::ACTION: break;
+			case NODE_KIND::ACTION:
+			{
+				switch (CreateNode::action)
+				{
+					case NODE_ACTION::EMPTY: break;
+					case NODE_ACTION::PRINT: CreateNode::draw_print(); break;
+				}
+				break;
+			}
 		}
 
 		CreateNode::draw_desc();
@@ -279,7 +282,15 @@ void CreateNode::draw_buttons(void)
 				case NODE_KIND::CAST: CreateNode::create_node_cast(); break;
 				case NODE_KIND::COMPARISON: CreateNode::create_node_cmp(); break;
 				case NODE_KIND::BRANCH: CreateNode::create_node_branch(); break;
-				case NODE_KIND::ACTION: break;
+				case NODE_KIND::ACTION:
+				{
+					switch (CreateNode::action)
+					{
+						case NODE_ACTION::EMPTY: break;
+						case NODE_ACTION::PRINT: CreateNode::create_node_print(); break;
+					}
+					break;
+				}
 			}
 
 			CreateNode::close();

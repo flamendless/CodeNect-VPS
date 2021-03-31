@@ -15,6 +15,7 @@
 #include "node/node_var.hpp"
 #include "node/node_op.hpp"
 #include "node/node_cmp.hpp"
+#include "node/node_print.hpp"
 
 namespace CodeNect
 {
@@ -199,7 +200,24 @@ int Project::save(void)
 				break;
 			}
 			case NODE_KIND::BRANCH: break;
-			case NODE_KIND::PRINT: break;
+			case NODE_KIND::ACTION:
+			{
+				NodePrint* node_print = static_cast<NodePrint*>(node);
+				const char* is_override;
+				const char* is_append_newline;
+
+				if (node_print->m_override) is_override = "true";
+				else is_override = "false";
+
+				if (node_print->m_append_newline) is_append_newline = "true";
+				else is_append_newline = "false";
+
+				ini.SetValue(section, "action", node_print->m_action._to_string());
+				ini.SetValue(section, "value", node_print->m_orig_str.c_str());
+				ini.SetValue(section, "is_override", is_override);
+				ini.SetValue(section, "is_append_newline", is_append_newline);
+				break;
+			}
 		}
 
 		//save input and output slots
@@ -326,6 +344,10 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 	const char* value_slot = ini.GetValue(section, "value_slot", "EMPTY");
 	const char* op = ini.GetValue(section, "op", "EMPTY");
 	const char* cmp = ini.GetValue(section, "cmp", "EMPTY");
+	const char* action = ini.GetValue(section, "action", "EMPTY");
+	const char* orig_str = ini.GetValue(section, "value", "");
+	const char* is_override = ini.GetValue(section, "is_override", "false");
+	const char* is_append_newline = ini.GetValue(section, "is_append_newline", "false");
 
 	NodeMeta* nm = new NodeMeta();
 	nm->m_name = name;
@@ -337,6 +359,10 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 	nm->m_value_slot = value_slot;
 	nm->m_op = op;
 	nm->m_cmp = cmp;
+	nm->m_action = action;
+	nm->m_orig_str = orig_str;
+	nm->m_override = is_override;
+	nm->m_append_newline = is_append_newline;
 
 	//get input/output slots
 	CSimpleIniA::TNamesDepend keys;
