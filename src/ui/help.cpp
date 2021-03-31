@@ -6,24 +6,21 @@
 #include "core/utils.hpp"
 #include "core/font.hpp"
 #include "ui/alert.hpp"
+#include "node/node_colors.hpp"
 
 namespace CodeNect
 {
 ImGuiWindowFlags Help::flags =
-	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
+	ImGuiWindowFlags_NoCollapse |
 	ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
 	ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
 	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
 bool Help::is_open = false;
 const char* Help::title = ICON_FA_QUESTION_CIRCLE " HELP";
 
-Help::pair_t Help::v_items
-{
-	std::make_pair<const char*, const char*>(ICON_FA_ENVELOPE " E-Mail:", "mailto:flamendless8@gmail.com"),
-	std::make_pair<const char*, const char*>(ICON_FA_GITHUB " Github:", "https://github.com/flamendless/CodeNect-VPS"),
-};
-
+using help_p = std::pair<const char*, const char*>;
 using help_t = std::tuple<const char*, const char*, const char*>;
+using help_tc = std::tuple<const char*, const char*, ImVec4>;
 
 Help::tuple_t Help::v_key_items
 {
@@ -37,6 +34,47 @@ Help::tuple_t Help::v_key_items
 	help_t(ICON_FA_BACKSPACE " Delete Key", "delete selected node", "'del' key in keyboard"),
 	help_t(ICON_FA_KEYBOARD " Enter/Return Key", "close alert popup window", "'Enter'/'Return' key in keyboard"),
 	help_t(ICON_FA_KEYBOARD " Escape Key", "close inspector window", "'Esc' key in keyboard"),
+};
+
+Help::tuple_colors_t Help::v_connection_colors_items
+{
+	help_tc("Green", "path processed because the result of node branch is 'true'", NodeColors::Connection::TRUE),
+	help_tc("Red", "path NOT processed because the result of node branch is 'false'", NodeColors::Connection::FALSE),
+};
+
+Help::tuple_colors_t Help::v_node_colors_items
+{
+	help_tc("Blue", "node is of kind 'Variable'", NodeColors::Lookup::BLUE),
+	help_tc("Yellow", "node is of kind 'Operation'", NodeColors::Lookup::YELLOW),
+	help_tc("Light Blue", "node is of kind 'Cast'", NodeColors::Lookup::LIGHT_BLUE),
+	help_tc("Pink", "node is of kind 'Comparison'", NodeColors::Lookup::PINK),
+	help_tc("Green", "node is of kind 'Branch'", NodeColors::Lookup::GREEN),
+	help_tc("Orange", "node is of kind 'Action'", NodeColors::Lookup::GREEN),
+};
+
+// BETTER_ENUM(NODE_KIND, int, EMPTY = 1, VARIABLE, OPERATION, CAST, COMPARISON, BRANCH, ACTION)
+Help::pair_t Help::v_dictionary_items
+{
+	help_p("Node", "basic building block that can be connected with each other"),
+	help_p("Variable node", "used for storing arbitrary value"),
+	help_p("Operation node", "used for performing basic operation on values such as:\naddition, subtraction, multiplication, and division"),
+	help_p("Cast node", "used for converting one data type to another"),
+	help_p("Comparison node", "used for comparing values using:\nequal, not equal, less than, greater than,\nless than or equals to, and greater than or equals to"),
+	help_p("Branch node", "used for redirecting evaluation flow based on the boolean input.\nThis works the same as an if-statement"),
+	help_p("Action node", "used for executing higher-level commands such as:\nprinting text to screen, prompting for user input, and more"),
+
+	help_p("Slots", "input or output ID used for connection of nodes.\nOnly matching slot type can be connected"),
+	help_p("Boolean slot", "data type for true or false value.\nOnly zero value is evaluated as 'false', otherwise it is 'true'"),
+	help_p("Integer slot", "data type for integer or whole number\n(no decimal)"),
+	help_p("Float slot", "data type for single-precision number\n(can store more integer data type)"),
+	help_p("Double slot", "data type for double-precision number\n(can store more than float data type)"),
+	help_p("String slot", "data type for a series or array of characters"),
+};
+
+Help::pair_t Help::v_support_items
+{
+	help_p(ICON_FA_ENVELOPE " E-Mail:", "mailto:flamendless8@gmail.com"),
+	help_p(ICON_FA_GITHUB " Github:", "https://github.com/flamendless/CodeNect-VPS"),
 };
 
 void Help::register_commands(void)
@@ -78,6 +116,12 @@ void Help::draw()
 		Help::draw_commands();
 		ImGui::Separator();
 
+		Help::draw_interface();
+		ImGui::Separator();
+
+		Help::draw_dictionary();
+		ImGui::Separator();
+
 		Help::draw_support();
 		ImGui::Separator();
 
@@ -90,24 +134,84 @@ void Help::draw()
 
 void Help::draw_commands(void)
 {
-	Utils::center_text(ICON_FA_KEYBOARD " Commands", true);
-
-	if (ImGui::BeginTable("TableCommands", 3))
+	if (ImGui::TreeNode(ICON_FA_KEYBOARD " Commands"))
 	{
-		for (const std::tuple<const char*, const char*, const char*> &item : Help::v_key_items)
+		if (ImGui::BeginTable("TableCommands", 3))
 		{
-			ImGui::TableNextRow();
-			ImGui::TableNextColumn();
-			ImGui::Text("%s", std::get<0>(item));
+			for (const help_t &item : Help::v_key_items)
+			{
+				ImGui::TableNextRow();
+				ImGui::TableNextColumn();
+				ImGui::Text("%s", std::get<0>(item));
+				ImGui::TableNextColumn();
+				ImGui::Text("%s", std::get<1>(item));
+				ImGui::TableNextColumn();
+				Utils::help_marker(std::get<2>(item));
+			}
+			ImGui::EndTable();
+		}
+		ImGui::TreePop();
+	}
+}
 
-			ImGui::TableNextColumn();
-			ImGui::Text("%s", std::get<1>(item));
-
-			ImGui::TableNextColumn();
-			Utils::help_marker(std::get<2>(item));
+void Help::draw_interface(void)
+{
+	if (ImGui::TreeNode(ICON_FA_SITEMAP " Interfaces"))
+	{
+		if (ImGui::TreeNode("Connection Colors"))
+		{
+			if (ImGui::BeginTable("TableConnectionColors", 2, ImGuiTableFlags_Borders))
+			{
+				for (const help_tc &item : Help::v_connection_colors_items)
+				{
+					ImGui::TableNextRow();
+					ImGui::TableNextColumn();
+					ImGui::TextColored(std::get<2>(item), "%s", std::get<0>(item));
+					ImGui::TableNextColumn();
+					ImGui::Text("%s", std::get<1>(item));
+				}
+				ImGui::EndTable();
+			}
+			ImGui::TreePop();
 		}
 
-		ImGui::EndTable();
+		if (ImGui::TreeNode("Node Colors"))
+		{
+			if (ImGui::BeginTable("TableNodeColors", 2, ImGuiTableFlags_Borders))
+			{
+				for (const help_tc &item : Help::v_node_colors_items)
+				{
+					ImGui::TableNextRow();
+					ImGui::TableNextColumn();
+					ImGui::TextColored(std::get<2>(item), "%s", std::get<0>(item));
+					ImGui::TableNextColumn();
+					ImGui::Text("%s", std::get<1>(item));
+				}
+				ImGui::EndTable();
+			}
+			ImGui::TreePop();
+		}
+		ImGui::TreePop();
+	}
+}
+
+void Help::draw_dictionary(void)
+{
+	if (ImGui::TreeNode(ICON_FA_SPELL_CHECK " Dictionary"))
+	{
+		if (ImGui::BeginTable("TableDictionary", 2, ImGuiTableFlags_Borders))
+		{
+			for (const help_p &item : Help::v_dictionary_items)
+			{
+				ImGui::TableNextRow();
+				ImGui::TableNextColumn();
+				ImGui::Text("%s", item.first);
+				ImGui::TableNextColumn();
+				ImGui::Text("%s", item.second);
+			}
+			ImGui::EndTable();
+		}
+		ImGui::TreePop();
 	}
 }
 
@@ -117,7 +221,7 @@ void Help::draw_support(void)
 
 	if (ImGui::BeginTable("TableSupport", 3))
 	{
-		for (const std::pair<const char*, const char*> &item : Help::v_items)
+		for (const help_p &item : Help::v_support_items)
 		{
 			ImGui::TableNextRow();
 			ImGui::TableNextColumn();
