@@ -20,6 +20,7 @@ std::map<std::string, unsigned int> Nodes::m_ids
 	{"COMPARISON", 0},
 	{"BRANCH", 0},
 	{"PRINT", 0},
+	{"MATH", 0},
 };
 Nodes::m_node_t Nodes::m_available_nodes
 {

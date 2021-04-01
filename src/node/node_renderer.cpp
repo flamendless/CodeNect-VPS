@@ -58,6 +58,17 @@ void draw_node(Node* node)
 			}
 			break;
 		}
+		case NODE_KIND::MATH:
+		{
+			NodeMath* node_math = static_cast<NodeMath*>(node);
+
+			switch (node_math->m_math)
+			{
+				case NODE_MATH::EMPTY: break;
+				case NODE_MATH::ROOT: NodeRenderer::draw_node_math_root(node_math); break;
+			}
+			break;
+		}
 	}
 }
 
@@ -179,6 +190,43 @@ void draw_node_print(NodePrint* node_print)
 	Utils::help_marker("Should the input string be overriden by the input slot", true);
 	ImGui::Checkbox("Append New Line", &node_print->m_append_newline);
 	Utils::help_marker("Should the output string be appended with newline/nextline", true);
+}
+
+void draw_node_math_root(NodeMath* node_math)
+{
+	if (ImGui::BeginTable("TableNode##NodeMathRoot", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		MathRoot* data = &std::get<MathRoot>(node_math->m_data);
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Type:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Index:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Radicand:");
+
+		ImGui::TableNextColumn();
+		ImGui::Text("%s", node_math->m_math._to_string());
+
+		if (data->m_has_connections)
+		{
+			ImGui::Text("%d", data->m_index);
+			switch (node_math->m_out_slots[0].kind)
+			{
+				case NODE_SLOT::EMPTY: break;
+				case NODE_SLOT::BOOL: break;
+				case NODE_SLOT::INTEGER: ImGui::Text("%d", std::get<int>(data->m_radicand)); break;
+				case NODE_SLOT::FLOAT: ImGui::Text("%f", std::get<float>(data->m_radicand)); break;
+				case NODE_SLOT::DOUBLE: ImGui::Text("%lf", std::get<double>(data->m_radicand)); break;
+				case NODE_SLOT::STRING: break;
+			}
+		}
+		else
+		{
+			ImGui::Text("");
+			ImGui::Text("");
+		}
+
+		ImGui::EndTable();
+	}
 }
 
 void draw_connections(Node& node)

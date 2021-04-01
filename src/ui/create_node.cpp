@@ -9,6 +9,7 @@
 #include "node/node_branch.hpp"
 #include "node/node_action.hpp"
 #include "node/node_print.hpp"
+#include "node/node_math.hpp"
 
 namespace CodeNect
 {
@@ -24,57 +25,47 @@ bool CreateNode::is_edit_mode = false;
 const char* CreateNode::title = ICON_FA_PLUS_SQUARE "Create Node";
 NODE_KIND CreateNode::kind = NODE_KIND::EMPTY;
 NODE_ACTION CreateNode::action = NODE_ACTION::EMPTY;
+NODE_MATH CreateNode::math = NODE_MATH::EMPTY;
 Node* CreateNode::node_to_edit;
 bool CreateNode::can_create = false;
 std::variant<
 		TempVarData*, TempOperationData*,
 		TempCastData*, TempComparisonData*,
-		TempBranchData*, TempActionData*
+		TempBranchData*, TempActionData*,
+		TempMathData*
 	>CreateNode::data;
 char CreateNode::buf_desc[BUF_SIZE * 2] = "";
 
-void CreateNode::open(NODE_KIND kind, NODE_ACTION action)
+void CreateNode::open(NODE_KIND kind)
 {
 	switch (kind)
 	{
 		case NODE_KIND::EMPTY: break;
-		case NODE_KIND::VARIABLE:
-		{
-			CreateNode::data = new TempVarData();
-			break;
-		}
-		case NODE_KIND::OPERATION:
-		{
-			CreateNode::data = new TempOperationData();
-			break;
-		}
-		case NODE_KIND::CAST:
-		{
-			CreateNode::data = new TempCastData();
-			break;
-		}
-		case NODE_KIND::COMPARISON:
-		{
-			CreateNode::data = new TempComparisonData();
-			break;
-		}
-		case NODE_KIND::BRANCH:
-		{
-			CreateNode::data = new TempBranchData();
-			break;
-		}
-		case NODE_KIND::ACTION:
-		{
-			CreateNode::data = new TempActionData();
-			CreateNode::action = action;
-			break;
-		}
+		case NODE_KIND::VARIABLE: CreateNode::data = new TempVarData(); break;
+		case NODE_KIND::OPERATION: CreateNode::data = new TempOperationData(); break;
+		case NODE_KIND::CAST: CreateNode::data = new TempCastData(); break;
+		case NODE_KIND::COMPARISON: CreateNode::data = new TempComparisonData(); break;
+		case NODE_KIND::BRANCH: CreateNode::data = new TempBranchData(); break;
+		case NODE_KIND::ACTION: CreateNode::data = new TempActionData(); break;
+		case NODE_KIND::MATH: CreateNode::data = new TempMathData(); break;
 	}
 
 	CreateNode::buf_desc[0] = '\0';
 	CreateNode::kind = kind;
 	CreateNode::is_open = true;
 	CreateNode::is_first = true;
+}
+
+void CreateNode::open_action(NODE_KIND kind, NODE_ACTION action)
+{
+	CreateNode::open(kind);
+	CreateNode::action = action;
+}
+
+void CreateNode::open_math(NODE_KIND kind, NODE_MATH math)
+{
+	CreateNode::open(kind);
+	CreateNode::math = math;
 }
 
 void CreateNode::edit(Node* node)
@@ -188,6 +179,27 @@ void CreateNode::edit(Node* node)
 			CreateNode::data = temp;
 			break;
 		}
+		case NODE_KIND::MATH:
+		{
+			NodeMath* node_math = static_cast<NodeMath*>(node);
+			TempMathData* temp = new TempMathData();
+
+			//todo
+			switch (node_math->m_math)
+			{
+				case NODE_MATH::EMPTY: break;
+				case NODE_MATH::ROOT: break;
+				case NODE_MATH::POW: break;
+				case NODE_MATH::SIN: break;
+				case NODE_MATH::COS: break;
+				case NODE_MATH::TAN: break;
+			}
+
+			temp->valid_math = true;
+			CreateNode::node_to_edit = node;
+			CreateNode::data = temp;
+			break;
+		}
 	}
 
 	std::strcpy(CreateNode::buf_desc, node->m_desc);
@@ -244,6 +256,7 @@ void CreateNode::draw(void)
 				}
 				break;
 			}
+			case NODE_KIND::MATH: CreateNode::draw_math(); break;
 		}
 
 		CreateNode::draw_desc();
@@ -291,6 +304,7 @@ void CreateNode::draw_buttons(void)
 					}
 					break;
 				}
+				case NODE_KIND::MATH: CreateNode::create_node_math(); break;
 			}
 
 			CreateNode::close();

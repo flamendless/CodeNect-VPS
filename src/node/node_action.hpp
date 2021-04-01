@@ -8,8 +8,8 @@ namespace CodeNect
 {
 struct NodeAction : public Node
 {
-	NODE_ACTION m_action = NODE_ACTION::EMPTY;
 	NODE_KIND m_kind = NODE_KIND::ACTION;
+	NODE_ACTION m_action = NODE_ACTION::EMPTY;
 
 	inline ~NodeAction() {}
 };
