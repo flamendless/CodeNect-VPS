@@ -55,20 +55,21 @@ Help::tuple_colors_t Help::v_node_colors_items
 // BETTER_ENUM(NODE_KIND, int, EMPTY = 1, VARIABLE, OPERATION, CAST, COMPARISON, BRANCH, ACTION)
 Help::pair_t Help::v_dictionary_items
 {
+	help_p("Connection", "links the data between nodes"),
 	help_p("Node", "basic building block that can be connected with each other"),
-	help_p("Variable node", "used for storing arbitrary value"),
-	help_p("Operation node", "used for performing basic operation on values such as:\naddition, subtraction, multiplication, and division"),
-	help_p("Cast node", "used for converting one data type to another"),
-	help_p("Comparison node", "used for comparing values using:\nequal, not equal, less than, greater than,\nless than or equals to, and greater than or equals to"),
-	help_p("Branch node", "used for redirecting evaluation flow based on the boolean input.\nThis works the same as an if-statement"),
-	help_p("Action node", "used for executing higher-level commands such as:\nprinting text to screen, prompting for user input, and more"),
+	help_p("Variable Node", "used for storing arbitrary value"),
+	help_p("Operation Node", "used for performing basic operation on values such as:\naddition, subtraction, multiplication, and division"),
+	help_p("Cast Node", "used for converting one data type to another"),
+	help_p("Comparison Node", "used for comparing values using:\nequal, not equal, less than, greater than,\nless than or equals to, greater than or equals to,\nor, and and"),
+	help_p("Branch Node", "used for redirecting evaluation flow based on the boolean input.\nThis works the same as an if-statement"),
+	help_p("Action Node", "used for executing higher-level commands such as:\nprinting text to screen, prompting for user input, and more"),
 
 	help_p("Slots", "input or output ID used for connection of nodes.\nOnly matching slot type can be connected"),
-	help_p("Boolean slot", "data type for true or false value.\nOnly zero value is evaluated as 'false', otherwise it is 'true'"),
-	help_p("Integer slot", "data type for integer or whole number\n(no decimal)"),
-	help_p("Float slot", "data type for single-precision number\n(can store more integer data type)"),
-	help_p("Double slot", "data type for double-precision number\n(can store more than float data type)"),
-	help_p("String slot", "data type for a series or array of characters"),
+	help_p("Boolean Slot", "data type for true or false value.\nOnly zero value is evaluated as 'false', otherwise it is 'true'"),
+	help_p("Integer Slot", "data type for integer or whole number\n(no decimal)"),
+	help_p("Float Slot", "data type for single-precision number\n(can store more integer data type)"),
+	help_p("Double Slot", "data type for double-precision number\n(can store more than float data type)"),
+	help_p("String Slot", "data type for a series or array of characters"),
 };
 
 Help::pair_t Help::v_support_items
