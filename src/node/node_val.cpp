@@ -89,6 +89,23 @@ void NodeValue::div(NodeValue& other)
 	}
 }
 
+void NodeValue::mod(NodeValue& other)
+{
+	switch (m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: break;
+		case NODE_SLOT::INTEGER:
+		{
+			std::get<int>(data) %= std::get<int>(other.data);
+			break;
+		}
+		case NODE_SLOT::FLOAT: break;
+		case NODE_SLOT::DOUBLE: break;
+		case NODE_SLOT::STRING: break;
+	}
+}
+
 void NodeValue::cast_from(NodeValue& from_val)
 {
 	switch (from_val.m_slot)

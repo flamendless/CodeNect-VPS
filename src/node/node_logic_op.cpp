@@ -95,6 +95,7 @@ void process_op(void)
 				case NODE_OP::SUB: result.sub(*current_value); break;
 				case NODE_OP::MUL: result.mul(*current_value); break;
 				case NODE_OP::DIV: result.div(*current_value); break;
+				case NODE_OP::MOD: result.mod(*current_value); break;
 			}
 		}
 

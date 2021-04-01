@@ -63,7 +63,14 @@ void CreateNode::draw_op(void)
 
 	if (!CreateNode::is_edit_mode)
 	{
-		CreateNode::draw_opt_input();
+		//if input slot is integer then MOD is allowed
+		if (data_op->op == +NODE_OP::MOD)
+		{
+			data_op->slot = NODE_SLOT::INTEGER;
+			Utils::help_marker("Modulo operator only allows INTEGERS", true);
+		}
+		else
+			CreateNode::draw_opt_input();
 	}
 
 	CreateNode::can_create = data_op->slot != +NODE_SLOT::EMPTY;

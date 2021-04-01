@@ -29,7 +29,8 @@ NodeOperation::NodeOperation(
 		case NODE_OP::ADD: m_icon = ICON_FA_PLUS; break;
 		case NODE_OP::SUB: m_icon = ICON_FA_MINUS; break;
 		case NODE_OP::MUL: m_icon = ICON_FA_TIMES; break;
-		case NODE_OP::DIV: m_icon = ICON_FA_DIVIDE; break;
+		case NODE_OP::DIV: m_icon = ICON_FA_SLASH; break;
+		case NODE_OP::MOD: m_icon = ICON_FA_DIVIDE; break;
 	}
 
 	PLOGD << "Created NodeOperation: " << m_name << ", op = " << m_op._to_string();
@@ -44,7 +45,10 @@ const char* NodeOperation::get_op(void)
 		case NODE_OP::SUB: return "-"; break;
 		case NODE_OP::MUL: return "*"; break;
 		case NODE_OP::DIV: return "/"; break;
+		case NODE_OP::MOD: return "%"; break;
 	}
+
+	PPK_ASSERT(false, "This should not be reached");
 
 	return "";
 }
