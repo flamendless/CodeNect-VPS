@@ -57,14 +57,16 @@ void process_cmp(void)
 		if (!res_var && !res_branch)
 			break;
 
-		NodeVariable* node_var_a = nullptr;
-		NodeVariable* node_var_b = nullptr;
+		//for storing the input (lhs) nodes to be compared
+		std::vector<NodeVariable*> v_vars;
 
-		//get the two node_vars to be compared
 		for (const Connection& connection : node_cmp->m_connections)
 		{
-			if (node_var_a && node_var_b)
-				break;
+			if (node_cmp->m_in_slots[0].kind == +NODE_SLOT::BOOL)
+			{
+				if (v_vars.size() == 2)
+					break;
+			}
 
 			Node* in_node = static_cast<Node*>(connection.in_node);
 			Node* out_node = static_cast<Node*>(connection.out_node);
@@ -72,62 +74,72 @@ void process_cmp(void)
 			NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
 
 			if (node_cmp && node_var)
-			{
-				if (!node_var_a)
-				{
-					node_var_a = node_var;
-					continue;
-				}
-
-				if (!node_var_b)
-				{
-					node_var_b = node_var;
-					continue;
-				}
-			}
+				v_vars.push_back(node_var);
 		}
 
-		if (!node_var_a || !node_var_b)
+		if (v_vars.size() < 2)
 			continue;
 
 		node_cmp->m_has_valid_connections = true;
-		NodeValue* val_a = &node_var_a->m_value;
-		NodeValue* val_b = &node_var_b->m_value;
+		NodeValue result;
 		bool res = false;
+		bool is_first = true;
 
-		//evaluate
-		switch (node_cmp->m_cmp)
+		for (NodeVariable* node_var : v_vars)
 		{
-			case NODE_CMP::EMPTY: break;
-			case NODE_CMP::EQ:
+			NodeValue* current_value = &node_var->m_value;
+
+			if (is_first)
 			{
-				res = val_a->is_eq_to(*val_b);
-				break;
+				result.copy(*current_value);
+				is_first = false;
+				continue;
 			}
-			case NODE_CMP::NEQ:
+
+			//evaluate
+			switch (node_cmp->m_cmp)
 			{
-				res = val_a->is_neq_to(*val_b);
-				break;
-			}
-			case NODE_CMP::LT:
-			{
-				res = val_a->is_lt_to(*val_b);
-				break;
-			}
-			case NODE_CMP::GT:
-			{
-				res = val_a->is_gt_to(*val_b);
-				break;
-			}
-			case NODE_CMP::LTE:
-			{
-				res = val_a->is_lte_to(*val_b);
-				break;
-			}
-			case NODE_CMP::GTE:
-			{
-				res = val_a->is_gte_to(*val_b);
-				break;
+				case NODE_CMP::EMPTY: break;
+				case NODE_CMP::EQ:
+				{
+					res = result.is_eq_to(*current_value);
+					break;
+				}
+				case NODE_CMP::NEQ:
+				{
+					res = result.is_neq_to(*current_value);
+					break;
+				}
+				case NODE_CMP::LT:
+				{
+					res = result.is_lt_to(*current_value);
+					break;
+				}
+				case NODE_CMP::GT:
+				{
+					res = result.is_gt_to(*current_value);
+					break;
+				}
+				case NODE_CMP::LTE:
+				{
+					res = result.is_lte_to(*current_value);
+					break;
+				}
+				case NODE_CMP::GTE:
+				{
+					res = result.is_gte_to(*current_value);
+					break;
+				}
+				case NODE_CMP::OR:
+				{
+					res = result.is_or_to(*current_value);
+					break;
+				}
+				case NODE_CMP::AND:
+				{
+					res = result.is_and_to(*current_value);
+					break;
+				}
 			}
 		}
 

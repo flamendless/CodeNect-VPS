@@ -71,14 +71,21 @@ void CreateNode::draw_cmp(void)
 			if (cmp == +NODE_CMP::EMPTY)
 				continue;
 
+			//if input slot type is NOT boolean, then OR and AND is excluded
+			if (tmp->slot_in != +NODE_SLOT::BOOL)
+			{
+				if (cmp == +NODE_CMP::OR || cmp == +NODE_CMP::AND)
+					continue;
+			}
+
 			//if input slot type is string or boolean, it can not be compared with:
 			//GT, LT, GTE, LTE
 			if (tmp->slot_in == +NODE_SLOT::STRING || tmp->slot_in == +NODE_SLOT::BOOL)
 			{
-				if (!(cmp == +NODE_CMP::EQ || cmp == +NODE_CMP::NEQ))
+				if (!(cmp == +NODE_CMP::EQ || cmp == +NODE_CMP::NEQ ||
+					cmp == +NODE_CMP::OR || cmp == +NODE_CMP::AND))
 					continue;
 			}
-
 
 			ImGui::PushID(cmp);
 			const char* txt = NodeComparison::m_cmp_str[cmp._to_string()];

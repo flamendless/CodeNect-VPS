@@ -247,6 +247,20 @@ bool NodeValue::is_gte_to(NodeValue& other)
 	return is_eq_to(other) == true || is_lt_to(other) == false;
 }
 
+bool NodeValue::is_or_to(NodeValue& other)
+{
+	bool this_bool = std::get<bool>(data);
+	bool other_bool = std::get<bool>(other.data);
+	return this_bool || other_bool;
+}
+
+bool NodeValue::is_and_to(NodeValue& other)
+{
+	bool this_bool = std::get<bool>(data);
+	bool other_bool = std::get<bool>(other.data);
+	return this_bool && other_bool;
+}
+
 void NodeValue::set(bool arg){ data = arg; m_slot = NODE_SLOT::BOOL; }
 void NodeValue::set(int arg){ data = arg; m_slot = NODE_SLOT::INTEGER; }
 void NodeValue::set(float arg){ data = arg; m_slot = NODE_SLOT::FLOAT; }

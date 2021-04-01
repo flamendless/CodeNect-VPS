@@ -25,6 +25,8 @@ struct NodeValue
 	bool is_gt_to(NodeValue& other);
 	bool is_lte_to(NodeValue& other);
 	bool is_gte_to(NodeValue& other);
+	bool is_or_to(NodeValue& other);
+	bool is_and_to(NodeValue& other);
 
 	void set(bool arg);
 	void set(int arg);

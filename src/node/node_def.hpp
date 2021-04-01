@@ -22,7 +22,9 @@ BETTER_ENUM(NODE_ACTION, int, EMPTY = 1, PRINT)
 //GT  - >
 //LTE - <=
 //GTE - >=
-BETTER_ENUM(NODE_CMP, int, EMPTY = 1, EQ, NEQ, LT, GT, LTE, GTE)
+//OR - ||
+//AND - &&
+BETTER_ENUM(NODE_CMP, int, EMPTY = 1, EQ, NEQ, LT, GT, LTE, GTE, OR, AND)
 
 typedef std::vector<Connection> v_connection_t;
 typedef std::vector<ImNodes::Ez::SlotInfo> v_slot_info_t;

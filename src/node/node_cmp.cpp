@@ -14,6 +14,8 @@ std::map<std::string, const char*> NodeComparison::m_cmp_str
 	{"GT", "greater than " ICON_FA_GREATER_THAN},
 	{"LTE", "less than or equals to " ICON_FA_LESS_THAN_EQUAL},
 	{"GTE", "greater than or equals to " ICON_FA_GREATER_THAN_EQUAL},
+	{"OR", "or" ICON_FA_GRIP_LINES_VERTICAL},
+	{"AND", "and" "  &"},
 };
 
 NodeComparison::NodeComparison(
@@ -44,6 +46,8 @@ const char* NodeComparison::get_cmp_op(void)
 		case NODE_CMP::GT: return ">"; break;
 		case NODE_CMP::LTE: return "<="; break;
 		case NODE_CMP::GTE: return ">="; break;
+		case NODE_CMP::OR: return "||"; break;
+		case NODE_CMP::AND: return "&&"; break;
 	}
 
 	return "";
