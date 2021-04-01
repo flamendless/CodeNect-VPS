@@ -1,5 +1,7 @@
 #include "core/utils.hpp"
 
+#include <algorithm>
+
 namespace CodeNect::Utils
 {
 bool exists_in_slots(NODE_SLOT slot, std::vector<NODE_SLOT> slots)
@@ -121,5 +123,14 @@ bool bool_from_string(const char* str)
 		return false;
 
 	return false;
+}
+
+void string_to_name(std::string& str)
+{
+	std::transform(str.begin() + 1, str.end(), str.begin() + 1,
+		[](unsigned char c)
+		{
+			return std::tolower(c);
+		});
 }
 }

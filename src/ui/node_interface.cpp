@@ -191,48 +191,60 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 	{
 		if (ImGui::BeginMenu("Basic Node"))
 		{
-			if (ImGui::MenuItem("Variable"))
+			for (NODE_KIND kind : NODE_KIND::_values())
 			{
-				CreateNode::open(NODE_KIND::VARIABLE);
-				ImGui::CloseCurrentPopup();
-			}
+				if (kind == +NODE_KIND::EMPTY ||
+					kind == +NODE_KIND::ACTION ||
+					kind == +NODE_KIND::MATH)
+					continue;
 
-			if (ImGui::MenuItem("Operation"))
-			{
-				CreateNode::open(NODE_KIND::OPERATION);
-				ImGui::CloseCurrentPopup();
-			}
+				std::string item = kind._to_string();
+				Utils::string_to_name(item);
 
-			if (ImGui::MenuItem("Cast/Convert"))
-			{
-				CreateNode::open(NODE_KIND::CAST);
-				ImGui::CloseCurrentPopup();
+				if (ImGui::MenuItem(item.c_str()))
+				{
+					CreateNode::open(kind);
+					ImGui::CloseCurrentPopup();
+				}
 			}
-
-			if (ImGui::MenuItem("Comparison"))
-			{
-				CreateNode::open(NODE_KIND::COMPARISON);
-				ImGui::CloseCurrentPopup();
-			}
-
-			if (ImGui::MenuItem("Branch"))
-			{
-				CreateNode::open(NODE_KIND::BRANCH);
-				ImGui::CloseCurrentPopup();
-			}
-
 			ImGui::EndMenu();
 		}
 
 		if (ImGui::BeginMenu("Action Node"))
 		{
-
-			if (ImGui::MenuItem("Print"))
+			for (NODE_ACTION action : NODE_ACTION::_values())
 			{
-				CreateNode::open(NODE_KIND::ACTION, NODE_ACTION::PRINT);
-				ImGui::CloseCurrentPopup();
-			}
+				if (action == +NODE_ACTION::EMPTY)
+					continue;
 
+				std::string item = action._to_string();
+				Utils::string_to_name(item);
+
+				if (ImGui::MenuItem(item.c_str()))
+				{
+					CreateNode::open_action(NODE_KIND::ACTION, action);
+					ImGui::CloseCurrentPopup();
+				}
+			}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Math Node"))
+		{
+			for (NODE_MATH math : NODE_MATH::_values())
+			{
+				if (math == +NODE_MATH::EMPTY)
+					continue;
+
+				std::string item = math._to_string();
+				Utils::string_to_name(item);
+
+				if (ImGui::MenuItem(item.c_str()))
+				{
+					CreateNode::open_math(NODE_KIND::MATH, math);
+					ImGui::CloseCurrentPopup();
+				}
+			}
 			ImGui::EndMenu();
 		}
 
