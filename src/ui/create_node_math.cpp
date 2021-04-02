@@ -27,6 +27,11 @@ void CreateNode::create_node_math(void)
 			case NODE_MATH::EMPTY: break;
 			case NODE_MATH::ROOT:
 			{
+				if (tmp->root_slot_in_radicand != +NODE_SLOT::INTEGER)
+				{
+					NODE_SLOT slot = NODE_SLOT::INTEGER;
+					in.push_back({slot._to_string(), slot});
+				}
 				in.push_back({tmp->root_slot_in_radicand._to_string(), tmp->root_slot_out});
 				out.push_back({tmp->root_slot_out._to_string(), tmp->root_slot_out});
 				break;

@@ -11,5 +11,6 @@ void process(void)
 	NodeLogic::process_cmp();
 	NodeLogic::process_branch();
 	NodeLogic::process_print();
+	NodeLogic::process_math();
 }
 }

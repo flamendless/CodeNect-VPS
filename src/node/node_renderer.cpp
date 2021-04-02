@@ -194,9 +194,10 @@ void draw_node_print(NodePrint* node_print)
 
 void draw_node_math_root(NodeMath* node_math)
 {
+	MathRoot* data = &std::get<MathRoot>(node_math->m_data);
+
 	if (ImGui::BeginTable("TableNode##NodeMathRoot", 2, ImGuiTableFlags_SizingFixedFit))
 	{
-		MathRoot* data = &std::get<MathRoot>(node_math->m_data);
 		ImGui::TableNextRow();
 		ImGui::TableNextColumn();
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Type:");
@@ -207,28 +208,53 @@ void draw_node_math_root(NodeMath* node_math)
 		ImGui::TableNextColumn();
 		ImGui::Text("%s", node_math->m_math._to_string());
 
-		if (data->m_has_connections)
+		ImGui::Text("%d", data->m_index);
+		switch (node_math->m_out_slots[0].kind)
 		{
-			ImGui::Text("%d", data->m_index);
-			switch (node_math->m_out_slots[0].kind)
-			{
-				case NODE_SLOT::EMPTY: break;
-				case NODE_SLOT::BOOL: break;
-				case NODE_SLOT::INTEGER: ImGui::Text("%d", std::get<int>(data->m_radicand)); break;
-				case NODE_SLOT::FLOAT: ImGui::Text("%f", std::get<float>(data->m_radicand)); break;
-				case NODE_SLOT::DOUBLE: ImGui::Text("%lf", std::get<double>(data->m_radicand)); break;
-				case NODE_SLOT::STRING: break;
-			}
-		}
-		else
-		{
-			ImGui::Text("");
-			ImGui::Text("");
+			case NODE_SLOT::EMPTY: break;
+			case NODE_SLOT::BOOL: break;
+			case NODE_SLOT::INTEGER: ImGui::Text("%d", std::get<int>(data->m_radicand)); break;
+			case NODE_SLOT::FLOAT: ImGui::Text("%f", std::get<float>(data->m_radicand)); break;
+			case NODE_SLOT::DOUBLE: ImGui::Text("%lf", std::get<double>(data->m_radicand)); break;
+			case NODE_SLOT::STRING: break;
 		}
 
 		ImGui::Text("%s", node_math->m_desc);
 		ImGui::EndTable();
 	}
+
+	std::vector<NodeVariable*> v_vars;
+	for (const Connection& connection : node_math->m_connections)
+	{
+		Node* in_node = static_cast<Node*>(connection.in_node);
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		NodeMath* node_math_in = dynamic_cast<NodeMath*>(in_node);
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+
+		if (node_math_in && node_var)
+			v_vars.push_back(node_var);
+	}
+
+	if (v_vars.size() < 2)
+		return;
+
+	std::string str = std::to_string(data->m_index);
+	str.append(" ");
+	str.append(ICON_FA_SQUARE_ROOT_ALT);
+	str.append(" ");
+
+	switch (node_math->m_out_slots[0].kind)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: break;
+		case NODE_SLOT::INTEGER: str.append(std::to_string(std::get<int>(data->m_radicand))); break;
+		case NODE_SLOT::FLOAT: str.append(std::to_string(std::get<float>(data->m_radicand))); break;
+		case NODE_SLOT::DOUBLE: str.append(std::to_string(std::get<double>(data->m_radicand))); break;
+		case NODE_SLOT::STRING: break;
+	}
+
+	ImGui::TextColored(Config::NodeInterface_c::label_color, "Expression:");
+	ImGui::BulletText("%s", str.c_str());
 }
 
 void draw_connections(Node& node)
