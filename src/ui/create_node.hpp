@@ -78,6 +78,7 @@ struct CreateNode
 
 	//NodeMath
 	static void draw_math(void);
+	static void draw_math_opt(const char* title, NODE_SLOT& slot);
 };
 }
 

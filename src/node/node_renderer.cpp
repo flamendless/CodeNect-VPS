@@ -61,12 +61,7 @@ void draw_node(Node* node)
 		case NODE_KIND::MATH:
 		{
 			NodeMath* node_math = static_cast<NodeMath*>(node);
-
-			switch (node_math->m_math)
-			{
-				case NODE_MATH::EMPTY: break;
-				case NODE_MATH::ROOT: NodeRenderer::draw_node_math_root(node_math); break;
-			}
+			NodeRenderer::draw_node_math(node_math);
 			break;
 		}
 	}
@@ -192,33 +187,22 @@ void draw_node_print(NodePrint* node_print)
 	Utils::help_marker("Should the output string be appended with newline/nextline", true);
 }
 
-void draw_node_math_root(NodeMath* node_math)
+void draw_node_math(NodeMath* node_math)
 {
-	MathRoot* data = &std::get<MathRoot>(node_math->m_data);
-
-	if (ImGui::BeginTable("TableNode##NodeMathRoot", 2, ImGuiTableFlags_SizingFixedFit))
+	if (ImGui::BeginTable("TableNode##NodeMath", 2, ImGuiTableFlags_SizingFixedFit))
 	{
 		ImGui::TableNextRow();
 		ImGui::TableNextColumn();
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Type:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Index:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Radicand:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "%s", node_math->get_string_a());
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "%s", node_math->get_string_b());
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
 
 		ImGui::TableNextColumn();
 		ImGui::Text("%s", node_math->m_math._to_string());
-
-		ImGui::Text("%d", data->m_index);
-		switch (node_math->m_out_slots[0].kind)
-		{
-			case NODE_SLOT::EMPTY: break;
-			case NODE_SLOT::BOOL: break;
-			case NODE_SLOT::INTEGER: ImGui::Text("%d", std::get<int>(data->m_radicand)); break;
-			case NODE_SLOT::FLOAT: ImGui::Text("%f", std::get<float>(data->m_radicand)); break;
-			case NODE_SLOT::DOUBLE: ImGui::Text("%lf", std::get<double>(data->m_radicand)); break;
-			case NODE_SLOT::STRING: break;
-		}
-
+		Utils::help_marker(NodeMath::tooltips[node_math->m_math._to_string()], true);
+		node_math->draw_first();
+		node_math->draw_second();
 		ImGui::Text("%s", node_math->m_desc);
 		ImGui::EndTable();
 	}
@@ -238,18 +222,18 @@ void draw_node_math_root(NodeMath* node_math)
 	if (v_vars.size() < 2)
 		return;
 
-	std::string str = std::to_string(data->m_index);
+	std::string str = std::to_string(std::get<int>(node_math->m_first));
 	str.append(" ");
-	str.append(ICON_FA_SQUARE_ROOT_ALT);
+	str.append(node_math->get_icon());
 	str.append(" ");
 
-	switch (node_math->m_out_slots[0].kind)
+	switch (node_math->m_in_slots[node_math->m_in_slots.size() - 1].kind)
 	{
 		case NODE_SLOT::EMPTY: break;
 		case NODE_SLOT::BOOL: break;
-		case NODE_SLOT::INTEGER: str.append(std::to_string(std::get<int>(data->m_radicand))); break;
-		case NODE_SLOT::FLOAT: str.append(std::to_string(std::get<float>(data->m_radicand))); break;
-		case NODE_SLOT::DOUBLE: str.append(std::to_string(std::get<double>(data->m_radicand))); break;
+		case NODE_SLOT::INTEGER: str.append(std::to_string(std::get<int>(node_math->m_second))); break;
+		case NODE_SLOT::FLOAT: str.append(std::to_string(std::get<float>(node_math->m_second))); break;
+		case NODE_SLOT::DOUBLE: str.append(std::to_string(std::get<double>(node_math->m_second))); break;
 		case NODE_SLOT::STRING: break;
 	}
 

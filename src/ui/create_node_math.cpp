@@ -22,26 +22,39 @@ void CreateNode::create_node_math(void)
 		v_slot_info_t&& in = {};
 		v_slot_info_t&& out = {};
 
-		switch(CreateNode::math)
-		{
-			case NODE_MATH::EMPTY: break;
-			case NODE_MATH::ROOT:
-			{
-				if (tmp->root_slot_in_radicand != +NODE_SLOT::INTEGER)
-				{
-					NODE_SLOT slot = NODE_SLOT::INTEGER;
-					in.push_back({slot._to_string(), slot});
-				}
-				in.push_back({tmp->root_slot_in_radicand._to_string(), tmp->root_slot_out});
-				out.push_back({tmp->root_slot_out._to_string(), tmp->root_slot_out});
-				break;
-			}
-		}
+		if (tmp->slot_in_first != tmp->slot_in_second)
+			in.push_back({tmp->slot_in_first._to_string(), tmp->slot_in_first});
 
+		in.push_back({tmp->slot_in_second._to_string(), tmp->slot_in_second});
+		out.push_back({tmp->slot_out._to_string(), tmp->slot_out});
 		NodeMath* node = new NodeMath(CreateNode::math, std::move(in), std::move(out));
 		node->set_desc(CreateNode::buf_desc);
 		Nodes::v_nodes.push_back(node);
 		ImNodes::AutoPositionNode(Nodes::v_nodes.back());
+	}
+}
+
+void CreateNode::draw_math_opt(const char* title, NODE_SLOT& slot_to_mod)
+{
+	if (ImGui::BeginCombo(title, slot_to_mod._to_string()))
+	{
+		for (NODE_SLOT slot : NODE_SLOT::_values())
+		{
+			if (slot == +NODE_SLOT::EMPTY ||
+				slot == +NODE_SLOT::BOOL ||
+				slot == +NODE_SLOT::STRING)
+				continue;
+
+			ImGui::PushID(slot);
+			const char* txt = slot._to_string();
+
+			if (ImGui::Selectable(txt, slot_to_mod._to_string() == txt))
+				slot_to_mod = slot;
+
+			ImGui::PopID();
+		}
+
+		ImGui::EndCombo();
 	}
 }
 
@@ -54,53 +67,23 @@ void CreateNode::draw_math(void)
 		case NODE_MATH::EMPTY: break;
 		case NODE_MATH::ROOT:
 		{
-			if (ImGui::BeginCombo("Radicand Input Type", tmp->root_slot_in_radicand._to_string()))
-			{
-				for (NODE_SLOT slot : NODE_SLOT::_values())
-				{
-					if (slot == +NODE_SLOT::EMPTY ||
-						slot == +NODE_SLOT::BOOL ||
-						slot == +NODE_SLOT::STRING)
-						continue;
-
-					ImGui::PushID(slot);
-					const char* txt = slot._to_string();
-
-					if (ImGui::Selectable(txt, tmp->root_slot_in_radicand._to_string() == txt))
-						tmp->root_slot_in_radicand = slot;
-
-					ImGui::PopID();
-				}
-
-				ImGui::EndCombo();
-			}
-
-			if (ImGui::BeginCombo("Output Type", tmp->root_slot_out._to_string()))
-			{
-				for (NODE_SLOT slot : NODE_SLOT::_values())
-				{
-					if (slot == +NODE_SLOT::EMPTY ||
-						slot == +NODE_SLOT::BOOL ||
-						slot == +NODE_SLOT::STRING)
-						continue;
-
-					ImGui::PushID(slot);
-					const char* txt = slot._to_string();
-
-					if (ImGui::Selectable(txt, tmp->root_slot_out._to_string() == txt))
-						tmp->root_slot_out = slot;
-
-					ImGui::PopID();
-				}
-
-				ImGui::EndCombo();
-			}
-
-			tmp->valid_math = tmp->root_slot_in_radicand != +NODE_SLOT::EMPTY &&
-				tmp->root_slot_out != +NODE_SLOT::EMPTY;
+			CreateNode::draw_math_opt("Index Input Type", tmp->slot_in_first);
+			CreateNode::draw_math_opt("Radicand Input Type", tmp->slot_in_second);
+			CreateNode::draw_math_opt("Output Type", tmp->slot_out);
+			break;
+		}
+		case NODE_MATH::POW:
+		{
+			CreateNode::draw_math_opt("Base Input Type", tmp->slot_in_first);
+			CreateNode::draw_math_opt("Exponent Input Type", tmp->slot_in_second);
+			CreateNode::draw_math_opt("Output Type", tmp->slot_out);
+			break;
 		}
 	}
 
+	tmp->valid_math = tmp->slot_in_first != +NODE_SLOT::EMPTY &&
+		tmp->slot_in_second != +NODE_SLOT::EMPTY &&
+		tmp->slot_out != +NODE_SLOT::EMPTY;
 	CreateNode::can_create = tmp->valid_math;
 }
 }

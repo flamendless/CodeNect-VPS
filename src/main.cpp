@@ -62,7 +62,7 @@ int main(int argv, char** args)
 
 	//test
 #if DEBUG_MODE
-	CodeNect::Project::open("test_branch.cn");
+	CodeNect::Project::open("test_math.cn");
 #endif
 
 	PLOGI << "Initialization is complete";

@@ -183,18 +183,6 @@ void CreateNode::edit(Node* node)
 		{
 			NodeMath* node_math = static_cast<NodeMath*>(node);
 			TempMathData* temp = new TempMathData();
-
-			//todo
-			switch (node_math->m_math)
-			{
-				case NODE_MATH::EMPTY: break;
-				case NODE_MATH::ROOT: break;
-				case NODE_MATH::POW: break;
-				case NODE_MATH::SIN: break;
-				case NODE_MATH::COS: break;
-				case NODE_MATH::TAN: break;
-			}
-
 			temp->valid_math = true;
 			CreateNode::node_to_edit = node;
 			CreateNode::data = temp;

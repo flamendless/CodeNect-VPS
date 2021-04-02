@@ -23,7 +23,7 @@ void draw_node_cast(NodeCast* node_cast);
 void draw_node_cmp(NodeComparison* node_cmp);
 void draw_node_branch(NodeBranch* node_branch);
 void draw_node_print(NodePrint* node_print);
-void draw_node_math_root(NodeMath* node_math);
+void draw_node_math(NodeMath* node_math);
 
 void draw_connections(Node& node);
 void draw_connected_op(NodeOperation* node_op);

@@ -63,10 +63,9 @@ struct TempActionData
 
 struct TempMathData
 {
-	//root
-	NODE_SLOT root_slot_in_radicand = NODE_SLOT::EMPTY;
-	NODE_SLOT root_slot_out = NODE_SLOT::EMPTY;
-
+	NODE_SLOT slot_in_first = NODE_SLOT::EMPTY;
+	NODE_SLOT slot_in_second = NODE_SLOT::EMPTY;
+	NODE_SLOT slot_out = NODE_SLOT::EMPTY;
 	bool valid_math = false;
 };
 }
