@@ -34,6 +34,9 @@ struct NodeMeta
 	std::string m_override;
 	std::string m_append_newline;
 
+	//NodeMath
+	std::string m_math;
+
 	inline NodeMeta() {}
 };
 

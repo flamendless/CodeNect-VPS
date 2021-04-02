@@ -8,6 +8,7 @@
 #include "node/node_cmp.hpp"
 #include "node/node_branch.hpp"
 #include "node/node_print.hpp"
+#include "node/node_math.hpp"
 
 namespace CodeNect
 {
@@ -159,6 +160,19 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				node_print->m_override = Utils::bool_from_string(nm->m_override.c_str());
 				node_print->m_append_newline = Utils::bool_from_string(nm->m_append_newline.c_str());
 				Nodes::v_nodes.push_back(node_print);
+				break;
+			}
+			case NODE_KIND::MATH:
+			{
+				v_slot_info_t&& in = {};
+				v_slot_info_t&& out = {};
+				Nodes::build_slots(*nm, in, out);
+				NODE_MATH math = NODE_MATH::_from_string(nm->m_math.c_str());
+				NodeMath* node_math = new NodeMath(math, std::move(in), std::move(out));
+				node_math->m_name = nm->m_name.c_str();
+				node_math->m_pos = ImVec2(nm->x, nm->y);
+				node_math->m_desc = nm->m_desc.c_str();
+				Nodes::v_nodes.push_back(node_math);
 				break;
 			}
 		}

@@ -16,6 +16,7 @@
 #include "node/node_op.hpp"
 #include "node/node_cmp.hpp"
 #include "node/node_print.hpp"
+#include "node/node_math.hpp"
 
 namespace CodeNect
 {
@@ -218,6 +219,12 @@ int Project::save(void)
 				ini.SetValue(section, "is_append_newline", is_append_newline);
 				break;
 			}
+			case NODE_KIND::MATH:
+			{
+				NodeMath* node_math = static_cast<NodeMath*>(node);
+				ini.SetValue(section, "math", node_math->m_math._to_string());
+				break;
+			}
 		}
 
 		//save input and output slots
@@ -348,6 +355,7 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 	const char* orig_str = ini.GetValue(section, "value", "");
 	const char* is_override = ini.GetValue(section, "is_override", "false");
 	const char* is_append_newline = ini.GetValue(section, "is_append_newline", "false");
+	const char* math = ini.GetValue(section, "math", "EMPTY");
 
 	NodeMeta* nm = new NodeMeta();
 	nm->m_name = name;
@@ -363,6 +371,7 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 	nm->m_orig_str = orig_str;
 	nm->m_override = is_override;
 	nm->m_append_newline = is_append_newline;
+	nm->m_math = math;
 
 	//get input/output slots
 	CSimpleIniA::TNamesDepend keys;

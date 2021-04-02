@@ -202,6 +202,7 @@ void draw_node_math_root(NodeMath* node_math)
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Type:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Index:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Radicand:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
 
 		ImGui::TableNextColumn();
 		ImGui::Text("%s", node_math->m_math._to_string());
@@ -225,6 +226,7 @@ void draw_node_math_root(NodeMath* node_math)
 			ImGui::Text("");
 		}
 
+		ImGui::Text("%s", node_math->m_desc);
 		ImGui::EndTable();
 	}
 }
