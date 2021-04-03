@@ -200,7 +200,7 @@ void draw_node_math(NodeMath* node_math)
 
 		ImGui::TableNextColumn();
 		ImGui::Text("%s", node_math->m_math._to_string());
-		Utils::help_marker(NodeMath::tooltips[node_math->m_math._to_string()], true);
+		Utils::help_marker(NodeMath::m_tooltips[node_math->m_math._to_string()], true);
 		node_math->draw_first();
 		node_math->draw_second();
 		ImGui::Text("%s", node_math->m_desc);

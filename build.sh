@@ -1,5 +1,11 @@
+app_name=CodeNect
 dir_build=build
 dir_install=bin
+
+function debug()
+{
+	cd ${dir_install} && lldb ${app_name}
+}
 
 function rebuild()
 {
@@ -13,7 +19,7 @@ function compile()
 
 function run()
 {
-	cd ${dir_install} && ./CodeNect
+	cd ${dir_install} && ./${app_name}
 }
 
 function clean()

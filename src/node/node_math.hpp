@@ -1,6 +1,7 @@
 #ifndef _NODE_MATH_HPP
 #define _NODE_MATH_HPP
 
+#include <functional>
 #include <map>
 #include <variant>
 #include "node/node_def.hpp"
@@ -10,7 +11,8 @@ namespace CodeNect
 {
 struct NodeMath : public Node
 {
-	static std::map<std::string, const char*> tooltips;
+	static std::map<std::string, const char*> m_tooltips;
+	static std::map<std::string, std::function<double(double, double)>> m_functions;
 
 	NODE_KIND m_kind = NODE_KIND::MATH;
 	NODE_MATH m_math = NODE_MATH::EMPTY;

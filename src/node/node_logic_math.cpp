@@ -20,22 +20,60 @@ void process_math(void)
 			continue;
 
 		node_math->reset();
-
-		switch (node_math->m_math)
-		{
-			case NODE_MATH::EMPTY: break;
-			case NODE_MATH::ROOT: NodeLogic::process_math_root(node_math); break;
-			case NODE_MATH::POW: NodeLogic::process_math_power(node_math); break;
-		}
+		NodeLogic::calculate_math(node_math);
 	}
 }
 
-void process_math_lhs(NodeMath* node_math)
+double calculate(NodeMath* node_math, std::function<double(double a, double b)> fn)
 {
-	if (node_math->m_connections.size() < 3)
+	double a = 0;
+	double result = 0;
+
+	switch (node_math->m_in_slots[0].kind)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: break;
+		case NODE_SLOT::INTEGER: a = std::get<int>(node_math->m_first); break;
+		case NODE_SLOT::FLOAT: a = std::get<float>(node_math->m_first); break;
+		case NODE_SLOT::DOUBLE: a = std::get<double>(node_math->m_first); break;
+		case NODE_SLOT::STRING: break;
+	}
+
+	switch (node_math->m_in_slots[node_math->m_in_slots.size() - 1].kind)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: break;
+		case NODE_SLOT::INTEGER:
+		{
+			int b = std::get<int>(node_math->m_second);
+			result = fn(a, b);
+			break;
+		}
+		case NODE_SLOT::FLOAT:
+		{
+			float b = std::get<float>(node_math->m_second);
+			result = fn(a, b);
+			break;
+		}
+		case NODE_SLOT::DOUBLE:
+		{
+			double b = std::get<double>(node_math->m_second);
+			result = fn(a, b);
+			break;
+		}
+		case NODE_SLOT::STRING: break;
+	}
+
+	return result;
+}
+
+void calculate_math(NodeMath* node_math)
+{
+	if (node_math->m_in_slots.size() == 0)
 		return;
 
-	bool is_index_found = false;
+	bool is_first_found = false;
+
 	//get lhs of this node_math
 	for (const Connection& connection : node_math->m_connections)
 	{
@@ -49,32 +87,28 @@ void process_math_lhs(NodeMath* node_math)
 		if (node_math_in && node_var)
 		{
 			NodeValue* val = &node_var->m_value;
+			NODE_SLOT* slot = &val->m_slot;
+			std::variant<int, float, double>* var = nullptr;
 
-			if (!is_index_found)
+			if (!is_first_found && *slot == node_math->m_in_slots[0].kind)
 			{
-				switch (val->m_slot)
-				{
-					case NODE_SLOT::EMPTY: break;
-					case NODE_SLOT::BOOL: break;
-					case NODE_SLOT::INTEGER: node_math->m_first = std::get<int>(val->data); break;
-					case NODE_SLOT::FLOAT: node_math->m_first = std::get<float>(val->data); break;
-					case NODE_SLOT::DOUBLE: node_math->m_first = std::get<double>(val->data); break;
-					case NODE_SLOT::STRING: break;
-				}
-				is_index_found = true;
+				var = &node_math->m_first;
+				is_first_found = true;
 			}
-			else
+			else if (*slot == node_math->m_in_slots[node_math->m_in_slots.size() - 1].kind)
 			{
-				switch (val->m_slot)
-				{
-					case NODE_SLOT::EMPTY: break;
-					case NODE_SLOT::BOOL: break;
-					case NODE_SLOT::INTEGER: node_math->m_second = std::get<int>(val->data); break;
-					case NODE_SLOT::FLOAT: node_math->m_second = std::get<float>(val->data); break;
-					case NODE_SLOT::DOUBLE: node_math->m_second = std::get<double>(val->data); break;
-					case NODE_SLOT::STRING: break;
-				}
-				is_index_found = false;
+				var = &node_math->m_second;
+				is_first_found = false;
+			}
+
+			switch (val->m_slot)
+			{
+				case NODE_SLOT::EMPTY: break;
+				case NODE_SLOT::BOOL: break;
+				case NODE_SLOT::INTEGER: *var = std::get<int>(val->data); break;
+				case NODE_SLOT::FLOAT: *var = std::get<float>(val->data); break;
+				case NODE_SLOT::DOUBLE: *var = std::get<double>(val->data); break;
+				case NODE_SLOT::STRING: break;
 			}
 		}
 		else if (node_math_in && node_op)
@@ -82,10 +116,8 @@ void process_math_lhs(NodeMath* node_math)
 			//TODO
 		}
 	}
-}
 
-NodeVariable* get_res_var(NodeMath* node_math)
-{
+	NodeVariable* res_var = nullptr;
 	//get rhs
 	for (const Connection& connection : node_math->m_connections)
 	{
@@ -98,18 +130,21 @@ NodeVariable* get_res_var(NodeMath* node_math)
 		NodeOperation* node_op = dynamic_cast<NodeOperation*>(in_node);
 
 		if (node_math_out && node_var)
-			return node_var;
+			res_var = node_var;
 		else if (node_math_out && node_op)
 		{
 			//TODO
 		}
 	}
 
-	return nullptr;
-}
+	if (!res_var)
+		return;
 
-void set_result(NodeValue* res, double result)
-{
+	//evaluate
+	node_math->m_has_connections = true;
+	NodeValue* res = &res_var->m_value;
+	double result = calculate(node_math, NodeMath::m_functions[node_math->m_math._to_string()]);
+
 	switch (res->m_slot)
 	{
 		case NODE_SLOT::EMPTY: break;
@@ -119,109 +154,5 @@ void set_result(NodeValue* res, double result)
 		case NODE_SLOT::DOUBLE: res->set((double)result); break;
 		case NODE_SLOT::STRING: break;
 	}
-}
-
-void process_math_root(NodeMath* node_math)
-{
-	process_math_lhs(node_math);
-	NodeVariable* res_var = get_res_var(node_math);
-
-	if (!res_var)
-		return;
-
-	//evaluate
-	node_math->m_has_connections = true;
-	NodeValue* res = &res_var->m_value;
-	int index = 0;
-	double result = 0;
-
-	switch (node_math->m_in_slots[0].kind)
-	{
-		case NODE_SLOT::EMPTY: break;
-		case NODE_SLOT::BOOL: break;
-		case NODE_SLOT::INTEGER: index = std::get<int>(node_math->m_first); break;
-		case NODE_SLOT::FLOAT: index = (int)std::get<float>(node_math->m_first); break;
-		case NODE_SLOT::DOUBLE: index = (int)std::get<double>(node_math->m_first); break;
-		case NODE_SLOT::STRING: break;
-	}
-
-	switch (node_math->m_in_slots[node_math->m_in_slots.size() - 1].kind)
-	{
-		case NODE_SLOT::EMPTY: break;
-		case NODE_SLOT::BOOL: break;
-		case NODE_SLOT::INTEGER:
-		{
-			int radicand = std::get<int>(node_math->m_second);
-			result = std::pow(radicand, 1.0/index);
-			break;
-		}
-		case NODE_SLOT::FLOAT:
-		{
-			float radicand = std::get<float>(node_math->m_second);
-			result = std::pow(radicand, 1.0/index);
-			break;
-		}
-		case NODE_SLOT::DOUBLE:
-		{
-			double radicand = std::get<double>(node_math->m_second);
-			result = std::pow(radicand, 1.0/index);
-			break;
-		}
-		case NODE_SLOT::STRING: break;
-	}
-
-	set_result(res, result);
-}
-
-void process_math_power(NodeMath* node_math)
-{
-	process_math_lhs(node_math);
-	NodeVariable* res_var = get_res_var(node_math);
-
-	if (!res_var)
-		return;
-
-	//evaluate
-	node_math->m_has_connections = true;
-	NodeValue* res = &res_var->m_value;
-	double base = 0;
-	double result = 0;
-
-	switch (node_math->m_in_slots[0].kind)
-	{
-		case NODE_SLOT::EMPTY: break;
-		case NODE_SLOT::BOOL: break;
-		case NODE_SLOT::INTEGER: base = (double)std::get<int>(node_math->m_first); break;
-		case NODE_SLOT::FLOAT: base = (double)std::get<float>(node_math->m_first); break;
-		case NODE_SLOT::DOUBLE: base = std::get<double>(node_math->m_first); break;
-		case NODE_SLOT::STRING: break;
-	}
-
-	switch (node_math->m_in_slots[node_math->m_in_slots.size() - 1].kind)
-	{
-		case NODE_SLOT::EMPTY: break;
-		case NODE_SLOT::BOOL: break;
-		case NODE_SLOT::INTEGER:
-		{
-			int exponent = std::get<int>(node_math->m_second);
-			result = std::pow(base, exponent);
-			break;
-		}
-		case NODE_SLOT::FLOAT:
-		{
-			float exponent = std::get<float>(node_math->m_second);
-			result = std::pow(base, exponent);
-			break;
-		}
-		case NODE_SLOT::DOUBLE:
-		{
-			double exponent = std::get<double>(node_math->m_second);
-			result = std::pow(base, exponent);
-			break;
-		}
-		case NODE_SLOT::STRING: break;
-	}
-
-	set_result(res, result);
 }
 }

@@ -1,5 +1,6 @@
 #include "node/node_math.hpp"
 
+#include <cmath>
 #include "ppk_assert.h"
 #include "IconsFontAwesome5.h"
 #include "imgui.h"
@@ -8,13 +9,19 @@
 
 namespace CodeNect
 {
-std::map<std::string, const char*> NodeMath::tooltips
+std::map<std::string, const char*> NodeMath::m_tooltips
 {
 	{"ROOT", "get the n-th (index) root of the radicand"},
 	{"POW", "get the result of raising the base number by the power of exponent"},
 	{"SIN", "get the sine of the number"},
 	{"COS", "get the cosine of the number"},
 	{"TAN", "get the tangent of the number"},
+};
+
+std::map<std::string, std::function<double(double, double)>> NodeMath::m_functions
+{
+	{"ROOT", [](double a, double b) -> double { return std::pow(b, 1.0/(int)a); }},
+	{"POW", [](double a, double b) -> double { return std::pow(a, b); }},
 };
 
 NodeMath::NodeMath(

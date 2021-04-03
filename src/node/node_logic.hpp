@@ -15,8 +15,7 @@ void process_cmp(void);
 void process_branch(void);
 void process_print(void);
 void process_math(void);
-void process_math_root(NodeMath* node_math);
-void process_math_power(NodeMath* node_math);
+void calculate_math(NodeMath* node_math);
 bool validate_node_cast(Node* in_node, Node* out_node);
 }
 
