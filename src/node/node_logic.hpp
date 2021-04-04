@@ -15,7 +15,8 @@ void process_cmp(void);
 void process_branch(void);
 void process_print(void);
 void process_math(void);
-void calculate_math(NodeMath* node_math);
+double calculate_math(NodeMath* node_math, std::function<double(double, double)> fn);
+
 bool validate_node_cast(Node* in_node, Node* out_node);
 }
 

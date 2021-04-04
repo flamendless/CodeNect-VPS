@@ -15,32 +15,27 @@ void draw_node(Node* node)
 		case NODE_KIND::EMPTY: break;
 		case NODE_KIND::VARIABLE:
 		{
-			NodeVariable* node_var = static_cast<NodeVariable*>(node);
-			NodeRenderer::draw_node_var(node_var);
+			NodeRenderer::draw_node_var(static_cast<NodeVariable*>(node));
 			break;
 		}
 		case NODE_KIND::OPERATION:
 		{
-			NodeOperation* node_op = static_cast<NodeOperation*>(node);
-			NodeRenderer::draw_node_op(node_op);
+			NodeRenderer::draw_node_op(static_cast<NodeOperation*>(node));
 			break;
 		}
 		case NODE_KIND::CAST:
 		{
-			NodeCast* node_cast = static_cast<NodeCast*>(node);
-			NodeRenderer::draw_node_cast(node_cast);
+			NodeRenderer::draw_node_cast(static_cast<NodeCast*>(node));
 			break;
 		}
 		case NODE_KIND::COMPARISON:
 		{
-			NodeComparison* node_cmp = static_cast<NodeComparison*>(node);
-			NodeRenderer::draw_node_cmp(node_cmp);
+			NodeRenderer::draw_node_cmp(static_cast<NodeComparison*>(node));
 			break;
 		}
 		case NODE_KIND::BRANCH:
 		{
-			NodeBranch* node_branch = static_cast<NodeBranch*>(node);
-			NodeRenderer::draw_node_branch(node_branch);
+			NodeRenderer::draw_node_branch(static_cast<NodeBranch*>(node));
 			break;
 		}
 		case NODE_KIND::ACTION:
@@ -51,8 +46,7 @@ void draw_node(Node* node)
 				case NODE_ACTION::EMPTY: break;
 				case NODE_ACTION::PRINT:
 				{
-					NodePrint* node_print = static_cast<NodePrint*>(node);
-					NodeRenderer::draw_node_print(node_print);
+					NodeRenderer::draw_node_print(static_cast<NodePrint*>(node));
 					break;
 				}
 			}
@@ -60,8 +54,7 @@ void draw_node(Node* node)
 		}
 		case NODE_KIND::MATH:
 		{
-			NodeMath* node_math = static_cast<NodeMath*>(node);
-			NodeRenderer::draw_node_math(node_math);
+			NodeRenderer::draw_node_math(static_cast<NodeMath*>(node));
 			break;
 		}
 	}
@@ -195,17 +188,26 @@ void draw_node_math(NodeMath* node_math)
 		ImGui::TableNextColumn();
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Type:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "%s", node_math->get_string_a());
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "%s", node_math->get_string_b());
+
+		if (node_math->m_needs_two_val)
+			ImGui::TextColored(Config::NodeInterface_c::label_color, "%s", node_math->get_string_b());
+
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
 
 		ImGui::TableNextColumn();
 		ImGui::Text("%s", node_math->m_math._to_string());
 		Utils::help_marker(NodeMath::m_tooltips[node_math->m_math._to_string()], true);
 		node_math->draw_first();
-		node_math->draw_second();
+
+		if (node_math->m_needs_two_val)
+			node_math->draw_second();
+
 		ImGui::Text("%s", node_math->m_desc);
 		ImGui::EndTable();
 	}
+
+	if (!node_math->m_needs_two_val)
+		return;
 
 	std::vector<NodeVariable*> v_vars;
 	for (const Connection& connection : node_math->m_connections)
@@ -279,7 +281,7 @@ void draw_connections(Node& node)
 		//draw connection
 		//query removed connection
 		if (!ImNodes::Connection(connection.in_node, connection.in_slot,
-				connection.out_node, connection.out_slot))
+			connection.out_node, connection.out_slot))
 		{
 			Node* in_node = static_cast<Node*>(connection.in_node);
 			Node* out_node = static_cast<Node*>(connection.out_node);

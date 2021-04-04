@@ -22,10 +22,17 @@ void CreateNode::create_node_math(void)
 		v_slot_info_t&& in = {};
 		v_slot_info_t&& out = {};
 
-		if (tmp->slot_in_first != tmp->slot_in_second)
+		if (CreateNode::math == +NODE_MATH::SIN ||
+			CreateNode::math == +NODE_MATH::COS ||
+			CreateNode::math == +NODE_MATH::TAN)
 			in.push_back({tmp->slot_in_first._to_string(), tmp->slot_in_first});
+		else
+		{
+			if (tmp->slot_in_first != tmp->slot_in_second)
+				in.push_back({tmp->slot_in_first._to_string(), tmp->slot_in_first});
+			in.push_back({tmp->slot_in_second._to_string(), tmp->slot_in_second});
+		}
 
-		in.push_back({tmp->slot_in_second._to_string(), tmp->slot_in_second});
 		out.push_back({tmp->slot_out._to_string(), tmp->slot_out});
 		NodeMath* node = new NodeMath(CreateNode::math, std::move(in), std::move(out));
 		node->set_desc(CreateNode::buf_desc);
@@ -60,6 +67,9 @@ void CreateNode::draw_math_opt(const char* title, NODE_SLOT& slot_to_mod)
 
 void CreateNode::draw_math(void)
 {
+	if (CreateNode::is_edit_mode)
+		return;
+
 	TempMathData* tmp = std::get<TempMathData*>(data);
 
 	switch(CreateNode::math)
@@ -70,6 +80,9 @@ void CreateNode::draw_math(void)
 			CreateNode::draw_math_opt("Index Input Type", tmp->slot_in_first);
 			CreateNode::draw_math_opt("Radicand Input Type", tmp->slot_in_second);
 			CreateNode::draw_math_opt("Output Type", tmp->slot_out);
+			tmp->valid_math = tmp->slot_in_first != +NODE_SLOT::EMPTY &&
+				tmp->slot_in_second != +NODE_SLOT::EMPTY &&
+				tmp->slot_out != +NODE_SLOT::EMPTY;
 			break;
 		}
 		case NODE_MATH::POW:
@@ -77,13 +90,23 @@ void CreateNode::draw_math(void)
 			CreateNode::draw_math_opt("Base Input Type", tmp->slot_in_first);
 			CreateNode::draw_math_opt("Exponent Input Type", tmp->slot_in_second);
 			CreateNode::draw_math_opt("Output Type", tmp->slot_out);
+			tmp->valid_math = tmp->slot_in_first != +NODE_SLOT::EMPTY &&
+				tmp->slot_in_second != +NODE_SLOT::EMPTY &&
+				tmp->slot_out != +NODE_SLOT::EMPTY;
+			break;
+		}
+		case NODE_MATH::SIN:
+		case NODE_MATH::COS:
+		case NODE_MATH::TAN:
+		{
+			CreateNode::draw_math_opt("Input Type", tmp->slot_in_first);
+			CreateNode::draw_math_opt("Output Type", tmp->slot_out);
+			tmp->valid_math = tmp->slot_in_first != +NODE_SLOT::EMPTY &&
+				tmp->slot_out != +NODE_SLOT::EMPTY;
 			break;
 		}
 	}
 
-	tmp->valid_math = tmp->slot_in_first != +NODE_SLOT::EMPTY &&
-		tmp->slot_in_second != +NODE_SLOT::EMPTY &&
-		tmp->slot_out != +NODE_SLOT::EMPTY;
 	CreateNode::can_create = tmp->valid_math;
 }
 }

@@ -22,6 +22,9 @@ std::map<std::string, std::function<double(double, double)>> NodeMath::m_functio
 {
 	{"ROOT", [](double a, double b) -> double { return std::pow(b, 1.0/(int)a); }},
 	{"POW", [](double a, double b) -> double { return std::pow(a, b); }},
+	{"SIN", [](double a, double b) -> double { return std::sin(a); }},
+	{"COS", [](double a, double b) -> double { return std::cos(a); }},
+	{"TAN", [](double a, double b) -> double { return std::tan(a); }},
 };
 
 NodeMath::NodeMath(
@@ -37,6 +40,9 @@ NodeMath::NodeMath(
 	m_math = math;
 	m_in_slots = in_slots;
 	m_out_slots = out_slots;
+
+	if (m_math == +NODE_MATH::ROOT || m_math == +NODE_MATH::POW)
+		m_needs_two_val = true;
 
 	reset();
 
@@ -73,6 +79,9 @@ const char* NodeMath::get_string_a(void)
 		case NODE_MATH::EMPTY: break;
 		case NODE_MATH::ROOT: return "Index:"; break;
 		case NODE_MATH::POW: return "Base:"; break;
+		case NODE_MATH::SIN:
+		case NODE_MATH::COS:
+		case NODE_MATH::TAN: return "Number:"; break;
 	}
 
 	PPK_ASSERT(false, "this should not be reached");
@@ -86,6 +95,9 @@ const char* NodeMath::get_string_b(void)
 		case NODE_MATH::EMPTY: break;
 		case NODE_MATH::ROOT: return "Radicand:"; break;
 		case NODE_MATH::POW: return "Exponent:"; break;
+		case NODE_MATH::SIN: break;
+		case NODE_MATH::COS: break;
+		case NODE_MATH::TAN: break;
 	}
 
 	PPK_ASSERT(false, "this should not be reached");
@@ -99,6 +111,9 @@ const char* NodeMath::get_icon(void)
 		case NODE_MATH::EMPTY: break;
 		case NODE_MATH::ROOT: return ICON_FA_SQUARE_ROOT_ALT; break;
 		case NODE_MATH::POW: return ICON_FA_ANGLE_UP; break;
+		case NODE_MATH::SIN: break;
+		case NODE_MATH::COS: break;
+		case NODE_MATH::TAN: break;
 	}
 
 	PPK_ASSERT(false, "this should not be reached");

@@ -45,7 +45,7 @@ void CreateNode::open(NODE_KIND kind)
 		case NODE_KIND::OPERATION: CreateNode::data = new TempOperationData(); break;
 		case NODE_KIND::CAST: CreateNode::data = new TempCastData(); break;
 		case NODE_KIND::COMPARISON: CreateNode::data = new TempComparisonData(); break;
-		case NODE_KIND::BRANCH: CreateNode::data = new TempBranchData(); break;
+		case NODE_KIND::BRANCH: CreateNode::data = new TempBranchData(); CreateNode::can_create = true; break;
 		case NODE_KIND::ACTION: CreateNode::data = new TempActionData(); break;
 		case NODE_KIND::MATH: CreateNode::data = new TempMathData(); break;
 	}
@@ -149,9 +149,6 @@ void CreateNode::edit(Node* node)
 		{
 			NodeBranch* node_branch = static_cast<NodeBranch*>(node);
 			TempBranchData* temp = new TempBranchData();
-
-			temp->valid_branch = true;
-
 			CreateNode::node_to_edit = node;
 			CreateNode::data = temp;
 			break;

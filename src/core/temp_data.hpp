@@ -45,7 +45,7 @@ struct TempComparisonData
 
 struct TempBranchData
 {
-	bool valid_branch = false;
+	bool valid_branch = true;
 };
 
 struct TempActionData

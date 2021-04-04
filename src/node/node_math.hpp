@@ -18,6 +18,7 @@ struct NodeMath : public Node
 	NODE_MATH m_math = NODE_MATH::EMPTY;
 
 	bool m_has_connections = false;
+	bool m_needs_two_val = false;
 	std::variant<int, float, double> m_first = 0; //index, base, sin, cos, tan
 	std::variant<int, float, double> m_second = 0; //radicand, power
 
