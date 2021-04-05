@@ -58,26 +58,27 @@ void process_cmp(void)
 			break;
 
 		//for storing the input (lhs) nodes to be compared
-		std::vector<NodeVariable*> v_vars;
+		std::vector<NodeValue*> v_values;
 
 		for (const Connection& connection : node_cmp->m_connections)
 		{
 			if (node_cmp->m_in_slots[0].kind == +NODE_SLOT::BOOL)
 			{
-				if (v_vars.size() == 2)
+				if (v_values.size() == 2)
 					break;
 			}
 
-			Node* in_node = static_cast<Node*>(connection.in_node);
 			Node* out_node = static_cast<Node*>(connection.out_node);
-			NodeComparison* node_cmp = dynamic_cast<NodeComparison*>(in_node);
 			NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+			NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
 
-			if (node_cmp && node_var)
-				v_vars.push_back(node_var);
+			if (node_var)
+				v_values.push_back(&node_var->m_value);
+			else if (node_math)
+				v_values.push_back(node_math->m_current_val);
 		}
 
-		if (v_vars.size() < 2)
+		if (v_values.size() < 2)
 			continue;
 
 		node_cmp->m_has_valid_connections = true;
@@ -85,13 +86,11 @@ void process_cmp(void)
 		bool res = false;
 		bool is_first = true;
 
-		for (NodeVariable* node_var : v_vars)
+		for (NodeValue* value : v_values)
 		{
-			NodeValue* current_value = &node_var->m_value;
-
 			if (is_first)
 			{
-				result.copy(*current_value);
+				result.copy(*value);
 				is_first = false;
 				continue;
 			}
@@ -102,42 +101,42 @@ void process_cmp(void)
 				case NODE_CMP::EMPTY: break;
 				case NODE_CMP::EQ:
 				{
-					res = result.is_eq_to(*current_value);
+					res = result.is_eq_to(*value);
 					break;
 				}
 				case NODE_CMP::NEQ:
 				{
-					res = result.is_neq_to(*current_value);
+					res = result.is_neq_to(*value);
 					break;
 				}
 				case NODE_CMP::LT:
 				{
-					res = result.is_lt_to(*current_value);
+					res = result.is_lt_to(*value);
 					break;
 				}
 				case NODE_CMP::GT:
 				{
-					res = result.is_gt_to(*current_value);
+					res = result.is_gt_to(*value);
 					break;
 				}
 				case NODE_CMP::LTE:
 				{
-					res = result.is_lte_to(*current_value);
+					res = result.is_lte_to(*value);
 					break;
 				}
 				case NODE_CMP::GTE:
 				{
-					res = result.is_gte_to(*current_value);
+					res = result.is_gte_to(*value);
 					break;
 				}
 				case NODE_CMP::OR:
 				{
-					res = result.is_or_to(*current_value);
+					res = result.is_or_to(*value);
 					break;
 				}
 				case NODE_CMP::AND:
 				{
-					res = result.is_and_to(*current_value);
+					res = result.is_and_to(*value);
 					break;
 				}
 			}

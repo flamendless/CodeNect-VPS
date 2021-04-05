@@ -26,8 +26,7 @@ void draw_node_print(NodePrint* node_print);
 void draw_node_math(NodeMath* node_math);
 
 void draw_connections(Node& node);
-void draw_connected_op(NodeOperation* node_op);
-void draw_connected_cmp(NodeComparison* node_cmp);
+void draw_connected_values(Node* node);
 
 void push_node_style(void);
 void pop_node_style(void);

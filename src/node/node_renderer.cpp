@@ -108,7 +108,7 @@ void draw_node_op(NodeOperation* node_op)
 		ImGui::EndTable();
 	}
 
-	NodeRenderer::draw_connected_op(node_op);
+	NodeRenderer::draw_connected_values(node_op);
 }
 
 void draw_node_cast(NodeCast* node_cast)
@@ -140,7 +140,7 @@ void draw_node_cmp(NodeComparison* node_cmp)
 		ImGui::EndTable();
 	}
 
-	NodeRenderer::draw_connected_cmp(node_cmp);
+	NodeRenderer::draw_connected_values(node_cmp);
 }
 
 void draw_node_branch(NodeBranch* node_branch)
@@ -294,14 +294,27 @@ void draw_connections(Node& node)
 	}
 }
 
-void draw_connected_op(NodeOperation* node_op)
+void draw_connected_values(Node* node)
 {
-	if (!node_op->m_has_valid_connections)
+	NodeOperation* node_op = dynamic_cast<NodeOperation*>(node);
+	NodeComparison* node_cmp = dynamic_cast<NodeComparison*>(node);
+
+	if (!node_op && !node_cmp)
 		return;
 
-	std::vector<Node*> v_nodes;
+	if (node_op)
+	{
+		if (!node_op->m_has_valid_connections)
+			return;
+	}
+	else if (node_cmp)
+	{
+		if (!node_cmp->m_has_valid_connections)
+			return;
+	}
 
-	for (const Connection& connection : node_op->m_connections)
+	std::vector<Node*> v_nodes;
+	for (const Connection& connection : node->m_connections)
 	{
 		Node* out_node = (Node*)connection.out_node;
 		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
@@ -311,9 +324,18 @@ void draw_connected_op(NodeOperation* node_op)
 			v_nodes.push_back(out_node);
 	}
 
-	std::string str_var;
-	std::string str_val;
-	const char* op = node_op->get_op();
+	if (v_nodes.size() < 2)
+		return;
+
+	ImGui::TextColored(Config::NodeInterface_c::label_color, "Expression:");
+	std::string str_var = "";
+	std::string str_val = "";
+	const char* sign;
+
+	if (node_op)
+		sign = node_op->get_op();
+	else if (node_cmp)
+		sign = node_cmp->get_cmp_op();
 
 	for (int i = 0; i < v_nodes.size(); i++)
 	{
@@ -340,60 +362,11 @@ void draw_connected_op(NodeOperation* node_op)
 		if (i < v_nodes.size() - 1)
 		{
 			str_var.append(" ");
-			str_var.append(op);
+			str_var.append(sign);
 			str_var.append(" ");
 
 			str_val.append(" ");
-			str_val.append(op);
-			str_val.append(" ");
-		}
-	}
-
-	ImGui::TextColored(Config::NodeInterface_c::label_color, "Expression:");
-	ImGui::Indent();
-	ImGui::BulletText("%s", str_var.c_str());
-	ImGui::BulletText("%s", str_val.c_str());
-}
-
-void draw_connected_cmp(NodeComparison* node_cmp)
-{
-	if (!node_cmp->m_has_valid_connections)
-		return;
-
-	std::vector<NodeVariable*> v_vars;
-
-	for (const Connection& connection : node_cmp->m_connections)
-	{
-		Node* in_node = (Node*)connection.in_node;
-		Node* out_node = (Node*)connection.out_node;
-		NodeComparison* node_cmp = dynamic_cast<NodeComparison*>(in_node);
-		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
-
-		if (node_cmp && node_var)
-			v_vars.push_back(node_var);
-	}
-
-	if (v_vars.size() < 2)
-		return;
-
-	ImGui::TextColored(Config::NodeInterface_c::label_color, "Expression:");
-	std::string str_var = "";
-	std::string str_val = "";
-
-	for (int i = 0; i < v_vars.size(); i++)
-	{
-		NodeVariable* node_var = v_vars[i];
-		str_var.append(node_var->m_name);
-		str_val.append(node_var->m_value.get_value_str_ex());
-
-		if (i < v_vars.size() - 1)
-		{
-			str_var.append(" ");
-			str_var.append(node_cmp->get_cmp_op());
-			str_var.append(" ");
-
-			str_val.append(" ");
-			str_val.append(node_cmp->get_cmp_op());
+			str_val.append(sign);
 			str_val.append(" ");
 		}
 	}
