@@ -9,6 +9,7 @@
 #include "node/node_branch.hpp"
 #include "node/node_action.hpp"
 #include "node/node_print.hpp"
+#include "node/node_prompt.hpp"
 #include "node/node_math.hpp"
 
 namespace CodeNect
@@ -169,6 +170,13 @@ void CreateNode::edit(Node* node)
 					temp->is_override = node_print->m_override;
 					break;
 				}
+				case NODE_ACTION::PROMPT:
+				{
+					NodePrompt* node_prompt = static_cast<NodePrompt*>(node);
+					std::strcpy(temp->buf_str, node_prompt->m_orig_str.c_str());
+					temp->is_override = node_prompt->m_override;
+					break;
+				}
 			}
 
 			temp->valid_action = true;
@@ -238,6 +246,7 @@ void CreateNode::draw(void)
 				{
 					case NODE_ACTION::EMPTY: break;
 					case NODE_ACTION::PRINT: CreateNode::draw_print(); break;
+					case NODE_ACTION::PROMPT: CreateNode::draw_prompt(); break;
 				}
 				break;
 			}
@@ -286,6 +295,7 @@ void CreateNode::draw_buttons(void)
 					{
 						case NODE_ACTION::EMPTY: break;
 						case NODE_ACTION::PRINT: CreateNode::create_node_print(); break;
+						case NODE_ACTION::PROMPT: CreateNode::create_node_prompt(); break;
 					}
 					break;
 				}

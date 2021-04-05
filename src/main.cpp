@@ -98,7 +98,7 @@ int main(int argv, char** args)
 	sidebar.shutdown();
 	CodeNect::Commands::shutdown();
 	CodeNect::Font::shutdown();
-	CodeNect::Config::Sidebar_c::shutdown();
+	CodeNect::Config::shutdown();
 	app.shutdown();
 
 	return 0;

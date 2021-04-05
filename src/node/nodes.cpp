@@ -8,6 +8,7 @@
 #include "node/node_cmp.hpp"
 #include "node/node_branch.hpp"
 #include "node/node_print.hpp"
+#include "node/node_prompt.hpp"
 #include "node/node_math.hpp"
 
 namespace CodeNect
@@ -21,6 +22,7 @@ std::map<std::string, unsigned int> Nodes::m_ids
 	{"COMPARISON", 0},
 	{"BRANCH", 0},
 	{"PRINT", 0},
+	{"PROMPT", 0},
 	{"MATH", 0},
 };
 Nodes::m_node_t Nodes::m_available_nodes
@@ -149,17 +151,37 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 			}
 			case NODE_KIND::ACTION:
 			{
+				NODE_ACTION action = NODE_ACTION::_from_string(nm->m_action.c_str());
 				v_slot_info_t&& in = {};
 				v_slot_info_t&& out = {};
 				Nodes::build_slots(*nm, in, out);
 				std::string str = nm->m_orig_str;
-				NodePrint* node_print = new NodePrint(str, std::move(in), std::move(out));
-				node_print->m_name = nm->m_name.c_str();
-				node_print->m_pos = ImVec2(nm->x, nm->y);
-				node_print->m_desc = nm->m_desc.c_str();
-				node_print->m_override = Utils::bool_from_string(nm->m_override.c_str());
-				node_print->m_append_newline = Utils::bool_from_string(nm->m_append_newline.c_str());
-				Nodes::v_nodes.push_back(node_print);
+
+				switch (action)
+				{
+					case NODE_ACTION::EMPTY: break;
+					case NODE_ACTION::PRINT:
+					{
+						NodePrint* node_print = new NodePrint(str, std::move(in), std::move(out));
+						node_print->m_name = nm->m_name.c_str();
+						node_print->m_pos = ImVec2(nm->x, nm->y);
+						node_print->m_desc = nm->m_desc.c_str();
+						node_print->m_override = Utils::bool_from_string(nm->m_override.c_str());
+						node_print->m_append_newline = Utils::bool_from_string(nm->m_append_newline.c_str());
+						Nodes::v_nodes.push_back(node_print);
+						break;
+					}
+					case NODE_ACTION::PROMPT:
+					{
+						NodePrompt* node_prompt = new NodePrompt(str, std::move(in), std::move(out));
+						node_prompt->m_name = nm->m_name.c_str();
+						node_prompt->m_pos = ImVec2(nm->x, nm->y);
+						node_prompt->m_desc = nm->m_desc.c_str();
+						node_prompt->m_override = Utils::bool_from_string(nm->m_override.c_str());
+						Nodes::v_nodes.push_back(node_prompt);
+						break;
+					}
+				}
 				break;
 			}
 			case NODE_KIND::MATH:

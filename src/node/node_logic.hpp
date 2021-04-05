@@ -14,6 +14,7 @@ void process_cast(void);
 void process_cmp(void);
 void process_branch(void);
 void process_print(void);
+void process_prompt(void);
 void process_math(void);
 double calculate_math(NodeMath* node_math, std::function<double(double, double)> fn);
 

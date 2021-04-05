@@ -3,7 +3,7 @@
 
 namespace CodeNect
 {
-enum COLOR_TYPE { DEFAULT = 0, TRUE, FALSE };
+enum COLOR_TYPE { DEFAULT = 0, TRUE, FALSE, RUNTIME };
 
 struct Connection
 {

@@ -39,7 +39,6 @@ struct Config
 
 		static std::string indicator_filename;
 		static ImVec2 indicator_size;
-		static void shutdown(void);
 	};
 
 	struct CommandPalette_c
@@ -79,6 +78,7 @@ struct Config
 	static void update_node_interface(NodeInterfaceData& ni_data);
 	static bool save_user_config(void);
 	static bool reset(void);
+	static void shutdown(void);
 
 	typedef Config::Sidebar_c Sidebar_c;
 	typedef Config::CommandPalette_c CommandPalette_c;

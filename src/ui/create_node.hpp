@@ -49,6 +49,7 @@ struct CreateNode
 	static void create_node_cmp(void);
 	static void create_node_branch(void);
 	static void create_node_print(void);
+	static void create_node_prompt(void);
 	static void create_node_math(void);
 
 	static void draw(void);
@@ -75,6 +76,9 @@ struct CreateNode
 
 	//NodePrint
 	static void draw_print(void);
+
+	//NodePrompt
+	static void draw_prompt(void);
 
 	//NodeMath
 	static void draw_math(void);

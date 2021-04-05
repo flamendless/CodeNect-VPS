@@ -49,6 +49,11 @@ void draw_node(Node* node)
 					NodeRenderer::draw_node_print(static_cast<NodePrint*>(node));
 					break;
 				}
+				case NODE_ACTION::PROMPT:
+				{
+					NodeRenderer::draw_node_prompt(static_cast<NodePrompt*>(node));
+					break;
+				}
 			}
 			break;
 		}
@@ -180,6 +185,30 @@ void draw_node_print(NodePrint* node_print)
 	Utils::help_marker("Should the output string be appended with newline/nextline", true);
 }
 
+void draw_node_prompt(NodePrompt* node_prompt)
+{
+	if (ImGui::BeginTable("TableNode##NodePrompt", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Action:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Prompt:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+
+		ImGui::TableNextColumn();
+		ImGui::Text("%s", node_prompt->m_action._to_string());
+		ImGui::Text("%s", node_prompt->m_str.c_str());
+		ImGui::Text("%s", node_prompt->m_desc);
+		ImGui::EndTable();
+	}
+
+	if (node_prompt->m_in_slots[0].kind == NODE_SLOT::STRING)
+	{
+		ImGui::Checkbox("Override", &node_prompt->m_override);
+		Utils::help_marker("Should the prompt message be overriden by the input slot", true);
+	}
+}
+
 void draw_node_math(NodeMath* node_math)
 {
 	if (ImGui::BeginTable("TableNode##NodeMath", 2, ImGuiTableFlags_SizingFixedFit))
@@ -277,6 +306,8 @@ void draw_connections(Node& node)
 			canvas->Colors[ImNodes::ColConnection] = NodeColors::Connection::FALSE;
 		else if (connection.color == COLOR_TYPE::TRUE)
 			canvas->Colors[ImNodes::ColConnection] = NodeColors::Connection::TRUE;
+		else if (connection.color == COLOR_TYPE::RUNTIME)
+			canvas->Colors[ImNodes::ColConnection] = NodeColors::Connection::RUNTIME;
 
 		//draw connection
 		//query removed connection

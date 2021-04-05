@@ -40,6 +40,7 @@ Help::tuple_colors_t Help::v_connection_colors_items
 {
 	help_tc("Green", "path processed because the result of node branch is 'true'", NodeColors::Connection::TRUE),
 	help_tc("Red", "path NOT processed because the result of node branch is 'false'", NodeColors::Connection::FALSE),
+	help_tc("Yellow", "path can only be determined during runtime", NodeColors::Connection::RUNTIME),
 };
 
 Help::tuple_colors_t Help::v_node_colors_items

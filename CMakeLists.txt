@@ -28,6 +28,7 @@ add_executable(CodeNect
 	src/node/node_colors.cpp
 	src/node/node_math.cpp
 	src/node/node.cpp
+
 	src/node/node_logic_branch.cpp
 	src/node/node_logic_cast.cpp
 	src/node/node_logic_cmp.cpp
@@ -35,10 +36,13 @@ add_executable(CodeNect
 	src/node/node_logic_math.cpp
 	src/node/node_logic_op.cpp
 	src/node/node_logic_print.cpp
+	src/node/node_logic_prompt.cpp
 	src/node/node_logic_var.cpp
+
 	src/node/node_action.cpp
 	src/node/node_op.cpp
 	src/node/node_print.cpp
+	src/node/node_prompt.cpp
 	src/node/node_renderer.cpp
 	src/node/nodes.cpp
 	src/node/node_val.cpp
@@ -58,6 +62,7 @@ add_executable(CodeNect
 	src/ui/create_node_op.cpp
 	src/ui/create_node_math.cpp
 	src/ui/create_node_print.cpp
+	src/ui/create_node_prompt.cpp
 	src/ui/create_node_var.cpp
 	src/ui/help.cpp
 	src/ui/inspector.cpp

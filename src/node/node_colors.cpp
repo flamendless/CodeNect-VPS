@@ -17,6 +17,7 @@ ImVec4 NodeColors::Connection::DEFAULT = ImVec4(0.39f, 0.39f, 0.39f, 1);
 ImVec4 NodeColors::Connection::HOVERED = ImVec4(1, 0.43f, 0.35f, 1);
 ImVec4 NodeColors::Connection::TRUE = NodeColors::Lookup::GREEN;
 ImVec4 NodeColors::Connection::FALSE = NodeColors::Lookup::RED;
+ImVec4 NodeColors::Connection::RUNTIME = NodeColors::Lookup::YELLOW;
 
 std::map<std::string, ImVec4> NodeColors::m_kind
 {

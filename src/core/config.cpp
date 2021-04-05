@@ -354,13 +354,13 @@ bool Config::reset(void)
 	return RES_SUCCESS;
 }
 
-void Config::Sidebar_c::shutdown(void)
+void Config::shutdown(void)
 {
-	PLOGI << "Clearing sidebar_c...";
+	PLOGI << "Clearing config...";
 
 	Sidebar_c::images_filenames.clear();
 	Sidebar_c::images_filenames_hover.clear();
 
-	PLOGI << "Cleared sidebar_c successfully";
+	PLOGI << "Cleared config successfully";
 }
 }
