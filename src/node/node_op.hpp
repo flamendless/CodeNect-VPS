@@ -12,6 +12,7 @@ struct NodeOperation : public Node
 	NODE_KIND m_kind = NODE_KIND::OPERATION;
 	const char* m_icon;
 	bool m_has_valid_connections = false;
+	NodeValue* m_current_val = nullptr;
 
 	explicit NodeOperation(
 		NODE_OP op,

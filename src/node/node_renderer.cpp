@@ -299,30 +299,45 @@ void draw_connected_op(NodeOperation* node_op)
 	if (!node_op->m_has_valid_connections)
 		return;
 
-	std::vector<NodeVariable*> v_vars;
+	std::vector<Node*> v_nodes;
 
 	for (const Connection& connection : node_op->m_connections)
 	{
-		Node* in_node = (Node*)connection.in_node;
 		Node* out_node = (Node*)connection.out_node;
-		NodeOperation* node_op = dynamic_cast<NodeOperation*>(in_node);
 		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+		NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
 
-		if (node_op && node_var)
-			v_vars.push_back(node_var);
+		if (node_var || node_math)
+			v_nodes.push_back(out_node);
 	}
 
 	std::string str_var;
 	std::string str_val;
 	const char* op = node_op->get_op();
 
-	for (int i = 0; i < v_vars.size(); i++)
+	for (int i = 0; i < v_nodes.size(); i++)
 	{
-		NodeVariable* node_var = v_vars[i];
-		str_var.append(node_var->m_name);
-		str_val.append(node_var->m_value.get_value_str_ex());
+		Node* node = v_nodes[i];
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
+		NodeMath* node_math = dynamic_cast<NodeMath*>(node);
+		const char* name;
+		NodeValue* val = nullptr;
 
-		if (i < v_vars.size() - 1)
+		if (node_var)
+		{
+			name = node_var->m_name;
+			val = &node_var->m_value;
+		}
+		else if (node_math)
+		{
+			name = node_math->m_name;
+			val = node_math->m_current_val;
+		}
+
+		str_var.append(name);
+		str_val.append(val->get_value_str_ex());
+
+		if (i < v_nodes.size() - 1)
 		{
 			str_var.append(" ");
 			str_var.append(op);

@@ -21,6 +21,7 @@ struct NodeMath : public Node
 	bool m_needs_two_val = false;
 	std::variant<int, float, double> m_first = 0; //index, base, sin, cos, tan
 	std::variant<int, float, double> m_second = 0; //radicand, power
+	NodeValue* m_current_val = nullptr;
 
 	explicit NodeMath(
 		NODE_MATH math,

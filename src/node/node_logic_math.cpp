@@ -1,6 +1,7 @@
 #include "node/node_logic.hpp"
 
 #include <cmath>
+#include "ppk_assert.h"
 #include "node/nodes.hpp"
 #include "node/node_var.hpp"
 #include "node/node_op.hpp"
@@ -21,6 +22,10 @@ void process_math(void)
 
 		node_math->reset();
 
+		if (node_math->m_current_val)
+			delete node_math->m_current_val;
+		node_math->m_current_val = nullptr;
+
 		if (node_math->m_in_slots.size() == 0)
 			return;
 
@@ -34,10 +39,15 @@ void process_math(void)
 			//can be node_var or node_op
 			NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
 			NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
+			NodeValue* val = nullptr;
 
 			if (node_var)
+				val = &node_var->m_value;
+			else if (node_op && node_op->m_current_val)
+				val = node_op->m_current_val;
+
+			if (val)
 			{
-				NodeValue* val = &node_var->m_value;
 				NODE_SLOT* slot = &val->m_slot;
 				std::variant<int, float, double>* var = nullptr;
 
@@ -62,47 +72,50 @@ void process_math(void)
 					case NODE_SLOT::STRING: break;
 				}
 			}
-			else if (node_op)
-			{
-				//TODO
-			}
 		}
 
+		//get node_var rhs
 		NodeVariable* res_var = nullptr;
-		//get rhs
+		NodeOperation* res_op = nullptr;
+
 		for (const Connection& connection : node_math->m_connections)
 		{
 			Node* in_node = static_cast<Node*>(connection.in_node);
-			Node* out_node = static_cast<Node*>(connection.out_node);
-			//rhs
 			NodeVariable* node_var = dynamic_cast<NodeVariable*>(in_node);
 			NodeOperation* node_op = dynamic_cast<NodeOperation*>(in_node);
 
 			if (node_var)
 				res_var = node_var;
 			else if (node_op)
-			{
-				//TODO
-			}
+				res_op = node_op;
 		}
-
-		if (!res_var)
-			return;
 
 		//evaluate
 		node_math->m_has_connections = true;
-		NodeValue* res = &res_var->m_value;
+		NodeValue* res = nullptr;
+
+		if (res_var)
+			res = &res_var->m_value;
+		else
+		{
+			res = new NodeValue();
+			NODE_SLOT slot = NODE_SLOT::_from_string(node_math->m_out_slots[0].title);
+			res->copy(slot);
+		}
+
 		double result = NodeLogic::calculate_math(node_math, NodeMath::m_functions[node_math->m_math._to_string()]);
 
 		switch (res->m_slot)
 		{
-			case NODE_SLOT::EMPTY: break;
-			case NODE_SLOT::BOOL: break;
+			case NODE_SLOT::EMPTY: PPK_ASSERT(false, "this should not be reached"); break;
+			case NODE_SLOT::BOOL: PPK_ASSERT(false, "this should not be reached"); break;
 			case NODE_SLOT::INTEGER: res->set((int)result); break;
 			case NODE_SLOT::FLOAT: res->set((float)result); break;
 			case NODE_SLOT::DOUBLE: res->set((double)result); break;
-			case NODE_SLOT::STRING: break;
+			case NODE_SLOT::STRING: PPK_ASSERT(false, "this should not be reached"); break;
 		}
+
+		node_math->m_current_val = res;
 	}
 }
 
