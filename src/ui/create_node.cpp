@@ -11,6 +11,7 @@
 #include "node/node_print.hpp"
 #include "node/node_prompt.hpp"
 #include "node/node_math.hpp"
+#include "node/node_array.hpp"
 
 namespace CodeNect
 {
@@ -27,13 +28,14 @@ const char* CreateNode::title = ICON_FA_PLUS_SQUARE "Create Node";
 NODE_KIND CreateNode::kind = NODE_KIND::EMPTY;
 NODE_ACTION CreateNode::action = NODE_ACTION::EMPTY;
 NODE_MATH CreateNode::math = NODE_MATH::EMPTY;
+NODE_DS CreateNode::ds = NODE_DS::EMPTY;
 Node* CreateNode::node_to_edit;
 bool CreateNode::can_create = false;
 std::variant<
 		TempVarData*, TempOperationData*,
 		TempCastData*, TempComparisonData*,
 		TempBranchData*, TempActionData*,
-		TempMathData*
+		TempMathData*, TempArrayData*
 	>CreateNode::data;
 char CreateNode::buf_desc[BUF_SIZE * 2] = "";
 
@@ -49,6 +51,15 @@ void CreateNode::open(NODE_KIND kind)
 		case NODE_KIND::BRANCH: CreateNode::data = new TempBranchData(); CreateNode::can_create = true; break;
 		case NODE_KIND::ACTION: CreateNode::data = new TempActionData(); break;
 		case NODE_KIND::MATH: CreateNode::data = new TempMathData(); break;
+		case NODE_KIND::DS:
+		{
+			switch (CreateNode::ds)
+			{
+				case NODE_DS::EMPTY: break;
+				case NODE_DS::ARRAY: CreateNode::data = new TempArrayData(); break;
+			}
+			break;
+		}
 	}
 
 	CreateNode::buf_desc[0] = '\0';
@@ -59,14 +70,20 @@ void CreateNode::open(NODE_KIND kind)
 
 void CreateNode::open_action(NODE_KIND kind, NODE_ACTION action)
 {
-	CreateNode::open(kind);
 	CreateNode::action = action;
+	CreateNode::open(kind);
 }
 
 void CreateNode::open_math(NODE_KIND kind, NODE_MATH math)
 {
-	CreateNode::open(kind);
 	CreateNode::math = math;
+	CreateNode::open(kind);
+}
+
+void CreateNode::open_ds(NODE_KIND kind, NODE_DS ds)
+{
+	CreateNode::ds = ds;
+	CreateNode::open(kind);
 }
 
 void CreateNode::edit(Node* node)
@@ -193,6 +210,27 @@ void CreateNode::edit(Node* node)
 			CreateNode::data = temp;
 			break;
 		}
+		case NODE_KIND::DS:
+		{
+			switch (CreateNode::ds)
+			{
+				case NODE_DS::EMPTY: break;
+				case NODE_DS::ARRAY:
+				{
+					NodeArray* node_array = static_cast<NodeArray*>(node);
+					TempArrayData* temp = new TempArrayData();
+					NODE_SLOT slot = node_array->m_slot;
+					temp->valid_array = true;
+					temp->valid_name = true;
+					std::strcpy(temp->buf_name, node_array->m_name);
+					temp->slot = slot;
+					CreateNode::data = temp;
+					break;
+				}
+			}
+			CreateNode::node_to_edit = node;
+			break;
+		}
 	}
 
 	std::strcpy(CreateNode::buf_desc, node->m_desc);
@@ -251,6 +289,15 @@ void CreateNode::draw(void)
 				break;
 			}
 			case NODE_KIND::MATH: CreateNode::draw_math(); break;
+			case NODE_KIND::DS:
+			{
+				switch (CreateNode::ds)
+				{
+					case NODE_DS::EMPTY: break;
+					case NODE_DS::ARRAY: CreateNode::draw_array(); break;
+				}
+				break;
+			}
 		}
 
 		CreateNode::draw_desc();
@@ -300,6 +347,15 @@ void CreateNode::draw_buttons(void)
 					break;
 				}
 				case NODE_KIND::MATH: CreateNode::create_node_math(); break;
+				case NODE_KIND::DS:
+				{
+					switch (CreateNode::ds)
+					{
+						case NODE_DS::EMPTY: break;
+						case NODE_DS::ARRAY: CreateNode::create_node_array(); break;
+					}
+					break;
+				}
 			}
 
 			CreateNode::close();

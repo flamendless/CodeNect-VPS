@@ -68,6 +68,17 @@ struct TempMathData
 	NODE_SLOT slot_out = NODE_SLOT::EMPTY;
 	bool valid_math = false;
 };
+
+struct TempArrayData
+{
+	NODE_SLOT slot = NODE_SLOT::EMPTY;
+	NODE_ARRAY array = NODE_ARRAY::EMPTY;
+	int size = 0;
+	char buf_name[BUF_SIZE] = "";
+	int res_name = RES_VARNAME_INVALID;
+	bool valid_name = false;
+	bool valid_array = false;
+};
 }
 
 #endif //_TEMP_DATA_HPP

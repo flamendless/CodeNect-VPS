@@ -37,6 +37,12 @@ struct NodeMeta
 	//NodeMath
 	std::string m_math;
 
+	//NodeDS
+	std::string m_ds;
+	std::string m_array;
+	std::string m_array_size;
+	std::string m_array_slot;
+
 	inline NodeMeta() {}
 };
 

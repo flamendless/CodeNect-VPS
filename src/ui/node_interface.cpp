@@ -120,7 +120,9 @@ void NodeInterface::draw_nodes(void)
 		NodeRenderer::push_node_style();
 		NodeRenderer::push_node_color(node);
 
-		if (ImNodes::Ez::BeginNode(node, node->m_kind._to_string(), &node->m_pos, &node->m_selected))
+		const char* title = Nodes::get_title(node);
+
+		if (ImNodes::Ez::BeginNode(node, title, &node->m_pos, &node->m_selected))
 		{
 			NodeRenderer::pop_node_color();
 			NodeRenderer::draw_node(node);
@@ -195,7 +197,8 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 			{
 				if (kind == +NODE_KIND::EMPTY ||
 					kind == +NODE_KIND::ACTION ||
-					kind == +NODE_KIND::MATH)
+					kind == +NODE_KIND::MATH ||
+					kind == +NODE_KIND::DS)
 					continue;
 
 				std::string item = kind._to_string();
@@ -242,6 +245,25 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 				if (ImGui::MenuItem(item.c_str()))
 				{
 					CreateNode::open_math(NODE_KIND::MATH, math);
+					ImGui::CloseCurrentPopup();
+				}
+			}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Data Structure Node"))
+		{
+			for (NODE_DS ds : NODE_DS::_values())
+			{
+				if (ds == +NODE_DS::EMPTY)
+					continue;
+
+				std::string item = ds._to_string();
+				Utils::string_to_name(item);
+
+				if (ImGui::MenuItem(item.c_str()))
+				{
+					CreateNode::open_ds(NODE_KIND::DS, ds);
 					ImGui::CloseCurrentPopup();
 				}
 			}

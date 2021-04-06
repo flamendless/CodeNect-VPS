@@ -19,6 +19,7 @@ struct Nodes
 	static std::vector<Node*> v_nodes;
 	static std::map<std::string, unsigned int> m_ids;
 	static m_node_t m_available_nodes;
+	static std::map<std::string, const char*> m_names;
 
 	Nodes() = delete;
 	static void reset(void);
@@ -29,6 +30,7 @@ struct Nodes
 	static void build_from_meta(const std::vector<NodeMeta*> &v_node_meta);
 	static void build_from_meta(const std::vector<ConnectionMeta*> &v_connection_meta);
 	static unsigned int count_connections(void);
+	static const char* get_title(Node* node);
 };
 }
 

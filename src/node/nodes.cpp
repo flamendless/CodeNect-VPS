@@ -1,5 +1,6 @@
 #include "node/nodes.hpp"
 
+#include "ppk_assert.h"
 #include "core/utils.hpp"
 #include "node/node_val.hpp"
 #include "node/node_var.hpp"
@@ -10,6 +11,8 @@
 #include "node/node_print.hpp"
 #include "node/node_prompt.hpp"
 #include "node/node_math.hpp"
+#include "node/node_ds.hpp"
+#include "node/node_array.hpp"
 
 namespace CodeNect
 {
@@ -24,6 +27,8 @@ std::map<std::string, unsigned int> Nodes::m_ids
 	{"PRINT", 0},
 	{"PROMPT", 0},
 	{"MATH", 0},
+	{"FIXED", 0},
+	{"DYNAMIC", 0},
 };
 Nodes::m_node_t Nodes::m_available_nodes
 {
@@ -32,12 +37,56 @@ Nodes::m_node_t Nodes::m_available_nodes
 	},
 };
 
+std::map<std::string, const char*> Nodes::m_names
+{
+	{"POW", "POWER"},
+	{"SIN", "SINE"},
+	{"COS", "COSINE"},
+	{"TAN", "TANGENT"},
+};
+
 const char* Nodes::get_id(const char* id)
 {
 	unsigned int uid = ++Nodes::m_ids[id];
 	std::string* str_id = new std::string(std::string(id) + "_" + std::to_string(uid));
 
 	return str_id->c_str();
+}
+
+const char* Nodes::get_title(Node* node)
+{
+	switch (node->m_kind)
+	{
+		case NODE_KIND::EMPTY: break;
+		case NODE_KIND::VARIABLE:
+		case NODE_KIND::OPERATION:
+		case NODE_KIND::CAST:
+		case NODE_KIND::COMPARISON:
+		case NODE_KIND::BRANCH: return node->m_kind._to_string(); break;
+		case NODE_KIND::ACTION:
+		{
+			NodeAction* node_action = static_cast<NodeAction*>(node);
+			return node_action->m_action._to_string();
+		}
+		case NODE_KIND::MATH:
+		{
+			NodeMath* node_math = static_cast<NodeMath*>(node);
+			switch (node_math->m_math)
+			{
+				case NODE_MATH::EMPTY: break;
+				case NODE_MATH::ROOT: return "ROOT"; break;
+				case NODE_MATH::POW:
+				case NODE_MATH::SIN:
+				case NODE_MATH::COS:
+				case NODE_MATH::TAN: return m_names[node_math->m_math._to_string()]; break;
+			}
+			break;
+		}
+		case NODE_KIND::DS: return "DATA STRUCTURE"; break;
+	}
+
+	PPK_ASSERT(false, "this should not be reached");
+	return "";
 }
 
 void Nodes::reset(void)
@@ -195,6 +244,32 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				node_math->m_pos = ImVec2(nm->x, nm->y);
 				node_math->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_math);
+				break;
+			}
+			case NODE_KIND::DS:
+			{
+				v_slot_info_t&& in = {};
+				v_slot_info_t&& out = {};
+				Nodes::build_slots(*nm, in, out);
+				NODE_DS ds = NODE_DS::_from_string(nm->m_ds.c_str());
+
+				switch (ds)
+				{
+					case NODE_DS::EMPTY: break;
+					case NODE_DS::ARRAY:
+					{
+						NODE_ARRAY array = NODE_ARRAY::_from_string(nm->m_array.c_str());
+						NODE_SLOT slot = NODE_SLOT::_from_string(nm->m_array_slot.c_str());
+						int size = std::stoi(nm->m_array_size);
+						NodeArray* node_array = new NodeArray(array, slot, size,
+							std::move(in), std::move(out));
+						node_array->m_name = nm->m_name.c_str();
+						node_array->m_pos = ImVec2(nm->x, nm->y);
+						node_array->m_desc = nm->m_desc.c_str();
+						Nodes::v_nodes.push_back(node_array);
+						break;
+					}
+				}
 				break;
 			}
 		}

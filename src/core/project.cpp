@@ -17,6 +17,8 @@
 #include "node/node_cmp.hpp"
 #include "node/node_print.hpp"
 #include "node/node_math.hpp"
+#include "node/node_ds.hpp"
+#include "node/node_array.hpp"
 
 namespace CodeNect
 {
@@ -225,6 +227,26 @@ int Project::save(void)
 				ini.SetValue(section, "math", node_math->m_math._to_string());
 				break;
 			}
+			case NODE_KIND::DS:
+			{
+				NodeDS* node_ds = static_cast<NodeDS*>(node);
+				ini.SetValue(section, "ds", node_ds->m_ds._to_string());
+				PLOGD << node_ds->m_ds._to_string();
+
+				switch (node_ds->m_ds)
+				{
+					case NODE_DS::EMPTY: break;
+					case NODE_DS::ARRAY:
+					{
+						NodeArray* node_array = static_cast<NodeArray*>(node);
+						ini.SetValue(section, "array", node_array->m_array._to_string());
+						ini.SetValue(section, "array_size", std::to_string(node_array->m_size).c_str());
+						ini.SetValue(section, "array_slot", node_array->m_slot._to_string());
+						break;
+					}
+				}
+				break;
+			}
 		}
 
 		//save input and output slots
@@ -352,10 +374,8 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 	const char* op = ini.GetValue(section, "op", "EMPTY");
 	const char* cmp = ini.GetValue(section, "cmp", "EMPTY");
 	const char* action = ini.GetValue(section, "action", "EMPTY");
-	const char* orig_str = ini.GetValue(section, "value", "");
-	const char* is_override = ini.GetValue(section, "is_override", "false");
-	const char* is_append_newline = ini.GetValue(section, "is_append_newline", "false");
 	const char* math = ini.GetValue(section, "math", "EMPTY");
+	const char* ds = ini.GetValue(section, "ds", "EMPTY");
 
 	NodeMeta* nm = new NodeMeta();
 	nm->m_name = name;
@@ -367,11 +387,30 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 	nm->m_value_slot = value_slot;
 	nm->m_op = op;
 	nm->m_cmp = cmp;
-	nm->m_action = action;
-	nm->m_orig_str = orig_str;
-	nm->m_override = is_override;
-	nm->m_append_newline = is_append_newline;
 	nm->m_math = math;
+
+	if (std::strcmp(action, "PROMPT") == 0)
+	{
+		nm->m_action = action;
+		nm->m_orig_str = ini.GetValue(section, "value", "");
+		nm->m_override = ini.GetValue(section, "is_override", "false");
+	}
+
+	if (std::strcmp(action, "PRINT") == 0)
+	{
+		nm->m_action = action;
+		nm->m_orig_str = ini.GetValue(section, "value", "");
+		nm->m_override = ini.GetValue(section, "is_override", "false");
+		nm->m_append_newline = ini.GetValue(section, "is_append_newline", "false");
+	}
+
+	if (std::strcmp(ds, "ARRAY") == 0)
+	{
+		nm->m_ds = ds;
+		nm->m_array = ini.GetValue(section, "array", "EMPTY");
+		nm->m_array_size = ini.GetValue(section, "array_size", "EMPTY");
+		nm->m_array_slot = ini.GetValue(section, "array_slot", "EMPTY");
+	}
 
 	//get input/output slots
 	CSimpleIniA::TNamesDepend keys;

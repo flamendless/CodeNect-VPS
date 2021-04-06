@@ -22,6 +22,7 @@ add_executable(CodeNect
 	src/modules/input.cpp
 	src/node/connection.cpp
 
+	src/node/node_array.cpp
 	src/node/node_branch.cpp
 	src/node/node_cast.cpp
 	src/node/node_cmp.cpp
@@ -55,6 +56,7 @@ add_executable(CodeNect
 	src/ui/about.cpp
 	src/ui/alert.cpp
 	src/ui/command_palette.cpp
+	src/ui/create_node_array.cpp
 	src/ui/create_node_branch.cpp
 	src/ui/create_node_cast.cpp
 	src/ui/create_node_cmp.cpp
