@@ -45,7 +45,7 @@ Help::tuple_colors_t Help::v_connection_colors_items
 
 Help::tuple_colors_t Help::v_node_colors_items
 {
-	help_tc("Blue", "node is of kind 'Variable'", NodeColors::Lookup::BLUE),
+	help_tc("Blue", "node is of kind 'Variable'/'Data Structure'", NodeColors::Lookup::BLUE),
 	help_tc("Yellow", "node is of kind 'Operation'", NodeColors::Lookup::YELLOW),
 	help_tc("Light Blue", "node is of kind 'Cast'", NodeColors::Lookup::LIGHT_BLUE),
 	help_tc("Pink", "node is of kind 'Comparison'", NodeColors::Lookup::PINK),

@@ -1,3 +1,4 @@
+#include "imgui.h"
 #include "ui/create_node.hpp"
 
 #include "core/utils.hpp"
@@ -31,6 +32,7 @@ void CreateNode::create_node_array(void)
 		out.push_back({tmp->slot._to_string(), tmp->slot});
 		NodeArray* node = new NodeArray(tmp->array, tmp->slot, tmp->size,
 			std::move(in), std::move(out));
+		node->add_elements(tmp->v_elements);
 		node->m_name = tmp->buf_name;
 		node->set_desc(CreateNode::buf_desc);
 		Nodes::v_nodes.push_back(node);
@@ -118,9 +120,105 @@ void CreateNode::draw_array()
 			ImGui::InputInt("Array Fixed Size", &tmp->size);
 			Utils::help_marker(txt_size, true);
 		}
+
+		if (tmp->slot != +NODE_SLOT::EMPTY && tmp->array != +NODE_ARRAY::EMPTY)
+		{
+			CreateNode::draw_array_elements();
+
+			if (tmp->v_elements.size() > 0)
+			{
+				std::string str = "[";
+				for (int i = 0; i < tmp->v_elements.size(); i++)
+				{
+					str.append(tmp->v_elements[i]);
+					if (i < tmp->v_elements.size() - 1)
+						str.append(", ");
+					if (i != 0 && i % 6 == 0)
+						str.append("\n");
+				}
+				str.append("]");
+				ImGui::Text("%s", str.c_str());
+				if (ImGui::Button("Remove last element"))
+					tmp->v_elements.pop_back();
+			}
+		}
 	}
 
-	tmp->valid_array = tmp->slot != +NODE_SLOT::EMPTY;
+	tmp->valid_array = tmp->slot != +NODE_SLOT::EMPTY &&
+		tmp->v_elements.size() <= tmp->size;
 	CreateNode::can_create = tmp->valid_name && tmp->valid_array;
+}
+
+void CreateNode::draw_array_elements(void)
+{
+	TempArrayData* tmp = std::get<TempArrayData*>(data);
+
+	if (tmp->array == +NODE_ARRAY::FIXED && tmp->v_elements.size() >= tmp->size)
+	{
+		ImGui::TextColored(ImVec4(1, 0, 0, 1), "Can not add anymore element as it exceeds the size");
+		return;
+	}
+	else if (tmp->array == +NODE_ARRAY::DYNAMIC)
+		tmp->size = tmp->v_elements.size();
+
+	if (tmp->slot == +NODE_SLOT::BOOL)
+	{
+		static bool n = true;
+		ImGui::Checkbox("Element:", &n);
+		ImGui::SameLine();
+		if (ImGui::Button("Add Element"))
+		{
+			std::string str = (n == true) ? "true" : "false";
+			tmp->v_elements.push_back(str);
+			n = true;
+		}
+	}
+
+	if (tmp->slot == +NODE_SLOT::INTEGER)
+	{
+		static int n = 0;
+		ImGui::InputInt("Element:", &n);
+		ImGui::SameLine();
+		if (ImGui::Button("Add Element"))
+		{
+			tmp->v_elements.push_back(std::to_string(n));
+			n = 0;
+		}
+	}
+
+	if (tmp->slot == +NODE_SLOT::FLOAT)
+	{
+		static float n = 0;
+		ImGui::InputFloat("Element:", &n);
+		ImGui::SameLine();
+		if (ImGui::Button("Add Element"))
+		{
+			tmp->v_elements.push_back(std::to_string(n));
+			n = 0;
+		}
+	}
+
+	if (tmp->slot == +NODE_SLOT::FLOAT)
+	{
+		static double n = 0;
+		ImGui::InputDouble("Element:", &n);
+		ImGui::SameLine();
+		if (ImGui::Button("Add Element"))
+		{
+			tmp->v_elements.push_back(std::to_string(n));
+			n = 0;
+		}
+	}
+
+	if (tmp->slot == +NODE_SLOT::STRING)
+	{
+		ImGui::InputText("Element:", tmp->buf_element, IM_ARRAYSIZE(tmp->buf_element));
+		ImGui::SameLine();
+		if (ImGui::Button("Add Element"))
+		{
+			tmp->v_elements.push_back(tmp->buf_element);
+			tmp->buf_element[0] = '\0';
+		}
+	}
 }
 }

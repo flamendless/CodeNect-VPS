@@ -78,6 +78,9 @@ struct TempArrayData
 	int res_name = RES_VARNAME_INVALID;
 	bool valid_name = false;
 	bool valid_array = false;
+
+	char buf_element[BUF_SIZE] = "";
+	std::vector<std::string> v_elements;
 };
 }
 

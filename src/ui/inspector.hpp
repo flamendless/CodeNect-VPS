@@ -17,6 +17,7 @@ struct Inspector
 	static void open(void);
 	static void draw(void);
 	static void draw_variables(void);
+	static void draw_ds(void);
 };
 }
 

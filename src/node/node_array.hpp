@@ -14,13 +14,11 @@ struct NodeArray : public NodeDS
 	NODE_SLOT m_slot = NODE_SLOT::EMPTY;
 
 	unsigned int m_size = 0;
-	std::variant<
-		std::vector<bool>,
-		std::vector<int>,
-		std::vector<float>,
-		std::vector<double>,
-		std::vector<std::string>
-	>m_vec;
+	std::vector<bool> m_bool_elements;
+	std::vector<int> m_int_elements;
+	std::vector<float> m_float_elements;
+	std::vector<double> m_double_elements;
+	std::vector<std::string> m_string_elements;
 
 	explicit NodeArray(
 		NODE_ARRAY array,
@@ -31,6 +29,7 @@ struct NodeArray : public NodeDS
 	);
 
 	void set_size(void);
+	void add_elements(std::vector<std::string>& v);
 
 	inline ~NodeArray() {}
 };

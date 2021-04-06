@@ -62,6 +62,21 @@ void draw_node(Node* node)
 			NodeRenderer::draw_node_math(static_cast<NodeMath*>(node));
 			break;
 		}
+		case NODE_KIND::DS:
+		{
+			NodeDS* node_ds = static_cast<NodeDS*>(node);
+			switch (node_ds->m_ds)
+			{
+				case NODE_DS::EMPTY: break;
+				case NODE_DS::ARRAY:
+				{
+					NodeArray* node_array = static_cast<NodeArray*>(node);
+					NodeRenderer::draw_node_array(node_array);
+					break;
+				}
+			}
+			break;
+		}
 	}
 }
 
@@ -269,6 +284,101 @@ void draw_node_math(NodeMath* node_math)
 	}
 
 	ImGui::TextColored(Config::NodeInterface_c::label_color, "Expression:");
+	ImGui::BulletText("%s", str.c_str());
+}
+
+void draw_node_array(NodeArray* node_array)
+{
+	if (ImGui::BeginTable("TableNode##NodeArray", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Name:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Type:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Size:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+
+		ImGui::TableNextColumn();
+		ImGui::Text("%s", node_array->m_name);
+		ImGui::Text("%s", node_array->m_slot._to_string());
+		ImGui::Text("%d", node_array->m_size);
+		ImGui::Text("%s", node_array->m_desc);
+		ImGui::EndTable();
+	}
+
+	if (node_array->m_size  == 0)
+		return;
+
+	std::string str = "[";
+
+	//draw array elements
+	switch (node_array->m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL:
+		{
+			std::vector<bool>& vec = node_array->m_bool_elements;
+			for (int i = 0; i < vec.size(); i++)
+			{
+				str.append(vec[i] ? "true" : "false");
+				if (i < vec.size() - 1)
+					str.append(", ");
+				if (i != 0 && i % 6 == 0)
+					str.append("\n");
+			}
+		}
+		case NODE_SLOT::INTEGER:
+		{
+			std::vector<int>& vec = node_array->m_int_elements;
+			for (int i = 0; i < vec.size(); i++)
+			{
+				str.append(std::to_string(vec[i]));
+				if (i < vec.size() - 1)
+					str.append(", ");
+				if (i != 0 && i % 6 == 0)
+					str.append("\n");
+			}
+		}
+		case NODE_SLOT::FLOAT:
+		{
+			std::vector<float>& vec = node_array->m_float_elements;
+			for (int i = 0; i < vec.size(); i++)
+			{
+				str.append(std::to_string(vec[i]));
+				if (i < vec.size() - 1)
+					str.append(", ");
+				if (i != 0 && i % 6 == 0)
+					str.append("\n");
+			}
+		}
+		case NODE_SLOT::DOUBLE:
+		{
+			std::vector<double>& vec = node_array->m_double_elements;
+			for (int i = 0; i < vec.size(); i++)
+			{
+				str.append(std::to_string(vec[i]));
+				if (i < vec.size() - 1)
+					str.append(", ");
+				if (i != 0 && i % 6 == 0)
+					str.append("\n");
+			}
+		}
+		case NODE_SLOT::STRING:
+		{
+			std::vector<std::string>& vec = node_array->m_string_elements;
+			for (int i = 0; i < vec.size(); i++)
+			{
+				str.append(vec[i]);
+				if (i < vec.size() - 1)
+					str.append(", ");
+				if (i != 0 && i % 6 == 0)
+					str.append("\n");
+			}
+		}
+	}
+
+	str.append("]");
+	ImGui::TextColored(Config::NodeInterface_c::label_color, "Elements:");
 	ImGui::BulletText("%s", str.c_str());
 }
 

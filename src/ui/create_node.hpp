@@ -89,6 +89,7 @@ struct CreateNode
 
 	//NodeArray
 	static void draw_array(void);
+	static void draw_array_elements(void);
 };
 }
 

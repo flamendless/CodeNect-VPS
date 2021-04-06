@@ -10,6 +10,7 @@
 #include "core/commands.hpp"
 #include "node/node.hpp"
 #include "node/node_var.hpp"
+#include "node/node_array.hpp"
 #include "node/nodes.hpp"
 #include "node/node_renderer.hpp"
 
@@ -66,6 +67,7 @@ void Inspector::draw(void)
 		ImGui::Separator();
 
 		Inspector::draw_variables();
+		Inspector::draw_ds();
 		ImGui::End();
 	}
 
@@ -91,7 +93,6 @@ void Inspector::draw_variables(void)
 				continue;
 
 			ImGui::PushID(node_var);
-
 			std::string str = fmt::format("{}. {}", i, node_var->m_name);
 
 			if (ImGui::TreeNode(str.c_str()))
@@ -111,14 +112,53 @@ void Inspector::draw_variables(void)
 					ImGui::Text("%s", node_var->m_desc);
 					ImGui::EndTable();
 				}
-
 				ImGui::TreePop();
 			}
-
 			ImGui::PopID();
 			i++;
 		}
+		ImGui::TreePop();
+	}
+}
 
+void Inspector::draw_ds(void)
+{
+	int i = 1;
+
+	if (ImGui::TreeNodeEx("Data Structures", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
+			it != Nodes::v_nodes.end();
+			it++)
+		{
+			NodeArray* node_array = dynamic_cast<NodeArray*>(*it);
+
+			if (!node_array)
+				continue;
+
+			ImGui::PushID(node_array);
+			std::string str = fmt::format("{}. {}", i, node_array->m_name);
+
+			if (ImGui::TreeNode(str.c_str()))
+			{
+				if (ImGui::BeginTable("Info", 2, ImGuiTableFlags_SizingFixedFit))
+				{
+					ImGui::TableNextRow();
+					ImGui::TableNextColumn();
+					ImGui::TextColored(Config::NodeInterface_c::label_color, "Name:");
+					ImGui::TextColored(Config::NodeInterface_c::label_color, "Type:");
+					ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+					ImGui::TableNextColumn();
+					ImGui::Text("%s", node_array->m_name);
+					ImGui::Text("%s", node_array->m_slot._to_string());
+					ImGui::Text("%s", node_array->m_desc);
+					ImGui::EndTable();
+				}
+				ImGui::TreePop();
+			}
+			ImGui::PopID();
+			i++;
+		}
 		ImGui::TreePop();
 	}
 }

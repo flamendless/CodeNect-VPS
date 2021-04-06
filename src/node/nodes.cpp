@@ -263,6 +263,7 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 						int size = std::stoi(nm->m_array_size);
 						NodeArray* node_array = new NodeArray(array, slot, size,
 							std::move(in), std::move(out));
+						node_array->add_elements(nm->m_array_elements);
 						node_array->m_name = nm->m_name.c_str();
 						node_array->m_pos = ImVec2(nm->x, nm->y);
 						node_array->m_desc = nm->m_desc.c_str();

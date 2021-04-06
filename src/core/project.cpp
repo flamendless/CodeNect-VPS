@@ -242,6 +242,7 @@ int Project::save(void)
 						ini.SetValue(section, "array", node_array->m_array._to_string());
 						ini.SetValue(section, "array_size", std::to_string(node_array->m_size).c_str());
 						ini.SetValue(section, "array_slot", node_array->m_slot._to_string());
+						Project::save_array_elements(ini, section, node_array);
 						break;
 					}
 				}
@@ -273,7 +274,6 @@ int Project::save(void)
 void Project::save_slots(CSimpleIniA& ini, const char* section, v_slot_info_t& slots, const char* prefix)
 {
 	int i = 1;
-
 	for (ImNodes::Ez::SlotInfo& slot : slots)
 	{
 		std::string str = std::string(prefix) + std::to_string(i);
@@ -298,6 +298,74 @@ void Project::save_connections(CSimpleIniA& ini, std::vector<Connection>& v_conn
 		ini.SetValue(section, "in_slot", connection.in_slot);
 		ini.SetValue(section, "out_node_name", out_node->m_name);
 		ini.SetValue(section, "out_slot", connection.out_slot);
+	}
+}
+
+void Project::save_array_elements(CSimpleIniA& ini, const char* section, NodeArray* node_array)
+{
+	int i = 0;
+	switch (node_array->m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL:
+		{
+			std::vector<bool>& vec = node_array->m_bool_elements;
+			for (const bool& b : vec)
+			{
+				std::string str = b ? "true" : "false";
+				std::string id = "element_" + std::to_string(i);
+				ini.SetValue(section, id.c_str(), str.c_str());
+				i++;
+			}
+			break;
+		}
+		case NODE_SLOT::INTEGER:
+		{
+			std::vector<int>& vec = node_array->m_int_elements;
+			for (const int& n : vec)
+			{
+				std::string str = std::to_string(n);
+				std::string id = "element_" + std::to_string(i);
+				ini.SetValue(section, id.c_str(), str.c_str());
+				i++;
+			}
+			break;
+		}
+		case NODE_SLOT::FLOAT:
+		{
+			std::vector<float>& vec = node_array->m_float_elements;
+			for (const float& n : vec)
+			{
+				std::string str = std::to_string(n);
+				std::string id = "element_" + std::to_string(i);
+				ini.SetValue(section, id.c_str(), str.c_str());
+				i++;
+			}
+			break;
+		}
+		case NODE_SLOT::DOUBLE:
+		{
+			std::vector<double>& vec = node_array->m_double_elements;
+			for (const double& n : vec)
+			{
+				std::string str = std::to_string(n);
+				std::string id = "element_" + std::to_string(i);
+				ini.SetValue(section, id.c_str(), str.c_str());
+				i++;
+			}
+			break;
+		}
+		case NODE_SLOT::STRING:
+		{
+			std::vector<std::string>& vec = node_array->m_string_elements;
+			for (const std::string& n : vec)
+			{
+				std::string id = "element_" + std::to_string(i);
+				ini.SetValue(section, id.c_str(), n.c_str());
+				i++;
+			}
+			break;
+		}
 	}
 }
 
@@ -408,7 +476,7 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 	{
 		nm->m_ds = ds;
 		nm->m_array = ini.GetValue(section, "array", "EMPTY");
-		nm->m_array_size = ini.GetValue(section, "array_size", "EMPTY");
+		nm->m_array_size = ini.GetValue(section, "array_size");
 		nm->m_array_slot = ini.GetValue(section, "array_slot", "EMPTY");
 	}
 
@@ -432,6 +500,12 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 		{
 			const char* slot = ini.GetValue(section, key.pItem);
 			nm->m_output_slots.push_back(slot);
+		}
+
+		if (str_key.find(PROJ_ARRAY_ELEMENT_PREFIX, 0) == 0)
+		{
+			const char* element = ini.GetValue(section, key.pItem);
+			nm->m_array_elements.push_back(element);
 		}
 	}
 

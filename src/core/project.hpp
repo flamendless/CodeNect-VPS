@@ -6,6 +6,7 @@
 #include "node/connection.hpp"
 #include "node/node_def.hpp"
 #include "node/node_meta.hpp"
+#include "node/node_array.hpp"
 #include "ui/new_project.hpp"
 
 namespace CodeNect
@@ -40,6 +41,7 @@ struct Project
 	static int save(void);
 	static void save_slots(CSimpleIniA& ini, const char* section, v_slot_info_t& slots, const char* prefix);
 	static void save_connections(CSimpleIniA& ini, std::vector<Connection>& v_connections);
+	static void save_array_elements(CSimpleIniA& ini, const char* section, NodeArray* node_array);
 	static void save_cmd(void);
 	static int parse(void);
 	static void parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta, const char* section);

@@ -25,6 +25,7 @@
 #define PROJ_CONNECTION_PREFIX "connection_"
 #define PROJ_INPUT_SLOT_PREFIX "input_"
 #define PROJ_OUTPUT_SLOT_PREFIX "output_"
+#define PROJ_ARRAY_ELEMENT_PREFIX "element_"
 
 #include <map>
 #include <string>
