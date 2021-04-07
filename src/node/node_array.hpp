@@ -3,6 +3,7 @@
 
 #include <variant>
 #include "node/node_def.hpp"
+#include "node/node_val.hpp"
 #include "node/node_ds.hpp"
 
 namespace CodeNect
@@ -14,11 +15,7 @@ struct NodeArray : public NodeDS
 	NODE_SLOT m_slot = NODE_SLOT::EMPTY;
 
 	unsigned int m_size = 0;
-	std::vector<bool> m_bool_elements;
-	std::vector<int> m_int_elements;
-	std::vector<float> m_float_elements;
-	std::vector<double> m_double_elements;
-	std::vector<std::string> m_string_elements;
+	std::vector<NodeValue*> m_elements;
 
 	explicit NodeArray(
 		NODE_ARRAY array,
@@ -28,10 +25,8 @@ struct NodeArray : public NodeDS
 		const v_slot_info_t&& out_slots
 	);
 
-	void set_size(void);
 	void add_elements(std::vector<std::string>& v);
 	void elements_to_vec_str(std::vector<std::string>& v);
-	void clear_elements(void);
 
 	inline ~NodeArray() {}
 };

@@ -20,7 +20,7 @@ void CreateNode::create_node_array(void)
 	if (CreateNode::is_edit_mode)
 	{
 		NodeArray* node_array = static_cast<NodeArray*>(CreateNode::node_to_edit);
-		node_array->clear_elements();
+		node_array->m_elements.clear();
 		node_array->add_elements(tmp->v_elements);
 		node_array->m_name = tmp->buf_name;
 		node_array->m_desc = CreateNode::buf_desc;
@@ -133,7 +133,13 @@ void CreateNode::draw_array(void)
 			std::string str = "[";
 			for (int i = 0; i < tmp->v_elements.size(); i++)
 			{
-				str.append(tmp->v_elements[i]);
+				if (tmp->slot == +NODE_SLOT::STRING)
+				{
+					std::string el = "\"" + tmp->v_elements[i] + "\"";
+					str.append(el);
+				}
+				else
+					str.append(tmp->v_elements[i]);
 				if (i < tmp->v_elements.size() - 1)
 					str.append(", ");
 				if (i != 0 && i % 6 == 0)

@@ -309,74 +309,20 @@ void draw_node_array(NodeArray* node_array)
 	if (node_array->m_size  == 0)
 		return;
 
+	unsigned int i = 0;
 	std::string str = "[";
-
-	//draw array elements
-	switch (node_array->m_slot)
+	for (std::vector<NodeValue*>::iterator it = node_array->m_elements.begin();
+		it != node_array->m_elements.end();
+		it++)
 	{
-		case NODE_SLOT::EMPTY: break;
-		case NODE_SLOT::BOOL:
-		{
-			std::vector<bool>& vec = node_array->m_bool_elements;
-			for (int i = 0; i < vec.size(); i++)
-			{
-				str.append(vec[i] ? "true" : "false");
-				if (i < vec.size() - 1)
-					str.append(", ");
-				if (i != 0 && i % 6 == 0)
-					str.append("\n");
-			}
-		}
-		case NODE_SLOT::INTEGER:
-		{
-			std::vector<int>& vec = node_array->m_int_elements;
-			for (int i = 0; i < vec.size(); i++)
-			{
-				str.append(std::to_string(vec[i]));
-				if (i < vec.size() - 1)
-					str.append(", ");
-				if (i != 0 && i % 6 == 0)
-					str.append("\n");
-			}
-		}
-		case NODE_SLOT::FLOAT:
-		{
-			std::vector<float>& vec = node_array->m_float_elements;
-			for (int i = 0; i < vec.size(); i++)
-			{
-				str.append(std::to_string(vec[i]));
-				if (i < vec.size() - 1)
-					str.append(", ");
-				if (i != 0 && i % 6 == 0)
-					str.append("\n");
-			}
-		}
-		case NODE_SLOT::DOUBLE:
-		{
-			std::vector<double>& vec = node_array->m_double_elements;
-			for (int i = 0; i < vec.size(); i++)
-			{
-				str.append(std::to_string(vec[i]));
-				if (i < vec.size() - 1)
-					str.append(", ");
-				if (i != 0 && i % 6 == 0)
-					str.append("\n");
-			}
-		}
-		case NODE_SLOT::STRING:
-		{
-			std::vector<std::string>& vec = node_array->m_string_elements;
-			for (int i = 0; i < vec.size(); i++)
-			{
-				str.append(vec[i]);
-				if (i < vec.size() - 1)
-					str.append(", ");
-				if (i != 0 && i % 6 == 0)
-					str.append("\n");
-			}
-		}
+		NodeValue* val = *it;
+		str.append(val->get_value_str_ex());
+		if (i < node_array->m_elements.size() - 1)
+			str.append(", ");
+		if (i != 0 && i % 6 == 0)
+			str.append("\n");
+		i++;
 	}
-
 	str.append("]");
 	ImGui::TextColored(Config::NodeInterface_c::label_color, "Elements:");
 	ImGui::BulletText("%s", str.c_str());

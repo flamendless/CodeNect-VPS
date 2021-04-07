@@ -304,68 +304,15 @@ void Project::save_connections(CSimpleIniA& ini, std::vector<Connection>& v_conn
 void Project::save_array_elements(CSimpleIniA& ini, const char* section, NodeArray* node_array)
 {
 	int i = 0;
-	switch (node_array->m_slot)
+	for (std::vector<NodeValue*>::iterator it = node_array->m_elements.begin();
+		it != node_array->m_elements.end();
+		it++)
 	{
-		case NODE_SLOT::EMPTY: break;
-		case NODE_SLOT::BOOL:
-		{
-			std::vector<bool>& vec = node_array->m_bool_elements;
-			for (const bool& b : vec)
-			{
-				std::string str = b ? "true" : "false";
-				std::string id = "element_" + std::to_string(i);
-				ini.SetValue(section, id.c_str(), str.c_str());
-				i++;
-			}
-			break;
-		}
-		case NODE_SLOT::INTEGER:
-		{
-			std::vector<int>& vec = node_array->m_int_elements;
-			for (const int& n : vec)
-			{
-				std::string str = std::to_string(n);
-				std::string id = "element_" + std::to_string(i);
-				ini.SetValue(section, id.c_str(), str.c_str());
-				i++;
-			}
-			break;
-		}
-		case NODE_SLOT::FLOAT:
-		{
-			std::vector<float>& vec = node_array->m_float_elements;
-			for (const float& n : vec)
-			{
-				std::string str = std::to_string(n);
-				std::string id = "element_" + std::to_string(i);
-				ini.SetValue(section, id.c_str(), str.c_str());
-				i++;
-			}
-			break;
-		}
-		case NODE_SLOT::DOUBLE:
-		{
-			std::vector<double>& vec = node_array->m_double_elements;
-			for (const double& n : vec)
-			{
-				std::string str = std::to_string(n);
-				std::string id = "element_" + std::to_string(i);
-				ini.SetValue(section, id.c_str(), str.c_str());
-				i++;
-			}
-			break;
-		}
-		case NODE_SLOT::STRING:
-		{
-			std::vector<std::string>& vec = node_array->m_string_elements;
-			for (const std::string& n : vec)
-			{
-				std::string id = "element_" + std::to_string(i);
-				ini.SetValue(section, id.c_str(), n.c_str());
-				i++;
-			}
-			break;
-		}
+		NodeValue* val = *it;
+		std::string id = "element_" + std::to_string(i);
+		std::string str = val->get_value_str();
+		ini.SetValue(section, id.c_str(), str.c_str());
+		i++;
 	}
 }
 
