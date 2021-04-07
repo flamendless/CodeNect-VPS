@@ -13,6 +13,7 @@
 #include "node/node_math.hpp"
 #include "node/node_ds.hpp"
 #include "node/node_array.hpp"
+#include "node/node_array_access.hpp"
 
 namespace CodeNect
 {
@@ -26,6 +27,7 @@ std::map<std::string, unsigned int> Nodes::m_ids
 	{"BRANCH", 0},
 	{"PRINT", 0},
 	{"PROMPT", 0},
+	{"ARRAY_ACCESS", 0},
 	{"MATH", 0},
 	{"FIXED", 0},
 	{"DYNAMIC", 0},
@@ -228,6 +230,16 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 						node_prompt->m_desc = nm->m_desc.c_str();
 						node_prompt->m_override = Utils::bool_from_string(nm->m_override.c_str());
 						Nodes::v_nodes.push_back(node_prompt);
+						break;
+					}
+					case NODE_ACTION::ARRAY_ACCESS:
+					{
+						unsigned int index = std::stoi(nm->m_index);
+						NodeArrayAccess* node_arr_access = new NodeArrayAccess(index, std::move(in), std::move(out));
+						node_arr_access->m_name = nm->m_name.c_str();
+						node_arr_access->m_pos = ImVec2(nm->x, nm->y);
+						node_arr_access->m_desc = nm->m_desc.c_str();
+						Nodes::v_nodes.push_back(node_arr_access);
 						break;
 					}
 				}

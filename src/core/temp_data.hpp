@@ -55,6 +55,9 @@ struct TempActionData
 	bool is_override = false;
 	bool is_append_newline = false;
 
+	//array access
+	int index = 0;
+
 	NODE_SLOT slot_in = NODE_SLOT::EMPTY;
 	NODE_SLOT slot_out = NODE_SLOT::EMPTY;
 

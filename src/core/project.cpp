@@ -16,9 +16,11 @@
 #include "node/node_op.hpp"
 #include "node/node_cmp.hpp"
 #include "node/node_print.hpp"
+#include "node/node_prompt.hpp"
 #include "node/node_math.hpp"
 #include "node/node_ds.hpp"
 #include "node/node_array.hpp"
+#include "node/node_array_access.hpp"
 
 namespace CodeNect
 {
@@ -205,20 +207,34 @@ int Project::save(void)
 			case NODE_KIND::BRANCH: break;
 			case NODE_KIND::ACTION:
 			{
-				NodePrint* node_print = static_cast<NodePrint*>(node);
-				const char* is_override;
-				const char* is_append_newline;
+				NodePrint* node_print = dynamic_cast<NodePrint*>(node);
+				NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
+				NodeArrayAccess* node_arr_access = dynamic_cast<NodeArrayAccess*>(node);
 
-				if (node_print->m_override) is_override = "true";
-				else is_override = "false";
-
-				if (node_print->m_append_newline) is_append_newline = "true";
-				else is_append_newline = "false";
-
-				ini.SetValue(section, "action", node_print->m_action._to_string());
-				ini.SetValue(section, "value", node_print->m_orig_str.c_str());
-				ini.SetValue(section, "is_override", is_override);
-				ini.SetValue(section, "is_append_newline", is_append_newline);
+				if (node_print)
+				{
+					const char* is_override = "false";
+					const char* is_append_newline = "false";
+					if (node_print->m_override) is_override = "true";
+					if (node_print->m_append_newline) is_append_newline = "true";
+					ini.SetValue(section, "action", node_print->m_action._to_string());
+					ini.SetValue(section, "value", node_print->m_orig_str.c_str());
+					ini.SetValue(section, "is_override", is_override);
+					ini.SetValue(section, "is_append_newline", is_append_newline);
+				}
+				else if (node_prompt)
+				{
+					const char* is_override = "false";
+					if (node_prompt->m_override) is_override = "true";
+					ini.SetValue(section, "action", node_prompt->m_action._to_string());
+					ini.SetValue(section, "value", node_prompt->m_orig_str.c_str());
+					ini.SetValue(section, "is_override", is_override);
+				}
+				else if (node_arr_access)
+				{
+					ini.SetValue(section, "action", node_arr_access->m_action._to_string());
+					ini.SetValue(section, "index", std::to_string(node_arr_access->m_index).c_str());
+				}
 				break;
 			}
 			case NODE_KIND::MATH:
@@ -417,6 +433,12 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 		nm->m_orig_str = ini.GetValue(section, "value", "");
 		nm->m_override = ini.GetValue(section, "is_override", "false");
 		nm->m_append_newline = ini.GetValue(section, "is_append_newline", "false");
+	}
+
+	if (std::strcmp(action, "ARRAY_ACCESS") == 0)
+	{
+		nm->m_action = action;
+		nm->m_index = ini.GetValue(section, "index");
 	}
 
 	if (std::strcmp(ds, "ARRAY") == 0)

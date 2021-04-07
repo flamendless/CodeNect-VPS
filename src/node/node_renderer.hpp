@@ -14,6 +14,7 @@
 #include "node/node_math.hpp"
 #include "node/node_ds.hpp"
 #include "node/node_array.hpp"
+#include "node/node_array_access.hpp"
 
 namespace CodeNect::NodeRenderer
 {
@@ -27,6 +28,7 @@ void draw_node_cmp(NodeComparison* node_cmp);
 void draw_node_branch(NodeBranch* node_branch);
 void draw_node_print(NodePrint* node_print);
 void draw_node_prompt(NodePrompt* node_prompt);
+void draw_node_array_access(NodeArrayAccess* node_arr_access);
 void draw_node_math(NodeMath* node_math);
 void draw_node_array(NodeArray* node_array);
 

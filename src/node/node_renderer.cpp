@@ -54,6 +54,11 @@ void draw_node(Node* node)
 					NodeRenderer::draw_node_prompt(static_cast<NodePrompt*>(node));
 					break;
 				}
+				case NODE_ACTION::ARRAY_ACCESS:
+				{
+					NodeRenderer::draw_node_array_access(static_cast<NodeArrayAccess*>(node));
+					break;
+				}
 			}
 			break;
 		}
@@ -221,6 +226,24 @@ void draw_node_prompt(NodePrompt* node_prompt)
 	{
 		ImGui::Checkbox("Override", &node_prompt->m_override);
 		Utils::help_marker("Should the prompt message be overriden by the input slot", true);
+	}
+}
+
+void draw_node_array_access(NodeArrayAccess* node_arr_access)
+{
+	if (ImGui::BeginTable("TableNode##NodeArrayAccess", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Action:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Index:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+
+		ImGui::TableNextColumn();
+		ImGui::Text("%s", node_arr_access->m_action._to_string());
+		ImGui::Text("%d", node_arr_access->m_index);
+		ImGui::Text("%s", node_arr_access->m_desc);
+		ImGui::EndTable();
 	}
 }
 

@@ -28,11 +28,14 @@ struct NodeMeta
 	std::string m_cmp_str;
 	std::string m_cmp;
 
-	//NodePrint
+	//NodePrint/NodePrompt
 	std::string m_action;
 	std::string m_orig_str;
 	std::string m_override;
 	std::string m_append_newline;
+
+	//NodeArrayAccess
+	std::string m_index;
 
 	//NodeMath
 	std::string m_math;

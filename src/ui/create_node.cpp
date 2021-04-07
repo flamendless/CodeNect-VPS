@@ -12,6 +12,7 @@
 #include "node/node_prompt.hpp"
 #include "node/node_math.hpp"
 #include "node/node_array.hpp"
+#include "node/node_array_access.hpp"
 
 namespace CodeNect
 {
@@ -195,6 +196,12 @@ void CreateNode::edit(Node* node)
 					temp->is_override = node_prompt->m_override;
 					break;
 				}
+				case NODE_ACTION::ARRAY_ACCESS:
+				{
+					NodeArrayAccess* node_arr_access = static_cast<NodeArrayAccess*>(node);
+					temp->index = node_arr_access->m_index;
+					break;
+				}
 			}
 
 			temp->slot_in = NODE_SLOT::_from_string(node_action->m_in_slots[0].title);
@@ -300,6 +307,7 @@ void CreateNode::draw(void)
 					case NODE_ACTION::EMPTY: break;
 					case NODE_ACTION::PRINT: CreateNode::draw_print(); break;
 					case NODE_ACTION::PROMPT: CreateNode::draw_prompt(); break;
+					case NODE_ACTION::ARRAY_ACCESS: CreateNode::draw_array_access(); break;
 				}
 				break;
 			}
@@ -357,6 +365,7 @@ void CreateNode::draw_buttons(void)
 						case NODE_ACTION::EMPTY: break;
 						case NODE_ACTION::PRINT: CreateNode::create_node_print(); break;
 						case NODE_ACTION::PROMPT: CreateNode::create_node_prompt(); break;
+						case NODE_ACTION::ARRAY_ACCESS: CreateNode::create_node_array_access(); break;
 					}
 					break;
 				}

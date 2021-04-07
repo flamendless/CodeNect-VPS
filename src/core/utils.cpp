@@ -127,9 +127,24 @@ bool bool_from_string(const char* str)
 
 void string_to_name(std::string& str)
 {
+	//converts ENUM string to readable string
+	//example: ARRAY_ACCESS to Array Access
+	bool prev_was_ws = false;
 	std::transform(str.begin() + 1, str.end(), str.begin() + 1,
-		[](unsigned char c)
+		[&prev_was_ws](unsigned char c)
 		{
+			if (c == '_')
+			{
+				prev_was_ws = true;
+				return (int)' ';
+			}
+
+			if (prev_was_ws)
+			{
+				prev_was_ws = false;
+				return std::toupper(c);
+			}
+
 			return std::tolower(c);
 		});
 }
