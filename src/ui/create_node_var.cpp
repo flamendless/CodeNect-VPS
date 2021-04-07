@@ -51,6 +51,8 @@ void CreateNode::draw_var(void)
 				Utils::display_asterisk(true, STR_CONFLICT_KEYWORD); break;
 			case RES_VARNAME_ALREADY_TAKEN:
 				Utils::display_asterisk(true, STR_ALREADY_TAKEN); break;
+			case RES_VARNAME_INVALID:
+				Utils::display_asterisk(true, STR_INVALID); break;
 		}
 	}
 

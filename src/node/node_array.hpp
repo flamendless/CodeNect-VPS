@@ -16,6 +16,7 @@ struct NodeArray : public NodeDS
 
 	unsigned int m_size = 0;
 	std::vector<NodeValue*> m_elements;
+	std::vector<NodeValue*> m_other_elements;
 
 	explicit NodeArray(
 		NODE_ARRAY array,

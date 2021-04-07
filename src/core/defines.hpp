@@ -20,6 +20,7 @@
 #define RES_VARNAME_VALID 1
 #define STR_CONFLICT_KEYWORD "variable name can't be used because it's a reserved keyword"
 #define STR_ALREADY_TAKEN "variable name can't be used because it's already been taken"
+#define STR_INVALID "variable name can't be in invalid form"
 
 #define PROJ_NODE_PREFIX "node_"
 #define PROJ_CONNECTION_PREFIX "connection_"

@@ -332,8 +332,8 @@ void draw_node_array(NodeArray* node_array)
 	if (node_array->m_size  == 0)
 		return;
 
-	unsigned int i = 0;
 	std::string str = "[";
+	unsigned int i = 0;
 	for (std::vector<NodeValue*>::iterator it = node_array->m_elements.begin();
 		it != node_array->m_elements.end();
 		it++)
@@ -341,6 +341,22 @@ void draw_node_array(NodeArray* node_array)
 		NodeValue* val = *it;
 		str.append(val->get_value_str_ex());
 		if (i < node_array->m_elements.size() - 1)
+			str.append(", ");
+		if (i != 0 && i % 6 == 0)
+			str.append("\n");
+		i++;
+	}
+
+	i = 0;
+	for (std::vector<NodeValue*>::iterator it = node_array->m_other_elements.begin();
+		it != node_array->m_other_elements.end();
+		it++)
+	{
+		NodeValue* val = *it;
+		if (i == 0)
+			str.append(", ");
+		str.append(val->get_value_str_ex());
+		if (i < node_array->m_other_elements.size() - 1)
 			str.append(", ");
 		if (i != 0 && i % 6 == 0)
 			str.append("\n");
@@ -374,19 +390,18 @@ void draw_connections(Node& node)
 	}
 
 	ImNodes::CanvasState* canvas = ImNodes::GetCurrentCanvas();
-	canvas->Colors[ImNodes::ColConnectionActive] = NodeColors::Connection::HOVERED;
-	canvas->Colors[ImNodes::ColConnection] = NodeColors::Connection::DEFAULT;
+	canvas->Colors[ImNodes::ColConnectionActive] = NodeColors::ConnectionColors::HOVERED;
+	canvas->Colors[ImNodes::ColConnection] = NodeColors::ConnectionColors::DEFAULT;
 
 	for (const Connection& connection : node.m_connections)
 	{
 		if (connection.out_node != &node) continue;
-
 		if (connection.color == COLOR_TYPE::FALSE)
-			canvas->Colors[ImNodes::ColConnection] = NodeColors::Connection::FALSE;
+			canvas->Colors[ImNodes::ColConnection] = NodeColors::ConnectionColors::FALSE;
 		else if (connection.color == COLOR_TYPE::TRUE)
-			canvas->Colors[ImNodes::ColConnection] = NodeColors::Connection::TRUE;
+			canvas->Colors[ImNodes::ColConnection] = NodeColors::ConnectionColors::TRUE;
 		else if (connection.color == COLOR_TYPE::RUNTIME)
-			canvas->Colors[ImNodes::ColConnection] = NodeColors::Connection::RUNTIME;
+			canvas->Colors[ImNodes::ColConnection] = NodeColors::ConnectionColors::RUNTIME;
 
 		//draw connection
 		//query removed connection
@@ -400,7 +415,7 @@ void draw_connections(Node& node)
 			out_node->delete_connection(connection);
 		}
 
-		canvas->Colors[ImNodes::ColConnection] = NodeColors::Connection::DEFAULT;
+		canvas->Colors[ImNodes::ColConnection] = NodeColors::ConnectionColors::DEFAULT;
 	}
 }
 

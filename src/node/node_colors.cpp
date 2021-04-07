@@ -1,4 +1,5 @@
 #include "node/node_colors.hpp"
+#include "node/node.hpp"
 
 namespace CodeNect
 {
@@ -13,11 +14,11 @@ ImVec4 NodeColors::Lookup::VIOLET = ImVec4((float)216/255, (float)148/255, (floa
 ImVec4 NodeColors::Lookup::BLUE = ImVec4((float)27/255, (float)2/255, (float)226/255, ALPHA);
 ImVec4 NodeColors::Lookup::LIGHT_BLUE = ImVec4((float)19/255, (float)170/255, (float)251/255, ALPHA);
 
-ImVec4 NodeColors::Connection::DEFAULT = ImVec4(0.39f, 0.39f, 0.39f, 1);
-ImVec4 NodeColors::Connection::HOVERED = ImVec4(1, 0.43f, 0.35f, 1);
-ImVec4 NodeColors::Connection::TRUE = NodeColors::Lookup::GREEN;
-ImVec4 NodeColors::Connection::FALSE = NodeColors::Lookup::RED;
-ImVec4 NodeColors::Connection::RUNTIME = NodeColors::Lookup::YELLOW;
+ImVec4 NodeColors::ConnectionColors::DEFAULT = ImVec4(0.39f, 0.39f, 0.39f, 1);
+ImVec4 NodeColors::ConnectionColors::HOVERED = ImVec4(1, 0.43f, 0.35f, 1);
+ImVec4 NodeColors::ConnectionColors::TRUE = NodeColors::Lookup::GREEN;
+ImVec4 NodeColors::ConnectionColors::FALSE = NodeColors::Lookup::RED;
+ImVec4 NodeColors::ConnectionColors::RUNTIME = NodeColors::Lookup::YELLOW;
 
 std::map<std::string, ImVec4> NodeColors::m_kind
 {
@@ -30,4 +31,30 @@ std::map<std::string, ImVec4> NodeColors::m_kind
 	{"MATH", NodeColors::Lookup::VIOLET},
 	{"DS", NodeColors::Lookup::BLUE},
 };
+
+void NodeColors::set_connection_color(Connection& connection, COLOR_TYPE color)
+{
+	connection.color = color;
+
+	Node* in_node = static_cast<Node*>(connection.in_node);
+	Node* out_node = static_cast<Node*>(connection.out_node);
+
+	for (Connection& in_connection : in_node->m_connections)
+	{
+		if (in_connection == connection)
+		{
+			in_connection.color = color;
+			break;
+		}
+	}
+
+	for (Connection& out_connection : out_node->m_connections)
+	{
+		if (out_connection == connection)
+		{
+			out_connection.color = color;
+			break;
+		}
+	}
+}
 }

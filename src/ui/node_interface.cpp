@@ -121,7 +121,6 @@ void NodeInterface::draw_nodes(void)
 		NodeRenderer::push_node_color(node);
 
 		const char* title = Nodes::get_title(node);
-
 		if (ImNodes::Ez::BeginNode(node, title, &node->m_pos, &node->m_selected))
 		{
 			NodeRenderer::pop_node_color();

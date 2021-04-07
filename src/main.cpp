@@ -62,7 +62,7 @@ int main(int argv, char** args)
 
 	//test
 #if DEBUG_MODE
-	CodeNect::Project::open("test_conn.cn");
+	CodeNect::Project::open("test_array.cn");
 #endif
 
 	PLOGI << "Initialization is complete";

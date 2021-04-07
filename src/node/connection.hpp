@@ -1,9 +1,11 @@
 #ifndef _CONNECTION_HPP
 #define _CONNECTION_HPP
 
+#include <string>
+
 namespace CodeNect
 {
-enum COLOR_TYPE { DEFAULT = 0, TRUE, FALSE, RUNTIME };
+enum COLOR_TYPE { DEFAULT = 0, TRUE, FALSE, RUNTIME};
 
 struct Connection
 {

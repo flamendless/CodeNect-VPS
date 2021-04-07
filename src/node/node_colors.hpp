@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include "imgui.h"
+#include "node/connection.hpp"
 
 namespace CodeNect
 {
@@ -21,7 +22,7 @@ struct NodeColors
 		static ImVec4 LIGHT_BLUE;
 	};
 
-	struct Connection
+	struct ConnectionColors
 	{
 		static ImVec4 DEFAULT;
 		static ImVec4 HOVERED;
@@ -31,6 +32,7 @@ struct NodeColors
 	};
 
 	static std::map<std::string, ImVec4> m_kind;
+	static void set_connection_color(Connection& connection, COLOR_TYPE color);
 };
 }
 

@@ -31,6 +31,7 @@ add_executable(CodeNect
 	src/node/node_math.cpp
 	src/node/node.cpp
 
+	src/node/node_logic_array.cpp
 	src/node/node_logic_branch.cpp
 	src/node/node_logic_cast.cpp
 	src/node/node_logic_cmp.cpp
