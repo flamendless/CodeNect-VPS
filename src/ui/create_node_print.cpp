@@ -88,7 +88,8 @@ void CreateNode::draw_print(void)
 	ImGui::Checkbox("Append New Line", &tmp->is_append_newline);
 	Utils::help_marker("Should the output string be appended with newline/nextline", true);
 
-	CreateNode::can_create = tmp->slot_in != +NODE_SLOT::EMPTY &&
+	tmp->valid_action = tmp->slot_in != +NODE_SLOT::EMPTY &&
 		tmp->slot_out != +NODE_SLOT::EMPTY;
+	CreateNode::can_create = tmp->valid_action;
 }
 }

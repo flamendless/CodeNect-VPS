@@ -30,6 +30,8 @@ struct NodeArray : public NodeDS
 
 	void set_size(void);
 	void add_elements(std::vector<std::string>& v);
+	void elements_to_vec_str(std::vector<std::string>& v);
+	void clear_elements(void);
 
 	inline ~NodeArray() {}
 };

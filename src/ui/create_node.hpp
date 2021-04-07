@@ -20,6 +20,7 @@ struct CreateNode
 	static bool is_pos_locked;
 	static bool is_edit_mode;
 	static const char* title;
+	static const char* edit_title;
 
 	static NODE_KIND kind;
 	static NODE_ACTION action;

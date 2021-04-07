@@ -109,4 +109,86 @@ void NodeArray::add_elements(std::vector<std::string>& v)
 
 	m_size = v.size();
 }
+
+void NodeArray::elements_to_vec_str(std::vector<std::string>& v)
+{
+	switch (m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL:
+		{
+			for (int i = 0; i < m_bool_elements.size(); i++)
+			{
+				bool b = m_bool_elements[i];
+				v.push_back(b ? "true" : "false");
+			}
+			break;
+		}
+		case NODE_SLOT::INTEGER:
+		{
+			for (int i = 0; i < m_int_elements.size(); i++)
+			{
+				v.push_back(std::to_string(m_int_elements[i]));
+			}
+			break;
+		}
+		case NODE_SLOT::FLOAT:
+		{
+			for (int i = 0; i < m_float_elements.size(); i++)
+			{
+				v.push_back(std::to_string(m_float_elements[i]));
+			}
+			break;
+		}
+		case NODE_SLOT::DOUBLE:
+		{
+			for (int i = 0; i < m_double_elements.size(); i++)
+			{
+				v.push_back(std::to_string(m_double_elements[i]));
+			}
+			break;
+		}
+		case NODE_SLOT::STRING:
+		{
+			for (int i = 0; i < m_string_elements.size(); i++)
+			{
+				v.push_back(m_string_elements[i]);
+			}
+			break;
+		}
+	}
+}
+
+void NodeArray::clear_elements(void)
+{
+	switch (m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL:
+		{
+			m_bool_elements.clear();
+			break;
+		}
+		case NODE_SLOT::INTEGER:
+		{
+			m_int_elements.clear();
+			break;
+		}
+		case NODE_SLOT::FLOAT:
+		{
+			m_float_elements.clear();
+			break;
+		}
+		case NODE_SLOT::DOUBLE:
+		{
+			m_double_elements.clear();
+			break;
+		}
+		case NODE_SLOT::STRING:
+		{
+			m_string_elements.clear();
+			break;
+		}
+	}
+}
 }

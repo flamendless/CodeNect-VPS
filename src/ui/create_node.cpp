@@ -25,6 +25,7 @@ bool CreateNode::is_open = false;
 bool CreateNode::is_pos_locked = true;
 bool CreateNode::is_edit_mode = false;
 const char* CreateNode::title = ICON_FA_PLUS_SQUARE "Create Node";
+const char* CreateNode::edit_title = ICON_FA_EDIT " Edit";
 NODE_KIND CreateNode::kind = NODE_KIND::EMPTY;
 NODE_ACTION CreateNode::action = NODE_ACTION::EMPTY;
 NODE_MATH CreateNode::math = NODE_MATH::EMPTY;
@@ -196,7 +197,10 @@ void CreateNode::edit(Node* node)
 				}
 			}
 
+			temp->slot_in = NODE_SLOT::_from_string(node_action->m_in_slots[0].title);
+			temp->slot_out = NODE_SLOT::_from_string(node_action->m_out_slots[0].title);
 			temp->valid_action = true;
+			CreateNode::action = node_action->m_action;
 			CreateNode::node_to_edit = node;
 			CreateNode::data = temp;
 			break;
@@ -206,28 +210,33 @@ void CreateNode::edit(Node* node)
 			NodeMath* node_math = static_cast<NodeMath*>(node);
 			TempMathData* temp = new TempMathData();
 			temp->valid_math = true;
+			CreateNode::math = node_math->m_math;
 			CreateNode::node_to_edit = node;
 			CreateNode::data = temp;
 			break;
 		}
 		case NODE_KIND::DS:
 		{
-			switch (CreateNode::ds)
+			NodeDS* node_ds = static_cast<NodeDS*>(node);
+			switch (node_ds->m_ds)
 			{
 				case NODE_DS::EMPTY: break;
 				case NODE_DS::ARRAY:
 				{
 					NodeArray* node_array = static_cast<NodeArray*>(node);
 					TempArrayData* temp = new TempArrayData();
-					NODE_SLOT slot = node_array->m_slot;
+					node_array->elements_to_vec_str(temp->v_elements);
+					std::strcpy(temp->buf_name, node_array->m_name);
 					temp->valid_array = true;
 					temp->valid_name = true;
-					std::strcpy(temp->buf_name, node_array->m_name);
-					temp->slot = slot;
+					temp->slot = node_array->m_slot;
+					temp->array = node_array->m_array;
+					temp->size = node_array->m_size;
 					CreateNode::data = temp;
 					break;
 				}
 			}
+			CreateNode::ds = node_ds->m_ds;
 			CreateNode::node_to_edit = node;
 			break;
 		}
@@ -244,6 +253,7 @@ void CreateNode::close(void)
 {
 	CreateNode::kind = NODE_KIND::EMPTY;
 	CreateNode::action = NODE_ACTION::EMPTY;
+	CreateNode::ds = NODE_DS::EMPTY;
 	CreateNode::is_open = false;
 
 	if (CreateNode::is_edit_mode)
@@ -265,9 +275,14 @@ void CreateNode::draw(void)
 		CreateNode::is_first = false;
 	}
 
-	if (ImGui::Begin(CreateNode::title, &CreateNode::is_open, CreateNode::flags))
+	const char* title = CreateNode::title;
+
+	if (CreateNode::is_edit_mode)
+		title = CreateNode::edit_title;
+
+	if (ImGui::Begin(title, &CreateNode::is_open, CreateNode::flags))
 	{
-		Utils::center_text(CreateNode::title, true);
+		Utils::center_text(title, true);
 		ImGui::Separator();
 
 		switch (CreateNode::kind)
@@ -303,7 +318,6 @@ void CreateNode::draw(void)
 		CreateNode::draw_desc();
 		ImGui::Separator();
 		CreateNode::draw_buttons();
-
 		ImGui::End();
 	}
 }

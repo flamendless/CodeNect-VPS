@@ -20,6 +20,8 @@ void CreateNode::create_node_array(void)
 	if (CreateNode::is_edit_mode)
 	{
 		NodeArray* node_array = static_cast<NodeArray*>(CreateNode::node_to_edit);
+		node_array->clear_elements();
+		node_array->add_elements(tmp->v_elements);
 		node_array->m_name = tmp->buf_name;
 		node_array->m_desc = CreateNode::buf_desc;
 		PLOGD << "Edited NodeArray: " << node_array->m_name;
@@ -40,7 +42,7 @@ void CreateNode::create_node_array(void)
 	}
 }
 
-void CreateNode::draw_array()
+void CreateNode::draw_array(void)
 {
 	TempArrayData* tmp = std::get<TempArrayData*>(data);
 	const int len_name = strlen(tmp->buf_name);
@@ -120,27 +122,27 @@ void CreateNode::draw_array()
 			ImGui::InputInt("Array Fixed Size", &tmp->size);
 			Utils::help_marker(txt_size, true);
 		}
+	}
 
-		if (tmp->slot != +NODE_SLOT::EMPTY && tmp->array != +NODE_ARRAY::EMPTY)
+	if (tmp->slot != +NODE_SLOT::EMPTY && tmp->array != +NODE_ARRAY::EMPTY)
+	{
+		CreateNode::draw_array_elements();
+
+		if (tmp->v_elements.size() > 0)
 		{
-			CreateNode::draw_array_elements();
-
-			if (tmp->v_elements.size() > 0)
+			std::string str = "[";
+			for (int i = 0; i < tmp->v_elements.size(); i++)
 			{
-				std::string str = "[";
-				for (int i = 0; i < tmp->v_elements.size(); i++)
-				{
-					str.append(tmp->v_elements[i]);
-					if (i < tmp->v_elements.size() - 1)
-						str.append(", ");
-					if (i != 0 && i % 6 == 0)
-						str.append("\n");
-				}
-				str.append("]");
-				ImGui::Text("%s", str.c_str());
-				if (ImGui::Button("Remove last element"))
-					tmp->v_elements.pop_back();
+				str.append(tmp->v_elements[i]);
+				if (i < tmp->v_elements.size() - 1)
+					str.append(", ");
+				if (i != 0 && i % 6 == 0)
+					str.append("\n");
 			}
+			str.append("]");
+			ImGui::Text("%s", str.c_str());
+			if (ImGui::Button("Remove last element"))
+				tmp->v_elements.pop_back();
 		}
 	}
 
