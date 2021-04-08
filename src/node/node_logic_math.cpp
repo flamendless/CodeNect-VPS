@@ -6,6 +6,7 @@
 #include "node/node_var.hpp"
 #include "node/node_op.hpp"
 #include "node/node_math.hpp"
+#include "node/node_array_access.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -34,17 +35,19 @@ void process_math(void)
 		//get lhs of this node_math
 		for (const Connection& connection : node_math->m_connections)
 		{
-			Node* in_node = static_cast<Node*>(connection.in_node);
 			Node* out_node = static_cast<Node*>(connection.out_node);
-			//can be node_var or node_op
+			//can be node_var or node_op or node_array_access
 			NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
 			NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
+			NodeArrayAccess* node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
 			NodeValue* val = nullptr;
 
 			if (node_var)
 				val = &node_var->m_value;
 			else if (node_op && node_op->m_current_val)
 				val = node_op->m_current_val;
+			else if (node_arr_access && node_arr_access->m_current_val)
+				val = node_arr_access->m_current_val;
 
 			if (val)
 			{
@@ -92,13 +95,12 @@ void process_math(void)
 
 		//evaluate
 		node_math->m_has_connections = true;
-		NodeValue* res = nullptr;
+		NodeValue* res = new NodeValue();
 
 		if (res_var)
-			res = &res_var->m_value;
+			res->copy(res_var->m_value);
 		else
 		{
-			res = new NodeValue();
 			NODE_SLOT slot = NODE_SLOT::_from_string(node_math->m_out_slots[0].title);
 			res->copy(slot);
 		}
@@ -116,6 +118,8 @@ void process_math(void)
 		}
 
 		node_math->m_current_val = res;
+		if (res_var)
+			res_var->m_value.copy(*res);
 	}
 }
 

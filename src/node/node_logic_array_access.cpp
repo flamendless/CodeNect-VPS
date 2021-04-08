@@ -1,7 +1,6 @@
 #include "node/node_logic.hpp"
 
 #include "node/nodes.hpp"
-#include "node/node_var.hpp"
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_colors.hpp"

@@ -2,6 +2,7 @@
 
 #include "node/nodes.hpp"
 #include "node/node_var.hpp"
+#include "node/node_array_access.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -30,15 +31,19 @@ void process_var(void)
 			//check for node_var -> node_var
 			//in node is the "to"/"target" node (rhs)
 			//out node is the "from" (lhs)
-			Node* in_node = static_cast<Node*>(connection.in_node);
 			Node* out_node = static_cast<Node*>(connection.out_node);
-			NodeVariable* in_node_var = dynamic_cast<NodeVariable*>(in_node);
 			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
+			NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
 
-			if (in_node_var && out_node_var)
+			if (out_node_var)
 			{
 				if (node_var != out_node)
 					node_var->m_value = out_node_var->m_value;
+			}
+			else if (out_node_arr_access)
+			{
+				if (out_node_arr_access->m_current_val)
+					node_var->m_value = *out_node_arr_access->m_current_val;
 			}
 		}
 	}

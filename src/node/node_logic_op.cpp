@@ -5,6 +5,7 @@
 #include "node/node_op.hpp"
 #include "node/node_math.hpp"
 #include "node/node_array.hpp"
+#include "node/node_array_access.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -37,32 +38,30 @@ void process_op(void)
 		Result res;
 		res.node_op = node_op;
 
-		//get the resulting node_var
+		//get the resulting node_var (rhs)
 		for (const Connection& connection : node_op->m_connections)
 		{
 			Node* in_node = static_cast<Node*>(connection.in_node);
-			Node* out_node = static_cast<Node*>(connection.out_node);
 			NodeVariable* in_node_var = dynamic_cast<NodeVariable*>(in_node);
 			NodeMath* in_node_math = dynamic_cast<NodeMath*>(in_node);
 			NodeArray* in_node_array = dynamic_cast<NodeArray*>(in_node);
-			NodeOperation* out_node_op = dynamic_cast<NodeOperation*>(out_node);
 
-			if (in_node_var && out_node_op)
+			if (in_node_var)
 			{
 				res.node_res = in_node_var;
 				res.slot_res = in_node_var->m_value_orig.m_slot;
 				break;
 			}
-			else if (in_node_math && out_node_op)
+			else if (in_node_math)
 			{
 				res.node_res = in_node_math;
-				res.slot_res = NODE_SLOT::_from_string(out_node_op->m_in_slots[0].title);
+				res.slot_res = NODE_SLOT::_from_string(node_op->m_in_slots[0].title);
 				break;
 			}
-			else if (in_node_array && out_node_op)
+			else if (in_node_array)
 			{
 				res.node_res = in_node_array;
-				res.slot_res = NODE_SLOT::_from_string(out_node_op->m_in_slots[0].title);
+				res.slot_res = NODE_SLOT::_from_string(node_op->m_in_slots[0].title);
 				break;
 			}
 		}
@@ -74,10 +73,10 @@ void process_op(void)
 		//get all the lhs of the node_op
 		for (const Connection& connection : node_op->m_connections)
 		{
-			Node* in_node = static_cast<Node*>(connection.in_node);
 			Node* out_node = static_cast<Node*>(connection.out_node);
 			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
 			NodeMath* out_node_math = dynamic_cast<NodeMath*>(out_node);
+			NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
 
 			if (out_node_var)
 			{
@@ -90,6 +89,14 @@ void process_op(void)
 				{
 					if (out_node_math->m_current_val)
 						res.v_values.push_back(out_node_math->m_current_val);
+				}
+			}
+			else if (out_node_arr_access)
+			{
+				if (out_node_arr_access->m_out_slots[0].kind == res.slot_res)
+				{
+					if (out_node_arr_access->m_current_val)
+						res.v_values.push_back(out_node_arr_access->m_current_val);
 				}
 			}
 		}

@@ -247,7 +247,6 @@ int Project::save(void)
 			{
 				NodeDS* node_ds = static_cast<NodeDS*>(node);
 				ini.SetValue(section, "ds", node_ds->m_ds._to_string());
-				PLOGD << node_ds->m_ds._to_string();
 
 				switch (node_ds->m_ds)
 				{
