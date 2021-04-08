@@ -23,7 +23,7 @@ void process_array(void)
 		node_array->m_other_elements.clear();
 		const int size_a = node_array->m_elements.size();
 		const int size_b = node_array->m_other_elements.size();
-		const bool can_add = size_a + size_b < node_array->m_size;
+		const bool can_add = size_a + size_b < node_array->m_fixed_size;
 
 		for (Connection& connection : node_array->m_connections)
 		{
@@ -62,6 +62,37 @@ void process_array(void)
 					continue;
 				}
 				node_array->m_other_elements.push_back(val);
+			}
+
+			//this is the "from" array
+			NodeArray* out_node_array = dynamic_cast<NodeArray*>(out_node);
+			if (out_node_array && out_node_array != node_array)
+			{
+				if (node_array->m_array == +NODE_ARRAY::FIXED)
+				{
+					const int req_size = out_node_array->m_elements.size() +
+						out_node_array->m_other_elements.size();
+					const int cur_size = size_a + size_b;
+					bool exceeds = req_size + cur_size > node_array->m_fixed_size;
+
+					if (exceeds)
+					{
+						NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
+						continue;
+					}
+				}
+
+				for (int i = 0; i < out_node_array->m_elements.size(); i++)
+				{
+					NodeValue* val = out_node_array->m_elements[i];
+					node_array->m_other_elements.push_back(val);
+				}
+
+				for (int i = 0; i < out_node_array->m_other_elements.size(); i++)
+				{
+					NodeValue* val = out_node_array->m_other_elements[i];
+					node_array->m_other_elements.push_back(val);
+				}
 			}
 		}
 	}

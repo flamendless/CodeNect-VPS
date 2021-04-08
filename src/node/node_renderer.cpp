@@ -312,6 +312,9 @@ void draw_node_math(NodeMath* node_math)
 
 void draw_node_array(NodeArray* node_array)
 {
+	const int size_a = node_array->m_elements.size();
+	const int size_b = node_array->m_other_elements.size();
+
 	if (ImGui::BeginTable("TableNode##NodeArray", 2, ImGuiTableFlags_SizingFixedFit))
 	{
 		ImGui::TableNextRow();
@@ -323,14 +326,14 @@ void draw_node_array(NodeArray* node_array)
 
 		ImGui::TableNextColumn();
 		ImGui::Text("%s", node_array->m_name);
-		ImGui::Text("%s", node_array->m_slot._to_string());
-		ImGui::Text("%d", node_array->m_size);
+		ImGui::Text("%s", node_array->m_array._to_string());
+		if (node_array->m_array == +NODE_ARRAY::FIXED)
+			ImGui::Text("%d", node_array->m_fixed_size);
+		else
+			ImGui::Text("%d", size_a + size_b);
 		ImGui::Text("%s", node_array->m_desc);
 		ImGui::EndTable();
 	}
-
-	if (node_array->m_size  == 0)
-		return;
 
 	std::string str = "[";
 	unsigned int i = 0;
@@ -353,7 +356,7 @@ void draw_node_array(NodeArray* node_array)
 		it++)
 	{
 		NodeValue* val = *it;
-		if (i == 0)
+		if (i == 0 && size_a != 0)
 			str.append(", ");
 		str.append(val->get_value_str_ex());
 		if (i < node_array->m_other_elements.size() - 1)

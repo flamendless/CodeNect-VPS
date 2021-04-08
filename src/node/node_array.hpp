@@ -14,7 +14,7 @@ struct NodeArray : public NodeDS
 	NODE_ARRAY m_array = NODE_ARRAY::EMPTY;
 	NODE_SLOT m_slot = NODE_SLOT::EMPTY;
 
-	unsigned int m_size = 0;
+	unsigned int m_fixed_size = 0;
 	std::vector<NodeValue*> m_elements;
 	std::vector<NodeValue*> m_other_elements;
 

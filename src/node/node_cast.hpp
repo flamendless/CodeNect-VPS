@@ -3,6 +3,7 @@
 
 #include "node/node.hpp"
 #include "node/node_def.hpp"
+#include "node/node_val.hpp"
 
 namespace CodeNect
 {

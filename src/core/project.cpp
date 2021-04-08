@@ -256,7 +256,7 @@ int Project::save(void)
 					{
 						NodeArray* node_array = static_cast<NodeArray*>(node);
 						ini.SetValue(section, "array", node_array->m_array._to_string());
-						ini.SetValue(section, "array_size", std::to_string(node_array->m_size).c_str());
+						ini.SetValue(section, "array_size", std::to_string(node_array->m_fixed_size).c_str());
 						ini.SetValue(section, "array_slot", node_array->m_slot._to_string());
 						Project::save_array_elements(ini, section, node_array);
 						break;

@@ -29,7 +29,7 @@ void process_cast(void)
 		for (const Connection& connection : node_cast->m_connections)
 		{
 			if (res_node_var && from_node_var)
-				break;
+				continue;
 
 			Node* in_node = static_cast<Node*>(connection.in_node);
 			Node* out_node = static_cast<Node*>(connection.out_node);

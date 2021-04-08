@@ -20,14 +20,14 @@ NodeArray::NodeArray(
 	Node::m_kind = m_kind;
 	Node::m_name = Nodes::get_id(array._to_string());
 	m_array = array;
-	m_size = size;
+	m_fixed_size = size;
 	m_slot = slot;
 	m_in_slots = in_slots;
 	m_out_slots = out_slots;
-	m_elements.reserve(m_size);
+	m_elements.reserve(m_fixed_size);
 
 	PLOGD << "Created NodeArray: " << m_name << ", array = " << m_array._to_string()
-		<< ", size = " << m_size;
+		<< ", fixed size = " << m_fixed_size;
 }
 
 void NodeArray::add_elements(std::vector<std::string>& v)
@@ -71,8 +71,6 @@ void NodeArray::add_elements(std::vector<std::string>& v)
 
 		m_elements.push_back(val);
 	}
-
-	m_size = v.size();
 }
 
 void NodeArray::elements_to_vec_str(std::vector<std::string>& v)

@@ -4,6 +4,7 @@
 #include "node/node_var.hpp"
 #include "node/node_op.hpp"
 #include "node/node_math.hpp"
+#include "node/node_array.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -11,7 +12,7 @@ struct Result
 {
 	std::vector<NodeValue*> v_values;
 	NodeOperation* node_op;
-	std::variant<NodeVariable*, NodeMath*> node_res;
+	std::variant<NodeVariable*, NodeMath*, NodeArray*> node_res;
 	NODE_SLOT slot_res = NODE_SLOT::EMPTY;
 };
 
@@ -43,6 +44,7 @@ void process_op(void)
 			Node* out_node = static_cast<Node*>(connection.out_node);
 			NodeVariable* in_node_var = dynamic_cast<NodeVariable*>(in_node);
 			NodeMath* in_node_math = dynamic_cast<NodeMath*>(in_node);
+			NodeArray* in_node_array = dynamic_cast<NodeArray*>(in_node);
 			NodeOperation* out_node_op = dynamic_cast<NodeOperation*>(out_node);
 
 			if (in_node_var && out_node_op)
@@ -54,6 +56,12 @@ void process_op(void)
 			else if (in_node_math && out_node_op)
 			{
 				res.node_res = in_node_math;
+				res.slot_res = NODE_SLOT::_from_string(out_node_op->m_in_slots[0].title);
+				break;
+			}
+			else if (in_node_array && out_node_op)
+			{
+				res.node_res = in_node_array;
 				res.slot_res = NODE_SLOT::_from_string(out_node_op->m_in_slots[0].title);
 				break;
 			}
@@ -125,6 +133,7 @@ void process_op(void)
 				break;
 			}
 			case 1: break;
+			case 2: break;
 		}
 
 		node_op->m_current_val = new NodeValue();

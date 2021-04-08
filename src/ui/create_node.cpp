@@ -238,7 +238,7 @@ void CreateNode::edit(Node* node)
 					temp->valid_name = true;
 					temp->slot = node_array->m_slot;
 					temp->array = node_array->m_array;
-					temp->size = node_array->m_size;
+					temp->size = node_array->m_fixed_size;
 					CreateNode::data = temp;
 					break;
 				}
