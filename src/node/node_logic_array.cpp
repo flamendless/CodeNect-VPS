@@ -5,6 +5,7 @@
 #include "node/node_math.hpp"
 #include "node/node_op.hpp"
 #include "node/node_array.hpp"
+#include "node/node_array_access.hpp"
 #include "node/node_colors.hpp"
 
 namespace CodeNect::NodeLogic
@@ -64,15 +65,30 @@ void process_array(void)
 				node_array->m_other_elements.push_back(val);
 			}
 
+			NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
+			if (out_node_arr_access)
+			{
+				if (out_node_arr_access->m_current_val)
+				{
+					if (node_array->m_array == +NODE_ARRAY::FIXED && !can_add)
+					{
+						NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
+						continue;
+					}
+					node_array->m_other_elements.push_back(out_node_arr_access->m_current_val);
+				}
+			}
+
 			//this is the "from" array
 			NodeArray* out_node_array = dynamic_cast<NodeArray*>(out_node);
 			if (out_node_array && out_node_array != node_array)
 			{
+				const int req_size = out_node_array->m_elements.size() +
+					out_node_array->m_other_elements.size();
+				const int cur_size = size_a + size_b;
+
 				if (node_array->m_array == +NODE_ARRAY::FIXED)
 				{
-					const int req_size = out_node_array->m_elements.size() +
-						out_node_array->m_other_elements.size();
-					const int cur_size = size_a + size_b;
 					bool exceeds = req_size + cur_size > node_array->m_fixed_size;
 
 					if (exceeds)
@@ -82,17 +98,13 @@ void process_array(void)
 					}
 				}
 
-				for (int i = 0; i < out_node_array->m_elements.size(); i++)
-				{
-					NodeValue* val = out_node_array->m_elements[i];
-					node_array->m_other_elements.push_back(val);
-				}
-
-				for (int i = 0; i < out_node_array->m_other_elements.size(); i++)
-				{
-					NodeValue* val = out_node_array->m_other_elements[i];
-					node_array->m_other_elements.push_back(val);
-				}
+				node_array->m_other_elements.reserve(req_size + cur_size);
+				node_array->m_other_elements.insert(node_array->m_other_elements.end(),
+					out_node_array->m_elements.begin(),
+					out_node_array->m_elements.end());
+				node_array->m_other_elements.insert(node_array->m_other_elements.end(),
+					out_node_array->m_other_elements.begin(),
+					out_node_array->m_other_elements.end());
 			}
 		}
 	}

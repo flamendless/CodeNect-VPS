@@ -237,11 +237,16 @@ void draw_node_array_access(NodeArrayAccess* node_arr_access)
 		ImGui::TableNextColumn();
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Action:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Index:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Element:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
 
 		ImGui::TableNextColumn();
 		ImGui::Text("%s", node_arr_access->m_action._to_string());
 		ImGui::Text("%d", node_arr_access->m_index);
+		if (node_arr_access->m_current_val)
+			ImGui::Text("%s", node_arr_access->m_current_val->get_value_str_ex().c_str());
+		else
+			ImGui::Text("");
 		ImGui::Text("%s", node_arr_access->m_desc);
 		ImGui::EndTable();
 	}

@@ -10,6 +10,7 @@ struct NodeArrayAccess : public NodeAction
 	NODE_ACTION m_action = NODE_ACTION::ARRAY_ACCESS;
 
 	unsigned int m_index = 0;
+	NodeValue* m_current_val = nullptr;
 
 	explicit NodeArrayAccess(
 		unsigned int index,

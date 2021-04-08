@@ -18,6 +18,7 @@ void process_prompt(void);
 void process_math(void);
 double calculate_math(NodeMath* node_math, std::function<double(double, double)> fn);
 void process_array(void);
+void process_array_access(void);
 
 bool validate_node_cast(Node* in_node, Node* out_node);
 }
