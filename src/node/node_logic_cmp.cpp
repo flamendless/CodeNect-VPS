@@ -4,6 +4,7 @@
 #include "node/node_var.hpp"
 #include "node/node_cmp.hpp"
 #include "node/node_branch.hpp"
+#include "node/node_array_access.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -29,25 +30,23 @@ void process_cmp(void)
 		if (node_cmp->m_connections.size() < 3)
 			continue;
 
-		//make sure node_cmp has a connected node_var or node_branch for the result
+		//make sure node_cmp has a connected node_var or node_branch for the result (rhs)
 		for (const Connection& connection : node_cmp->m_connections)
 		{
 			if (res_var || res_branch)
 				break;
 
 			Node* in_node = static_cast<Node*>(connection.in_node);
-			Node* out_node = static_cast<Node*>(connection.out_node);
-			NodeComparison* node_cmp = dynamic_cast<NodeComparison*>(out_node);
 			NodeVariable* node_var = dynamic_cast<NodeVariable*>(in_node);
 			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(in_node);
 
-			if (node_cmp && node_var)
+			if (node_var)
 			{
 				res_var = node_var;
 				break;
 			}
 
-			if (node_cmp && node_branch)
+			if (node_branch)
 			{
 				res_branch = node_branch;
 				break;
@@ -71,11 +70,14 @@ void process_cmp(void)
 			Node* out_node = static_cast<Node*>(connection.out_node);
 			NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
 			NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
+			NodeArrayAccess* node_array_access = dynamic_cast<NodeArrayAccess*>(out_node);
 
 			if (node_var)
 				v_values.push_back(&node_var->m_value);
 			else if (node_math)
 				v_values.push_back(node_math->m_current_val);
+			else if (node_array_access)
+				v_values.push_back(node_array_access->m_current_val);
 		}
 
 		if (v_values.size() < 2)

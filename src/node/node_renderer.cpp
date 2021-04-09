@@ -246,7 +246,7 @@ void draw_node_array_access(NodeArrayAccess* node_arr_access)
 		if (node_arr_access->m_current_val)
 			ImGui::Text("%s", node_arr_access->m_current_val->get_value_str_ex().c_str());
 		else
-			ImGui::Text("");
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), "(out of bounds)");
 		ImGui::Text("%s", node_arr_access->m_desc);
 		ImGui::EndTable();
 	}

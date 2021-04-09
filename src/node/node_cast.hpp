@@ -10,6 +10,7 @@ namespace CodeNect
 struct NodeCast : public Node
 {
 	NODE_KIND m_kind = NODE_KIND::CAST;
+	NodeValue* m_current_val = nullptr;
 
 	explicit NodeCast(
 		const v_slot_info_t&& in_slots,

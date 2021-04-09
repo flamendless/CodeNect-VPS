@@ -3,6 +3,9 @@
 #include "node/nodes.hpp"
 #include "node/node_var.hpp"
 #include "node/node_cast.hpp"
+#include "node/node_op.hpp"
+#include "node/node_math.hpp"
+#include "node/node_array_access.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -17,48 +20,44 @@ void process_cast(void)
 		if (!node_cast)
 			continue;
 
-		//store the result
-		NodeVariable* res_node_var = nullptr;
-		NodeVariable* from_node_var = nullptr;
+		if (node_cast->m_current_val)
+			delete node_cast->m_current_val;
+		node_cast->m_current_val = nullptr;
 
-		//make preliminary checks
-		if (node_cast->m_connections.size() < 2)
-			continue;
+		//store
+		NodeValue* from_val = nullptr;
 
-		//make sure node_cast has a connected node_var for the result
+		//get the lhs
 		for (const Connection& connection : node_cast->m_connections)
 		{
-			if (res_node_var && from_node_var)
-				continue;
+			if (from_val)
+				break;
 
-			Node* in_node = static_cast<Node*>(connection.in_node);
 			Node* out_node = static_cast<Node*>(connection.out_node);
-
-			NodeVariable* in_node_var = dynamic_cast<NodeVariable*>(in_node);
-			NodeCast* out_node_cast = dynamic_cast<NodeCast*>(out_node);
-
-			NodeCast* in_node_cast = dynamic_cast<NodeCast*>(in_node);
 			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
+			NodeOperation* out_node_op = dynamic_cast<NodeOperation*>(out_node);
+			NodeMath* out_node_math = dynamic_cast<NodeMath*>(out_node);
+			NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
 
-			if (in_node_var && out_node_cast)
-			{
-				res_node_var = in_node_var;
-				continue;
-			}
-
-			if (in_node_cast && out_node_var)
-			{
-				from_node_var = out_node_var;
-				continue;
-			}
+			if (out_node_var)
+				from_val = &out_node_var->m_value;
+			else if (out_node_op)
+				from_val = out_node_op->m_current_val;
+			else if (out_node_math)
+				from_val = out_node_math->m_current_val;
+			else if (out_node_arr_access)
+				from_val = out_node_arr_access->m_current_val;
 		}
 
-		if (!res_node_var || !from_node_var)
+		if (!from_val)
 			continue;
 
-		NodeValue* from_val = &from_node_var->m_value;
-		NodeValue* res_val = &res_node_var->m_value;
-		res_val->cast_from(*from_val);
+		NODE_SLOT out_slot = NODE_SLOT::_from_string(node_cast->m_out_slots[0].title);
+
+		NodeValue* res = new NodeValue();
+		res->copy(out_slot);
+		res->cast_from(*from_val);
+		node_cast->m_current_val = res;
 	}
 }
 
