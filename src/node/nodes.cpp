@@ -17,7 +17,6 @@
 
 namespace CodeNect
 {
-bool Nodes::has_built_meta = false;
 std::vector<Node*> Nodes::v_nodes;
 std::map<std::string, unsigned int> Nodes::m_ids
 {
@@ -287,8 +286,6 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 			}
 		}
 	}
-
-	Nodes::has_built_meta = true;
 }
 
 Node* Nodes::find_by_name(const char* name)

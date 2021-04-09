@@ -92,15 +92,6 @@ void NodeInterface::draw_main(void)
 	}
 
 	ImNodes::BeginCanvas(canvas);
-
-	if (Nodes::has_built_meta)
-	{
-		for (Node* node : Nodes::v_nodes)
-			ImNodes::AutoPositionNode(node);
-
-		Nodes::has_built_meta = false;
-	}
-
 	NodeInterface::draw_nodes();
 	NodeInterface::draw_nodes_context_menu();
 	NodeInterface::draw_context_menu(*canvas);
