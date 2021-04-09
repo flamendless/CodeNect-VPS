@@ -20,6 +20,7 @@
 #include "node/node_logic.hpp"
 #include "node/node_renderer.hpp"
 #include "ui/create_node.hpp"
+#include "ui/zoom.hpp"
 
 namespace CodeNect
 {
@@ -96,6 +97,7 @@ void NodeInterface::draw_main(void)
 	NodeInterface::draw_nodes_context_menu();
 	NodeInterface::draw_context_menu(*canvas);
 	CreateNode::draw();
+	Zoom::zoom_factor = canvas->Zoom;
 	ImNodes::EndCanvas();
 }
 

@@ -14,6 +14,7 @@
 #include "ui/about.hpp"
 #include "ui/help.hpp"
 #include "ui/inspector.hpp"
+#include "ui/zoom.hpp"
 
 int main(int argv, char** args)
 {
@@ -39,6 +40,10 @@ int main(int argv, char** args)
 	//Inspector
 	if (CodeNect::Inspector::init() != RES_SUCCESS) return -1;
 	CodeNect::Inspector::register_commands();
+
+	//Zoom
+	if (CodeNect::Zoom::init() != RES_SUCCESS) return -1;
+	CodeNect::Zoom::register_commands();
 
 	//Sidebar
 	CodeNect::Sidebar sidebar;
@@ -89,8 +94,8 @@ int main(int argv, char** args)
 		CodeNect::Project::draw();
 		CodeNect::CommandPalette::draw();
 		CodeNect::Alert::draw();
-
 		CodeNect::Inspector::draw();
+		CodeNect::Zoom::draw();
 
 		app.render_end();
 	}

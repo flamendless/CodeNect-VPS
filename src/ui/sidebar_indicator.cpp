@@ -38,7 +38,6 @@ void SidebarIndicator::unset_style(void)
 
 void SidebarIndicator::draw(void)
 {
-
 	SidebarIndicator::set_style();
 	ImGui::SetNextWindowPos(Config::Sidebar_c::pos, ImGuiCond_Always, ImVec2(0.0f, 0.5f));
 	ImGui::SetNextWindowSize(Config::Sidebar_c::indicator_size, ImGuiCond_Always);
