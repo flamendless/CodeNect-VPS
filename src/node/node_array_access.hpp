@@ -1,13 +1,13 @@
 #ifndef _NODE_ARRAY_ACCESS_HPP
 #define _NODE_ARRAY_ACCESS_HPP
 
-#include "node/node_action.hpp"
+#include "node/node_get.hpp"
 
 namespace CodeNect
 {
-struct NodeArrayAccess : public NodeAction
+struct NodeArrayAccess : public NodeGet
 {
-	NODE_ACTION m_action = NODE_ACTION::ARRAY_ACCESS;
+	NODE_GET m_get = NODE_GET::ARRAY_ACCESS;
 
 	unsigned int m_index = 0;
 	NodeValue* m_current_val = nullptr;

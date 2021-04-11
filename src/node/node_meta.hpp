@@ -34,9 +34,6 @@ struct NodeMeta
 	std::string m_override;
 	std::string m_append_newline;
 
-	//NodeArrayAccess
-	std::string m_index;
-
 	//NodeMath
 	std::string m_math;
 
@@ -47,6 +44,11 @@ struct NodeMeta
 	std::string m_array_size;
 	std::string m_array_slot;
 	std::vector<std::string> m_array_elements;
+
+	//NodeGet
+	std::string m_get;
+	//NodeArrayAccess
+	std::string m_index;
 
 	inline NodeMeta() {}
 };

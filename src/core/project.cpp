@@ -209,7 +209,6 @@ int Project::save(void)
 			{
 				NodePrint* node_print = dynamic_cast<NodePrint*>(node);
 				NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
-				NodeArrayAccess* node_arr_access = dynamic_cast<NodeArrayAccess*>(node);
 
 				if (node_print)
 				{
@@ -229,11 +228,6 @@ int Project::save(void)
 					ini.SetValue(section, "action", node_prompt->m_action._to_string());
 					ini.SetValue(section, "value", node_prompt->m_orig_str.c_str());
 					ini.SetValue(section, "is_override", is_override);
-				}
-				else if (node_arr_access)
-				{
-					ini.SetValue(section, "action", node_arr_access->m_action._to_string());
-					ini.SetValue(section, "index", std::to_string(node_arr_access->m_index).c_str());
 				}
 				break;
 			}
@@ -262,6 +256,15 @@ int Project::save(void)
 					}
 				}
 				break;
+			}
+			case NODE_KIND::GET:
+			{
+				NodeArrayAccess* node_arr_access = dynamic_cast<NodeArrayAccess*>(node);
+				if (node_arr_access)
+				{
+					ini.SetValue(section, "get", node_arr_access->m_get._to_string());
+					ini.SetValue(section, "index", std::to_string(node_arr_access->m_index).c_str());
+				}
 			}
 		}
 
@@ -406,6 +409,7 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 	const char* action = ini.GetValue(section, "action", "EMPTY");
 	const char* math = ini.GetValue(section, "math", "EMPTY");
 	const char* ds = ini.GetValue(section, "ds", "EMPTY");
+	const char* get = ini.GetValue(section, "get", "EMPTY");
 
 	NodeMeta* nm = new NodeMeta();
 	nm->m_name = name;
@@ -434,9 +438,9 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 		nm->m_append_newline = ini.GetValue(section, "is_append_newline", "false");
 	}
 
-	if (std::strcmp(action, "ARRAY_ACCESS") == 0)
+	if (std::strcmp(get, "ARRAY_ACCESS") == 0)
 	{
-		nm->m_action = action;
+		nm->m_get = get;
 		nm->m_index = ini.GetValue(section, "index");
 	}
 

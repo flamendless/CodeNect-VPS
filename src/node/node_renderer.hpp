@@ -15,6 +15,7 @@
 #include "node/node_ds.hpp"
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
+#include "node/node_get.hpp"
 
 namespace CodeNect::NodeRenderer
 {

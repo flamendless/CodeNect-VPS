@@ -9,7 +9,7 @@ namespace CodeNect
 {
 void CreateNode::create_node_array_access(void)
 {
-	TempActionData* tmp = std::get<TempActionData*>(data);
+	TempGetData* tmp = std::get<TempGetData*>(data);
 
 	if (CreateNode::is_edit_mode)
 	{
@@ -34,7 +34,7 @@ void CreateNode::create_node_array_access(void)
 
 void CreateNode::draw_array_access(void)
 {
-	TempActionData* tmp = std::get<TempActionData*>(data);
+	TempGetData* tmp = std::get<TempGetData*>(data);
 
 	if (!CreateNode::is_edit_mode)
 	{

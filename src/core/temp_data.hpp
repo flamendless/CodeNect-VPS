@@ -55,9 +55,6 @@ struct TempActionData
 	bool is_override = false;
 	bool is_append_newline = false;
 
-	//array access
-	int index = 0;
-
 	NODE_SLOT slot_in = NODE_SLOT::EMPTY;
 	NODE_SLOT slot_out = NODE_SLOT::EMPTY;
 
@@ -84,6 +81,18 @@ struct TempArrayData
 
 	char buf_element[BUF_SIZE] = "";
 	std::vector<std::string> v_elements;
+};
+
+struct TempGetData
+{
+	char buf_str[BUF_SIZE * 2] = "";
+	//array access
+	int index = 0;
+
+	NODE_SLOT slot_in = NODE_SLOT::EMPTY;
+	NODE_SLOT slot_out = NODE_SLOT::EMPTY;
+
+	bool valid_get = false;
 };
 }
 

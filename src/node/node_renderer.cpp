@@ -54,11 +54,6 @@ void draw_node(Node* node)
 					NodeRenderer::draw_node_prompt(static_cast<NodePrompt*>(node));
 					break;
 				}
-				case NODE_ACTION::ARRAY_ACCESS:
-				{
-					NodeRenderer::draw_node_array_access(static_cast<NodeArrayAccess*>(node));
-					break;
-				}
 			}
 			break;
 		}
@@ -81,6 +76,18 @@ void draw_node(Node* node)
 				}
 			}
 			break;
+		}
+		case NODE_KIND::GET:
+		{
+			NodeGet* node_get = static_cast<NodeGet*>(node);
+			switch (node_get->m_get)
+			{
+				case NODE_GET::ARRAY_ACCESS:
+				{
+					NodeRenderer::draw_node_array_access(static_cast<NodeArrayAccess*>(node));
+					break;
+				}
+			}
 		}
 	}
 }
@@ -235,13 +242,13 @@ void draw_node_array_access(NodeArrayAccess* node_arr_access)
 	{
 		ImGui::TableNextRow();
 		ImGui::TableNextColumn();
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Action:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Get:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Index:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Element:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
 
 		ImGui::TableNextColumn();
-		ImGui::Text("%s", node_arr_access->m_action._to_string());
+		ImGui::Text("%s", node_arr_access->m_get._to_string());
 		ImGui::Text("%d", node_arr_access->m_index);
 		if (node_arr_access->m_current_val)
 			ImGui::Text("%s", node_arr_access->m_current_val->get_value_str_ex().c_str());

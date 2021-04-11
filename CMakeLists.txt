@@ -44,7 +44,6 @@ add_executable(CodeNect
 	src/node/node_logic_prompt.cpp
 	src/node/node_logic_var.cpp
 
-	src/node/node_action.cpp
 	src/node/node_op.cpp
 	src/node/node_print.cpp
 	src/node/node_prompt.cpp

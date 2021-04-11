@@ -84,6 +84,11 @@ const char* Nodes::get_title(Node* node)
 			break;
 		}
 		case NODE_KIND::DS: return "DATA STRUCTURE"; break;
+		case NODE_KIND::GET:
+		{
+			NodeGet* node_get = static_cast<NodeGet*>(node);
+			return node_get->m_get._to_string();
+		}
 	}
 
 	PPK_ASSERT(false, "this should not be reached");
@@ -231,16 +236,6 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 						Nodes::v_nodes.push_back(node_prompt);
 						break;
 					}
-					case NODE_ACTION::ARRAY_ACCESS:
-					{
-						unsigned int index = std::stoi(nm->m_index);
-						NodeArrayAccess* node_arr_access = new NodeArrayAccess(index, std::move(in), std::move(out));
-						node_arr_access->m_name = nm->m_name.c_str();
-						node_arr_access->m_pos = ImVec2(nm->x, nm->y);
-						node_arr_access->m_desc = nm->m_desc.c_str();
-						Nodes::v_nodes.push_back(node_arr_access);
-						break;
-					}
 				}
 				break;
 			}
@@ -283,6 +278,29 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 					}
 				}
 				break;
+			}
+			case NODE_KIND::GET:
+			{
+				NODE_GET get = NODE_GET::_from_string(nm->m_get.c_str());
+				v_slot_info_t&& in = {};
+				v_slot_info_t&& out = {};
+				Nodes::build_slots(*nm, in, out);
+				switch (get)
+				{
+					case NODE_GET::EMPTY: break;
+					case NODE_GET::ARRAY_SIZE: break;
+					case NODE_GET::STRING_LENGTH: break;
+					case NODE_GET::ARRAY_ACCESS:
+					{
+						unsigned int index = std::stoi(nm->m_index);
+						NodeArrayAccess* node_arr_access = new NodeArrayAccess(index, std::move(in), std::move(out));
+						node_arr_access->m_name = nm->m_name.c_str();
+						node_arr_access->m_pos = ImVec2(nm->x, nm->y);
+						node_arr_access->m_desc = nm->m_desc.c_str();
+						Nodes::v_nodes.push_back(node_arr_access);
+						break;
+					}
+				}
 			}
 		}
 	}

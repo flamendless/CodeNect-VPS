@@ -31,13 +31,15 @@ NODE_KIND CreateNode::kind = NODE_KIND::EMPTY;
 NODE_ACTION CreateNode::action = NODE_ACTION::EMPTY;
 NODE_MATH CreateNode::math = NODE_MATH::EMPTY;
 NODE_DS CreateNode::ds = NODE_DS::EMPTY;
+NODE_GET CreateNode::get = NODE_GET::EMPTY;
 Node* CreateNode::node_to_edit;
 bool CreateNode::can_create = false;
 std::variant<
 		TempVarData*, TempOperationData*,
 		TempCastData*, TempComparisonData*,
 		TempBranchData*, TempActionData*,
-		TempMathData*, TempArrayData*
+		TempMathData*, TempArrayData*,
+		TempGetData*
 	>CreateNode::data;
 char CreateNode::buf_desc[BUF_SIZE * 2] = "";
 
@@ -62,6 +64,7 @@ void CreateNode::open(NODE_KIND kind)
 			}
 			break;
 		}
+		case NODE_KIND::GET: CreateNode::data = new TempGetData(); break;
 	}
 
 	CreateNode::buf_desc[0] = '\0';
@@ -85,6 +88,12 @@ void CreateNode::open_math(NODE_KIND kind, NODE_MATH math)
 void CreateNode::open_ds(NODE_KIND kind, NODE_DS ds)
 {
 	CreateNode::ds = ds;
+	CreateNode::open(kind);
+}
+
+void CreateNode::open_get(NODE_KIND kind, NODE_GET get)
+{
+	CreateNode::get = get;
 	CreateNode::open(kind);
 }
 
@@ -167,7 +176,6 @@ void CreateNode::edit(Node* node)
 		}
 		case NODE_KIND::BRANCH:
 		{
-			NodeBranch* node_branch = static_cast<NodeBranch*>(node);
 			TempBranchData* temp = new TempBranchData();
 			CreateNode::node_to_edit = node;
 			CreateNode::data = temp;
@@ -194,12 +202,6 @@ void CreateNode::edit(Node* node)
 					NodePrompt* node_prompt = static_cast<NodePrompt*>(node);
 					std::strcpy(temp->buf_str, node_prompt->m_orig_str.c_str());
 					temp->is_override = node_prompt->m_override;
-					break;
-				}
-				case NODE_ACTION::ARRAY_ACCESS:
-				{
-					NodeArrayAccess* node_arr_access = static_cast<NodeArrayAccess*>(node);
-					temp->index = node_arr_access->m_index;
 					break;
 				}
 			}
@@ -246,6 +248,21 @@ void CreateNode::edit(Node* node)
 			CreateNode::ds = node_ds->m_ds;
 			CreateNode::node_to_edit = node;
 			break;
+		}
+		case NODE_KIND::GET:
+		{
+			NodeGet* node_get = static_cast<NodeGet*>(node);
+			TempGetData* temp = new TempGetData();
+
+			switch (node_get->m_get)
+			{
+				case NODE_GET::ARRAY_ACCESS:
+				{
+					NodeArrayAccess* node_arr_access = static_cast<NodeArrayAccess*>(node);
+					temp->index = node_arr_access->m_index;
+					break;
+				}
+			}
 		}
 	}
 
@@ -307,7 +324,6 @@ void CreateNode::draw(void)
 					case NODE_ACTION::EMPTY: break;
 					case NODE_ACTION::PRINT: CreateNode::draw_print(); break;
 					case NODE_ACTION::PROMPT: CreateNode::draw_prompt(); break;
-					case NODE_ACTION::ARRAY_ACCESS: CreateNode::draw_array_access(); break;
 				}
 				break;
 			}
@@ -320,6 +336,13 @@ void CreateNode::draw(void)
 					case NODE_DS::ARRAY: CreateNode::draw_array(); break;
 				}
 				break;
+			}
+			case NODE_KIND::GET:
+			{
+				switch (CreateNode::get)
+				{
+					case NODE_GET::ARRAY_ACCESS: CreateNode::draw_array_access(); break;
+				}
 			}
 		}
 
@@ -365,7 +388,6 @@ void CreateNode::draw_buttons(void)
 						case NODE_ACTION::EMPTY: break;
 						case NODE_ACTION::PRINT: CreateNode::create_node_print(); break;
 						case NODE_ACTION::PROMPT: CreateNode::create_node_prompt(); break;
-						case NODE_ACTION::ARRAY_ACCESS: CreateNode::create_node_array_access(); break;
 					}
 					break;
 				}
@@ -378,6 +400,13 @@ void CreateNode::draw_buttons(void)
 						case NODE_DS::ARRAY: CreateNode::create_node_array(); break;
 					}
 					break;
+				}
+				case NODE_KIND::GET:
+				{
+					switch (CreateNode::get)
+					{
+						case NODE_GET::ARRAY_ACCESS: CreateNode::create_node_array_access(); break;
+					}
 				}
 			}
 
