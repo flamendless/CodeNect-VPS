@@ -4,6 +4,7 @@
 #include "node/node_var.hpp"
 #include "node/node_cmp.hpp"
 #include "node/node_branch.hpp"
+#include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
 
 namespace CodeNect::NodeLogic
@@ -58,6 +59,8 @@ void process_cmp(void)
 
 		//for storing the input (lhs) nodes to be compared
 		std::vector<NodeValue*> v_values;
+		//for array
+		std::vector<std::vector<NodeValue*>> v_arrays;
 
 		for (const Connection& connection : node_cmp->m_connections)
 		{
@@ -70,76 +73,119 @@ void process_cmp(void)
 			Node* out_node = static_cast<Node*>(connection.out_node);
 			NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
 			NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
+			NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
 			NodeArrayAccess* node_array_access = dynamic_cast<NodeArrayAccess*>(out_node);
 
 			if (node_var)
 				v_values.push_back(&node_var->m_value);
 			else if (node_math)
 				v_values.push_back(node_math->m_current_val);
+			else if (node_array)
+			{
+				if (node_cmp->m_cmp == +NODE_CMP::EQ ||
+					node_cmp->m_cmp == +NODE_CMP::NEQ)
+				{
+					std::vector<NodeValue*> vec;
+					vec.insert(vec.end(), node_array->m_elements.begin(), node_array->m_elements.end());
+					vec.insert(vec.end(), node_array->m_other_elements.begin(), node_array->m_other_elements.end());
+					v_arrays.push_back(vec);
+				}
+			}
 			else if (node_array_access)
 				v_values.push_back(node_array_access->m_current_val);
 		}
-
-		if (v_values.size() < 2)
-			continue;
 
 		node_cmp->m_has_valid_connections = true;
 		NodeValue result;
 		bool res = false;
 		bool is_first = true;
 
-		for (NodeValue* value : v_values)
+		if (v_arrays.size() != 0)
 		{
-			if (is_first)
+			std::vector<NodeValue*>* first;
+			for (std::vector<NodeValue*>& vec : v_arrays)
 			{
-				result.copy(*value);
-				is_first = false;
-				continue;
-			}
+				if (is_first)
+				{
+					first = &vec;
+					is_first = false;
+					continue;
+				}
 
-			//evaluate
-			switch (node_cmp->m_cmp)
+				if (first->size() != vec.size())
+				{
+					res = false;
+					break;
+				}
+
+				for (NodeValue* &val_a : *first)
+				{
+					result.copy(*val_a);
+					for (NodeValue* &val_b : vec)
+					{
+						if (node_cmp->m_cmp == +NODE_CMP::EQ)
+							res = result.is_eq_to(*val_b);
+						else if (node_cmp->m_cmp == +NODE_CMP::NEQ)
+							res = result.is_neq_to(*val_b);
+					}
+				}
+			}
+		}
+		else
+		{
+			for (NodeValue* &value : v_values)
 			{
-				case NODE_CMP::EMPTY: break;
-				case NODE_CMP::EQ:
+				if (is_first)
 				{
-					res = result.is_eq_to(*value);
-					break;
+					result.copy(*value);
+					is_first = false;
+					continue;
 				}
-				case NODE_CMP::NEQ:
+
+				//evaluate
+				switch (node_cmp->m_cmp)
 				{
-					res = result.is_neq_to(*value);
-					break;
-				}
-				case NODE_CMP::LT:
-				{
-					res = result.is_lt_to(*value);
-					break;
-				}
-				case NODE_CMP::GT:
-				{
-					res = result.is_gt_to(*value);
-					break;
-				}
-				case NODE_CMP::LTE:
-				{
-					res = result.is_lte_to(*value);
-					break;
-				}
-				case NODE_CMP::GTE:
-				{
-					res = result.is_gte_to(*value);
-					break;
-				}
-				case NODE_CMP::OR:
-				{
-					res = result.is_or_to(*value);
-					break;
-				}
-				case NODE_CMP::AND:
-				{
-					res = result.is_and_to(*value);
-					break;
+					case NODE_CMP::EMPTY: break;
+					case NODE_CMP::EQ:
+					{
+						res = result.is_eq_to(*value);
+						break;
+					}
+					case NODE_CMP::NEQ:
+					{
+						res = result.is_neq_to(*value);
+						break;
+					}
+					case NODE_CMP::LT:
+					{
+						res = result.is_lt_to(*value);
+						break;
+					}
+					case NODE_CMP::GT:
+					{
+						res = result.is_gt_to(*value);
+						break;
+					}
+					case NODE_CMP::LTE:
+					{
+						res = result.is_lte_to(*value);
+						break;
+					}
+					case NODE_CMP::GTE:
+					{
+						res = result.is_gte_to(*value);
+						break;
+					}
+					case NODE_CMP::OR:
+					{
+						res = result.is_or_to(*value);
+						break;
+					}
+					case NODE_CMP::AND:
+					{
+						res = result.is_and_to(*value);
+						break;
+					}
 				}
 			}
 		}
