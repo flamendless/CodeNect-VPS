@@ -1,3 +1,4 @@
+#include <filesystem>
 #include "core/config.hpp"
 #include "core/app.hpp"
 #include "core/font.hpp"
@@ -69,6 +70,13 @@ int main(int argv, char** args)
 #if DEBUG_MODE
 	CodeNect::Project::open("test_array.cn");
 #endif
+
+	if (argv > 1)
+	{
+		const char* filepath = args[1];
+		if (std::filesystem::exists(filepath))
+			CodeNect::Project::open(filepath);
+	}
 
 	PLOGI << "Initialization is complete";
 
