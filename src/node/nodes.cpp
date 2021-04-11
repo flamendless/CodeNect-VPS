@@ -290,7 +290,7 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 
 Node* Nodes::find_by_name(const char* name)
 {
-	for (Node* node : Nodes::v_nodes)
+	for (Node* &node : Nodes::v_nodes)
 	{
 		if (std::strcmp(node->m_name, name) == 0)
 			return node;

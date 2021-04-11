@@ -162,7 +162,7 @@ int Project::save(void)
 	//save nodes
 	int s_i = 0;
 
-	for (Node* node : Nodes::v_nodes)
+	for (Node* &node : Nodes::v_nodes)
 	{
 		std::string str_section = std::string(PROJ_NODE_PREFIX) + std::to_string(s_i);
 		const char* section = str_section.c_str();
@@ -374,7 +374,7 @@ int Project::parse(void)
 	Nodes::build_from_meta(v_connection_meta);
 
 	//cleanup
-	for (NodeMeta* nm : v_node_meta)
+	for (NodeMeta* &nm : v_node_meta)
 	{
 		nm->m_input_slots.clear();
 		nm->m_output_slots.clear();

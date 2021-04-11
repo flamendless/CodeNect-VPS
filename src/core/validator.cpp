@@ -23,7 +23,7 @@ verex::verex expr_var_name = verex::verex().search_one_line().start_of_line()
 
 bool check_var_name_taken(const char* str)
 {
-	for (Node* node : Nodes::v_nodes)
+	for (Node* &node : Nodes::v_nodes)
 	{
 		if (std::strcmp(node->m_name, str) == 0)
 			return true;

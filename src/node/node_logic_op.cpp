@@ -111,7 +111,7 @@ void process_op(void)
 		NodeValue result;
 		bool is_first = true;
 
-		for (NodeValue* value : res.v_values)
+		for (NodeValue* &value : res.v_values)
 		{
 			if (is_first)
 			{
