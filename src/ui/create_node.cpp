@@ -13,6 +13,7 @@
 #include "node/node_math.hpp"
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
+#include "node/node_size.hpp"
 
 namespace CodeNect
 {
@@ -125,7 +126,6 @@ void CreateNode::edit(Node* node)
 				case NODE_SLOT::STRING: std::strcpy(temp->buf_string, std::get<std::string>(val->data).c_str()); break;
 			}
 
-			CreateNode::node_to_edit = node;
 			CreateNode::data = temp;
 			break;
 		}
@@ -139,7 +139,6 @@ void CreateNode::edit(Node* node)
 			temp->op = node_op->m_op;
 			temp->valid_op = true;
 
-			CreateNode::node_to_edit = node;
 			CreateNode::data = temp;
 			break;
 		}
@@ -154,7 +153,6 @@ void CreateNode::edit(Node* node)
 			temp->slot_out = slot_out;
 			temp->valid_cast = true;
 
-			CreateNode::node_to_edit = node;
 			CreateNode::data = temp;
 			break;
 		}
@@ -170,14 +168,12 @@ void CreateNode::edit(Node* node)
 			temp->cmp = cmp;
 			temp->valid_cmp = true;
 
-			CreateNode::node_to_edit = node;
 			CreateNode::data = temp;
 			break;
 		}
 		case NODE_KIND::BRANCH:
 		{
 			TempBranchData* temp = new TempBranchData();
-			CreateNode::node_to_edit = node;
 			CreateNode::data = temp;
 			break;
 		}
@@ -210,7 +206,6 @@ void CreateNode::edit(Node* node)
 			temp->slot_out = NODE_SLOT::_from_string(node_action->m_out_slots[0].title);
 			temp->valid_action = true;
 			CreateNode::action = node_action->m_action;
-			CreateNode::node_to_edit = node;
 			CreateNode::data = temp;
 			break;
 		}
@@ -220,7 +215,6 @@ void CreateNode::edit(Node* node)
 			TempMathData* temp = new TempMathData();
 			temp->valid_math = true;
 			CreateNode::math = node_math->m_math;
-			CreateNode::node_to_edit = node;
 			CreateNode::data = temp;
 			break;
 		}
@@ -246,28 +240,40 @@ void CreateNode::edit(Node* node)
 				}
 			}
 			CreateNode::ds = node_ds->m_ds;
-			CreateNode::node_to_edit = node;
 			break;
 		}
 		case NODE_KIND::GET:
 		{
 			NodeGet* node_get = static_cast<NodeGet*>(node);
 			TempGetData* temp = new TempGetData();
+			temp->valid_get = true;
+			temp->slot_in = NODE_SLOT::_from_string(node_get->m_in_slots[0].title);
+			temp->slot_out = NODE_SLOT::_from_string(node_get->m_out_slots[0].title);
+			CreateNode::get = node_get->m_get;
 
 			switch (node_get->m_get)
 			{
+				case NODE_GET::EMPTY: break;
 				case NODE_GET::ARRAY_ACCESS:
 				{
 					NodeArrayAccess* node_arr_access = static_cast<NodeArrayAccess*>(node);
 					temp->index = node_arr_access->m_index;
 					break;
 				}
+				case NODE_GET::SIZE:
+				{
+					NodeSize* node_size = static_cast<NodeSize*>(node);
+					temp->size = node_size->m_size;
+					break;
+				}
 			}
+			CreateNode::data = temp;
 		}
 	}
 
 	std::strcpy(CreateNode::buf_desc, node->m_desc);
 	CreateNode::kind = node->m_kind;
+	CreateNode::node_to_edit = node;
 	CreateNode::is_open = true;
 	CreateNode::is_edit_mode = true;
 	CreateNode::is_first = true;
@@ -341,7 +347,9 @@ void CreateNode::draw(void)
 			{
 				switch (CreateNode::get)
 				{
+					case NODE_GET::EMPTY: break;
 					case NODE_GET::ARRAY_ACCESS: CreateNode::draw_array_access(); break;
+					case NODE_GET::SIZE: CreateNode::draw_size(); break;
 				}
 			}
 		}
@@ -405,7 +413,9 @@ void CreateNode::draw_buttons(void)
 				{
 					switch (CreateNode::get)
 					{
+						case NODE_GET::EMPTY: break;
 						case NODE_GET::ARRAY_ACCESS: CreateNode::create_node_array_access(); break;
+						case NODE_GET::SIZE: CreateNode::create_node_size(); break;
 					}
 				}
 			}

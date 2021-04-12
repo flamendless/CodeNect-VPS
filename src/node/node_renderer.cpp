@@ -87,6 +87,11 @@ void draw_node(Node* node)
 					NodeRenderer::draw_node_array_access(static_cast<NodeArrayAccess*>(node));
 					break;
 				}
+				case NODE_GET::SIZE:
+				{
+					NodeRenderer::draw_node_size(static_cast<NodeSize*>(node));
+					break;
+				}
 			}
 		}
 	}
@@ -236,29 +241,6 @@ void draw_node_prompt(NodePrompt* node_prompt)
 	}
 }
 
-void draw_node_array_access(NodeArrayAccess* node_arr_access)
-{
-	if (ImGui::BeginTable("TableNode##NodeArrayAccess", 2, ImGuiTableFlags_SizingFixedFit))
-	{
-		ImGui::TableNextRow();
-		ImGui::TableNextColumn();
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Get:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Index:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Element:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
-
-		ImGui::TableNextColumn();
-		ImGui::Text("%s", node_arr_access->m_get._to_string());
-		ImGui::Text("%d", node_arr_access->m_index);
-		if (node_arr_access->m_current_val)
-			ImGui::Text("%s", node_arr_access->m_current_val->get_value_str_ex().c_str());
-		else
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), "(out of bounds)");
-		ImGui::Text("%s", node_arr_access->m_desc);
-		ImGui::EndTable();
-	}
-}
-
 void draw_node_math(NodeMath* node_math)
 {
 	if (ImGui::BeginTable("TableNode##NodeMath", 2, ImGuiTableFlags_SizingFixedFit))
@@ -382,6 +364,49 @@ void draw_node_array(NodeArray* node_array)
 	ImGui::BulletText("%s", str.c_str());
 }
 
+void draw_node_array_access(NodeArrayAccess* node_arr_access)
+{
+	if (ImGui::BeginTable("TableNode##NodeArrayAccess", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Get:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Index:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Element:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+
+		ImGui::TableNextColumn();
+		ImGui::Text("%s", node_arr_access->m_get._to_string());
+		ImGui::Text("%d", node_arr_access->m_index);
+		if (node_arr_access->m_current_val)
+			ImGui::Text("%s", node_arr_access->m_current_val->get_value_str_ex().c_str());
+		else if (node_arr_access->m_connections.size() > 0)
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), "(out of bounds)");
+		else
+			ImGui::Text("");
+		ImGui::Text("%s", node_arr_access->m_desc);
+		ImGui::EndTable();
+	}
+}
+
+void draw_node_size(NodeSize* node_size)
+{
+	if (ImGui::BeginTable("TableNode##NodeSize", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Get:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Size:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+
+		ImGui::TableNextColumn();
+		ImGui::Text("%s", node_size->m_get._to_string());
+		ImGui::Text("%d", node_size->m_size);
+		ImGui::Text("%s", node_size->m_desc);
+		ImGui::EndTable();
+	}
+}
+
 void draw_connections(Node& node)
 {
 	Connection new_connection;
@@ -396,6 +421,7 @@ void draw_connections(Node& node)
 		bool can_add = true;
 		// bool valid_node_cast = NodeLogic::validate_node_cast(in_node, out_node);
 		NodeLogic::validate_node_cast(in_node, out_node);
+		can_add = NodeLogic::validate_node_array_access(in_node, out_node);
 
 		if (can_add)
 		{

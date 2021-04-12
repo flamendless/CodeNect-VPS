@@ -14,6 +14,7 @@
 #include "node/node_ds.hpp"
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
+#include "node/node_size.hpp"
 
 namespace CodeNect
 {
@@ -27,6 +28,7 @@ std::map<std::string, unsigned int> Nodes::m_ids
 	{"PRINT", 0},
 	{"PROMPT", 0},
 	{"ARRAY_ACCESS", 0},
+	{"SIZE", 0},
 	{"MATH", 0},
 	{"FIXED", 0},
 	{"DYNAMIC", 0},
@@ -288,8 +290,6 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				switch (get)
 				{
 					case NODE_GET::EMPTY: break;
-					case NODE_GET::ARRAY_SIZE: break;
-					case NODE_GET::STRING_LENGTH: break;
 					case NODE_GET::ARRAY_ACCESS:
 					{
 						unsigned int index = std::stoi(nm->m_index);
@@ -298,6 +298,17 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 						node_arr_access->m_pos = ImVec2(nm->x, nm->y);
 						node_arr_access->m_desc = nm->m_desc.c_str();
 						Nodes::v_nodes.push_back(node_arr_access);
+						break;
+					}
+					case NODE_GET::SIZE:
+					{
+						unsigned int size = std::stoi(nm->m_size);
+						NodeSize* node_size = new NodeSize(std::move(in), std::move(out));
+						node_size->m_size = size;
+						node_size->m_name = nm->m_name.c_str();
+						node_size->m_pos = ImVec2(nm->x, nm->y);
+						node_size->m_desc = nm->m_desc.c_str();
+						Nodes::v_nodes.push_back(node_size);
 						break;
 					}
 				}

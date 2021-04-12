@@ -10,6 +10,7 @@ void process(void)
 	NodeLogic::process_cast();
 	NodeLogic::process_array();
 	NodeLogic::process_array_access();
+	NodeLogic::process_size();
 	NodeLogic::process_cmp();
 	NodeLogic::process_branch();
 	NodeLogic::process_print();

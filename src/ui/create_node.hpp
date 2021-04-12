@@ -56,9 +56,10 @@ struct CreateNode
 	static void create_node_branch(void);
 	static void create_node_print(void);
 	static void create_node_prompt(void);
-	static void create_node_array_access(void);
 	static void create_node_math(void);
 	static void create_node_array(void);
+	static void create_node_array_access(void);
+	static void create_node_size(void);
 
 	static void draw(void);
 	static void draw_desc(void);
@@ -89,9 +90,6 @@ struct CreateNode
 	//NodePrompt
 	static void draw_prompt(void);
 
-	//NodeArrayAccess
-	static void draw_array_access(void);
-
 	//NodeMath
 	static void draw_math(void);
 	static void draw_math_opt(const char* title, NODE_SLOT& slot);
@@ -99,6 +97,12 @@ struct CreateNode
 	//NodeArray
 	static void draw_array(void);
 	static void draw_array_elements(void);
+
+	//NodeGet
+	//NodeArrayAccess
+	static void draw_array_access(void);
+	//NodeSize
+	static void draw_size(void);
 };
 }
 

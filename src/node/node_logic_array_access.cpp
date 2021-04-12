@@ -1,5 +1,6 @@
 #include "node/node_logic.hpp"
 
+#include "node/node_var.hpp"
 #include "node/nodes.hpp"
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
@@ -85,5 +86,22 @@ void process_array_access(void)
 		res_val->copy(*val_from_array);
 		node_arr_access->m_current_val = res_val;
 	}
+}
+
+bool validate_node_array_access(Node* in_node, Node* out_node)
+{
+	//connection must be from node_array to node_array_access only
+	NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
+	NodeArrayAccess* node_arr_access = dynamic_cast<NodeArrayAccess*>(in_node);
+
+	if (node_arr_access)
+	{
+		if (node_array)
+			return true;
+		else
+			return false;
+	}
+
+	return true;
 }
 }

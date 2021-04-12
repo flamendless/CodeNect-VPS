@@ -30,6 +30,11 @@ void process_array(void)
 		{
 			Node* out_node = static_cast<Node*>(connection.out_node);
 			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
+			NodeOperation* out_node_op = dynamic_cast<NodeOperation*>(out_node);
+			NodeMath* out_node_math = dynamic_cast<NodeMath*>(out_node);
+			NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
+			NodeArray* out_node_array = dynamic_cast<NodeArray*>(out_node); //"from" array
+
 			if (out_node_var)
 			{
 				NodeValue* val = &out_node_var->m_value;
@@ -40,9 +45,7 @@ void process_array(void)
 				}
 				node_array->m_other_elements.push_back(val);
 			}
-
-			NodeOperation* out_node_op = dynamic_cast<NodeOperation*>(out_node);
-			if (out_node_op)
+			else if (out_node_op)
 			{
 				NodeValue* val = out_node_op->m_current_val;
 				if (node_array->m_array == +NODE_ARRAY::FIXED && !can_add)
@@ -52,9 +55,7 @@ void process_array(void)
 				}
 				node_array->m_other_elements.push_back(val);
 			}
-
-			NodeMath* out_node_math = dynamic_cast<NodeMath*>(out_node);
-			if (out_node_math)
+			else if (out_node_math)
 			{
 				NodeValue* val = out_node_math->m_current_val;
 				if (node_array->m_array == +NODE_ARRAY::FIXED && !can_add)
@@ -64,9 +65,7 @@ void process_array(void)
 				}
 				node_array->m_other_elements.push_back(val);
 			}
-
-			NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
-			if (out_node_arr_access)
+			else if (out_node_arr_access)
 			{
 				if (out_node_arr_access->m_current_val)
 				{
@@ -78,10 +77,7 @@ void process_array(void)
 					node_array->m_other_elements.push_back(out_node_arr_access->m_current_val);
 				}
 			}
-
-			//this is the "from" array
-			NodeArray* out_node_array = dynamic_cast<NodeArray*>(out_node);
-			if (out_node_array && out_node_array != node_array)
+			else if (out_node_array && out_node_array != node_array)
 			{
 				const int req_size = out_node_array->m_elements.size() +
 					out_node_array->m_other_elements.size();

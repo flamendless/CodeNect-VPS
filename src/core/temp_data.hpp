@@ -85,9 +85,11 @@ struct TempArrayData
 
 struct TempGetData
 {
-	char buf_str[BUF_SIZE * 2] = "";
 	//array access
 	int index = 0;
+
+	//size
+	int size = 0;
 
 	NODE_SLOT slot_in = NODE_SLOT::EMPTY;
 	NODE_SLOT slot_out = NODE_SLOT::EMPTY;

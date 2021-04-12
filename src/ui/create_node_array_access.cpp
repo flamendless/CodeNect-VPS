@@ -24,7 +24,6 @@ void CreateNode::create_node_array_access(void)
 		v_slot_info_t&& out = {};
 		in.push_back({tmp->slot_in._to_string(), tmp->slot_in});
 		out.push_back({tmp->slot_in._to_string(), tmp->slot_in});
-		std::string str = std::string(tmp->buf_str);
 		NodeArrayAccess* node = new NodeArrayAccess(tmp->index, std::move(in), std::move(out));
 		node->set_desc(CreateNode::buf_desc);
 		Nodes::v_nodes.push_back(node);
@@ -66,7 +65,8 @@ void CreateNode::draw_array_access(void)
 	if (tmp->index < 0)
 		ImGui::TextColored(ImVec4(1, 0, 0, 1), "Array index can not be negative");
 
-	CreateNode::can_create = tmp->slot_in != +NODE_SLOT::EMPTY &&
+	tmp->valid_get = tmp->slot_in != +NODE_SLOT::EMPTY &&
 		tmp->index >= 0;
+	CreateNode::can_create = tmp->valid_get;
 }
 }

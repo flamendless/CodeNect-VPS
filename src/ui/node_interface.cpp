@@ -262,6 +262,25 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("Get"))
+		{
+			for (NODE_GET get : NODE_GET::_values())
+			{
+				if (get == +NODE_GET::EMPTY)
+					continue;
+
+				std::string item = get._to_string();
+				Utils::string_to_name(item);
+
+				if (ImGui::MenuItem(item.c_str()))
+				{
+					CreateNode::open_get(NODE_KIND::GET, get);
+					ImGui::CloseCurrentPopup();
+				}
+			}
+			ImGui::EndMenu();
+		}
+
 		for (const std::pair<const std::string, Node*(*)()>& desc : Nodes::m_available_nodes)
 		{
 			if (ImGui::MenuItem(desc.first.c_str()))

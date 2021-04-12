@@ -49,6 +49,8 @@ struct NodeMeta
 	std::string m_get;
 	//NodeArrayAccess
 	std::string m_index;
+	//NodeSize
+	std::string m_size;
 
 	inline NodeMeta() {}
 };

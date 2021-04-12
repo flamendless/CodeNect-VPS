@@ -21,6 +21,7 @@
 #include "node/node_ds.hpp"
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
+#include "node/node_size.hpp"
 
 namespace CodeNect
 {
@@ -259,12 +260,15 @@ int Project::save(void)
 			}
 			case NODE_KIND::GET:
 			{
+				NodeGet* node_get = dynamic_cast<NodeGet*>(node);
 				NodeArrayAccess* node_arr_access = dynamic_cast<NodeArrayAccess*>(node);
+				NodeSize* node_size = dynamic_cast<NodeSize*>(node);
+				ini.SetValue(section, "get", node_get->m_get._to_string());
+
 				if (node_arr_access)
-				{
-					ini.SetValue(section, "get", node_arr_access->m_get._to_string());
 					ini.SetValue(section, "index", std::to_string(node_arr_access->m_index).c_str());
-				}
+				else if (node_size)
+					ini.SetValue(section, "size", std::to_string(node_size->m_size).c_str());
 			}
 		}
 
@@ -442,6 +446,12 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 	{
 		nm->m_get = get;
 		nm->m_index = ini.GetValue(section, "index");
+	}
+
+	if (std::strcmp(get, "SIZE") == 0)
+	{
+		nm->m_get = get;
+		nm->m_size = ini.GetValue(section, "size");
 	}
 
 	if (std::strcmp(ds, "ARRAY") == 0)
