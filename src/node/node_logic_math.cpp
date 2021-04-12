@@ -7,6 +7,7 @@
 #include "node/node_op.hpp"
 #include "node/node_math.hpp"
 #include "node/node_array_access.hpp"
+#include "node/node_size.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -40,6 +41,7 @@ void process_math(void)
 			NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
 			NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
 			NodeArrayAccess* node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
+			NodeSize* node_size = dynamic_cast<NodeSize*>(out_node);
 			NodeValue* val = nullptr;
 
 			if (node_var)
@@ -48,6 +50,8 @@ void process_math(void)
 				val = node_op->m_current_val;
 			else if (node_arr_access && node_arr_access->m_current_val)
 				val = node_arr_access->m_current_val;
+			else if (node_size)
+				val = &node_size->m_val_size;
 
 			if (val)
 			{

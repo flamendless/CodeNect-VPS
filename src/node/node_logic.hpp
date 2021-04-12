@@ -21,7 +21,6 @@ void process_array(void);
 void process_array_access(void);
 void process_size(void);
 
-bool validate_node_cast(Node* in_node, Node* out_node);
 bool validate_node_array_access(Node* in_node, Node* out_node);
 }
 

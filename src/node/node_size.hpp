@@ -10,6 +10,7 @@ struct NodeSize : public NodeGet
 	NODE_GET m_get = NODE_GET::SIZE;
 
 	unsigned int m_size;
+	NodeValue m_val_size;
 
 	explicit NodeSize(
 		const v_slot_info_t&& in_slots,

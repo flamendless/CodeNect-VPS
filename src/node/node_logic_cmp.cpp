@@ -6,6 +6,7 @@
 #include "node/node_branch.hpp"
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
+#include "node/node_size.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -75,6 +76,7 @@ void process_cmp(void)
 			NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
 			NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
 			NodeArrayAccess* node_array_access = dynamic_cast<NodeArrayAccess*>(out_node);
+			NodeSize* node_size = dynamic_cast<NodeSize*>(out_node);
 
 			if (node_var)
 				v_values.push_back(&node_var->m_value);
@@ -93,6 +95,8 @@ void process_cmp(void)
 			}
 			else if (node_array_access)
 				v_values.push_back(node_array_access->m_current_val);
+			else if (node_size)
+				v_values.push_back(&node_size->m_val_size);
 		}
 
 		node_cmp->m_has_valid_connections = true;

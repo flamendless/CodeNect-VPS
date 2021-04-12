@@ -190,7 +190,8 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 				if (kind == +NODE_KIND::EMPTY ||
 					kind == +NODE_KIND::ACTION ||
 					kind == +NODE_KIND::MATH ||
-					kind == +NODE_KIND::DS)
+					kind == +NODE_KIND::DS ||
+					kind == +NODE_KIND::GET)
 					continue;
 
 				std::string item = kind._to_string();

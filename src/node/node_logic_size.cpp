@@ -20,6 +20,7 @@ void process_size(void)
 			continue;
 
 		node_size->m_size = 0;
+		node_size->m_val_size.set((int)0);
 
 		//get the lhs
 		for (Connection& connection : node_size->m_connections)
@@ -32,6 +33,7 @@ void process_size(void)
 			{
 				node_size->m_size = out_node_array->m_elements.size() +
 					out_node_array->m_other_elements.size();
+				node_size->m_val_size.set((int)node_size->m_size);
 			}
 			else if (out_node_var)
 			{
@@ -39,11 +41,10 @@ void process_size(void)
 				{
 					std::string& str = std::get<std::string>(out_node_var->m_value.data);
 					node_size->m_size = str.length();
+					node_size->m_val_size.set((int)node_size->m_size);
 				}
 				else
-				{
 					NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
-				}
 			}
 		}
 	}

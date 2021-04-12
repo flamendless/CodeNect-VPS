@@ -6,6 +6,8 @@
 #include "node/node_op.hpp"
 #include "node/node_math.hpp"
 #include "node/node_array_access.hpp"
+#include "node/node_size.hpp"
+#include "node/node_colors.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -28,16 +30,17 @@ void process_cast(void)
 		NodeValue* from_val = nullptr;
 
 		//get the lhs
-		for (const Connection& connection : node_cast->m_connections)
+		for (Connection& connection : node_cast->m_connections)
 		{
 			if (from_val)
-				break;
+				NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
 
 			Node* out_node = static_cast<Node*>(connection.out_node);
 			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
 			NodeOperation* out_node_op = dynamic_cast<NodeOperation*>(out_node);
 			NodeMath* out_node_math = dynamic_cast<NodeMath*>(out_node);
 			NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
+			NodeSize* out_node_size = dynamic_cast<NodeSize*>(out_node);
 
 			if (out_node_var)
 				from_val = &out_node_var->m_value;
@@ -47,6 +50,8 @@ void process_cast(void)
 				from_val = out_node_math->m_current_val;
 			else if (out_node_arr_access)
 				from_val = out_node_arr_access->m_current_val;
+			else if (out_node_size)
+				from_val = &out_node_size->m_val_size;
 		}
 
 		if (!from_val)
@@ -59,31 +64,5 @@ void process_cast(void)
 		res->cast_from(*from_val);
 		node_cast->m_current_val = res;
 	}
-}
-
-bool validate_node_cast(Node* in_node, Node* out_node)
-{
-	//check if new connection from node_var to node_cast
-	NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
-	NodeCast* node_cast = dynamic_cast<NodeCast*>(in_node);
-
-	if (node_var && node_cast)
-	{
-		//check if there is already a connection
-		for (const Connection& connection : node_cast->m_connections)
-		{
-			NodeVariable* node_var = dynamic_cast<NodeVariable*>((Node*)connection.out_node);
-			NodeCast* node_cast = dynamic_cast<NodeCast*>((Node*)connection.in_node);
-
-			if (node_var && node_cast)
-			{
-				node_var->delete_connection(connection);
-				node_cast->delete_connection(connection);
-				return false;
-			}
-		}
-	}
-
-	return true;
 }
 }
