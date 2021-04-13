@@ -21,6 +21,7 @@ add_executable(CodeNect
 	src/core/validator.cpp
 	src/modules/filesystem.cpp
 	src/modules/input.cpp
+	src/modules/transpiler.cpp
 	src/node/connection.cpp
 
 	src/node/node_array.cpp
@@ -81,6 +82,7 @@ add_executable(CodeNect
 	src/ui/sidebar.cpp
 	src/ui/sidebar_handler.cpp
 	src/ui/sidebar_indicator.cpp
+	src/ui/terminal.cpp
 	src/ui/zoom.cpp
 
 	# dearimgui
@@ -134,6 +136,8 @@ target_include_directories(CodeNect PRIVATE
 	includes/tweeny/include
 	# verbalexpressions
 	includes/verbal_expr
+	#tcc
+	includes/tcc
 	# 3rd-party
 	${OPENGL_INCLUDE_DIR}
 	${GLFW3_INCLUDE_DIR}
@@ -155,6 +159,9 @@ else ()
 	target_link_directories(CodeNect PRIVATE ${GTK3_LIBRARY_DIRS})
 	target_sources(CodeNect PRIVATE includes/nfd/nfd_gtk.c)
 	target_include_directories(CodeNect PRIVATE ${GTK3_INCLUDE_DIRS})
+	target_link_directories(CodeNect PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/includes/tcc)
+	target_link_libraries(CodeNect tcc)
+	target_link_libraries(CodeNect dl)
 endif ()
 
 target_link_libraries(CodeNect
