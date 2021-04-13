@@ -1,5 +1,7 @@
 #include "popups/popup.hpp"
 
+#include "modules/transpiler.hpp"
+
 namespace CodeNect
 {
 void PopupRun::draw(void)
@@ -10,9 +12,17 @@ void PopupRun::draw(void)
 	ImGui::Begin("Run", &m_is_open, m_flags);
 		m_is_inside |= ImGui::IsWindowFocused();
 
-		ImGui::MenuItem("Compile");
-		ImGui::MenuItem("Run");
-		ImGui::MenuItem("Compile and Run");
+		if (ImGui::MenuItem("Compile"))
+		{
+			Transpiler::compile();
+			m_is_open = false;
+		}
+
+		if (ImGui::MenuItem("Run"))
+		{
+			Transpiler::run();
+			m_is_open = false;
+		}
 	ImGui::End();
 
 	PopupRun::end_draw();

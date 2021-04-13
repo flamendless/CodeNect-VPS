@@ -15,7 +15,9 @@
 #include "ui/about.hpp"
 #include "ui/help.hpp"
 #include "ui/inspector.hpp"
+#include "ui/terminal.hpp"
 #include "ui/zoom.hpp"
+#include "modules/transpiler.hpp"
 
 int main(int argv, char** args)
 {
@@ -52,13 +54,19 @@ int main(int argv, char** args)
 	CodeNect::SidebarHandler sidebar_handler;
 
 	if (sidebar.init() != RES_SUCCESS) return -1;
-
 	if (sidebar_indicator.init() != RES_SUCCESS) return -1;
-
 	sidebar_handler.init(&sidebar, &sidebar_indicator);
 
 	//Interfaces
 	if (CodeNect::NodeInterface::init() != RES_SUCCESS) return -1;
+
+	//Transpiler
+	if (CodeNect::Transpiler::init() != RES_SUCCESS) return -1;
+	CodeNect::Transpiler::register_commands();
+
+	//Terminal
+	if (CodeNect::Terminal::init() != RES_SUCCESS) return -1;
+	CodeNect::Terminal::register_commands();
 
 #if DEBUG_MODE
 	bool is_imgui_demo = true;
@@ -104,6 +112,7 @@ int main(int argv, char** args)
 		CodeNect::Alert::draw();
 		CodeNect::Inspector::draw();
 		CodeNect::Zoom::draw();
+		CodeNect::Terminal::draw();
 
 		app.render_end();
 	}
@@ -112,6 +121,7 @@ int main(int argv, char** args)
 	CodeNect::Commands::shutdown();
 	CodeNect::Font::shutdown();
 	CodeNect::Config::shutdown();
+	CodeNect::Transpiler::shutdown();
 	app.shutdown();
 
 	return 0;

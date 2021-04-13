@@ -1,25 +1,23 @@
-#ifndef _INSPECTOR_HPP
-#define _INSPECTOR_HPP
+#ifndef _TERMINAL_HPP
+#define _TERMINAL_HPP
 
 #include "imgui.h"
 
 namespace CodeNect
 {
-struct Inspector
+struct Terminal
 {
 	static ImGuiWindowFlags flags;
 	static bool is_open;
 	static ImVec2 pos;
 	static ImVec2 size;
 
-	Inspector() = delete;
+	Terminal() = delete;
 	static int init(void);
 	static void register_commands(void);
-	static void open(void);
+	static void toggle(void);
 	static void draw(void);
-	static void draw_variables(void);
-	static void draw_ds(void);
 };
 }
 
-#endif //_INSPECTOR_HPP
+#endif //_TERMINAL_HPP
