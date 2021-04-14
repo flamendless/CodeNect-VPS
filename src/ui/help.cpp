@@ -34,6 +34,8 @@ Help::tuple_t Help::v_key_items
 	help_t(ICON_FA_BACKSPACE " Delete Key", "delete selected node", "'del' key in keyboard"),
 	help_t(ICON_FA_KEYBOARD " Enter/Return Key", "close alert popup window", "'Enter'/'Return' key in keyboard"),
 	help_t(ICON_FA_KEYBOARD " Escape Key", "close inspector window", "'Esc' key in keyboard"),
+	help_t(ICON_FA_TERMINAL " Ctrl + Shift + p", "open/close the command palette", "hold the 'ctrl' and 'shift' key then press 'p'"),
+	help_t(ICON_FA_CODE " Ctrl + Shift + t", "open/close the terminal", "hold the 'ctrl' and 'shift' key then press 't'"),
 };
 
 Help::tuple_colors_t Help::v_connection_colors_items
@@ -46,7 +48,7 @@ Help::tuple_colors_t Help::v_connection_colors_items
 
 Help::tuple_colors_t Help::v_node_colors_items
 {
-	help_tc("Blue", "node is of kind 'Variable'/'Data Structure'", NodeColors::Lookup::BLUE),
+	help_tc("Blue", "node is of kind 'Variable'/'Data Structure'/'Get'", NodeColors::Lookup::BLUE),
 	help_tc("Yellow", "node is of kind 'Operation'", NodeColors::Lookup::YELLOW),
 	help_tc("Light Blue", "node is of kind 'Cast'", NodeColors::Lookup::LIGHT_BLUE),
 	help_tc("Pink", "node is of kind 'Comparison'", NodeColors::Lookup::PINK),
@@ -55,7 +57,6 @@ Help::tuple_colors_t Help::v_node_colors_items
 	help_tc("Violet", "node is of kind 'Math'", NodeColors::Lookup::VIOLET),
 };
 
-// BETTER_ENUM(NODE_KIND, int, EMPTY = 1, VARIABLE, OPERATION, CAST, COMPARISON, BRANCH, ACTION)
 Help::pair_t Help::v_dictionary_items
 {
 	help_p("Connection", "links the data between nodes"),
@@ -67,6 +68,8 @@ Help::pair_t Help::v_dictionary_items
 	help_p("Branch Node", "used for redirecting evaluation flow based on the boolean input.\nThis works the same as an if-statement"),
 	help_p("Action Node", "used for executing higher-level commands such as:\nprinting text to screen, prompting for user input, and more"),
 	help_p("Math Node", "used for performing Math functions and getting numbers such as:\nroot, power, sine, cosine, and tangent"),
+	help_p("Data Structure Node", "used for creating data structure like array"),
+	help_p("Get Node", "used for getting/accessing value like from array, size of array, and length of string"),
 
 	help_p("Slots", "input or output ID used for connection of nodes.\nOnly matching slot type can be connected"),
 	help_p("Boolean Slot", "data type for true or false value.\nOnly zero value is evaluated as 'false', otherwise it is 'true'"),

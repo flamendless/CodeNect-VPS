@@ -53,7 +53,10 @@ bool CommandPalette::keypress(int key, int scancode, int mods)
 {
 	if (key == GLFW_KEY_P && mods == (GLFW_MOD_SHIFT | GLFW_MOD_CONTROL))
 	{
-		CommandPalette::open();
+		if (CommandPalette::is_open)
+			CommandPalette::close();
+		else
+			CommandPalette::open();
 	}
 	else if (key == GLFW_KEY_ESCAPE && CommandPalette::is_open)
 	{

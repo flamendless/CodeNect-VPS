@@ -22,6 +22,7 @@ struct Terminal
 	static int init(void);
 	static void register_commands(void);
 	static void toggle(void);
+	static bool keypress(int key, int scancode, int mods);
 	static void draw(void);
 	static void draw_output(void);
 	static void draw_code(void);

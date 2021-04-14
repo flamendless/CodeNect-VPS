@@ -37,9 +37,12 @@ ImGuiWindowFlags NodeInterface::flags =
 	ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar;
 ImVec2 NodeInterface::center_pos;
 
-const char* NodeInterface::str = ICON_FA_PROJECT_DIAGRAM " Welcome to CodeNect";
-const char* NodeInterface::str2 = ICON_FA_ANGLE_LEFT " Hover on the left side to access the sidebar";
-const char* NodeInterface::str3 = ICON_FA_TERMINAL " Press <Ctrl+P> to access the command palette";
+std::vector<const char*> NodeInterface::v_str = {
+	ICON_FA_PROJECT_DIAGRAM " Welcome to CodeNect",
+	ICON_FA_ANGLE_LEFT " Hover on the left side to access the sidebar",
+	ICON_FA_TERMINAL " Press <Ctrl+Shift+p> to access the command palette",
+	ICON_FA_CODE " Press <Ctrl+Shift+t> to open/hide the terminal",
+};
 
 Node* current_node;
 ImNodes::CanvasState* canvas;
@@ -78,9 +81,19 @@ void NodeInterface::draw(void)
 void NodeInterface::draw_startup(void)
 {
 	Font::use_font(FONT_SIZE::LARGE);
-	Utils::center_text(NodeInterface::str, NodeInterface::center_pos, true);
-	Utils::center_text(NodeInterface::str2, true);
-	Utils::center_text(NodeInterface::str3, true);
+
+	bool is_first = true;
+	for (const char* str : NodeInterface::v_str)
+	{
+		if (is_first)
+		{
+			Utils::center_text(str, NodeInterface::center_pos, true);
+			is_first = false;
+			continue;
+		}
+		Utils::center_text(str, true);
+	}
+
 	Font::unuse_font();
 }
 

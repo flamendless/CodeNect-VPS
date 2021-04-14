@@ -6,6 +6,7 @@
 #include "core/commands.hpp"
 #include "core/font.hpp"
 #include "core/utils.hpp"
+#include "modules/input.hpp"
 #include "modules/transpiler.hpp"
 #include "node/node_colors.hpp"
 
@@ -26,6 +27,8 @@ int Terminal::init(void)
 {
 	const int x = (float)Config::win_width/2;
 	const int y = (float)Config::win_height/2;
+
+	Input::register_key_event(Terminal::keypress);
 
 	Terminal::pos = ImVec2(x, y);
 	Terminal::size = ImVec2(640, 480);
@@ -49,6 +52,14 @@ void Terminal::register_commands(void)
 void Terminal::toggle(void)
 {
 	Terminal::is_open = !Terminal::is_open;
+}
+
+bool Terminal::keypress(int key, int scancode, int mods)
+{
+	if (key == GLFW_KEY_T && mods == (GLFW_MOD_SHIFT | GLFW_MOD_CONTROL))
+		Terminal::toggle();
+
+	return false;
 }
 
 void Terminal::draw(void)

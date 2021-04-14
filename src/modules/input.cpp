@@ -9,7 +9,6 @@ std::vector<keycallback_t> Input::v_keyreleases;
 
 void Input::register_key_event(keycallback_t fn, bool press)
 {
-
 	if (press)
 	{
 		PLOGD << "Registered keypress callback";

@@ -15,9 +15,7 @@ struct NodeInterface
 	static ImVec2 pos;
 	static ImVec2 size;
 	static ImVec2 center_pos;
-	static const char* str;
-	static const char* str2;
-	static const char* str3;
+	static std::vector<const char*> v_str;
 
 	NodeInterface() = delete;
 	static bool init(void);
