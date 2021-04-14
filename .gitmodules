@@ -19,3 +19,6 @@
 [submodule "includes/ppk"]
 	path = includes/ppk
 	url = https://github.com/gpakosz/PPK_ASSERT
+[submodule "includes/color_text_edit"]
+	path = includes/color_text_edit
+	url = https://github.com/BalazsJako/ImGuiColorTextEdit

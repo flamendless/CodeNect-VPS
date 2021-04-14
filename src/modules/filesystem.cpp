@@ -61,7 +61,7 @@ bool open_filepath(std::string& filepath)
 	return false;
 }
 
-bool save_file(std::string& out_filepath, const char* ext, const std::string& content)
+bool save_to_file(std::string& out_filepath, const char* ext, const std::string& content)
 {
 	nfdchar_t* out_path = NULL;
 	nfdresult_t result = NFD_SaveDialog(ext, current_path.c_str(), &out_path);

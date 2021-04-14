@@ -19,6 +19,8 @@ bool Terminal::is_open = false;
 ImVec2 Terminal::pos;
 ImVec2 Terminal::size;
 T_MODE Terminal::mode = T_MODE::OUTPUT;
+TextEditor Terminal::editor;
+TextEditor::LanguageDefinition Terminal::lang_c;
 
 int Terminal::init(void)
 {
@@ -27,6 +29,11 @@ int Terminal::init(void)
 
 	Terminal::pos = ImVec2(x, y);
 	Terminal::size = ImVec2(640, 480);
+
+	Terminal::lang_c = TextEditor::LanguageDefinition::C();
+	Terminal::editor.SetLanguageDefinition(Terminal::lang_c);
+	Terminal::editor.SetReadOnly(true);
+	Terminal::editor.SetHandleKeyboardInputs(false);
 
 	return RES_SUCCESS;
 }
@@ -133,8 +140,6 @@ void Terminal::draw_code(void)
 		ImGui::PopStyleVar(1);
 
 	ImGui::Separator();
-
-	if (length != 0)
-		ImGui::Text("%s", Transpiler::output_code.c_str());
+	Terminal::editor.Render("TextEditor");
 }
 }

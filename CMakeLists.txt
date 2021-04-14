@@ -85,6 +85,8 @@ add_executable(CodeNect
 	src/ui/terminal.cpp
 	src/ui/zoom.cpp
 
+	# color text editor
+	includes/color_text_edit/TextEditor.cpp
 	# dearimgui
 	includes/imgui/imgui.cpp
 	includes/imgui/imgui_demo.cpp
@@ -113,6 +115,8 @@ target_include_directories(CodeNect PRIVATE
 	src
 	# better-enums
 	includes/better-enums
+	# color text editor
+	includes/color_text_edit
 	# dearimgui
 	includes/imgui
 	includes/imgui/backends

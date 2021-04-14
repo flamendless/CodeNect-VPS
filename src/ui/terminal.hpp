@@ -2,6 +2,7 @@
 #define _TERMINAL_HPP
 
 #include "imgui.h"
+#include "TextEditor.h"
 
 namespace CodeNect
 {
@@ -14,6 +15,8 @@ struct Terminal
 	static ImVec2 pos;
 	static ImVec2 size;
 	static T_MODE mode;
+	static TextEditor editor;
+	static TextEditor::LanguageDefinition lang_c;
 
 	Terminal() = delete;
 	static int init(void);

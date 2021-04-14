@@ -100,6 +100,8 @@ int Transpiler::compile(void)
 	PLOGI << "Compiled code successfully";
 	Transpiler::v_output.push_back({"Compiled code successfully", OUTPUT_TYPE::SUCCESS});
 
+	Terminal::editor.SetText(Transpiler::output_code);
+
 	return RES_SUCCESS;
 }
 
@@ -151,9 +153,10 @@ void Transpiler::clear(void)
 
 void Transpiler::save_file(void)
 {
+	//TODO should handle other type of file? like Lua, Java, Python, etc
 	std::string out_filepath = "";
 	const char* ext = "c";
-	bool res = Filesystem::save_file(out_filepath, ext, Transpiler::output_code);
+	bool res = Filesystem::save_to_file(out_filepath, ext, Transpiler::output_code);
 
 	if (res)
 		Alert::open(ALERT_TYPE::SUCCESS, "File saved to " + out_filepath + "." + ext);
