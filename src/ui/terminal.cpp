@@ -7,16 +7,18 @@
 #include "core/font.hpp"
 #include "core/utils.hpp"
 #include "modules/transpiler.hpp"
+#include "node/node_colors.hpp"
 
 namespace CodeNect
 {
 ImGuiWindowFlags Terminal::flags =
 	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
 	ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
-	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
+	ImGuiWindowFlags_AlwaysAutoResize;
 bool Terminal::is_open = false;
 ImVec2 Terminal::pos;
 ImVec2 Terminal::size;
+T_MODE Terminal::mode = T_MODE::OUTPUT;
 
 int Terminal::init(void)
 {
@@ -58,24 +60,81 @@ void Terminal::draw(void)
 		Utils::center_text("press <ESC> to close", true);
 		ImGui::Separator();
 
-		if (ImGui::SmallButton("Compile"))
-			Transpiler::compile();
+		ImGui::Text("Tabs:");
 		ImGui::SameLine();
-		if (ImGui::SmallButton("Run"))
-			Transpiler::run();
+		if (ImGui::SmallButton("Output"))
+			Terminal::mode = T_MODE::OUTPUT;
 		ImGui::SameLine();
-		if (ImGui::SmallButton("Clear"))
-			Transpiler::clear();
+		if (ImGui::SmallButton("Code"))
+			Terminal::mode = T_MODE::CODE;
 
 		ImGui::Separator();
 
-		for (const std::string& str : Transpiler::v_output)
-			ImGui::Text("%s", str.c_str());
+		switch (Terminal::mode)
+		{
+			case T_MODE::OUTPUT: Terminal::draw_output(); break;
+			case T_MODE::CODE: Terminal::draw_code(); break;
+		}
 
 		ImGui::End();
 	}
 
 	if (ImGui::IsKeyPressedMap(ImGuiKey_Escape))
 		Terminal::is_open = false;
+}
+
+void Terminal::draw_output(void)
+{
+	Utils::center_text(ICON_FA_TERMINAL " OUTPUT", true);
+	if (ImGui::SmallButton("Compile"))
+		Transpiler::compile();
+	ImGui::SameLine();
+	if (ImGui::SmallButton("Run"))
+		Transpiler::run();
+	ImGui::SameLine();
+	if (ImGui::SmallButton("Clear"))
+		Transpiler::clear();
+	ImGui::Separator();
+
+	for (const std::pair<std::string, OUTPUT_TYPE>& p : Transpiler::v_output)
+	{
+		switch (p.second)
+		{
+			case OUTPUT_TYPE::NORMAL: ImGui::Text("%s", p.first.c_str()); break;
+			case OUTPUT_TYPE::SUCCESS:
+			{
+				ImGui::TextColored(NodeColors::Lookup::GREEN, "%s", p.first.c_str());
+				break;
+			}
+			case OUTPUT_TYPE::ERROR:
+			{
+				ImGui::TextColored(NodeColors::Lookup::RED, "%s", p.first.c_str());
+				break;
+			}
+		}
+	}
+}
+
+void Terminal::draw_code(void)
+{
+	const int length = Transpiler::output_code.length();
+	Utils::center_text(ICON_FA_FILE_CODE " CODE", true);
+
+	if (length == 0)
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+
+	if (ImGui::SmallButton("Save as"))
+	{
+		if (length != 0)
+			Transpiler::save_file();
+	}
+
+	if (length == 0)
+		ImGui::PopStyleVar(1);
+
+	ImGui::Separator();
+
+	if (length != 0)
+		ImGui::Text("%s", Transpiler::output_code.c_str());
 }
 }

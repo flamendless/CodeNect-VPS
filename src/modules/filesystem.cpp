@@ -3,9 +3,10 @@
 
 #include "modules/filesystem.hpp"
 
-#include <GLFW/glfw3.h>
+#include <fstream>
 #include <map>
 #include <filesystem>
+#include <GLFW/glfw3.h>
 #include "nfd.h"
 #include "fmt/printf.h"
 #include "plog/Log.h"
@@ -54,6 +55,31 @@ bool open_filepath(std::string& filepath)
 	}
 	else if (result == NFD_CANCEL)
 		PLOGV << "Save project file cancelled";
+	else
+		PLOGE << "Error: " << NFD_GetError();
+
+	return false;
+}
+
+bool save_file(std::string& out_filepath, const char* ext, const std::string& content)
+{
+	nfdchar_t* out_path = NULL;
+	nfdresult_t result = NFD_SaveDialog(ext, current_path.c_str(), &out_path);
+
+	if (result == NFD_OKAY)
+	{
+		PLOGV << "Saved " << ext << " file to:" << out_path;
+		out_filepath = out_path;
+		free(out_path);
+
+		std::ofstream out(out_filepath + "." + ext);
+		out << content;
+		out.close();
+
+		return true;
+	}
+	else if (result == NFD_CANCEL)
+		PLOGV << "Save " << ext << " file cancelled";
 	else
 		PLOGE << "Error: " << NFD_GetError();
 
