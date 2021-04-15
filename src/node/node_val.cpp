@@ -356,6 +356,19 @@ void* NodeValue::get_value()
 	return nullptr;
 }
 
+const std::string NodeValue::get_type_str(void)
+{
+	switch (m_slot)
+	{
+		case NODE_SLOT::EMPTY: return "empty"; break;
+		case NODE_SLOT::BOOL: return "bool"; break;
+		case NODE_SLOT::INTEGER: return "int"; break;
+		case NODE_SLOT::FLOAT: return "float"; break;
+		case NODE_SLOT::DOUBLE: return "double"; break;
+		case NODE_SLOT::STRING: return "const char*"; break;
+	}
+}
+
 const std::string NodeValue::get_value_str(void)
 {
 	switch (m_slot)

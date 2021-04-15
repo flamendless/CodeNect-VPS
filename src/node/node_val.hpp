@@ -42,6 +42,7 @@ struct NodeValue
 	void to_double(const char* str);
 
 	void* get_value();
+	const std::string get_type_str(void);
 	const std::string get_value_str(void);
 	const std::string get_value_str_ex(void);
 	const char* get_spec(void);

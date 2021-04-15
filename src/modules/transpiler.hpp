@@ -23,7 +23,8 @@ struct Transpiler
 	Transpiler() = delete;
 	static int init(void);
 	static void register_commands(void);
-	static void build_code(void);
+	static void build_runnable_code(void);
+	static void build_out_code(void);
 	static int compile(void);
 	static int run(void);
 	static void clear(void);

@@ -1,15 +1,24 @@
 #include "modules/transpiler.hpp"
+#include "modules/node_to_code.hpp"
 
 #include <stdio.h>
 #include <functional>
 #include "plog/Log.h"
+#include "ppk_assert.h"
 #include "IconsFontAwesome5.h"
+#include "fmt/format.h"
 #include "core/defines.hpp"
 #include "core/commands.hpp"
 #include "node/nodes.hpp"
 #include "ui/terminal.hpp"
 #include "ui/alert.hpp"
 #include "modules//filesystem.hpp"
+#include "node/node_print.hpp"
+#include "node/node_prompt.hpp"
+#include "node/node_math.hpp"
+#include "node/node_entry.hpp"
+#include "node/node_array.hpp"
+#include "node/node_var.hpp"
 
 namespace CodeNect
 {
@@ -49,18 +58,99 @@ void Transpiler::register_commands(void)
 	Commands::register_cmd(*cmd_run);
 }
 
-void Transpiler::build_code(void)
+//NOTE here we do multiple appends instead of one append with \n at the end,
+//it is not efficient but we trade performance for readability
+void Transpiler::build_runnable_code(void)
 {
-	std::string output_str = "";
-	output_str.append("#include <stdio.h>\n");
-	output_str.append("\n");
-	output_str.append("int main()\n");
-	output_str.append("{\n");
-	output_str.append("\tprintf(\"Hello, World!\\n\");\n");
-	output_str.append("\treturn 0;\n");
-	output_str.append("}");
-	Transpiler::output_code = output_str;
+	std::string str_incl = "";
+	std::string str_entry = "";
+	std::string str_decls = "";
+	std::string str_closing = "";
 
+	//includes
+	bool has_io = false;
+	bool has_math = false;
+	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
+		it != Nodes::v_nodes.end();
+		it++)
+	{
+		NodePrint* node_print = dynamic_cast<NodePrint*>(*it);
+		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(*it);
+		NodeMath* node_math = dynamic_cast<NodeMath*>(*it);
+
+		if (has_io && has_math)
+			break;
+
+		if (!has_io && (node_print || node_prompt))
+		{
+			str_incl.append("#include <stdio.h>").append("\n");
+			has_io = true;
+			continue;
+		}
+
+		if (!has_math && node_math)
+		{
+			str_incl.append("#include <math.h>").append("\n");
+			str_incl.append("#include <stdlib.h>").append("\n");
+			has_math = true;
+			continue;
+		}
+	}
+
+	//entry point
+	str_entry.append("int main()").append("\n");
+	str_entry.append("{").append("\n");
+
+	//get NodeEntry
+	NodeEntry* node_entry = Nodes::find_node_entry();
+	PPK_ASSERT(node_entry, "there should be a found NodeEntry");
+
+	//declarations
+	//we are sure that NodeEntry only has "out" connections (rhs)
+	//we are sure that only the following are allowed to be connected to node_entry:
+	//* NodeVariable
+	//* NodeArray
+	//* NodePrint
+	//* NodePrompt
+	for (const Connection& connection : node_entry->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+		NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
+		NodePrint* node_print = dynamic_cast<NodePrint*>(out_node);
+		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
+
+		if (node_var)
+		{
+			str_decls.append(NodeToCode::node_var(node_var));
+			PLOGD << str_decls;
+		}
+		else if (node_array)
+		{
+		}
+		else if (node_print)
+		{
+		}
+		else if (node_prompt)
+		{
+		}
+	}
+
+	//closing
+	str_closing.append("return 0;").append("\n");
+	str_closing.append("}");
+
+	std::string str_final = fmt::format("{:s}\n\
+		{:s}\n\
+		{:s}\n\
+		{:s}",
+		str_incl, str_entry, str_decls, str_closing);
+
+	Transpiler::output_code = str_final;
+}
+
+void Transpiler::build_out_code(void)
+{
 	std::string real_str = "";
 	real_str.append("#include <tcclib.h>");
 	real_str.append("void main(char** chars, int* size)");
@@ -77,11 +167,18 @@ void Transpiler::build_code(void)
 
 int Transpiler::compile(void)
 {
+	if (!Nodes::has_entry)
+	{
+		Alert::open(ALERT_TYPE::ERROR, "There is no code to compile");
+		return RES_FAIL;
+	}
+
 	tcc_delete(Transpiler::tcc_state);
 	Transpiler::init();
 	Terminal::is_open = true;
 	PLOGI << "Compiling code...";
-	Transpiler::build_code();
+	Transpiler::build_runnable_code();
+	Transpiler::build_out_code();
 
 	if (tcc_compile_string(Transpiler::tcc_state, Transpiler::code.c_str()) == -1)
 	{
