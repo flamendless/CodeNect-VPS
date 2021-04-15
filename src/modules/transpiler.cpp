@@ -12,7 +12,8 @@
 #include "node/nodes.hpp"
 #include "ui/terminal.hpp"
 #include "ui/alert.hpp"
-#include "modules//filesystem.hpp"
+#include "modules/filesystem.hpp"
+#include "modules/templates.hpp"
 #include "node/node_print.hpp"
 #include "node/node_prompt.hpp"
 #include "node/node_math.hpp"
@@ -63,6 +64,7 @@ void Transpiler::register_commands(void)
 void Transpiler::build_runnable_code(void)
 {
 	std::string str_incl = "";
+	std::string str_structs = "";
 	std::string str_entry = "";
 	std::string str_decls = "";
 	std::string str_closing = "";
@@ -70,6 +72,12 @@ void Transpiler::build_runnable_code(void)
 	//includes
 	bool has_io = false;
 	bool has_math = false;
+	bool has_stdlib = false;
+	bool has_d_a_bool = false;
+	bool has_d_a_int = false;
+	bool has_d_a_float = false;
+	bool has_d_a_double = false;
+	bool has_d_a_str = false;
 	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
 		it != Nodes::v_nodes.end();
 		it++)
@@ -77,6 +85,7 @@ void Transpiler::build_runnable_code(void)
 		NodePrint* node_print = dynamic_cast<NodePrint*>(*it);
 		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(*it);
 		NodeMath* node_math = dynamic_cast<NodeMath*>(*it);
+		NodeArray* node_array = dynamic_cast<NodeArray*>(*it);
 
 		if (has_io && has_math)
 			break;
@@ -94,6 +103,65 @@ void Transpiler::build_runnable_code(void)
 			str_incl.append("#include <stdlib.h>").append("\n");
 			has_math = true;
 			continue;
+		}
+
+		if (node_array && node_array->m_array == +NODE_ARRAY::DYNAMIC)
+		{
+			if (!has_stdlib)
+			{
+				str_incl.append("#include <stdlib.h>").append("\n");
+				has_stdlib = true;
+			}
+
+			switch (node_array->m_slot)
+			{
+				case NODE_SLOT::EMPTY: break;
+				case NODE_SLOT::BOOL:
+				{
+					if (!has_d_a_bool)
+					{
+						str_structs.append(Templates::d_arr_bool);
+						has_d_a_bool = true;
+					}
+					break;
+				}
+				case NODE_SLOT::INTEGER:
+				{
+					if (!has_d_a_int)
+					{
+						str_structs.append(Templates::d_arr_int);
+						has_d_a_int = true;
+					}
+					break;
+				}
+				case NODE_SLOT::FLOAT:
+				{
+					if (!has_d_a_float)
+					{
+						str_structs.append(Templates::d_arr_float);
+						has_d_a_float = true;
+					}
+					break;
+				}
+				case NODE_SLOT::DOUBLE:
+				{
+					if (!has_d_a_double)
+					{
+						str_structs.append(Templates::d_arr_double);
+						has_d_a_double = true;
+					}
+					break;
+				}
+				case NODE_SLOT::STRING:
+				{
+					if (!has_d_a_str)
+					{
+						str_structs.append(Templates::d_arr_str);
+						has_d_a_str = true;
+					}
+					break;
+				}
+			}
 		}
 	}
 
@@ -114,19 +182,21 @@ void Transpiler::build_runnable_code(void)
 	//* NodePrompt
 	for (const Connection& connection : node_entry->m_connections)
 	{
-		Node* out_node = static_cast<Node*>(connection.out_node);
-		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
-		NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
-		NodePrint* node_print = dynamic_cast<NodePrint*>(out_node);
-		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
+		Node* in_node = static_cast<Node*>(connection.in_node);
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(in_node);
+		NodeArray* node_array = dynamic_cast<NodeArray*>(in_node);
+		NodePrint* node_print = dynamic_cast<NodePrint*>(in_node);
+		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(in_node);
 
 		if (node_var)
 		{
+			str_decls.append(NodeToCode::comment(in_node));
 			str_decls.append(NodeToCode::node_var(node_var));
-			PLOGD << str_decls;
 		}
 		else if (node_array)
 		{
+			str_decls.append(NodeToCode::comment(in_node));
+			str_decls.append(NodeToCode::node_array(node_array));
 		}
 		else if (node_print)
 		{
@@ -135,6 +205,8 @@ void Transpiler::build_runnable_code(void)
 		{
 		}
 	}
+
+	PLOGD << str_decls;
 
 	//closing
 	str_closing.append("return 0;").append("\n");

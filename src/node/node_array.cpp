@@ -80,7 +80,7 @@ void NodeArray::elements_to_vec_str(std::vector<std::string>& v)
 		it++)
 	{
 		NodeValue* val = *it;
-		std::string str = val->get_value_str();
+		std::string str = val->get_value_str_ex();
 		v.push_back(str);
 	}
 }
