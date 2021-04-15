@@ -14,6 +14,8 @@
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
+#include "node/node_entry.hpp"
+#include "ui/alert.hpp"
 
 namespace CodeNect
 {
@@ -40,15 +42,27 @@ std::variant<
 		TempCastData*, TempComparisonData*,
 		TempBranchData*, TempActionData*,
 		TempMathData*, TempArrayData*,
-		TempGetData*
+		TempGetData*, TempEntryData*
 	>CreateNode::data;
 char CreateNode::buf_desc[BUF_SIZE * 2] = "";
 
 void CreateNode::open(NODE_KIND kind)
 {
+	if (!Nodes::has_entry && kind != +NODE_KIND::ENTRY)
+	{
+		Alert::open(ALERT_TYPE::ERROR, "You must create an ENTRY node first");
+		return;
+	}
+	else if (Nodes::has_entry && kind == +NODE_KIND::ENTRY)
+	{
+		Alert::open(ALERT_TYPE::ERROR, "There can only be one ENTRY node");
+		return;
+	}
+
 	switch (kind)
 	{
 		case NODE_KIND::EMPTY: break;
+		case NODE_KIND::ENTRY: CreateNode::data = new TempEntryData(); break;
 		case NODE_KIND::VARIABLE: CreateNode::data = new TempVarData(); break;
 		case NODE_KIND::OPERATION: CreateNode::data = new TempOperationData(); break;
 		case NODE_KIND::CAST: CreateNode::data = new TempCastData(); break;
@@ -103,6 +117,7 @@ void CreateNode::edit(Node* node)
 	switch (node->m_kind)
 	{
 		case NODE_KIND::EMPTY: break;
+		case NODE_KIND::ENTRY: break;
 		case NODE_KIND::VARIABLE:
 		{
 			NodeVariable* node_var = static_cast<NodeVariable*>(node);
@@ -318,6 +333,7 @@ void CreateNode::draw(void)
 		switch (CreateNode::kind)
 		{
 			case NODE_KIND::EMPTY: break;
+			case NODE_KIND::ENTRY: CreateNode::draw_entry(); break;
 			case NODE_KIND::VARIABLE: CreateNode::draw_var(); break;
 			case NODE_KIND::OPERATION: CreateNode::draw_op(); break;
 			case NODE_KIND::CAST: CreateNode::draw_cast(); break;
@@ -384,6 +400,7 @@ void CreateNode::draw_buttons(void)
 			switch (CreateNode::kind)
 			{
 				case NODE_KIND::EMPTY: break;
+				case NODE_KIND::ENTRY: CreateNode::create_node_entry(); break;
 				case NODE_KIND::VARIABLE: CreateNode::create_node_var(); break;
 				case NODE_KIND::OPERATION: CreateNode::create_node_op(); break;
 				case NODE_KIND::CAST: CreateNode::create_node_cast(); break;

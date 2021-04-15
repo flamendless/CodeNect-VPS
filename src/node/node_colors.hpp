@@ -12,6 +12,7 @@ struct NodeColors
 {
 	struct Lookup
 	{
+		static ImVec4 IMNODES_DEF;
 		static ImVec4 GREEN;
 		static ImVec4 YELLOW;
 		static ImVec4 ORANGE;

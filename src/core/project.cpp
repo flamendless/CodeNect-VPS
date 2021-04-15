@@ -181,6 +181,7 @@ int Project::save(void)
 		switch (node->m_kind)
 		{
 			case NODE_KIND::EMPTY: break;
+			case NODE_KIND::ENTRY: break;
 			case NODE_KIND::VARIABLE:
 			{
 				NodeVariable* node_var = static_cast<NodeVariable*>(node);
@@ -538,7 +539,7 @@ bool Project::has_unsaved_changes(void)
 	if (Project::nodes_count != Nodes::v_nodes.size() ||
 		Project::connections_count != Nodes::count_connections())
 	{
-		Alert::open(ALERT_TYPE::ERROR, "There are unsaved changes. Are you sure you want to quti?");
+		Alert::open(ALERT_TYPE::ERROR, "There are unsaved changes. Are you sure you want to quit?");
 		Alert::has_cb = true;
 		Alert::fn_custom_draw = []()
 		{

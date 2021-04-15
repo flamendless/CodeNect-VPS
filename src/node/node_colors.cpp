@@ -5,6 +5,7 @@ namespace CodeNect
 {
 #define ALPHA 1.0f
 
+ImVec4 NodeColors::Lookup::IMNODES_DEF = ImVec4(0.39f, 0.39f, 0.39f, 1);
 ImVec4 NodeColors::Lookup::GREEN = ImVec4((float)48/255, (float)163/255, (float)86/255, ALPHA);
 ImVec4 NodeColors::Lookup::YELLOW = ImVec4((float)251/255, (float)221/255, (float)13/255, ALPHA);
 ImVec4 NodeColors::Lookup::ORANGE = ImVec4((float)254/255, (float)171/255, (float)17/255, ALPHA);
@@ -22,6 +23,7 @@ ImVec4 NodeColors::ConnectionColors::RUNTIME = NodeColors::Lookup::YELLOW;
 
 std::map<std::string, ImVec4> NodeColors::m_kind
 {
+	{"ENTRY", NodeColors::Lookup::IMNODES_DEF},
 	{"VARIABLE", NodeColors::Lookup::BLUE},
 	{"OPERATION", NodeColors::Lookup::YELLOW},
 	{"CAST", NodeColors::Lookup::LIGHT_BLUE},

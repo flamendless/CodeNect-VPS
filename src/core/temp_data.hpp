@@ -96,6 +96,12 @@ struct TempGetData
 
 	bool valid_get = false;
 };
+
+struct TempEntryData
+{
+	NODE_SLOT slot_out = NODE_SLOT::EMPTY;
+	bool valid_entry = false;
+};
 }
 
 #endif //_TEMP_DATA_HPP

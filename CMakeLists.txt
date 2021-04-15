@@ -21,18 +21,27 @@ add_executable(CodeNect
 	src/core/validator.cpp
 	src/modules/filesystem.cpp
 	src/modules/input.cpp
+	src/modules/node_to_code.cpp
 	src/modules/transpiler.cpp
 	src/node/connection.cpp
 
+	src/node/node.cpp
 	src/node/node_array.cpp
 	src/node/node_array_access.cpp
 	src/node/node_branch.cpp
 	src/node/node_cast.cpp
 	src/node/node_cmp.cpp
 	src/node/node_colors.cpp
+	src/node/node_entry.cpp
 	src/node/node_math.cpp
+	src/node/node_op.cpp
+	src/node/node_print.cpp
+	src/node/node_prompt.cpp
+	src/node/node_renderer.cpp
 	src/node/node_size.cpp
-	src/node/node.cpp
+	src/node/node_val.cpp
+	src/node/node_var.cpp
+	src/node/nodes.cpp
 
 	src/node/node_logic_array.cpp
 	src/node/node_logic_array_access.cpp
@@ -47,14 +56,6 @@ add_executable(CodeNect
 	src/node/node_logic_size.cpp
 	src/node/node_logic_var.cpp
 
-	src/node/node_op.cpp
-	src/node/node_print.cpp
-	src/node/node_prompt.cpp
-	src/node/node_renderer.cpp
-	src/node/nodes.cpp
-	src/node/node_val.cpp
-	src/node/node_var.cpp
-
 	src/popups/popup.cpp
 	src/popups/popup_project.cpp
 	src/popups/popup_run.cpp
@@ -68,6 +69,7 @@ add_executable(CodeNect
 	src/ui/create_node_cast.cpp
 	src/ui/create_node_cmp.cpp
 	src/ui/create_node.cpp
+	src/ui/create_node_entry.cpp
 	src/ui/create_node_op.cpp
 	src/ui/create_node_math.cpp
 	src/ui/create_node_print.cpp

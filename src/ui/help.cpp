@@ -61,6 +61,7 @@ Help::pair_t Help::v_dictionary_items
 {
 	help_p("Connection", "links the data between nodes"),
 	help_p("Node", "basic building block that can be connected with each other"),
+	help_p("Entry Node", "used to define the starting point of the program.\nOnly one instance of it can be present"),
 	help_p("Variable Node", "used for storing arbitrary value"),
 	help_p("Operation Node", "used for performing basic operation on values such as:\naddition, subtraction, multiplication, and division"),
 	help_p("Cast Node", "used for converting one data type to another"),

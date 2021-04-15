@@ -2,6 +2,7 @@
 
 #include "ppk_assert.h"
 #include "core/utils.hpp"
+#include "node/node_entry.hpp"
 #include "node/node_val.hpp"
 #include "node/node_var.hpp"
 #include "node/node_op.hpp"
@@ -15,6 +16,7 @@
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
+#include "node/node_entry.hpp"
 
 namespace CodeNect
 {
@@ -47,6 +49,7 @@ std::map<std::string, const char*> Nodes::m_names
 	{"COS", "COSINE"},
 	{"TAN", "TANGENT"},
 };
+bool Nodes::has_entry = false;
 
 const char* Nodes::get_id(const char* id)
 {
@@ -61,6 +64,7 @@ const char* Nodes::get_title(Node* node)
 	switch (node->m_kind)
 	{
 		case NODE_KIND::EMPTY: break;
+		case NODE_KIND::ENTRY:
 		case NODE_KIND::VARIABLE:
 		case NODE_KIND::OPERATION:
 		case NODE_KIND::CAST:
@@ -105,10 +109,16 @@ void Nodes::reset(void)
 	}
 
 	Nodes::v_nodes.clear();
+	Nodes::has_entry = false;
 }
 
 void Nodes::delete_node(std::vector<Node*>::iterator& it)
 {
+	NodeEntry* node_entry = dynamic_cast<NodeEntry*>(*it);
+
+	if (node_entry)
+		Nodes::has_entry = false;
+
 	delete *it;
 	it = Nodes::v_nodes.erase(it);
 }
@@ -131,6 +141,18 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 		switch (kind)
 		{
 			case NODE_KIND::EMPTY: break;
+			case NODE_KIND::ENTRY:
+			{
+				v_slot_info_t&& in = {};
+				v_slot_info_t&& out = {};
+				Nodes::build_slots(*nm, in, out);
+				NodeEntry* node_entry = new NodeEntry(std::move(out));
+				node_entry->m_pos = ImVec2(nm->x, nm->y);
+				node_entry->m_desc = nm->m_desc.c_str();
+				Nodes::v_nodes.push_back(node_entry);
+				Nodes::has_entry = true;
+				break;
+			}
 			case NODE_KIND::VARIABLE:
 			{
 				NODE_SLOT value_slot = NODE_SLOT::_from_string(nm->m_value_slot.c_str());
@@ -324,9 +346,19 @@ Node* Nodes::find_by_name(const char* name)
 		if (std::strcmp(node->m_name, name) == 0)
 			return node;
 	}
+	PLOGW << "Can't find node by name: " << name;
+	return nullptr;
+}
 
-	PLOGE << "Can't find node by name: " << name;
-
+NodeEntry* Nodes::find_node_entry(void)
+{
+	for (Node* &node : Nodes::v_nodes)
+	{
+		NodeEntry* node_entry = dynamic_cast<NodeEntry*>(node);
+		if (node_entry)
+			return node_entry;
+	}
+	PLOGW << "Can't find NodeEntry";
 	return nullptr;
 }
 

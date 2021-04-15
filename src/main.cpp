@@ -76,7 +76,7 @@ int main(int argv, char** args)
 
 	//test
 #if DEBUG_MODE
-	CodeNect::Project::open("test_array.cn");
+	CodeNect::Project::open("test_parsing.cn");
 #endif
 
 	if (argv > 1)
