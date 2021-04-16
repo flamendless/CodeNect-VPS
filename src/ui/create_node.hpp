@@ -49,7 +49,6 @@ struct CreateNode
 	static void close(void);
 
 	//creation
-	static void create_node_entry(void);
 	static void create_node_var(void);
 	static void create_node_op(void);
 	static void create_node_cast(void);
@@ -65,9 +64,6 @@ struct CreateNode
 	static void draw(void);
 	static void draw_desc(void);
 	static void draw_buttons(void);
-
-	//NodeEntry
-	static void draw_entry(void);
 
 	//NodeVariable
 	static void draw_var(void);

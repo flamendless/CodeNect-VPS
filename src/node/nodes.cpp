@@ -2,7 +2,6 @@
 
 #include "ppk_assert.h"
 #include "core/utils.hpp"
-#include "node/node_entry.hpp"
 #include "node/node_val.hpp"
 #include "node/node_var.hpp"
 #include "node/node_op.hpp"
@@ -16,7 +15,6 @@
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
-#include "node/node_entry.hpp"
 
 namespace CodeNect
 {
@@ -49,7 +47,6 @@ std::map<std::string, const char*> Nodes::m_names
 	{"COS", "COSINE"},
 	{"TAN", "TANGENT"},
 };
-bool Nodes::has_entry = false;
 
 const char* Nodes::get_id(const char* id)
 {
@@ -64,7 +61,6 @@ const char* Nodes::get_title(Node* node)
 	switch (node->m_kind)
 	{
 		case NODE_KIND::EMPTY: break;
-		case NODE_KIND::ENTRY:
 		case NODE_KIND::VARIABLE:
 		case NODE_KIND::OPERATION:
 		case NODE_KIND::CAST:
@@ -109,18 +105,27 @@ void Nodes::reset(void)
 	}
 
 	Nodes::v_nodes.clear();
-	Nodes::has_entry = false;
 }
 
 void Nodes::delete_node(std::vector<Node*>::iterator& it)
 {
-	NodeEntry* node_entry = dynamic_cast<NodeEntry*>(*it);
-
-	if (node_entry)
-		Nodes::has_entry = false;
-
 	delete *it;
 	it = Nodes::v_nodes.erase(it);
+}
+
+bool Nodes::check_if_no_lhs(Node* node)
+{
+	if (node->m_connections.size() == 0)
+		return true;
+
+	for (const Connection& connection : node->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node)
+			return false;
+	}
+
+	return true;
 }
 
 void Nodes::build_slots(NodeMeta& meta, v_slot_info_t& in, v_slot_info_t& out)
@@ -141,18 +146,6 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 		switch (kind)
 		{
 			case NODE_KIND::EMPTY: break;
-			case NODE_KIND::ENTRY:
-			{
-				v_slot_info_t&& in = {};
-				v_slot_info_t&& out = {};
-				Nodes::build_slots(*nm, in, out);
-				NodeEntry* node_entry = new NodeEntry(std::move(out));
-				node_entry->m_pos = ImVec2(nm->x, nm->y);
-				node_entry->m_desc = nm->m_desc.c_str();
-				Nodes::v_nodes.push_back(node_entry);
-				Nodes::has_entry = true;
-				break;
-			}
 			case NODE_KIND::VARIABLE:
 			{
 				NODE_SLOT value_slot = NODE_SLOT::_from_string(nm->m_value_slot.c_str());
@@ -350,15 +343,74 @@ Node* Nodes::find_by_name(const char* name)
 	return nullptr;
 }
 
-NodeEntry* Nodes::find_node_entry(void)
+Node* Nodes::find_connected_by_value(Node* node, NodeValue* target_val)
 {
-	for (Node* &node : Nodes::v_nodes)
+	for (const Connection& connection : node->m_connections)
 	{
-		NodeEntry* node_entry = dynamic_cast<NodeEntry*>(node);
-		if (node_entry)
-			return node_entry;
+		Node* out_node = static_cast<Node*>(connection.out_node);
+
+		if (out_node)
+		{
+			PLOGD << out_node->m_kind._to_string();
+			NodeValue* val = nullptr;
+			switch (node->m_kind)
+			{
+				case NODE_KIND::EMPTY: break;
+				case NODE_KIND::VARIABLE:
+				{
+					NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+					val = &node_var->m_value;
+					break;
+				}
+				case NODE_KIND::OPERATION:
+				{
+					NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
+					val = node_op->m_current_val;
+					break;
+				}
+				case NODE_KIND::CAST:
+				{
+					NodeCast* node_cast = dynamic_cast<NodeCast*>(out_node);
+					val = node_cast->m_current_val;
+					break;
+				}
+				case NODE_KIND::COMPARISON: break;
+				case NODE_KIND::BRANCH: break;
+				case NODE_KIND::ACTION: break;
+				case NODE_KIND::MATH:
+				{
+					NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
+					val = node_math->m_current_val;
+					break;
+				}
+				case NODE_KIND::DS: break;
+				case NODE_KIND::GET:
+				{
+					NodeGet* node_get = dynamic_cast<NodeGet*>(out_node);
+					switch (node_get->m_get)
+					{
+						case NODE_GET::EMPTY: break;
+						case NODE_GET::SIZE:
+						{
+							NodeSize* node_size = dynamic_cast<NodeSize*>(out_node);
+							val = &node_size->m_val_size;
+							break;
+						}
+						case NODE_GET::ARRAY_ACCESS:
+						{
+							NodeArrayAccess* node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
+							val = node_arr_access->m_current_val;
+							break;
+						}
+					}
+					break;
+				}
+			}
+
+			if (val && val == target_val)
+				return out_node;
+		}
 	}
-	PLOGW << "Can't find NodeEntry";
 	return nullptr;
 }
 

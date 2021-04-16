@@ -23,7 +23,6 @@ ImVec4 NodeColors::ConnectionColors::RUNTIME = NodeColors::Lookup::YELLOW;
 
 std::map<std::string, ImVec4> NodeColors::m_kind
 {
-	{"ENTRY", NodeColors::Lookup::IMNODES_DEF},
 	{"VARIABLE", NodeColors::Lookup::BLUE},
 	{"OPERATION", NodeColors::Lookup::YELLOW},
 	{"CAST", NodeColors::Lookup::LIGHT_BLUE},

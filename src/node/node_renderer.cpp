@@ -419,8 +419,8 @@ void draw_connections(Node& node)
 		Node* out_node = static_cast<Node*>(new_connection.out_node);
 
 		bool can_add = true;
-		can_add &= NodeLogic::validate_node_entry(in_node, out_node);
 		can_add &= NodeLogic::validate_node_array_access(in_node, out_node);
+		can_add &= NodeLogic::validate_node_print(in_node, out_node);
 
 		if (can_add)
 		{

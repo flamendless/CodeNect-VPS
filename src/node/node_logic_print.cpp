@@ -3,6 +3,7 @@
 #include "node/nodes.hpp"
 #include "node/node_var.hpp"
 #include "node/node_print.hpp"
+#include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
 
@@ -19,6 +20,7 @@ void process_print(void)
 		if (!node_print)
 			continue;
 
+		node_print->m_ref_val = nullptr;
 		node_print->m_str = node_print->m_orig_str;
 
 		NodeValue* from_val = nullptr;
@@ -51,10 +53,22 @@ void process_print(void)
 						case NODE_SLOT::DOUBLE: str = std::to_string(std::get<double>(from_val->data)); break;
 						case NODE_SLOT::STRING: str = std::get<std::string>(from_val->data); break;
 					}
+					node_print->m_ref_val = from_val;
 					node_print->m_str = str;
 				}
 			}
 		}
 	}
+}
+
+//node_print can not be connected node_array
+bool validate_node_print(Node* in_node, Node* out_node)
+{
+	NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
+
+	if (node_array)
+		return false;
+
+	return true;
 }
 }

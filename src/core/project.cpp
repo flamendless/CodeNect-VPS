@@ -181,7 +181,6 @@ int Project::save(void)
 		switch (node->m_kind)
 		{
 			case NODE_KIND::EMPTY: break;
-			case NODE_KIND::ENTRY: break;
 			case NODE_KIND::VARIABLE:
 			{
 				NodeVariable* node_var = static_cast<NodeVariable*>(node);

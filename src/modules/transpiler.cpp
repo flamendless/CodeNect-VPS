@@ -17,7 +17,6 @@
 #include "node/node_print.hpp"
 #include "node/node_prompt.hpp"
 #include "node/node_math.hpp"
-#include "node/node_entry.hpp"
 #include "node/node_array.hpp"
 #include "node/node_var.hpp"
 
@@ -173,38 +172,44 @@ void Transpiler::build_runnable_code(void)
 	str_entry.append("int main()").append("\n");
 	str_entry.append("{").append("\n");
 
-	//get NodeEntry
-	NodeEntry* node_entry = Nodes::find_node_entry();
-	PPK_ASSERT(node_entry, "there should be a found NodeEntry");
+	//store
+	std::vector<Node*> v_decls;
 
-	//declarations
-	//we are sure that NodeEntry only has "out" connections (rhs)
-	//we are sure that only the following are allowed to be connected to node_entry:
-	//* NodeVariable
-	//* NodeArray
-	//* NodePrint
-	//* NodePrompt
-	Transpiler::level++;
-	for (const Connection& connection : node_entry->m_connections)
+	//find all nodes that do NOT have any LHS, this means that they are for declarations
+	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
+		it != Nodes::v_nodes.end();
+		it++)
 	{
-		Node* in_node = static_cast<Node*>(connection.in_node);
-		NodeVariable* node_var = dynamic_cast<NodeVariable*>(in_node);
-		NodeArray* node_array = dynamic_cast<NodeArray*>(in_node);
-		NodePrint* node_print = dynamic_cast<NodePrint*>(in_node);
-		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(in_node);
+		Node* node = *it;
+		if (Nodes::check_if_no_lhs(node))
+			v_decls.push_back(node);
+	}
+
+	Transpiler::level++;
+	for (std::vector<Node*>::iterator it = v_decls.begin();
+		it != v_decls.end();
+		it++)
+	{
+		Node* node = *it;
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
+		NodeArray* node_array = dynamic_cast<NodeArray*>(node);
+		NodePrint* node_print = dynamic_cast<NodePrint*>(node);
+		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
 
 		if (node_var)
 		{
-			str_decls.append(NodeToCode::comment(in_node));
+			str_decls.append(NodeToCode::comment(node));
 			str_decls.append(NodeToCode::node_var(node_var));
 		}
 		else if (node_array)
 		{
-			str_decls.append(NodeToCode::comment(in_node));
+			str_decls.append(NodeToCode::comment(node));
 			str_decls.append(NodeToCode::node_array(node_array));
 		}
 		else if (node_print)
 		{
+			str_decls.append(NodeToCode::comment(node));
+			str_decls.append(NodeToCode::node_print(node_print));
 		}
 		else if (node_prompt)
 		{
@@ -243,12 +248,6 @@ void Transpiler::build_out_code(void)
 
 int Transpiler::compile(void)
 {
-	if (!Nodes::has_entry)
-	{
-		Alert::open(ALERT_TYPE::ERROR, "There is no code to compile");
-		return RES_FAIL;
-	}
-
 	tcc_delete(Transpiler::tcc_state);
 	Transpiler::init();
 	Terminal::is_open = true;

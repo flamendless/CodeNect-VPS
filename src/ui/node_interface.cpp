@@ -179,13 +179,10 @@ void NodeInterface::draw_nodes_context_menu(void)
 {
 	if (ImGui::BeginPopup("NodesContextMenu"))
 	{
-		if (current_node->m_kind != +NODE_KIND::ENTRY)
+		if (ImGui::MenuItem("Edit"))
 		{
-			if (ImGui::MenuItem("Edit"))
-			{
-				CreateNode::edit(current_node);
-				ImGui::CloseCurrentPopup();
-			}
+			CreateNode::edit(current_node);
+			ImGui::CloseCurrentPopup();
 		}
 
 		if (ImGui::MenuItem("Delete"))
@@ -199,27 +196,11 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 {
 	if (ImGui::BeginPopup("NodesInterfaceContextMenu"))
 	{
-		if (Nodes::has_entry)
-			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-
-		if (ImGui::MenuItem("Entry"))
-		{
-			if (!Nodes::has_entry)
-				CreateNode::open(NODE_KIND::ENTRY);
-		}
-
-		if (Nodes::has_entry)
-			ImGui::PopStyleVar(1);
-
-		if (!Nodes::has_entry)
-			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-
 		if (ImGui::BeginMenu("Basic Node"))
 		{
 			for (NODE_KIND kind : NODE_KIND::_values())
 			{
 				if (kind == +NODE_KIND::EMPTY ||
-					kind == +NODE_KIND::ENTRY ||
 					kind == +NODE_KIND::ACTION ||
 					kind == +NODE_KIND::MATH ||
 					kind == +NODE_KIND::DS ||
@@ -323,9 +304,6 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 				ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 			}
 		}
-
-		if (!Nodes::has_entry)
-			ImGui::PopStyleVar(1);
 
 		ImGui::Separator();
 
