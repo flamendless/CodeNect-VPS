@@ -29,6 +29,7 @@ std::string Transpiler::code = "";
 std::string Transpiler::output_code = "";
 std::vector<std::pair<std::string, OUTPUT_TYPE>> Transpiler::v_output;
 std::vector<std::string> Transpiler::v_declarations;
+int Transpiler::level = 0;
 
 int Transpiler::init(void)
 {
@@ -63,6 +64,7 @@ void Transpiler::register_commands(void)
 //it is not efficient but we trade performance for readability
 void Transpiler::build_runnable_code(void)
 {
+	std::string str_final = "";
 	std::string str_incl = "";
 	std::string str_structs = "";
 	std::string str_entry = "";
@@ -92,6 +94,7 @@ void Transpiler::build_runnable_code(void)
 
 		if (!has_io && (node_print || node_prompt))
 		{
+			str_incl.append("//for using input and output functions like printf and getline").append("\n");
 			str_incl.append("#include <stdio.h>").append("\n");
 			has_io = true;
 			continue;
@@ -99,8 +102,8 @@ void Transpiler::build_runnable_code(void)
 
 		if (!has_math && node_math)
 		{
+			str_incl.append("//for using basic functions like sin, cos, tan, pow").append("\n");
 			str_incl.append("#include <math.h>").append("\n");
-			str_incl.append("#include <stdlib.h>").append("\n");
 			has_math = true;
 			continue;
 		}
@@ -109,6 +112,7 @@ void Transpiler::build_runnable_code(void)
 		{
 			if (!has_stdlib)
 			{
+				str_incl.append("//for using malloc, realloc").append("\n");
 				str_incl.append("#include <stdlib.h>").append("\n");
 				has_stdlib = true;
 			}
@@ -156,7 +160,7 @@ void Transpiler::build_runnable_code(void)
 				{
 					if (!has_d_a_str)
 					{
-						str_structs.append(Templates::d_arr_str);
+						str_structs.append(Templates::d_arr_string);
 						has_d_a_str = true;
 					}
 					break;
@@ -180,6 +184,7 @@ void Transpiler::build_runnable_code(void)
 	//* NodeArray
 	//* NodePrint
 	//* NodePrompt
+	Transpiler::level++;
 	for (const Connection& connection : node_entry->m_connections)
 	{
 		Node* in_node = static_cast<Node*>(connection.in_node);
@@ -205,18 +210,17 @@ void Transpiler::build_runnable_code(void)
 		{
 		}
 	}
-
-	PLOGD << str_decls;
+	Transpiler::level--;
 
 	//closing
-	str_closing.append("return 0;").append("\n");
+	str_closing.append("\n  return 0;").append("\n");
 	str_closing.append("}");
 
-	std::string str_final = fmt::format("{:s}\n\
-		{:s}\n\
-		{:s}\n\
-		{:s}",
-		str_incl, str_entry, str_decls, str_closing);
+	str_final.append(str_incl).append("\n")
+		.append(str_structs).append("\n")
+		.append(str_entry)
+		.append(str_decls)
+		.append(str_closing);
 
 	Transpiler::output_code = str_final;
 }

@@ -7,3 +7,5 @@ assets/
 .ninja_log
 build.ninja
 bin/
+test.c
+test

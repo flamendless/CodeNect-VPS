@@ -1,9 +1,20 @@
 #include "modules/node_to_code.hpp"
 
 #include "ppk_assert.h"
+#include "modules/transpiler.hpp"
 
 namespace CodeNect::NodeToCode
 {
+std::string indent(void)
+{
+	std::string str = "";
+
+	for (int i = 0; i < Transpiler::level; i++)
+		str.append("  ");
+
+	return str;
+}
+
 std::string slot_to_str(NODE_SLOT& slot)
 {
 	switch (slot)
@@ -19,7 +30,7 @@ std::string slot_to_str(NODE_SLOT& slot)
 	return "";
 }
 
-std::string to_fixed_array(NodeArray* node_array)
+std::string to_array(NodeArray* node_array)
 {
 	std::vector<std::string> vec;
 
@@ -44,27 +55,12 @@ std::string to_fixed_array(NodeArray* node_array)
 	return str;
 }
 
-std::string to_dynamic_array(NodeArray* node_array, const std::string& insert_name)
-{
-	std::string str = "";
-
-	for (int i = 0; i < vec.size(); i++)
-	{
-		str.append(vec[i]);
-
-		if (i < vec.size() - 1)
-			str.append(", ");
-	}
-
-	return str;
-}
-
 std::string comment(Node* node)
 {
 	const char* desc = node->m_desc;
 
 	if (std::strlen(desc) != 0)
-		return fmt::format("//{:s}", desc).append("\n");
+		return fmt::format("{:s}//{:s}", indent(), desc).append("\n");
 
 	return "";
 }
@@ -75,7 +71,7 @@ std::string node_var(NodeVariable* node_var)
 	std::string type = value->get_type_str();
 	const char* name = node_var->m_name;
 	std::string val = value->get_value_str_ex();
-	return fmt::format("{:s} {:s} = {:s}", type, name, val).append("\n");
+	return fmt::format("{:s}{:s} {:s} = {:s};", indent(), type, name, val).append("\n");
 }
 
 std::string node_array(NodeArray* node_array)
@@ -90,13 +86,12 @@ std::string node_array(NodeArray* node_array)
 		case NODE_ARRAY::FIXED:
 		{
 			std::string size = fmt::format("[{:d}]", node_array->m_fixed_size);
-			std::string val = to_fixed_array(node_array);
-			str = fmt::format("{:s} {:s}{:s} = {:s}", type, name, size, val).append("\n");
+			std::string val = to_array(node_array);
+			str = fmt::format("{:s}{:s} {:s}{:s} = {:s}", indent(), type, name, size, val).append("\n");
 			break;
 		}
 		case NODE_ARRAY::DYNAMIC:
 		{
-			std::string size = fmt::format("[{:d}]", node_array->m_elements.size());
 			std::string array_name = "";
 			std::string init_name = "";
 			std::string insert_name = "";
@@ -108,44 +103,56 @@ std::string node_array(NodeArray* node_array)
 				{
 					array_name = "DynamicArrayBool";
 					init_name = "init_d_arr_bool";
-					insert_name = "insert_bool";
+					insert_name = "insert_bool_array";
 					break;
 				}
 				case NODE_SLOT::INTEGER:
 				{
 					array_name = "DynamicArrayInt";
 					init_name = "init_d_arr_int";
-					insert_name = "insert_int";
+					insert_name = "insert_int_array";
 					break;
 				}
 				case NODE_SLOT::FLOAT:
 				{
 					array_name = "DynamicArrayFloat";
 					init_name = "init_d_arr_float";
-					insert_name = "insert_float";
+					insert_name = "insert_float_array";
 					break;
 				}
 				case NODE_SLOT::DOUBLE:
 				{
 					array_name = "DynamicArrayDouble";
 					init_name = "init_d_arr_double";
-					insert_name = "insert_double";
+					insert_name = "insert_double_array";
 					break;
 				}
 				case NODE_SLOT::STRING:
 				{
 					array_name = "DynamicArrayString";
 					init_name = "init_d_arr_string";
-					insert_name = "insert_string";
+					insert_name = "insert_string_array";
 					break;
 				}
 			}
 
-			std::string val = to_dynamic_array(node_array, insert_name);
-			std::string a = fmt::format("{:s} {:s};", array_name, name).append("\n");
-			std::string b = fmt::format("{:s}(&{:s}, {:d});", init_name, name, size).append("\n");
-			str = fmt::format("{:s}\n{:s}", a, b).append("\n");
-			str.append(val).append("\n");
+			//{1, 2, 3};
+			const int val_size = node_array->m_elements.size();
+			std::string val = to_array(node_array);
+			std::string val_name = std::string(name) + "_val";
+			//DynamicArrayT name;
+			std::string a = fmt::format("{:s} {:s};", array_name, name);
+			//init_d_arr_T(&name, size)
+			std::string b = fmt::format("{:s}(&{:s}, {:d});", init_name, name, val_size);
+			//T val_name[] = {val}
+			std::string c = fmt::format("{:s} {:s}[] = {:s};", type, val_name, val);
+			//insert_T_array(&name, val, val_size);
+			std::string d = fmt::format("{:s}(&{:s}, {:s}, {:d})", insert_name, name, val_name, val_size);
+
+			str.append(indent()).append(a).append("\n")
+				.append(indent()).append(b).append("\n")
+				.append(indent()).append(c).append("\n")
+				.append(indent()).append(d).append("\n");
 			break;
 		}
 	}

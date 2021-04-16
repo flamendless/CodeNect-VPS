@@ -19,6 +19,7 @@ struct Transpiler
 	static std::vector<std::pair<std::string, OUTPUT_TYPE>> v_output;
 	static std::vector<std::string> v_declarations;
 	static std::function<void(char**, int*)> fn;
+	static int level;
 
 	Transpiler() = delete;
 	static int init(void);

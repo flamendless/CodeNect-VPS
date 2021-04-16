@@ -6,9 +6,9 @@
 
 namespace CodeNect::NodeToCode
 {
+std::string indent(void);
 std::string slot_to_str(NODE_SLOT&);
-std::string to_fixed_array(NodeArray*);
-std::string to_dynamic_array(NodeArray*, const std::string&);
+std::string to_array(NodeArray*);
 std::string comment(Node*);
 std::string node_var(NodeVariable*);
 std::string node_array(NodeArray*);

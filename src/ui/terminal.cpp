@@ -147,6 +147,17 @@ void Terminal::draw_code(void)
 			Transpiler::save_file();
 	}
 
+	ImGui::SameLine();
+	if (ImGui::SmallButton("Copy"))
+		Terminal::editor.Copy();
+
+	ImGui::SameLine();
+	if (ImGui::SmallButton("Select All"))
+	{
+		Terminal::editor.SetSelection(TextEditor::Coordinates(),
+			TextEditor::Coordinates(Terminal::editor.GetTotalLines(), 0));
+	}
+
 	if (length == 0)
 		ImGui::PopStyleVar(1);
 
