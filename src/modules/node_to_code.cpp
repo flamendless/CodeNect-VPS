@@ -2,6 +2,7 @@
 
 #include "ppk_assert.h"
 #include "modules/transpiler.hpp"
+#include "node/nodes.hpp"
 
 namespace CodeNect::NodeToCode
 {
@@ -80,6 +81,7 @@ std::string node_array(NodeArray* node_array)
 	std::string type = slot_to_str(node_array->m_slot);
 	const char* name = node_array->m_name;
 
+
 	switch (node_array->m_array)
 	{
 		case NODE_ARRAY::EMPTY: break;
@@ -156,6 +158,48 @@ std::string node_array(NodeArray* node_array)
 			break;
 		}
 	}
+
+	return str;
+}
+
+std::string node_print(NodePrint* node_print)
+{
+	std::string str = "";
+	std::string value = "";
+	std::string newline = "";
+
+	if (!node_print->m_override)
+		value = "\"" + node_print->m_orig_str + "\"";
+
+	if (node_print->m_append_newline)
+		newline = "\n";
+
+	std::string print = fmt::format("printf(\"%s{}\", {});", newline, value);
+	str.append(indent()).append(print).append("\n");
+
+	return str;
+}
+
+std::string node_prompt(NodePrompt* node_prompt)
+{
+	std::string str = "";
+	std::string value = "";
+	int size = 0;
+	const char* name = node_prompt->m_name;
+
+	if (!node_prompt->m_override)
+	{
+		value = "\"" + node_prompt->m_orig_str + "\"";
+		size = node_prompt->m_orig_str.length();
+	}
+
+	std::string decl = fmt::format("Prompt {:s};", name);
+	std::string init = fmt::format("init_prompt(&{:s}, {:d});", name, size);
+	std::string run = fmt::format("run_prompt(&{:s}, {:s});", name, value);
+
+	str.append(indent()).append(decl).append("\n")
+		.append(indent()).append(init).append("\n")
+		.append(indent()).append(run).append("\n");
 
 	return str;
 }

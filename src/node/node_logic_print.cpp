@@ -20,7 +20,6 @@ void process_print(void)
 		if (!node_print)
 			continue;
 
-		node_print->m_ref_val = nullptr;
 		node_print->m_str = node_print->m_orig_str;
 
 		NodeValue* from_val = nullptr;
@@ -53,7 +52,6 @@ void process_print(void)
 						case NODE_SLOT::DOUBLE: str = std::to_string(std::get<double>(from_val->data)); break;
 						case NODE_SLOT::STRING: str = std::get<std::string>(from_val->data); break;
 					}
-					node_print->m_ref_val = from_val;
 					node_print->m_str = str;
 				}
 			}

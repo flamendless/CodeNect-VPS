@@ -5,8 +5,41 @@
 
 namespace CodeNect::Templates
 {
-inline static const char* tpl_dynamic_arr = "//start of dynamic array for {type}\n"
-	"typedef struct\n"
+inline static const char* incl_stdio = "//for using input and output functions like printf and getline\n"
+	"#include <stdio.h>\n";
+inline static const char* incl_stdlib = "//for using malloc, realloc\n"
+	"#include <stdlib.h>\n";
+inline static const char* incl_math = "//for using math functions like sin, cos, tan, pow, and more\n"
+	"#include <math.h>\n";
+
+inline static const char* s_incl_section = "//START OF INCLUDES SECTION\n";
+inline static const char* e_incl_section = "//END OF INCLUDES SECTION\n\n";
+inline static const char* s_structs_section = "//START OF STRUCTS SECTION\n";
+inline static const char* e_structs_section = "//END OF STRUCTS SECTION\n\n";
+inline static const char* s_declaration_section = "  //START OF DECLARATION SECTION\n";
+inline static const char* e_declaration_section = "  //END OF DECLARATION SECTION\n\n";
+
+inline static const char* struct_prompt = "//start of prompt struct\n"
+	"typedef struct Prompt\n"
+	"{{\n"
+	"  char* buffer;\n"
+	"  int* max_size;\n"
+	"  int* used;\n"
+	"}} Prompt;\n"
+	"void init_prompt(Prompt* prompt, int max_size)\n"
+	"{{\n"
+	"  prompt->max_size = max_size;\n"
+	"  prompt->buffer = (char*)malloc(max_size * sizeof(char));\n"
+	"}}\n"
+	"void run_prompt(Prompt* prompt, const char* msg)\n"
+	"{{\n"
+	"  printf(\"%s\", msg);\n"
+	"  prompt->used = getline(&prompt->buffer, &prompt->max_size, stdin);\n"
+	"}}\n"
+	"//end of prompt struct\n";
+
+inline static const char* tpl_dynamic_arr = "//start of dynamic array struct for {type}\n"
+	"typedef struct {name}\n"
 	"{{\n"
 	"  {type}* array;\n"
 	"  int used;\n"
@@ -40,7 +73,7 @@ inline static const char* tpl_dynamic_arr = "//start of dynamic array for {type}
 	"  array->array = NULL;\n"
 	"  array->used = array->size = 0;\n"
 	"}}\n"
-	"//end of dynamic array for {type}\n";
+	"//end of dynamic array struct for {type}\n";
 
 inline static const std::string d_arr_bool = fmt::format(tpl_dynamic_arr,
 	fmt::arg("type", "bool"), fmt::arg("name", "DynamicArrayBool"), fmt::arg("type_name", "bool"));
