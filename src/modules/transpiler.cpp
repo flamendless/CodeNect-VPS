@@ -20,11 +20,12 @@
 #include "node/node_array.hpp"
 #include "node/node_var.hpp"
 #include "core/project.hpp"
+#include "core/utils.hpp"
 
 namespace CodeNect
 {
 TCCState* Transpiler::tcc_state = nullptr;
-std::function<void(char**, int*)> Transpiler::fn;
+std::function<void()> Transpiler::fn;
 std::string Transpiler::code = "";
 std::string Transpiler::output_code = "";
 std::vector<std::pair<std::string, OUTPUT_TYPE>> Transpiler::v_output;
@@ -60,17 +61,9 @@ void Transpiler::register_commands(void)
 	Commands::register_cmd(*cmd_run);
 }
 
-//NOTE here we do multiple appends instead of one append with \n at the end,
-//it is not efficient but we trade performance for readability
-void Transpiler::build_runnable_code(void)
+//fill the string for includes and structs
+void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs)
 {
-	std::string str_final = "";
-	std::string str_incl = "";
-	std::string str_structs = "";
-	std::string str_entry = "";
-	std::string str_decls = "";
-	std::string str_closing = "";
-
 	//includes
 	bool has_io = false;
 	bool has_math = false;
@@ -173,6 +166,19 @@ void Transpiler::build_runnable_code(void)
 			}
 		}
 	}
+}
+
+//NOTE here we do multiple appends instead of one append with \n at the end,
+//it is not efficient but we trade performance for readability
+void Transpiler::build_runnable_code(void)
+{
+	std::string str_final = "";
+	std::string str_incl = "";
+	std::string str_structs = "";
+	std::string str_entry = "";
+	std::string str_decls = "";
+	std::string str_closing = "";
+	Transpiler::set_pre_entry(str_incl, str_structs);
 
 	//entry point
 	str_entry.append("int main()").append("\n");
@@ -257,16 +263,19 @@ void Transpiler::build_out_code(void)
 {
 	std::string real_str = "";
 	real_str.append("#include <tcclib.h>");
-	real_str.append("void main(char** chars, int* size)");
+	real_str.append("void cn_entry()");
 	real_str.append("{");
 	real_str.append("\tprintf(\"Hello, World!\\n\");");
-	real_str.append("\tprintf(\"-from TCC\\n\");");
-	real_str.append("strcpy(chars[0], \"Hello, World!\");");
-	real_str.append("strcpy(chars[1], \"-from TCC\");");
-	real_str.append("strcpy(chars[2], \"-from TCC\");");
-	real_str.append("*size = 3;");
+	real_str.append("\tcn_print(\"-from TCC to CodeNect\\n\");");
+	// real_str.append("*size = 3;");
+	// real_str.append("getchar();");
 	real_str.append("}");
 	Transpiler::code = real_str;
+}
+
+extern "C" void cn_print(const char* str)
+{
+	Transpiler::v_output.push_back({str, OUTPUT_TYPE::NORMAL});
 }
 
 int Transpiler::compile(void)
@@ -284,6 +293,8 @@ int Transpiler::compile(void)
 		Transpiler::v_output.push_back({"Could not compile program.\nMake sure you clear first", OUTPUT_TYPE::ERROR});
 		return RES_FAIL;
 	}
+
+	tcc_add_symbol(Transpiler::tcc_state, "cn_print", (const void*)cn_print);
 
 	if (tcc_relocate(Transpiler::tcc_state, TCC_RELOCATE_AUTO) < 0)
 	{
@@ -305,7 +316,7 @@ int Transpiler::run(void)
 	Terminal::is_open = true;
 	PLOGI << "Running code...";
 	Transpiler::v_output.push_back({"Running code...", OUTPUT_TYPE::SUCCESS});
-	Transpiler::fn = (void(*)(char**, int*))tcc_get_symbol(Transpiler::tcc_state, "main");
+	Transpiler::fn = (void(*)())tcc_get_symbol(Transpiler::tcc_state, "cn_entry");
 
 	if (!fn)
 	{
@@ -314,28 +325,8 @@ int Transpiler::run(void)
 		return RES_FAIL;
 	}
 
-	//TODO
-	//128 should depende on the number of node_print?
-	char** ret = (char**)malloc(128 * sizeof(char*));
-	for (int y = 0; y < 128; y++)
-		for (int x = 0; x < 128; x++)
-			ret[y] = (char*)malloc(128 * sizeof(char));
-
-	int size = 0;
-	Transpiler::fn(ret, &size);
-
-	PLOGV << "Used size: " << size;
-	for (int i = 0; i < size; i++)
-	{
-		PLOGV << "Output: " << ret[i];
-		Transpiler::v_output.push_back({ret[i], OUTPUT_TYPE::NORMAL});
-	}
-
-	delete ret;
-
-	PLOGI << "Ran code successfully";
-	Transpiler::v_output.push_back({"Ran code successfully", OUTPUT_TYPE::SUCCESS});
-
+	Transpiler::fn();
+	Transpiler::v_output.push_back({"Finished running", OUTPUT_TYPE::SUCCESS});
 	return RES_SUCCESS;
 }
 

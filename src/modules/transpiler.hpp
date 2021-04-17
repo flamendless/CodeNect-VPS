@@ -18,12 +18,13 @@ struct Transpiler
 	static std::string output_code;
 	static std::vector<std::pair<std::string, OUTPUT_TYPE>> v_output;
 	static std::vector<std::string> v_declarations;
-	static std::function<void(char**, int*)> fn;
+	static std::function<void()> fn;
 	static int level;
 
 	Transpiler() = delete;
 	static int init(void);
 	static void register_commands(void);
+	static void set_pre_entry(std::string& str_incl, std::string& str_structs);
 	static void build_runnable_code(void);
 	static void build_out_code(void);
 	static int compile(void);
