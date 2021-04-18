@@ -1,6 +1,7 @@
 #include "core/app.hpp"
 
 #include <stdio.h>
+#include "stb_image.h"
 #include "IconsFontAwesome5.h"
 #include "fmt/core.h"
 #include "plog/Init.h"
@@ -16,6 +17,7 @@
 #include "core/commands.hpp"
 #include "core/config.hpp"
 #include "core/defines.hpp"
+#include "modules/filesystem.hpp"
 #include "modules/input.hpp"
 #include "core/project.hpp"
 #include "ui/alert.hpp"
@@ -74,6 +76,13 @@ int App::init_app(void)
 
 	App::init_window();
 	App::init_imgui();
+
+	PLOGI << "Setting window icon...";
+	GLFWimage images[1];
+	images[0].pixels = Filesystem::load_texture_from_file("assets/logo.png", images[0]);
+	glfwSetWindowIcon(App::window, 1, images);
+	stbi_image_free(images[0].pixels);
+	PLOGI << "Set window icon successfully";
 
 	return RES_SUCCESS;
 }

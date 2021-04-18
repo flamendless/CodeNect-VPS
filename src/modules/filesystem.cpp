@@ -94,6 +94,9 @@ int load_texture_from_file(const char* filename, CodeNect::Image& image)
 	int img_height = 0;
 	unsigned char* img_data = stbi_load(filename, &img_width, &img_height, NULL, 4);
 
+	PLOGV << "loaded texture from file: " << "width: " << img_width
+		<< " , height: " << img_height;
+
 	if (img_data == NULL)
 		return RES_FAIL;
 
@@ -118,5 +121,10 @@ int load_texture_from_file(const char* filename, CodeNect::Image& image)
 	image.size = ImVec2(img_width, img_height);
 
 	return RES_SUCCESS;
+}
+
+unsigned char* load_texture_from_file(const char* filename, GLFWimage& image)
+{
+	return stbi_load(filename, &image.width, &image.height, 0, 4);
 }
 }

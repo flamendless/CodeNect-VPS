@@ -21,6 +21,7 @@
 #include "node/node_renderer.hpp"
 #include "ui/create_node.hpp"
 #include "ui/zoom.hpp"
+#include "modules/filesystem.hpp"
 
 namespace CodeNect
 {
@@ -43,6 +44,7 @@ std::vector<const char*> NodeInterface::v_str = {
 	ICON_FA_TERMINAL " Press <Ctrl+Shift+p> to access the command palette",
 	ICON_FA_CODE " Press <Ctrl+Shift+t> to open/hide the terminal",
 };
+Image NodeInterface::logo;
 
 Node* current_node;
 ImNodes::CanvasState* canvas;
@@ -58,6 +60,7 @@ bool NodeInterface::init(void)
 	NodeInterface::center_pos = ImVec2((float)w/2, (float)h/2);
 
 	canvas = new ImNodes::CanvasState();
+	Filesystem::load_texture_from_file("assets/logo.png", NodeInterface::logo);
 
 	return RES_SUCCESS;
 }
@@ -82,15 +85,14 @@ void NodeInterface::draw_startup(void)
 {
 	Font::use_font(FONT_SIZE::LARGE);
 
-	bool is_first = true;
+	ImGui::SetCursorPosX(NodeInterface::center_pos.x - NodeInterface::logo.size.x/2);
+	ImGui::SetCursorPosY(NodeInterface::center_pos.y - NodeInterface::logo.size.y/2);
+	ImGui::Image(NodeInterface::logo.get_texture(),
+		NodeInterface::logo.size, ImVec2(0, 0), ImVec2(1, 1),
+		ImVec4(1, 1, 1, 1), ImVec4(0, 0, 0, 0));
+
 	for (const char* str : NodeInterface::v_str)
 	{
-		if (is_first)
-		{
-			Utils::center_text(str, NodeInterface::center_pos, true);
-			is_first = false;
-			continue;
-		}
 		Utils::center_text(str, true);
 	}
 

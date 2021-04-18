@@ -4,6 +4,7 @@
 #include "imgui.h"
 #include "ImNodes.h"
 #include "node/node.hpp"
+#include "core/image.hpp"
 
 namespace CodeNect
 {
@@ -16,6 +17,7 @@ struct NodeInterface
 	static ImVec2 size;
 	static ImVec2 center_pos;
 	static std::vector<const char*> v_str;
+	static Image logo;
 
 	NodeInterface() = delete;
 	static bool init(void);

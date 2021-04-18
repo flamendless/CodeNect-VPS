@@ -49,9 +49,14 @@ void Project::register_commands(void)
 	cmd_save_project->set_fn(Project::save_cmd);
 	cmd_save_project->m_close_command_palette = true;
 
+	Command* cmd_close_project = new Command("Close Project", "close current project file", ICON_FA_TIMES);
+	cmd_close_project->set_fn(Project::close);
+	cmd_close_project->m_close_command_palette = true;
+
 	Commands::register_cmd(*cmd_new_project);
 	Commands::register_cmd(*cmd_open_project);
 	Commands::register_cmd(*cmd_save_project);
+	Commands::register_cmd(*cmd_close_project);
 }
 
 int Project::on_create_new(const char* filename, const char* title, const char* author)
