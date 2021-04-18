@@ -16,8 +16,6 @@ inline static const char* s_incl_section = "//START OF INCLUDES SECTION\n";
 inline static const char* e_incl_section = "//END OF INCLUDES SECTION\n\n";
 inline static const char* s_structs_section = "//START OF STRUCTS SECTION\n";
 inline static const char* e_structs_section = "//END OF STRUCTS SECTION\n\n";
-inline static const char* s_declaration_section = "  //START OF DECLARATION SECTION\n";
-inline static const char* e_declaration_section = "  //END OF DECLARATION SECTION\n\n";
 
 inline static const char* struct_prompt = "//start of prompt struct\n"
 	"typedef struct Prompt\n"

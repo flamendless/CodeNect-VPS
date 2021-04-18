@@ -534,6 +534,9 @@ void Project::close(void)
 	Project::meta.title.clear();
 	Project::meta.author.clear();
 	Project::meta.creation_dt.clear();
+	Project::nodes_count = 0;
+	Project::connections_count = 0;
+	Nodes::v_nodes.clear();
 
 	PLOGV << "Project closed";
 }

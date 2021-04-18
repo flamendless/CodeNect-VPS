@@ -249,11 +249,7 @@ void Transpiler::build_runnable_code(void)
 		.append(Templates::s_structs_section)
 
 		.append(str_entry)
-
-		.append(Templates::s_declaration_section)
-		.append(str_decls)
-		.append(Templates::s_declaration_section)
-
+		.append(str_decls).append("\n")
 		.append(str_closing);
 
 	Transpiler::output_code = str_final;
@@ -280,6 +276,12 @@ extern "C" void cn_print(const char* str)
 
 int Transpiler::compile(void)
 {
+	if (!Project::has_open_proj)
+	{
+		Alert::open(ALERT_TYPE::ERROR, "no project is open");
+		return RES_FAIL;
+	}
+
 	tcc_delete(Transpiler::tcc_state);
 	Transpiler::init();
 	Terminal::is_open = true;
@@ -313,6 +315,12 @@ int Transpiler::compile(void)
 
 int Transpiler::run(void)
 {
+	if (!Project::has_open_proj)
+	{
+		Alert::open(ALERT_TYPE::ERROR, "no project is open");
+		return RES_FAIL;
+	}
+
 	Terminal::is_open = true;
 	PLOGI << "Running code...";
 	Transpiler::v_output.push_back({"Running code...", OUTPUT_TYPE::SUCCESS});

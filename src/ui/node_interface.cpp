@@ -86,7 +86,7 @@ void NodeInterface::draw_startup(void)
 	Font::use_font(FONT_SIZE::LARGE);
 
 	ImGui::SetCursorPosX(NodeInterface::center_pos.x - NodeInterface::logo.size.x/2);
-	ImGui::SetCursorPosY(NodeInterface::center_pos.y - NodeInterface::logo.size.y/2);
+	ImGui::SetCursorPosY(NodeInterface::center_pos.y - NodeInterface::logo.size.y);
 	ImGui::Image(NodeInterface::logo.get_texture(),
 		NodeInterface::logo.size, ImVec2(0, 0), ImVec2(1, 1),
 		ImVec4(1, 1, 1, 1), ImVec4(0, 0, 0, 0));
