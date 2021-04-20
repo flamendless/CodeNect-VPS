@@ -9,7 +9,7 @@
 
 namespace CodeNect
 {
-enum class OUTPUT_TYPE { NORMAL = 1, SUCCESS, ERROR };
+enum class OUTPUT_TYPE { NORMAL = 1, SUCCESS, ERROR, PROMPT };
 
 struct Transpiler
 {
@@ -20,10 +20,14 @@ struct Transpiler
 	static std::vector<std::string> v_declarations;
 	static std::function<void()> fn;
 	static int level;
+	static int pipefds[2]; //child to parent
+	static int pipefds2[2]; //parent to child
+	static pid_t pid_child;
 
 	Transpiler() = delete;
 	static int init(void);
 	static void register_commands(void);
+	static void error(const char* str);
 	static void set_pre_entry(std::string& str_incl, std::string& str_structs);
 	static void build_runnable_code(void);
 	static void build_out_code(void);

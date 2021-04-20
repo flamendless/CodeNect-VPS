@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <functional>
+#include <sys/wait.h>
+#include <sys/mman.h>
 #include "plog/Log.h"
 #include "ppk_assert.h"
 #include "IconsFontAwesome5.h"
@@ -14,6 +16,7 @@
 #include "ui/alert.hpp"
 #include "modules/filesystem.hpp"
 #include "modules/templates.hpp"
+#include "modules/tcc_symbols.hpp"
 #include "node/node_print.hpp"
 #include "node/node_prompt.hpp"
 #include "node/node_math.hpp"
@@ -31,6 +34,9 @@ std::string Transpiler::output_code = "";
 std::vector<std::pair<std::string, OUTPUT_TYPE>> Transpiler::v_output;
 std::vector<std::string> Transpiler::v_declarations;
 int Transpiler::level = 0;
+int Transpiler::pipefds[2];
+int Transpiler::pipefds2[2];
+pid_t Transpiler::pid_child;
 
 int Transpiler::init(void)
 {
@@ -59,6 +65,12 @@ void Transpiler::register_commands(void)
 
 	Commands::register_cmd(*cmd_compile);
 	Commands::register_cmd(*cmd_run);
+}
+
+void Transpiler::error(const char* str)
+{
+	PLOGE << str;
+	Transpiler::v_output.push_back({str, OUTPUT_TYPE::ERROR});
 }
 
 //fill the string for includes and structs
@@ -258,20 +270,22 @@ void Transpiler::build_runnable_code(void)
 void Transpiler::build_out_code(void)
 {
 	std::string real_str = "";
-	real_str.append("#include <tcclib.h>");
-	real_str.append("void cn_entry()");
-	real_str.append("{");
-	real_str.append("\tprintf(\"Hello, World!\\n\");");
-	real_str.append("\tcn_print(\"-from TCC to CodeNect\\n\");");
-	// real_str.append("*size = 3;");
-	// real_str.append("getchar();");
+	real_str.append("#include <tcclib.h>\n");
+	real_str.append("extern void cn_print(const char*);\n");
+	real_str.append("extern void cn_printf(const char*, ...);\n");
+	real_str.append("extern void cn_prompt(const char*, char*);\n");
+	real_str.append("void cn_entry()\n");
+	// real_str.append("int main()\n");
+	real_str.append("{\n");
+	real_str.append("  cn_print(\"Hello, World!\\n\");");
+	real_str.append("  cn_print(\"Hi there\\n\");");
+	real_str.append("  cn_print(\"-from TCC to CodeNect\\n\");");
+	real_str.append("  char input[256] = {0};");
+	real_str.append("  cn_prompt(\"enter input: \", input);");
+	real_str.append("  cn_printf(\"user input is: %s\\n\", input);");
+	// real_str.append("  getchar();");
 	real_str.append("}");
 	Transpiler::code = real_str;
-}
-
-extern "C" void cn_print(const char* str)
-{
-	Transpiler::v_output.push_back({str, OUTPUT_TYPE::NORMAL});
 }
 
 int Transpiler::compile(void)
@@ -291,23 +305,20 @@ int Transpiler::compile(void)
 
 	if (tcc_compile_string(Transpiler::tcc_state, Transpiler::code.c_str()) == -1)
 	{
-		PLOGE << "Could not compile program.\nMake sure you clear first";
-		Transpiler::v_output.push_back({"Could not compile program.\nMake sure you clear first", OUTPUT_TYPE::ERROR});
+		Transpiler::error("Could not compile program. Make sure you clear first?");
 		return RES_FAIL;
 	}
 
-	tcc_add_symbol(Transpiler::tcc_state, "cn_print", (const void*)cn_print);
+	TCCSymbols::register_symbols(Transpiler::tcc_state);
 
 	if (tcc_relocate(Transpiler::tcc_state, TCC_RELOCATE_AUTO) < 0)
 	{
-		PLOGE << "Could not relocate";
-		Transpiler::v_output.push_back({"Could not relocate program", OUTPUT_TYPE::ERROR});
+		Transpiler::error("Could not relocate program");
 		return RES_FAIL;
 	}
 
 	PLOGI << "Compiled code successfully";
 	Transpiler::v_output.push_back({"Compiled code successfully", OUTPUT_TYPE::SUCCESS});
-
 	Terminal::editor.SetText(Transpiler::output_code);
 
 	return RES_SUCCESS;
@@ -328,13 +339,67 @@ int Transpiler::run(void)
 
 	if (!fn)
 	{
-		PLOGE << "Could not get entry point from program.\nMake sure you have compiled first";
-		Transpiler::v_output.push_back({"Could not get entry point from program.\nMake sure you have compiled first", OUTPUT_TYPE::ERROR});
+		Transpiler::error("Could not get entry point from program. Make sure you have compiled first?");
 		return RES_FAIL;
 	}
 
-	Transpiler::fn();
-	Transpiler::v_output.push_back({"Finished running", OUTPUT_TYPE::SUCCESS});
+	//fork and pipe
+	//pipe - 0 = read; 1 = write
+	if (pipe(Transpiler::pipefds) == -1)
+	{
+		Transpiler::error("Could not create pipe1");
+		return RES_FAIL;
+	}
+
+	if (pipe(Transpiler::pipefds2) == -1)
+	{
+		Transpiler::error("Could not create pipe2");
+		return RES_FAIL;
+	}
+
+	Transpiler::pid_child = fork();
+	if (Transpiler::pid_child < 0)
+	{
+		Transpiler::error("Fork error");
+		return RES_FAIL;
+	}
+
+	if (Transpiler::pid_child > pid_t(0))
+	{
+		//parent process
+		close(Transpiler::pipefds[1]);
+		const int n_print = 4;
+		const int n_prompt = 1;
+		for (int i = 0; i < n_print + n_prompt; i++)
+		{
+			//close write end
+			char buffer[256] = {0};
+			int len;
+
+			if (read(Transpiler::pipefds[0], &len, sizeof(int)) < 0)
+				Transpiler::error("Failed to read length of string");
+
+			if (read(Transpiler::pipefds[0], &buffer, len) < 0)
+				Transpiler::error("Failed to read string");
+
+			Transpiler::v_output.push_back({buffer, OUTPUT_TYPE::NORMAL});
+		}
+		close(Transpiler::pipefds[0]);
+		// Transpiler::v_output.push_back({"Finished running", OUTPUT_TYPE::SUCCESS});
+	}
+	else if (Transpiler::pid_child == pid_t(0))
+	{
+		//child process
+		PLOGD << "child process start";
+		close(Transpiler::pipefds[0]);
+		close(Transpiler::pipefds2[1]);
+		Transpiler::fn();
+		close(Transpiler::pipefds2[0]);
+		close(Transpiler::pipefds[1]);
+		PLOGD << "child process end";
+		exit(0);
+	}
+
 	return RES_SUCCESS;
 }
 

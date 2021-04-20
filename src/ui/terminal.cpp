@@ -129,7 +129,33 @@ void Terminal::draw_output(void)
 				ImGui::TextColored(NodeColors::Lookup::RED, "%s", p.first.c_str());
 				break;
 			}
+			case OUTPUT_TYPE::PROMPT:
+			{
+				ImGui::TextColored(NodeColors::Lookup::YELLOW, "%s", p.first.c_str());
+				break;
+			}
 		}
+	}
+
+	ImGui::Separator();
+	static char buffer[256];
+	ImGui::InputText(">", buffer, 256);
+
+	ImGui::SameLine();
+	if (ImGui::Button("enter"))
+	{
+		const int len = strlen(buffer);
+		if (write(Transpiler::pipefds2[1], &len, sizeof(int)) < 0)
+		{
+			PLOGE << "Failed to write length of string from parent to pipe";
+		}
+
+		if (write(Transpiler::pipefds2[1], &buffer, sizeof(char) * len) < 0)
+		{
+			PLOGE << "Failed to write string from parent to pipe";
+		}
+		Transpiler::v_output.push_back({buffer, OUTPUT_TYPE::PROMPT});
+		buffer[0] = '\0';
 	}
 }
 
