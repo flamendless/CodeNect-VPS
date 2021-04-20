@@ -18,11 +18,9 @@ struct Transpiler
 	static std::string output_code;
 	static std::vector<std::pair<std::string, OUTPUT_TYPE>> v_output;
 	static std::vector<std::string> v_declarations;
-	static std::function<void()> fn;
 	static int level;
-	static int pipefds[2]; //child to parent
-	static int pipefds2[2]; //parent to child
-	static pid_t pid_child;
+	static bool has_ran;
+	static bool has_compiled;
 
 	Transpiler() = delete;
 	static int init(void);
