@@ -237,6 +237,7 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 						node_print->m_pos = ImVec2(nm->x, nm->y);
 						node_print->m_desc = nm->m_desc.c_str();
 						node_print->m_override = Utils::bool_from_string(nm->m_override.c_str());
+						node_print->m_append = Utils::bool_from_string(nm->m_append.c_str());
 						node_print->m_append_newline = Utils::bool_from_string(nm->m_append_newline.c_str());
 						Nodes::v_nodes.push_back(node_print);
 						break;
@@ -248,6 +249,7 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 						node_prompt->m_pos = ImVec2(nm->x, nm->y);
 						node_prompt->m_desc = nm->m_desc.c_str();
 						node_prompt->m_override = Utils::bool_from_string(nm->m_override.c_str());
+						node_prompt->m_append_newline = Utils::bool_from_string(nm->m_append_newline.c_str());
 						Nodes::v_nodes.push_back(node_prompt);
 						break;
 					}

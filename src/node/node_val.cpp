@@ -1,6 +1,7 @@
 #include "node/node_val.hpp"
 
 #include "ppk_assert.h"
+#include "fmt/format.h"
 #include "imgui.h"
 #include "plog/Log.h"
 
@@ -391,15 +392,7 @@ const std::string NodeValue::get_value_str_ex(void)
 		case NODE_SLOT::INTEGER: return std::to_string(std::get<int>(data)); break;
 		case NODE_SLOT::FLOAT: return std::to_string(std::get<float>(data)); break;
 		case NODE_SLOT::DOUBLE: return std::to_string(std::get<double>(data)); break;
-		case NODE_SLOT::STRING:
-		{
-			std::string str;
-			str.append("\"");
-			str.append(std::get<std::string>(data));
-			str.append("\"");
-			return str.c_str();
-			break;
-		}
+		case NODE_SLOT::STRING: return fmt::format("\"{:s}\"", std::get<std::string>(data)); break;
 	}
 
 	PPK_ASSERT(false, "This should not be reached");

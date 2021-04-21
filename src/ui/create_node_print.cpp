@@ -30,6 +30,7 @@ void CreateNode::create_node_print(void)
 		NodePrint* node = new NodePrint(str, std::move(in), std::move(out));
 		node->m_override = tmp->is_override;
 		node->m_append_newline = tmp->is_append_newline;
+		node->m_append = tmp->is_append;
 		node->set_desc(CreateNode::buf_desc);
 		Nodes::v_nodes.push_back(node);
 		ImNodes::AutoPositionNode(Nodes::v_nodes.back());
@@ -83,6 +84,8 @@ void CreateNode::draw_print(void)
 
 	ImGui::InputText("Output", tmp->buf_str, IM_ARRAYSIZE(tmp->buf_str));
 
+	ImGui::Checkbox("Append", &tmp->is_append);
+	Utils::help_marker("Should the input string be appended to the original string", true);
 	ImGui::Checkbox("Override", &tmp->is_override);
 	Utils::help_marker("Should the input string be overriden by the input slot", true);
 	ImGui::Checkbox("Append New Line", &tmp->is_append_newline);

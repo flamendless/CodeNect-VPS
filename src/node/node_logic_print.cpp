@@ -24,7 +24,7 @@ void process_print(void)
 
 		NodeValue* from_val = nullptr;
 		//get the value of connected node_var and set to ours (lhs)
-		if (node_print->m_override)
+		if (node_print->m_override || node_print->m_append)
 		{
 			for (const Connection& connection : node_print->m_connections)
 			{
@@ -52,7 +52,11 @@ void process_print(void)
 						case NODE_SLOT::DOUBLE: str = std::to_string(std::get<double>(from_val->data)); break;
 						case NODE_SLOT::STRING: str = std::get<std::string>(from_val->data); break;
 					}
-					node_print->m_str = str;
+
+					if (node_print->m_override)
+						node_print->m_str = str;
+					else if (node_print->m_append)
+						node_print->m_str.append(str);
 				}
 			}
 		}

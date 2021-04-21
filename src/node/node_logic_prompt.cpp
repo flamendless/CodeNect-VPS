@@ -34,7 +34,7 @@ void process_prompt(void)
 				if (in_node_prompt && out_node_var)
 				{
 					NodeValue* val = &out_node_var->m_value;
-					node_prompt->m_str = std::get<std::string>(val->data);
+					node_prompt->m_str = val->get_value_str_ex();
 				}
 			}
 		}

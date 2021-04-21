@@ -82,6 +82,7 @@ void draw_node(Node* node)
 			NodeGet* node_get = static_cast<NodeGet*>(node);
 			switch (node_get->m_get)
 			{
+				case NODE_GET::EMPTY: break;
 				case NODE_GET::ARRAY_ACCESS:
 				{
 					NodeRenderer::draw_node_array_access(static_cast<NodeArrayAccess*>(node));
@@ -211,6 +212,8 @@ void draw_node_print(NodePrint* node_print)
 		ImGui::EndTable();
 	}
 
+	ImGui::Checkbox("Append", &node_print->m_append);
+	Utils::help_marker("Should the input string be appended to the original string", true);
 	ImGui::Checkbox("Override", &node_print->m_override);
 	Utils::help_marker("Should the input string be overriden by the input slot", true);
 	ImGui::Checkbox("Append New Line", &node_print->m_append_newline);
@@ -234,11 +237,10 @@ void draw_node_prompt(NodePrompt* node_prompt)
 		ImGui::EndTable();
 	}
 
-	if (node_prompt->m_in_slots[0].kind == NODE_SLOT::STRING)
-	{
-		ImGui::Checkbox("Override", &node_prompt->m_override);
-		Utils::help_marker("Should the prompt message be overriden by the input slot", true);
-	}
+	ImGui::Checkbox("Override", &node_prompt->m_override);
+	Utils::help_marker("Should the prompt message be overriden by the input slot", true);
+	ImGui::Checkbox("Append New Line", &node_prompt->m_append_newline);
+	Utils::help_marker("Should the output string be appended with newline/nextline", true);
 }
 
 void draw_node_math(NodeMath* node_math)

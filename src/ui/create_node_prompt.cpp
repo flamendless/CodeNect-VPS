@@ -31,6 +31,7 @@ void CreateNode::create_node_prompt(void)
 		std::string str = std::string(tmp->buf_str);
 		NodePrompt* node = new NodePrompt(str, std::move(in), std::move(out));
 		node->m_override = tmp->is_override;
+		node->m_append_newline = tmp->is_append_newline;
 		node->set_desc(CreateNode::buf_desc);
 		Nodes::v_nodes.push_back(node);
 		ImNodes::AutoPositionNode(Nodes::v_nodes.back());
@@ -65,11 +66,10 @@ void CreateNode::draw_prompt(void)
 
 	ImGui::InputText("Prompt", tmp->buf_str, IM_ARRAYSIZE(tmp->buf_str));
 
-	if (tmp->slot_in == +NODE_SLOT::STRING)
-	{
-		ImGui::Checkbox("Override", &tmp->is_override);
-		Utils::help_marker("Should the prompt message be overriden by the input slot", true);
-	}
+	ImGui::Checkbox("Override", &tmp->is_override);
+	Utils::help_marker("Should the prompt message be overriden by the input slot", true);
+	ImGui::Checkbox("Append New Line", &tmp->is_append_newline);
+	Utils::help_marker("Should the output string be appended with newline/nextline", true);
 
 	CreateNode::can_create = tmp->slot_in != +NODE_SLOT::EMPTY;
 }

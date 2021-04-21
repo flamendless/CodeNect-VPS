@@ -11,6 +11,7 @@ struct NodePrint : public NodeAction
 
 	std::string m_orig_str = "";
 	std::string m_str;
+	bool m_append = false;
 	bool m_append_newline = false;
 	bool m_override = false;
 
