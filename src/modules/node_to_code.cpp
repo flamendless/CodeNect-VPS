@@ -51,7 +51,7 @@ std::string to_array(NodeArray* node_array)
 		if (i < vec.size() - 1)
 			str.append(", ");
 	}
-	str.append("};");
+	str.append("}");
 
 	return str;
 }
@@ -68,10 +68,23 @@ std::string comment(Node* node)
 
 std::string node_var(NodeVariable* node_var)
 {
-	NodeValue* value = &node_var->m_value_orig;
+	NodeValue* value = &node_var->m_value;
 	std::string type = value->get_type_str();
 	const char* name = node_var->m_name;
 	std::string val = value->get_value_str_ex();
+
+	//get the variable from the connection
+	for (const Connection& connection : node_var->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node != node_var)
+		{
+			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
+			if (out_node_var)
+				val = out_node_var->m_name;
+		}
+	}
+
 	return fmt::format("{:s}{:s} {:s} = {:s};", indent(), type, name, val).append("\n");
 }
 
@@ -81,7 +94,6 @@ std::string node_array(NodeArray* node_array)
 	std::string type = slot_to_str(node_array->m_slot);
 	const char* name = node_array->m_name;
 
-
 	switch (node_array->m_array)
 	{
 		case NODE_ARRAY::EMPTY: break;
@@ -89,7 +101,7 @@ std::string node_array(NodeArray* node_array)
 		{
 			std::string size = fmt::format("[{:d}]", node_array->m_fixed_size);
 			std::string val = to_array(node_array);
-			str = fmt::format("{:s}{:s} {:s}{:s} = {:s}", indent(), type, name, size, val).append("\n");
+			str = fmt::format("{:s}{:s} {:s}{:s} = {:s};", indent(), type, name, size, val).append("\n");
 			break;
 		}
 		case NODE_ARRAY::DYNAMIC:
@@ -149,7 +161,7 @@ std::string node_array(NodeArray* node_array)
 			//T val_name[] = {val}
 			std::string c = fmt::format("{:s} {:s}[] = {:s};", type, val_name, val);
 			//insert_T_array(&name, val, val_size);
-			std::string d = fmt::format("{:s}(&{:s}, {:s}, {:d})", insert_name, name, val_name, val_size);
+			std::string d = fmt::format("{:s}(&{:s}, {:s}, {:d});", insert_name, name, val_name, val_size);
 
 			str.append(indent()).append(a).append("\n")
 				.append(indent()).append(b).append("\n")
@@ -165,16 +177,44 @@ std::string node_array(NodeArray* node_array)
 std::string node_print(NodePrint* node_print)
 {
 	std::string str = "";
+	std::string spec = "";
 	std::string value = "";
 	std::string newline = "";
 
 	if (!node_print->m_override)
-		value = "\"" + node_print->m_orig_str + "\"";
+	{
+		spec = "%s";
+		value = fmt::format("\"{:s}\"", node_print->m_orig_str);
+	}
+	else
+	{
+		if (node_print->m_connections.size() == 0)
+		{
+			spec = "%s";
+			value = fmt::format("\"{:s}\"", node_print->m_str);
+		}
+		else
+		{
+			for (const Connection& connection : node_print->m_connections)
+			{
+				Node* out_node = static_cast<Node*>(connection.out_node);
+				if (out_node != node_print)
+				{
+					NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+					if (node_var)
+					{
+						spec = node_var->m_value_orig.get_spec();
+						value = node_var->m_name;
+					}
+				}
+			}
+		}
+	}
 
 	if (node_print->m_append_newline)
-		newline = "\n";
+		newline = "\\n";
 
-	std::string print = fmt::format("printf(\"%s{}\", {});", newline, value);
+	std::string print = fmt::format("printf(\"{:s}{:s}\", {:s});", spec, newline, value);
 	str.append(indent()).append(print).append("\n");
 
 	return str;

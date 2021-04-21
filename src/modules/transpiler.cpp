@@ -27,8 +27,8 @@
 namespace CodeNect
 {
 TCCState* Transpiler::tcc_state = nullptr;
-std::string Transpiler::code = "";
 std::string Transpiler::output_code = "";
+std::string Transpiler::runnable_code = "";
 std::vector<std::pair<std::string, OUTPUT_TYPE>> Transpiler::v_output;
 std::vector<std::string> Transpiler::v_declarations;
 int Transpiler::level = 0;
@@ -71,7 +71,7 @@ void Transpiler::error(const char* str)
 }
 
 //fill the string for includes and structs
-void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs)
+void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs, bool is_tcc)
 {
 	//includes
 	bool has_io = false;
@@ -83,6 +83,10 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs)
 	bool has_d_a_double = false;
 	bool has_d_a_str = false;
 	bool has_prompt = false;
+
+	if (is_tcc)
+		str_incl.append(Templates::incl_tcc);
+
 	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
 		it != Nodes::v_nodes.end();
 		it++)
@@ -92,21 +96,13 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs)
 		NodeMath* node_math = dynamic_cast<NodeMath*>(*it);
 		NodeArray* node_array = dynamic_cast<NodeArray*>(*it);
 
-		if (has_io && has_math)
-			break;
-
 		if (!has_io && (node_print || node_prompt))
 		{
-			str_incl.append(Templates::incl_stdio);
-			has_io = true;
-			continue;
-		}
-
-		if (!has_math && node_math)
-		{
-			str_incl.append(Templates::incl_math);
-			has_math = true;
-			continue;
+			if (!is_tcc)
+			{
+				str_incl.append(Templates::incl_stdio);
+				has_io = true;
+			}
 		}
 
 		if (!has_prompt && node_prompt)
@@ -116,12 +112,25 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs)
 			continue;
 		}
 
+		if (!has_math && node_math)
+		{
+			if (!is_tcc)
+			{
+				str_incl.append(Templates::incl_math);
+				has_math = true;
+			}
+			continue;
+		}
+
 		if (node_array && node_array->m_array == +NODE_ARRAY::DYNAMIC)
 		{
 			if (!has_stdlib)
 			{
-				str_incl.append(Templates::incl_stdlib);
-				has_stdlib = true;
+				if (!is_tcc)
+				{
+					str_incl.append(Templates::incl_stdlib);
+					has_stdlib = true;
+				}
 			}
 
 			switch (node_array->m_slot)
@@ -177,17 +186,16 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs)
 	}
 }
 
-//NOTE here we do multiple appends instead of one append with \n at the end,
-//it is not efficient but we trade performance for readability
-void Transpiler::build_runnable_code(void)
+void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 {
-	std::string str_final = "";
 	std::string str_incl = "";
 	std::string str_structs = "";
 	std::string str_entry = "";
 	std::string str_decls = "";
+	std::string str_next = "";
 	std::string str_closing = "";
-	Transpiler::set_pre_entry(str_incl, str_structs);
+
+	Transpiler::set_pre_entry(str_incl, str_structs, is_tcc);
 
 	//entry point
 	str_entry.append("int main()").append("\n");
@@ -239,13 +247,75 @@ void Transpiler::build_runnable_code(void)
 			str_decls.append(NodeToCode::node_prompt(node_prompt));
 		}
 	}
+
+	//go through each child of the node
+	int pass = 0;
+	std::vector<Node*> v_current = v_decls;
+	while (1)
+	{
+		std::vector<Node*> v_next;
+		for (std::vector<Node*>::iterator it = v_current.begin();
+			it != v_current.end();
+			it++)
+		{
+			Node* node = *it;
+			for (const Connection& connection : node->m_connections)
+			{
+				Node* in_node = static_cast<Node*>(connection.in_node);
+				if (in_node != node)
+					v_next.push_back(in_node);
+			}
+		}
+
+		PLOGD << "Pass: " << pass << ", size: " << v_next.size();
+		if (v_next.size() == 0)
+			break;
+
+		//parse the child nodes
+		for (std::vector<Node*>::iterator it = v_next.begin();
+			it != v_next.end();
+			it++)
+		{
+			Node* node = *it;
+			NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
+			NodeArray* node_array = dynamic_cast<NodeArray*>(node);
+			NodePrint* node_print = dynamic_cast<NodePrint*>(node);
+			NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
+
+			if (node_var)
+			{
+				str_next.append(NodeToCode::comment(node));
+				str_next.append(NodeToCode::node_var(node_var));
+			}
+			else if (node_array)
+			{
+				str_next.append(NodeToCode::comment(node));
+				str_next.append(NodeToCode::node_array(node_array));
+			}
+			else if (node_print)
+			{
+				str_next.append(NodeToCode::comment(node));
+				str_next.append(NodeToCode::node_print(node_print));
+			}
+			else if (node_prompt)
+			{
+				str_next.append(NodeToCode::comment(node));
+				str_next.append(NodeToCode::node_prompt(node_prompt));
+			}
+		}
+
+		v_current = v_next;
+		pass++;
+	}
 	Transpiler::level--;
 
 	//closing
-	str_closing.append("\n  return 0;").append("\n");
+	str_closing.append("  printf(\"PRESS ENTER TO EXIT\\n\");").append("\n");
+	str_closing.append("  getchar();").append("\n");
+	str_closing.append("  return 0;").append("\n");
 	str_closing.append("}");
 
-	str_final
+	out
 		.append(fmt::format("//Project: {:s}\n", Project::meta.title))
 		.append(fmt::format("//Author: {:s}\n", Project::meta.author))
 		.append("//C code generated by CodeNect\n\n")
@@ -259,29 +329,8 @@ void Transpiler::build_runnable_code(void)
 
 		.append(str_entry)
 		.append(str_decls).append("\n")
+		.append(str_next).append("\n")
 		.append(str_closing);
-
-	Transpiler::output_code = str_final;
-}
-
-void Transpiler::build_out_code(void)
-{
-	std::string real_str = "";
-	real_str.append("#include <tcclib.h>\n");
-	real_str.append("int main()\n");
-	real_str.append("{\n");
-	real_str.append("  printf(\"Hello, World!\\n\");");
-	real_str.append("  printf(\"Hi there\\n\");");
-	real_str.append("  printf(\"-from TCC to CodeNect\\n\");");
-	// real_str.append("  char* buffer;");
-	// real_str.append("  size_t size = 32;");
-	// real_str.append("  printf(\"enter input: \");");
-	// real_str.append("  getline(&buffer, &size, stdin);");
-	// real_str.append("  printf(\"user input is: %s\\n\", buffer);");
-	real_str.append("  getchar();");
-	real_str.append("  return 0;");
-	real_str.append("}");
-	Transpiler::code = real_str;
 }
 
 int Transpiler::compile(void)
@@ -296,10 +345,14 @@ int Transpiler::compile(void)
 	Transpiler::init();
 	Terminal::is_open = true;
 	PLOGI << "Compiling code...";
-	Transpiler::build_runnable_code();
-	Transpiler::build_out_code();
 
-	if (tcc_compile_string(Transpiler::tcc_state, Transpiler::code.c_str()) == -1)
+	Transpiler::output_code.clear();
+	Transpiler::runnable_code.clear();
+	Transpiler::build_runnable_code(Transpiler::output_code, false);
+	Transpiler::build_runnable_code(Transpiler::runnable_code, true);
+	PLOGD << Transpiler::runnable_code;
+
+	if (tcc_compile_string(Transpiler::tcc_state, Transpiler::runnable_code.c_str()) == -1)
 	{
 		Transpiler::error("Could not compile program. Make sure you clear first?");
 		return RES_FAIL;

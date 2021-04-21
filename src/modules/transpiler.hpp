@@ -14,8 +14,8 @@ enum class OUTPUT_TYPE { NORMAL = 1, SUCCESS, ERROR, PROMPT };
 struct Transpiler
 {
 	static TCCState* tcc_state;
-	static std::string code;
 	static std::string output_code;
+	static std::string runnable_code;
 	static std::vector<std::pair<std::string, OUTPUT_TYPE>> v_output;
 	static std::vector<std::string> v_declarations;
 	static int level;
@@ -26,9 +26,8 @@ struct Transpiler
 	static int init(void);
 	static void register_commands(void);
 	static void error(const char* str);
-	static void set_pre_entry(std::string& str_incl, std::string& str_structs);
-	static void build_runnable_code(void);
-	static void build_out_code(void);
+	static void set_pre_entry(std::string& str_incl, std::string& str_structs, bool is_tcc);
+	static void build_runnable_code(std::string& out, bool is_tcc);
 	static int compile(void);
 	static int run(void);
 	static void clear(void);

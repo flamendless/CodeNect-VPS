@@ -115,13 +115,11 @@ void Nodes::delete_node(std::vector<Node*>::iterator& it)
 
 bool Nodes::check_if_no_lhs(Node* node)
 {
-	if (node->m_connections.size() == 0)
-		return true;
-
 	for (const Connection& connection : node->m_connections)
 	{
-		Node* out_node = static_cast<Node*>(connection.out_node);
-		if (out_node)
+		Node* in_node = static_cast<Node*>(connection.in_node);
+
+		if (in_node == node)
 			return false;
 	}
 
