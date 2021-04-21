@@ -12,6 +12,10 @@ inline static const char* incl_stdlib = "//for using malloc, realloc\n"
 	"#include <stdlib.h>\n";
 inline static const char* incl_math = "//for using math functions like sin, cos, tan, pow, and more\n"
 	"#include <math.h>\n";
+inline static const char* incl_bool = "//C doesn't have native bool, so we implement our own\n"
+	"#define bool int\n"
+	"#define true 1\n"
+	"#define false 1\n";
 
 inline static const char* s_incl_section = "//START OF INCLUDES SECTION\n";
 inline static const char* e_incl_section = "//END OF INCLUDES SECTION\n\n";
@@ -30,14 +34,21 @@ inline static const char* struct_prompt = "//start of prompt struct\n"
 	"  prompt->max_size = max_size;\n"
 	"  prompt->buffer = (char*)malloc(max_size * sizeof(char));\n"
 	"}\n\n"
-	"void run_prompt(Prompt* prompt, const char* msg)\n"
+	"void run_prompt(Prompt* prompt, const char* msg, bool is_newline)\n"
 	"{\n"
-	"  printf(\"%s\", msg);\n"
+	"  if (is_newline)\n"
+	"    printf(\"%s\\n\", msg);\n"
+	"  else\n"
+	"    printf(\"%s\", msg);\n"
 	"  if (!fgets(prompt->buffer, prompt->max_size, stdin))\n"
 	"  {\n"
-	"    printf(\"Error in reading input\n\");\n"
+	"    printf(\"Error in reading input\\n\");\n"
 	"    exit(1);\n"
 	"  }\n"
+	"}\n\n"
+	"const char* bool_to_string(bool b)\n"
+	"{\n"
+	"  return b ? \"true\" : \"false\";\n"
 	"}\n"
 	"//end of prompt struct\n";
 

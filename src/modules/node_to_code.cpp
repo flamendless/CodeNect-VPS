@@ -177,37 +177,48 @@ std::string node_array(NodeArray* node_array)
 std::string node_print(NodePrint* node_print)
 {
 	std::string str = "";
-	std::string spec = "";
-	std::string value = "";
+	std::string spec = "%s";
+	std::string value = fmt::format("\"{:s}\"", node_print->m_orig_str);
 	std::string newline = "";
 
-	if (!node_print->m_override)
+	if (node_print->m_override || node_print->m_append)
 	{
-		spec = "%s";
-		value = fmt::format("\"{:s}\"", node_print->m_orig_str);
-	}
-	else
-	{
-		if (node_print->m_connections.size() == 0)
+		std::string other_val = "";
+		std::string other_spec = "";
+		for (const Connection& connection : node_print->m_connections)
 		{
-			spec = "%s";
-			value = fmt::format("\"{:s}\"", node_print->m_str);
-		}
-		else
-		{
-			for (const Connection& connection : node_print->m_connections)
+			Node* out_node = static_cast<Node*>(connection.out_node);
+			if (out_node != node_print)
 			{
-				Node* out_node = static_cast<Node*>(connection.out_node);
-				if (out_node != node_print)
+				NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+				NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
+
+				if (node_var)
 				{
-					NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
-					if (node_var)
-					{
-						spec = node_var->m_value_orig.get_spec();
-						value = node_var->m_name;
-					}
+					other_spec = node_var->m_value_orig.get_spec();
+					other_val = node_var->m_name;
+				}
+
+				if (node_prompt)
+				{
+					other_spec = "%s";
+					other_val = fmt::format("{:s}.buffer", node_prompt->m_name);
 				}
 			}
+		}
+
+		if (node_print->m_override)
+		{
+			if (other_spec.length() != 0)
+				spec = other_spec;
+			if (other_val.length() != 0)
+				value = other_val;
+		}
+		else if (node_print->m_append)
+		{
+			spec = "%s";
+			spec.append(other_spec);
+			value = fmt::format("\"{}\", {}", node_print->m_orig_str, other_val);
 		}
 	}
 
@@ -222,23 +233,72 @@ std::string node_print(NodePrint* node_print)
 
 std::string node_prompt(NodePrompt* node_prompt)
 {
+	const char* name = node_prompt->m_name;
 	std::string str = "";
 	std::string value = "";
-	int size = 0;
-	const char* name = node_prompt->m_name;
+	std::string is_newline = "false";
+	std::string pre = "";
+	int size = 128;
 
 	if (!node_prompt->m_override)
 	{
-		value = "\"" + node_prompt->m_orig_str + "\"";
-		size = node_prompt->m_orig_str.length();
+		value = fmt::format("\"{:s}\"", node_prompt->m_orig_str);
 	}
+	else
+	{
+		//get the reference or the "from"
+		for (const Connection& connection : node_prompt->m_connections)
+		{
+			Node* out_node = static_cast<Node*>(connection.out_node);
+			if (out_node != node_prompt)
+			{
+				NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+				if (node_var)
+				{
+					NodeValue* val = &node_var->m_value;
+					switch (val->m_slot)
+					{
+						case NODE_SLOT::EMPTY: break;
+						case NODE_SLOT::BOOL:
+						{
+							value = fmt::format("bool_to_string({:s})", node_var->m_name);
+							break;
+						}
+						case NODE_SLOT::INTEGER:
+						case NODE_SLOT::FLOAT:
+						case NODE_SLOT::DOUBLE:
+						{
+							std::string out_name = Transpiler::get_temp_name(name);
+							std::string spec = val->get_spec();
+							pre.append(fmt::format("{:s}char {:s}[32];",
+								indent(), out_name)).append("\n");
+							pre.append(fmt::format("{:s}sprintf({:s}, \"{:s}\", {:s});",
+								indent(), out_name, spec, node_var->m_name));
+							pre.append("\n");
+							value = out_name;
+							break;
+						}
+						case NODE_SLOT::STRING:
+						{
+							value = node_var->m_name;
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if (node_prompt->m_append_newline)
+		is_newline = "true";
 
 	std::string decl = fmt::format("Prompt {:s};", name);
 	std::string init = fmt::format("init_prompt(&{:s}, {:d});", name, size);
-	std::string run = fmt::format("run_prompt(&{:s}, {:s});", name, value);
+	std::string run = fmt::format("run_prompt(&{:s}, {:s}, {:s});", name, value, is_newline);
 
 	str.append(indent()).append(decl).append("\n")
 		.append(indent()).append(init).append("\n")
+		.append(pre)
 		.append(indent()).append(run).append("\n");
 
 	return str;

@@ -2,6 +2,7 @@
 #define _TRANSPILER_HPP
 
 #include <functional>
+#include <map>
 #include <string>
 #include <vector>
 #include "libtcc.h"
@@ -18,6 +19,7 @@ struct Transpiler
 	static std::string runnable_code;
 	static std::vector<std::pair<std::string, OUTPUT_TYPE>> v_output;
 	static std::vector<std::string> v_declarations;
+	static std::map<std::string, bool> m_temp_names;
 	static int level;
 	static bool has_ran;
 	static bool has_compiled;
@@ -26,6 +28,7 @@ struct Transpiler
 	static int init(void);
 	static void register_commands(void);
 	static void error(const char* str);
+	static std::string get_temp_name(const char* name);
 	static void set_pre_entry(std::string& str_incl, std::string& str_structs, bool is_tcc);
 	static void build_runnable_code(std::string& out, bool is_tcc);
 	static int compile(void);
