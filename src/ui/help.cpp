@@ -69,7 +69,7 @@ Help::pair_t Help::v_dictionary_items
 	help_p("Action Node", "used for executing higher-level commands such as:\nprinting text to screen, prompting for user input, and more"),
 	help_p("Math Node", "used for performing Math functions and getting numbers such as:\nroot, power, sine, cosine, and tangent"),
 	help_p("Data Structure Node", "used for creating data structure like array"),
-	help_p("Get Node", "used for getting/accessing value like from array, size of array, and length of string"),
+	help_p("Get Node", "used for getting/accessing value like\nfrom array, size of array, and length of string"),
 
 	help_p("Slots", "input or output ID used for connection of nodes.\nOnly matching slot type can be connected"),
 	help_p("Boolean Slot", "data type for true or false value.\nOnly zero value is evaluated as 'false', otherwise it is 'true'"),
@@ -83,6 +83,24 @@ Help::pair_t Help::v_support_items
 {
 	help_p(ICON_FA_ENVELOPE " E-Mail:", "mailto:flamendless8@gmail.com"),
 	help_p(ICON_FA_GITHUB " Github:", "https://github.com/flamendless/CodeNect-VPS"),
+};
+
+Help::pair_t Help::v_libs_items
+{
+	help_p("better-enums", "https://github.com/aantron/better-enums"),
+	help_p("ImGuiColorTextEdit", "https://github.com/BalazsJako/ImGuiColorTextEdit"),
+	help_p("fmt", "https://github.com/fmtlib/fmt"),
+	help_p("IconFontCppHeaders", "https://github.com/juliettef/IconFontCppHeaders"),
+	help_p("DearImGui", "https://github.com/ocornut/imgui"),
+	help_p("ImNodes", "https://github.com/rokups/ImNodes"),
+	help_p("nativefiledialog", "https://github.com/mlabbe/nativefiledialog/"),
+	help_p("plog", "https://github.com/SergiusTheBest/plog"),
+	help_p("PPK_ASSERT", "https://github.com/gpakosz/PPK_ASSERT"),
+	help_p("simpleini", "https://github.com/brofield/simpleini/"),
+	help_p("stb_image", "https://github.com/nothings/stb/blob/master/stb_image.h"),
+	help_p("TinyC Compiler", "https://bellard.org/tcc"),
+	help_p("Tweeny", "https://github.com/mobius3/tweeny"),
+	help_p("CppVerbalExpressions", "https://github.com/VerbalExpressions/CppVerbalExpressions/"),
 };
 
 void Help::register_commands(void)
@@ -128,6 +146,9 @@ void Help::draw()
 		ImGui::Separator();
 
 		Help::draw_dictionary();
+		ImGui::Separator();
+
+		Help::draw_libs();
 		ImGui::Separator();
 
 		Help::draw_support();
@@ -223,20 +244,48 @@ void Help::draw_dictionary(void)
 	}
 }
 
+void Help::draw_libs(void)
+{
+	if (ImGui::TreeNode(ICON_FA_TOOLS " Libraries/Tools Used"))
+	{
+		if (ImGui::BeginTable("TableLibs", 2))
+		{
+			for (const help_p &item : Help::v_libs_items)
+			{
+				ImGui::TableNextRow();
+				ImGui::TableNextColumn();
+				ImGui::Text("%s", item.first);
+
+				ImGui::TableNextColumn();
+				ImGui::PushID(item.second);
+
+				if (ImGui::SmallButton(ICON_FA_EXTERNAL_LINK_ALT))
+				{
+					Utils::open_url(item.second);
+					Alert::open(ALERT_TYPE::SUCCESS, "Link opened in browser");
+				}
+
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Open link in browser");
+
+				ImGui::PopID();
+			}
+			ImGui::EndTable();
+		}
+		ImGui::TreePop();
+	}
+}
+
 void Help::draw_support(void)
 {
 	Utils::center_text(ICON_FA_ADDRESS_BOOK " Contacts", true);
-
-	if (ImGui::BeginTable("TableSupport", 3))
+	if (ImGui::BeginTable("TableSupport", 2))
 	{
 		for (const help_p &item : Help::v_support_items)
 		{
 			ImGui::TableNextRow();
 			ImGui::TableNextColumn();
 			ImGui::Text("%s", item.first);
-
-			ImGui::TableNextColumn();
-			ImGui::Text("%s", item.second);
 
 			ImGui::TableNextColumn();
 			ImGui::PushID(item.second);
@@ -249,10 +298,8 @@ void Help::draw_support(void)
 
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("Open link in browser");
-
 			ImGui::PopID();
 		}
-
 		ImGui::EndTable();
 	}
 }

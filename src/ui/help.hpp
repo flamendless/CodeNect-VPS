@@ -22,6 +22,7 @@ struct Help
 	static tuple_colors_t v_node_colors_items;
 	static pair_t v_dictionary_items;
 	static pair_t v_support_items;
+	static pair_t v_libs_items;
 
 	Help() = delete;
 	static void register_commands(void);
@@ -30,6 +31,7 @@ struct Help
 	static void draw_commands(void);
 	static void draw_interface(void);
 	static void draw_dictionary(void);
+	static void draw_libs(void);
 	static void draw_support(void);
 };
 }
