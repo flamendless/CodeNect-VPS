@@ -203,6 +203,77 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs, 
 	}
 }
 
+void Transpiler::transpile_decls(std::vector<Node*>& v, std::string& output)
+{
+	//the following are only possible to be nodes without any LHS
+	for (std::vector<Node*>::iterator it = v.begin();
+		it != v.end();
+		it++)
+	{
+		Node* node = *it;
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
+		NodeArray* node_array = dynamic_cast<NodeArray*>(node);
+		NodePrint* node_print = dynamic_cast<NodePrint*>(node);
+		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
+
+		if (node_var)
+		{
+			output.append(NodeToCode::comment(node));
+			output.append(NodeToCode::node_var(node_var));
+		}
+		else if (node_array)
+		{
+			output.append(NodeToCode::comment(node));
+			output.append(NodeToCode::node_array(node_array));
+		}
+		else if (node_print)
+		{
+			output.append(NodeToCode::comment(node));
+			output.append(NodeToCode::node_print(node_print));
+		}
+		else if (node_prompt)
+		{
+			output.append(NodeToCode::comment(node));
+			output.append(NodeToCode::node_prompt(node_prompt));
+		}
+	}
+}
+
+void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
+{
+	for (std::vector<Node*>::iterator it = v.begin();
+		it != v.end();
+		it++)
+	{
+		Node* node = *it;
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
+		NodeArray* node_array = dynamic_cast<NodeArray*>(node);
+		NodePrint* node_print = dynamic_cast<NodePrint*>(node);
+		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
+
+		if (node_var)
+		{
+			output.append(NodeToCode::comment(node));
+			output.append(NodeToCode::node_var(node_var));
+		}
+		else if (node_array)
+		{
+			output.append(NodeToCode::comment(node));
+			output.append(NodeToCode::node_array(node_array));
+		}
+		else if (node_print)
+		{
+			output.append(NodeToCode::comment(node));
+			output.append(NodeToCode::node_print(node_print));
+		}
+		else if (node_prompt)
+		{
+			output.append(NodeToCode::comment(node));
+			output.append(NodeToCode::node_prompt(node_prompt));
+		}
+	}
+}
+
 void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 {
 	std::string str_incl = "";
@@ -221,6 +292,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 
 	//store
 	std::vector<Node*> v_decls;
+	std::vector<std::vector<Node*>> v_sequence;
 
 	//find all nodes that do NOT have any LHS, this means that they are for declarations
 	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
@@ -232,100 +304,28 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 			v_decls.push_back(node);
 	}
 
-	Transpiler::level++;
-	//the following are only possible to be nodes without any LHS
+	//get the independent sequence/chain of nodes
 	for (std::vector<Node*>::iterator it = v_decls.begin();
 		it != v_decls.end();
 		it++)
 	{
 		Node* node = *it;
-		NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
-		NodeArray* node_array = dynamic_cast<NodeArray*>(node);
-		NodePrint* node_print = dynamic_cast<NodePrint*>(node);
-		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
-
-		if (node_var)
-		{
-			str_decls.append(NodeToCode::comment(node));
-			str_decls.append(NodeToCode::node_var(node_var));
-		}
-		else if (node_array)
-		{
-			str_decls.append(NodeToCode::comment(node));
-			str_decls.append(NodeToCode::node_array(node_array));
-		}
-		else if (node_print)
-		{
-			str_decls.append(NodeToCode::comment(node));
-			str_decls.append(NodeToCode::node_print(node_print));
-		}
-		else if (node_prompt)
-		{
-			str_decls.append(NodeToCode::comment(node));
-			str_decls.append(NodeToCode::node_prompt(node_prompt));
-		}
+		std::vector<Node*> v_seq = Nodes::get_sequence(node);
+		if (v_seq.size() != 0)
+			v_sequence.push_back(v_seq);
 	}
 
-	//go through each child of the node
-	int pass = 0;
-	std::vector<Node*> v_current = v_decls;
-	while (1)
-	{
-		std::vector<Node*> v_next;
-		for (std::vector<Node*>::iterator it = v_current.begin();
-			it != v_current.end();
-			it++)
-		{
-			Node* node = *it;
-			for (const Connection& connection : node->m_connections)
-			{
-				Node* in_node = static_cast<Node*>(connection.in_node);
-				if (in_node != node)
-					v_next.push_back(in_node);
-			}
-		}
-
-		PLOGD << "Pass: " << pass << ", size: " << v_next.size();
-		if (v_next.size() == 0)
-			break;
-
-		//parse the child nodes
-		for (std::vector<Node*>::iterator it = v_next.begin();
-			it != v_next.end();
-			it++)
-		{
-			Node* node = *it;
-			NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
-			NodeArray* node_array = dynamic_cast<NodeArray*>(node);
-			NodePrint* node_print = dynamic_cast<NodePrint*>(node);
-			NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
-
-			if (node_var)
-			{
-				str_next.append(NodeToCode::comment(node));
-				str_next.append(NodeToCode::node_var(node_var));
-			}
-			else if (node_array)
-			{
-				str_next.append(NodeToCode::comment(node));
-				str_next.append(NodeToCode::node_array(node_array));
-			}
-			else if (node_print)
-			{
-				str_next.append(NodeToCode::comment(node));
-				str_next.append(NodeToCode::node_print(node_print));
-			}
-			else if (node_prompt)
-			{
-				str_next.append(NodeToCode::comment(node));
-				str_next.append(NodeToCode::node_prompt(node_prompt));
-			}
-		}
-
-		v_current = v_next;
-		pass++;
-	}
+	Transpiler::level++;
+	Transpiler::transpile_decls(v_decls, str_decls);
+	for (std::vector<Node*>& v : v_sequence)
+		Transpiler::transpile(v, str_next);
 	Transpiler::level--;
+
+	//transpile the rest
+	for (std::vector<Node*>& v : v_sequence)
+	{
+		Node* last = v.back(); //last node in the sequence
+	}
 
 	//closing
 	str_closing.append("  printf(\"PRESS ENTER TO EXIT\\n\");").append("\n");
@@ -366,7 +366,7 @@ int Transpiler::compile(void)
 
 	Transpiler::output_code.clear();
 	Transpiler::runnable_code.clear();
-	Transpiler::build_runnable_code(Transpiler::output_code, false);
+	// Transpiler::build_runnable_code(Transpiler::output_code, false);
 	Transpiler::build_runnable_code(Transpiler::runnable_code, true);
 	PLOGD << Transpiler::runnable_code;
 

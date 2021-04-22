@@ -218,7 +218,8 @@ std::string node_print(NodePrint* node_print)
 		{
 			spec = "%s";
 			spec.append(other_spec);
-			value = fmt::format("\"{}\", {}", node_print->m_orig_str, other_val);
+			if (other_val.length() != 0)
+				value = fmt::format("\"{}\", {}", node_print->m_orig_str, other_val);
 		}
 	}
 

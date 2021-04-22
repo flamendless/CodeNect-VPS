@@ -7,6 +7,7 @@
 #include <vector>
 #include "libtcc.h"
 #include "core/defines.hpp"
+#include "node/node.hpp"
 
 namespace CodeNect
 {
@@ -31,6 +32,8 @@ struct Transpiler
 	static std::string get_temp_name(const char* name);
 	static void set_pre_entry(std::string& str_incl, std::string& str_structs, bool is_tcc);
 	static void build_runnable_code(std::string& out, bool is_tcc);
+	static void transpile_decls(std::vector<Node*>& v, std::string& output);
+	static void transpile(std::vector<Node*>& v, std::string& output);
 	static int compile(void);
 	static int run(void);
 	static void clear(void);
