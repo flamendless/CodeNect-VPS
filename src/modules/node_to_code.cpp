@@ -6,6 +6,53 @@
 
 namespace CodeNect::NodeToCode
 {
+using fn = std::function<std::string(std::string&, std::string&)>;
+using m = std::map<std::string, fn>;
+
+//in -> out
+std::map<std::string, m> m_cast
+{
+	{"INTEGER", {
+			{"BOOL", [](std::string& lhs_name, std::string& pre) -> std::string
+				{ return fmt::format("int_to_bool({:s})", lhs_name); },
+			},
+			{"FLOAT", [](std::string& lhs_name, std::string& pre) -> std::string
+				{ return fmt::format("(float)({:s})", lhs_name); },
+			},
+			{"DOUBLE", [](std::string& lhs_name, std::string& pre) -> std::string
+				{ return fmt::format("(double)({:s})", lhs_name); },
+			},
+			{"STRING", [](std::string& lhs_name, std::string& pre) -> std::string
+				{
+					std::string buffer_name = Transpiler::get_temp_name(lhs_name.c_str());
+					pre
+						.append(indent())
+						.append(fmt::format("char {:s}[{:d}];", buffer_name, 256)).append("\n")
+						.append(indent())
+						.append(fmt::format("sprintf({:s}, \"%d\", {});", buffer_name, lhs_name)).append("\n");
+					return fmt::format("{:s}", buffer_name);
+				},
+			}
+		},
+	},
+	{"STRING", {
+			{"BOOL", [](std::string& lhs_name, std::string& pre) -> std::string
+				{ return fmt::format("string_to_bool({:s})", lhs_name); },
+			},
+			{"INTEGER", [](std::string& lhs_name, std::string& pre) -> std::string
+				{ return fmt::format("strtol({:s}, NULL, 10)", lhs_name); },
+			},
+			{"FLOAT", [](std::string& lhs_name, std::string& pre) -> std::string
+				{ return fmt::format("strtof({:s}, NULL)", lhs_name); },
+			},
+			{"DOUBLE", [](std::string& lhs_name, std::string& pre) -> std::string
+				{ return fmt::format("strtod({:s}, NULL)", lhs_name); },
+			},
+		}
+	},
+};
+
+
 std::string indent(void)
 {
 	std::string str = "";
@@ -106,7 +153,6 @@ std::string node_cast(NodeCast* node_cast, bool val_only, std::string& pre)
 	NODE_SLOT in_slot = NODE_SLOT::_from_string(node_cast->m_in_slots[0].title);
 	NODE_SLOT out_slot = NODE_SLOT::_from_string(node_cast->m_out_slots[0].title);
 	std::string lhs_name = "";
-	bool is_prompt = false;
 
 	//get the input or value to be casted (lhs)
 	for (const Connection& connection : node_cast->m_connections)
@@ -117,107 +163,20 @@ std::string node_cast(NodeCast* node_cast, bool val_only, std::string& pre)
 			lhs_name = out_node->m_name;
 			NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
 			if (node_prompt)
-				is_prompt = true;
+				lhs_name.append(".buffer");
 		}
 	}
 
-	std::string type = "";
-	std::string rhs = "";
+	std::string type = NodeToCode::slot_to_str(out_slot);
+	std::string rhs = m_cast[in_slot._to_string()][out_slot._to_string()](lhs_name, pre);
 
-	//from int
-	if (in_slot == +NODE_SLOT::INTEGER)
+	if (val_only)
+		str.append(fmt::format("{:s}", rhs));
+	else
 	{
-		switch (out_slot)
-		{
-			case NODE_SLOT::EMPTY: break;
-			case NODE_SLOT::BOOL:
-			{
-				type = "bool";
-				rhs = fmt::format("int_to_bool({:s})", lhs_name);
-				break;
-			}
-			case NODE_SLOT::INTEGER: break;
-			case NODE_SLOT::FLOAT:
-			{
-				type = "float";
-				rhs = fmt::format("({:s})({:s})", type, lhs_name);
-				break;
-			}
-			case NODE_SLOT::DOUBLE:
-			{
-				type = "double";
-				rhs = fmt::format("({:s})({:s})", type, lhs_name);
-				break;
-			}
-			case NODE_SLOT::STRING:
-			{
-				type = "const char*";
-				std::string buffer_name = Transpiler::get_temp_name(lhs_name.c_str());
-				pre
-					.append(indent())
-					.append(fmt::format("char {:s}[{:d}];", buffer_name, 256)).append("\n")
-					.append(indent())
-					.append(fmt::format("sprintf({:s}, \"%d\", {});", buffer_name, lhs_name)).append("\n");
-				rhs = fmt::format("{:s}", buffer_name);
-				break;
-			}
-		}
-
-		if (val_only)
-			str.append(fmt::format("{:s}", rhs));
-		else
-		{
-			str.append(indent())
-				.append(fmt::format("{:s} {:s} = {:s}", type, node_cast->m_name, rhs))
-				.append("\n");
-		}
-	}
-
-	//from string
-	else if (in_slot == +NODE_SLOT::STRING)
-	{
-		std::string member = "";
-		if (is_prompt)
-			member = ".buffer";
-
-		switch (out_slot)
-		{
-			case NODE_SLOT::EMPTY: break;
-			case NODE_SLOT::BOOL:
-			{
-				type = "bool";
-				rhs = fmt::format("string_to_bool({:s}{:s})", lhs_name, member);
-				break;
-			}
-			case NODE_SLOT::INTEGER:
-			{
-				type = "int";
-				rhs = fmt::format("strtol({:s}{:s}, NULL, 10)", lhs_name, member);
-				break;
-			}
-			case NODE_SLOT::FLOAT:
-			{
-				type = "float";
-				rhs = fmt::format("strtof({:s}{:s}, NULL)", lhs_name, member);
-				break;
-			}
-			case NODE_SLOT::DOUBLE:
-			{
-				type = "double";
-				rhs = fmt::format("strtod({:s}{:s}, NULL)", lhs_name, member);
-				break;
-			}
-			case NODE_SLOT::STRING: break;
-		}
-
-		if (val_only)
-			str.append(fmt::format("{:s}", rhs));
-		else
-		{
-			str.append(indent())
-				.append(fmt::format("{:s} {:s} = {:s};", type, node_cast->m_name, rhs))
-				.append("\n");
-		}
+		str.append(indent())
+			.append(fmt::format("{:s} {:s} = {:s}", type, node_cast->m_name, rhs))
+			.append("\n");
 	}
 
 	return str;
