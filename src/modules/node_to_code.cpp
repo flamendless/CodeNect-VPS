@@ -73,15 +73,18 @@ std::string node_var(NodeVariable* node_var)
 	const char* name = node_var->m_name;
 	std::string val = value->get_value_str_ex();
 
-	//get the variable from the connection
+	//get the variable from the connection (lhs)
 	for (const Connection& connection : node_var->m_connections)
 	{
 		Node* out_node = static_cast<Node*>(connection.out_node);
 		if (out_node != node_var)
 		{
 			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
+			NodePrompt* out_node_prompt = dynamic_cast<NodePrompt*>(out_node);
 			if (out_node_var)
 				val = out_node_var->m_name;
+			if (out_node_prompt)
+				val = fmt::format("{:s}.buffer", out_node_prompt->m_name);
 		}
 	}
 

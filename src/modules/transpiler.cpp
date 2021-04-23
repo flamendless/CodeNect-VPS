@@ -274,6 +274,44 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 	}
 }
 
+std::vector<std::vector<Node*>> Transpiler::get_sequence(std::vector<Node*>& v_start)
+{
+	std::vector<std::vector<Node*>> v_out;
+	//get the independent sequence/chain of nodes
+	for (std::vector<Node*>::iterator it = v_start.begin();
+		it != v_start.end();
+		it++)
+	{
+		Node* node = *it;
+		std::vector<Node*> v_seq = Nodes::get_sequence(node);
+		if (v_seq.size() != 0)
+			v_out.push_back(v_seq);
+	}
+	return v_out;
+}
+
+std::vector<Node*> Transpiler::get_rest(std::vector<std::vector<Node*>>& v_start)
+{
+	std::vector<Node*> v_out;
+	//get the rest to be transpiled using the last node in the sequence/chain
+	for (std::vector<Node*>& v : v_start)
+	{
+		Node* last = v.back(); //last node in the sequence
+		for (const Connection& connection : last->m_connections)
+		{
+			Node* in_node = static_cast<Node*>(connection.in_node);
+			if (in_node != last)
+			{
+				//check if node was already added
+				if (std::find(v_out.begin(), v_out.end(), in_node)!= v_out.end())
+					continue;
+				v_out.push_back(in_node);
+			}
+		}
+	}
+	return v_out;
+}
+
 void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 {
 	std::string str_incl = "";
@@ -281,6 +319,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	std::string str_entry = "";
 	std::string str_decls = "";
 	std::string str_next = "";
+	std::string str_rest = "";
 	std::string str_closing = "";
 
 	Transpiler::m_temp_names.clear();
@@ -292,7 +331,6 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 
 	//store
 	std::vector<Node*> v_decls;
-	std::vector<std::vector<Node*>> v_sequence;
 
 	//find all nodes that do NOT have any LHS, this means that they are for declarations
 	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
@@ -304,28 +342,31 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 			v_decls.push_back(node);
 	}
 
-	//get the independent sequence/chain of nodes
-	for (std::vector<Node*>::iterator it = v_decls.begin();
-		it != v_decls.end();
-		it++)
-	{
-		Node* node = *it;
-		std::vector<Node*> v_seq = Nodes::get_sequence(node);
-		if (v_seq.size() != 0)
-			v_sequence.push_back(v_seq);
-	}
-
+	//begin transpiling
 	Transpiler::level++;
 	Transpiler::transpile_decls(v_decls, str_decls);
-	for (std::vector<Node*>& v : v_sequence)
-		Transpiler::transpile(v, str_next);
-	Transpiler::level--;
 
-	//transpile the rest
-	for (std::vector<Node*>& v : v_sequence)
+	//repeat
+	std::vector<Node*> v_start = v_decls;
+	// std::vector<std::vector<Node*>>* v_sequence = nullptr;
+	while (1)
 	{
-		Node* last = v.back(); //last node in the sequence
+		std::vector<std::vector<Node*>> v_tmp_seq = Transpiler::get_sequence(v_start);
+		std::vector<Node*> v_rest = Transpiler::get_rest(v_tmp_seq);
+
+		if (v_tmp_seq.size() == 0 && v_rest.size() == 0)
+			break;
+
+		//transpile sequence
+		for (std::vector<Node*>& v : v_tmp_seq)
+			Transpiler::transpile(v, str_next);
+		//transpile rest
+		Transpiler::transpile(v_rest, str_rest);
+
+		//set for the next loop
+		v_start = v_rest;
 	}
+	Transpiler::level--;
 
 	//closing
 	str_closing.append("  printf(\"PRESS ENTER TO EXIT\\n\");").append("\n");
@@ -347,6 +388,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		.append(str_entry)
 		.append(str_decls).append("\n")
 		.append(str_next).append("\n")
+		.append(str_rest).append("\n")
 		.append(str_closing);
 	Transpiler::m_temp_names.clear();
 }
