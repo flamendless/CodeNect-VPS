@@ -3,6 +3,7 @@
 #include "node/nodes.hpp"
 #include "node/node_var.hpp"
 #include "node/node_prompt.hpp"
+#include "node/node_cast.hpp"
 #include "node/node_colors.hpp"
 
 namespace CodeNect::NodeLogic
@@ -44,8 +45,11 @@ void process_prompt(void)
 		{
 			Node* in_node = static_cast<Node*>(connection.in_node);
 			NodeVariable* node_var = dynamic_cast<NodeVariable*>(in_node);
+			NodeCast* node_cast = dynamic_cast<NodeCast*>(in_node);
 
 			if (node_var)
+				NodeColors::set_connection_color(connection, COLOR_TYPE::RUNTIME);
+			if (node_cast)
 				NodeColors::set_connection_color(connection, COLOR_TYPE::RUNTIME);
 		}
 	}

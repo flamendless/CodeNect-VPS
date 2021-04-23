@@ -68,6 +68,7 @@ std::string comment(Node* node)
 
 std::string node_var(NodeVariable* node_var)
 {
+	std::string str = "";
 	NodeValue* value = &node_var->m_value;
 	std::string type = value->get_type_str();
 	const char* name = node_var->m_name;
@@ -81,14 +82,145 @@ std::string node_var(NodeVariable* node_var)
 		{
 			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
 			NodePrompt* out_node_prompt = dynamic_cast<NodePrompt*>(out_node);
+			NodePrint* out_node_print = dynamic_cast<NodePrint*>(out_node);
+			NodeCast* out_node_cast = dynamic_cast<NodeCast*>(out_node);
+
 			if (out_node_var)
 				val = out_node_var->m_name;
-			if (out_node_prompt)
+			else if (out_node_prompt)
 				val = fmt::format("{:s}.buffer", out_node_prompt->m_name);
+			else if (out_node_print)
+				val = fmt::format("\"{:s}\"", out_node_print->m_orig_str);
+			else if (out_node_cast)
+				val = NodeToCode::node_cast(out_node_cast, true, str);
 		}
 	}
 
-	return fmt::format("{:s}{:s} {:s} = {:s};", indent(), type, name, val).append("\n");
+	str.append(fmt::format("{:s}{:s} {:s} = {:s};", indent(), type, name, val).append("\n"));
+	return str;
+}
+
+std::string node_cast(NodeCast* node_cast, bool val_only, std::string& pre)
+{
+	std::string str = "";
+	NODE_SLOT in_slot = NODE_SLOT::_from_string(node_cast->m_in_slots[0].title);
+	NODE_SLOT out_slot = NODE_SLOT::_from_string(node_cast->m_out_slots[0].title);
+	std::string lhs_name = "";
+	bool is_prompt = false;
+
+	//get the input or value to be casted (lhs)
+	for (const Connection& connection : node_cast->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node != node_cast)
+		{
+			lhs_name = out_node->m_name;
+			NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
+			if (node_prompt)
+				is_prompt = true;
+		}
+	}
+
+	std::string type = "";
+	std::string rhs = "";
+
+	//from int
+	if (in_slot == +NODE_SLOT::INTEGER)
+	{
+		switch (out_slot)
+		{
+			case NODE_SLOT::EMPTY: break;
+			case NODE_SLOT::BOOL:
+			{
+				type = "bool";
+				rhs = fmt::format("int_to_bool({:s})", lhs_name);
+				break;
+			}
+			case NODE_SLOT::INTEGER: break;
+			case NODE_SLOT::FLOAT:
+			{
+				type = "float";
+				rhs = fmt::format("({:s})({:s})", type, lhs_name);
+				break;
+			}
+			case NODE_SLOT::DOUBLE:
+			{
+				type = "double";
+				rhs = fmt::format("({:s})({:s})", type, lhs_name);
+				break;
+			}
+			case NODE_SLOT::STRING:
+			{
+				type = "const char*";
+				std::string buffer_name = Transpiler::get_temp_name(lhs_name.c_str());
+				pre
+					.append(indent())
+					.append(fmt::format("char {:s}[{:d}];", buffer_name, 256)).append("\n")
+					.append(indent())
+					.append(fmt::format("sprintf({:s}, \"%d\", {});", buffer_name, lhs_name)).append("\n");
+				rhs = fmt::format("{:s}", buffer_name);
+				break;
+			}
+		}
+
+		if (val_only)
+			str.append(fmt::format("{:s}", rhs));
+		else
+		{
+			str.append(indent())
+				.append(fmt::format("{:s} {:s} = {:s}", type, node_cast->m_name, rhs))
+				.append("\n");
+		}
+	}
+
+	//from string
+	else if (in_slot == +NODE_SLOT::STRING)
+	{
+		std::string member = "";
+		if (is_prompt)
+			member = ".buffer";
+
+		switch (out_slot)
+		{
+			case NODE_SLOT::EMPTY: break;
+			case NODE_SLOT::BOOL:
+			{
+				type = "bool";
+				rhs = fmt::format("string_to_bool({:s}{:s})", lhs_name, member);
+				break;
+			}
+			case NODE_SLOT::INTEGER:
+			{
+				type = "int";
+				rhs = fmt::format("strtol({:s}{:s}, NULL, 10)", lhs_name, member);
+				break;
+			}
+			case NODE_SLOT::FLOAT:
+			{
+				type = "float";
+				rhs = fmt::format("strtof({:s}{:s}, NULL)", lhs_name, member);
+				break;
+			}
+			case NODE_SLOT::DOUBLE:
+			{
+				type = "double";
+				rhs = fmt::format("strtod({:s}{:s}, NULL)", lhs_name, member);
+				break;
+			}
+			case NODE_SLOT::STRING: break;
+		}
+
+		if (val_only)
+			str.append(fmt::format("{:s}", rhs));
+		else
+		{
+			str.append(indent())
+				.append(fmt::format("{:s} {:s} = {:s};", type, node_cast->m_name, rhs))
+				.append("\n");
+		}
+	}
+
+	return str;
 }
 
 std::string node_array(NodeArray* node_array)

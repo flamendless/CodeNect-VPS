@@ -5,6 +5,7 @@
 #include "node/node_array.hpp"
 #include "node/node_print.hpp"
 #include "node/node_prompt.hpp"
+#include "node/node_cast.hpp"
 
 namespace CodeNect::NodeToCode
 {
@@ -14,6 +15,7 @@ std::string to_array(NodeArray*);
 std::string comment(Node*);
 
 std::string node_var(NodeVariable*);
+std::string node_cast(NodeCast*, bool, std::string& pre);
 std::string node_array(NodeArray*);
 std::string node_print(NodePrint*);
 std::string node_prompt(NodePrompt*);

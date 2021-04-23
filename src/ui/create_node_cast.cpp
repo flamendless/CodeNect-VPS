@@ -38,7 +38,7 @@ void CreateNode::draw_cast(void)
 	{
 		for (NODE_SLOT slot : NODE_SLOT::_values())
 		{
-			if (slot == +NODE_SLOT::EMPTY || slot == +NODE_SLOT::STRING)
+			if (slot == +NODE_SLOT::EMPTY)
 				continue;
 
 			ImGui::PushID(slot);

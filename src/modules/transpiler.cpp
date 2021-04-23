@@ -21,6 +21,7 @@
 #include "node/node_math.hpp"
 #include "node/node_array.hpp"
 #include "node/node_var.hpp"
+#include "node/node_cast.hpp"
 #include "core/project.hpp"
 #include "core/utils.hpp"
 
@@ -91,6 +92,7 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs, 
 	//includes
 	bool has_io = false;
 	bool has_math = false;
+	bool has_cast = false;
 	bool has_stdlib = false;
 	bool has_d_a_bool = false;
 	bool has_d_a_int = false;
@@ -112,14 +114,20 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs, 
 		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(*it);
 		NodeMath* node_math = dynamic_cast<NodeMath*>(*it);
 		NodeArray* node_array = dynamic_cast<NodeArray*>(*it);
+		NodeCast* node_cast = dynamic_cast<NodeCast*>(*it);
 
-		if (!has_io && (node_print || node_prompt))
+		if (!has_io && (node_print || node_prompt) && !is_tcc)
 		{
-			if (!is_tcc)
-			{
-				str_incl.append(Templates::incl_stdio);
-				has_io = true;
-			}
+			str_incl.append(Templates::incl_stdio);
+			has_io = true;
+		}
+
+		if (!has_cast && node_cast)
+		{
+			str_incl.append(Templates::incl_string);
+			str_structs.append(Templates::def_cast);
+			has_cast = true;
+			continue;
 		}
 
 		if (!has_prompt && node_prompt)
@@ -141,13 +149,10 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs, 
 
 		if (node_array && node_array->m_array == +NODE_ARRAY::DYNAMIC)
 		{
-			if (!has_stdlib)
+			if (!has_stdlib && !is_tcc)
 			{
-				if (!is_tcc)
-				{
-					str_incl.append(Templates::incl_stdlib);
-					has_stdlib = true;
-				}
+				str_incl.append(Templates::incl_stdlib);
+				has_stdlib = true;
 			}
 
 			switch (node_array->m_slot)
@@ -211,30 +216,57 @@ void Transpiler::transpile_decls(std::vector<Node*>& v, std::string& output)
 		it++)
 	{
 		Node* node = *it;
-		NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
-		NodeArray* node_array = dynamic_cast<NodeArray*>(node);
-		NodePrint* node_print = dynamic_cast<NodePrint*>(node);
-		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
+		switch (node->m_kind)
+		{
+			case NODE_KIND::EMPTY: break;
+			case NODE_KIND::VARIABLE:
+			{
+				NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
+				output.append(NodeToCode::comment(node));
+				output.append(NodeToCode::node_var(node_var));
+				break;
+			}
 
-		if (node_var)
-		{
-			output.append(NodeToCode::comment(node));
-			output.append(NodeToCode::node_var(node_var));
-		}
-		else if (node_array)
-		{
-			output.append(NodeToCode::comment(node));
-			output.append(NodeToCode::node_array(node_array));
-		}
-		else if (node_print)
-		{
-			output.append(NodeToCode::comment(node));
-			output.append(NodeToCode::node_print(node_print));
-		}
-		else if (node_prompt)
-		{
-			output.append(NodeToCode::comment(node));
-			output.append(NodeToCode::node_prompt(node_prompt));
+			case NODE_KIND::DS:
+			{
+				NodeDS* node_ds = static_cast<NodeDS*>(node);
+				switch (node_ds->m_ds)
+				{
+					case NODE_DS::EMPTY: break;
+					case NODE_DS::ARRAY:
+					{
+						NodeArray* node_array = dynamic_cast<NodeArray*>(node);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::node_array(node_array));
+						break;
+					}
+				}
+				break;
+			}
+
+			case NODE_KIND::ACTION:
+			{
+				NodeAction* node_action = static_cast<NodeAction*>(node);
+				switch (node_action->m_action)
+				{
+					case NODE_ACTION::EMPTY: break;
+					case NODE_ACTION::PRINT:
+					{
+						NodePrint* node_print = dynamic_cast<NodePrint*>(node);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::node_print(node_print));
+						break;
+					}
+					case NODE_ACTION::PROMPT:
+					{
+						NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::node_prompt(node_prompt));
+						break;
+					}
+				}
+				break;
+			}
 		}
 	}
 }
@@ -246,30 +278,59 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 		it++)
 	{
 		Node* node = *it;
-		NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
-		NodeArray* node_array = dynamic_cast<NodeArray*>(node);
-		NodePrint* node_print = dynamic_cast<NodePrint*>(node);
-		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
+		switch (node->m_kind)
+		{
+			case NODE_KIND::EMPTY: break;
+			case NODE_KIND::VARIABLE:
+			{
+				NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
+				output.append(NodeToCode::comment(node));
+				output.append(NodeToCode::node_var(node_var));
+				break;
+			}
 
-		if (node_var)
-		{
-			output.append(NodeToCode::comment(node));
-			output.append(NodeToCode::node_var(node_var));
-		}
-		else if (node_array)
-		{
-			output.append(NodeToCode::comment(node));
-			output.append(NodeToCode::node_array(node_array));
-		}
-		else if (node_print)
-		{
-			output.append(NodeToCode::comment(node));
-			output.append(NodeToCode::node_print(node_print));
-		}
-		else if (node_prompt)
-		{
-			output.append(NodeToCode::comment(node));
-			output.append(NodeToCode::node_prompt(node_prompt));
+			case NODE_KIND::DS:
+			{
+				NodeDS* node_ds = static_cast<NodeDS*>(node);
+				switch (node_ds->m_ds)
+				{
+					case NODE_DS::EMPTY: break;
+					case NODE_DS::ARRAY:
+					{
+						NodeArray* node_array = dynamic_cast<NodeArray*>(node);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::node_array(node_array));
+						break;
+					}
+				}
+				break;
+			}
+
+			case NODE_KIND::ACTION:
+			{
+				NodeAction* node_action = static_cast<NodeAction*>(node);
+				switch (node_action->m_action)
+				{
+					case NODE_ACTION::EMPTY: break;
+					case NODE_ACTION::PRINT:
+					{
+						NodePrint* node_print = dynamic_cast<NodePrint*>(node);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::node_print(node_print));
+						break;
+					}
+					case NODE_ACTION::PROMPT:
+					{
+						NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::node_prompt(node_prompt));
+						break;
+					}
+				}
+				break;
+			}
+
+			case NODE_KIND::CAST: break;
 		}
 	}
 }
@@ -378,7 +439,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		.append(fmt::format("//Author: {:s}\n", Project::meta.author))
 		.append("//C code generated by CodeNect\n\n")
 		.append(Templates::s_incl_section)
-		.append(str_incl).append("\n")
+		.append(str_incl)
 		.append(Templates::e_incl_section)
 
 		.append(Templates::s_structs_section)
