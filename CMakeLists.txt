@@ -61,6 +61,7 @@ add_executable(CodeNect
 
 	src/ui/about.cpp
 	src/ui/alert.cpp
+	src/ui/button.cpp
 	src/ui/command_palette.cpp
 	src/ui/create_node_array.cpp
 	src/ui/create_node_array_access.cpp

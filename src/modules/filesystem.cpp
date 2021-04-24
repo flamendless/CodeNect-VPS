@@ -92,7 +92,7 @@ int load_texture_from_file(const char* filename, CodeNect::Image& image)
 
 	int img_width = 0;
 	int img_height = 0;
-	unsigned char* img_data = stbi_load(filename, &img_width, &img_height, NULL, 4);
+	unsigned char* img_data = stbi_load(filename, &img_width, &img_height, NULL, STBI_rgb_alpha);
 
 	PLOGV << "loaded texture from file: " << "width: " << img_width
 		<< " , height: " << img_height;
@@ -125,6 +125,6 @@ int load_texture_from_file(const char* filename, CodeNect::Image& image)
 
 unsigned char* load_texture_from_file(const char* filename, GLFWimage& image)
 {
-	return stbi_load(filename, &image.width, &image.height, 0, 4);
+	return stbi_load(filename, &image.width, &image.height, 0, STBI_rgb_alpha);
 }
 }
