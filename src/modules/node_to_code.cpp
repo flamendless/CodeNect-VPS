@@ -12,21 +12,29 @@ using m = std::map<std::string, fn>;
 //in -> out
 std::map<std::string, m> m_cast
 {
+	{"BOOL", {
+			{"INTEGER", [](std::string& lhs_name, std::string&) -> std::string
+				{ return fmt::format("({:s} ? 1 : 0)", lhs_name); },
+			},
+			{"STRING", [](std::string& lhs_name, std::string&) -> std::string
+				{ return fmt::format("bool_to_string({:s})", lhs_name); },
+			}
+		}
+	},
 	{"INTEGER", {
-			{"BOOL", [](std::string& lhs_name, std::string& pre) -> std::string
+			{"BOOL", [](std::string& lhs_name, std::string&) -> std::string
 				{ return fmt::format("int_to_bool({:s})", lhs_name); },
 			},
-			{"FLOAT", [](std::string& lhs_name, std::string& pre) -> std::string
+			{"FLOAT", [](std::string& lhs_name, std::string&) -> std::string
 				{ return fmt::format("(float)({:s})", lhs_name); },
 			},
-			{"DOUBLE", [](std::string& lhs_name, std::string& pre) -> std::string
+			{"DOUBLE", [](std::string& lhs_name, std::string&) -> std::string
 				{ return fmt::format("(double)({:s})", lhs_name); },
 			},
 			{"STRING", [](std::string& lhs_name, std::string& pre) -> std::string
 				{
 					std::string buffer_name = Transpiler::get_temp_name(lhs_name.c_str());
-					pre
-						.append(indent())
+					pre.append(indent())
 						.append(fmt::format("char {:s}[{:d}];", buffer_name, 256)).append("\n")
 						.append(indent())
 						.append(fmt::format("sprintf({:s}, \"%d\", {});", buffer_name, lhs_name)).append("\n");
@@ -35,23 +43,63 @@ std::map<std::string, m> m_cast
 			}
 		},
 	},
+
+	{"FLOAT", {
+			{"INTEGER", [](std::string& lhs_name, std::string&) -> std::string
+				{ return fmt::format("(int){:s}", lhs_name); },
+			},
+			{"DOUBLE", [](std::string& lhs_name, std::string&) -> std::string
+				{ return fmt::format("(double){:s}", lhs_name); },
+			},
+			{"STRING", [](std::string& lhs_name, std::string& pre) -> std::string
+				{
+					std::string buffer_name = Transpiler::get_temp_name(lhs_name.c_str());
+					pre.append(indent())
+						.append(fmt::format("char {:s}[{:d}];", buffer_name, 256)).append("\n")
+						.append(indent())
+						.append(fmt::format("sprintf({:s}, \"%f\", {});", buffer_name, lhs_name)).append("\n");
+					return fmt::format("{:s}", buffer_name);
+				},
+			}
+		}
+	},
+
+	{"DOUBLE", {
+			{"INTEGER", [](std::string& lhs_name, std::string&) -> std::string
+				{ return fmt::format("(int){:s}", lhs_name); },
+			},
+			{"FLOAT", [](std::string& lhs_name, std::string&) -> std::string
+				{ return fmt::format("(float){:s}", lhs_name); },
+			},
+			{"STRING", [](std::string& lhs_name, std::string& pre) -> std::string
+				{
+					std::string buffer_name = Transpiler::get_temp_name(lhs_name.c_str());
+					pre.append(indent())
+						.append(fmt::format("char {:s}[{:d}];", buffer_name, 256)).append("\n")
+						.append(indent())
+						.append(fmt::format("sprintf({:s}, \"%lf\", {});", buffer_name, lhs_name)).append("\n");
+					return fmt::format("{:s}", buffer_name);
+				},
+			}
+		}
+	},
+
 	{"STRING", {
-			{"BOOL", [](std::string& lhs_name, std::string& pre) -> std::string
+			{"BOOL", [](std::string& lhs_name, std::string&) -> std::string
 				{ return fmt::format("string_to_bool({:s})", lhs_name); },
 			},
-			{"INTEGER", [](std::string& lhs_name, std::string& pre) -> std::string
+			{"INTEGER", [](std::string& lhs_name, std::string&) -> std::string
 				{ return fmt::format("strtol({:s}, NULL, 10)", lhs_name); },
 			},
-			{"FLOAT", [](std::string& lhs_name, std::string& pre) -> std::string
+			{"FLOAT", [](std::string& lhs_name, std::string&) -> std::string
 				{ return fmt::format("strtof({:s}, NULL)", lhs_name); },
 			},
-			{"DOUBLE", [](std::string& lhs_name, std::string& pre) -> std::string
+			{"DOUBLE", [](std::string& lhs_name, std::string&) -> std::string
 				{ return fmt::format("strtod({:s}, NULL)", lhs_name); },
 			},
 		}
 	},
 };
-
 
 std::string indent(void)
 {
@@ -131,6 +179,7 @@ std::string node_var(NodeVariable* node_var)
 			NodePrompt* out_node_prompt = dynamic_cast<NodePrompt*>(out_node);
 			NodePrint* out_node_print = dynamic_cast<NodePrint*>(out_node);
 			NodeCast* out_node_cast = dynamic_cast<NodeCast*>(out_node);
+			NodeOperation* out_node_op = dynamic_cast<NodeOperation*>(out_node);
 
 			if (out_node_var)
 				val = out_node_var->m_name;
@@ -140,6 +189,8 @@ std::string node_var(NodeVariable* node_var)
 				val = fmt::format("\"{:s}\"", out_node_print->m_orig_str);
 			else if (out_node_cast)
 				val = NodeToCode::node_cast(out_node_cast, true, str);
+			else if (out_node_op)
+				val = NodeToCode::node_op(out_node_op, true, str);
 		}
 	}
 
@@ -178,6 +229,39 @@ std::string node_cast(NodeCast* node_cast, bool val_only, std::string& pre)
 			.append(fmt::format("{:s} {:s} = {:s}", type, node_cast->m_name, rhs))
 			.append("\n");
 	}
+
+	return str;
+}
+
+std::string node_op(NodeOperation* node_op, bool val_only, std::string& pre)
+{
+	std::string str = "";
+	std::string rhs = "";
+	std::string op = node_op->get_op();
+	std::vector<std::string> v_elements;
+	//possible LHS: node_var, node_cast
+	for (const Connection& connection : node_op->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node == node_op)
+			continue;
+
+		NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
+		if (out_node_var)
+			v_elements.push_back(out_node_var->m_name);
+	}
+
+	for (int i = 0; i < v_elements.size(); i++)
+	{
+		std::string& str = v_elements[i];
+		rhs.append(str);
+
+		if (i < v_elements.size() - 1)
+			rhs.append(" ").append(op).append(" ");
+	}
+
+	if (val_only)
+		str = rhs;
 
 	return str;
 }

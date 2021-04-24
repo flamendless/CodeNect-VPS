@@ -18,7 +18,7 @@ struct NodeValue
 	void div(NodeValue& to_div);
 	void mod(NodeValue& to_div);
 
-	void cast_from(NodeValue& from_val);
+	bool cast_from(NodeValue& from_val);
 
 	bool is_eq_to(NodeValue& other);
 	bool is_neq_to(NodeValue& other);

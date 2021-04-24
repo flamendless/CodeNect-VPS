@@ -107,12 +107,11 @@ void NodeValue::mod(NodeValue& other)
 	}
 }
 
-void NodeValue::cast_from(NodeValue& from_val)
+bool NodeValue::cast_from(NodeValue& from_val)
 {
 	switch (from_val.m_slot)
 	{
 		case NODE_SLOT::EMPTY: break;
-		case NODE_SLOT::STRING: break;
 		case NODE_SLOT::BOOL:
 		{
 			bool from_v = std::get<bool>(from_val.data);
@@ -161,7 +160,49 @@ void NodeValue::cast_from(NodeValue& from_val)
 				this->set(std::to_string(from_v));
 			break;
 		}
+		case NODE_SLOT::STRING:
+		{
+			std::string from_v = std::get<std::string>(from_val.data);
+
+			if (m_slot == +NODE_SLOT::BOOL)
+			{
+				if (from_v == "true")
+					this->set(true);
+				else
+					this->set(false);
+			}
+			else if (m_slot == +NODE_SLOT::INTEGER)
+			{
+				try
+				{
+					int i = std::stoi(from_v);
+					this->set(i);
+				}
+				catch (std::invalid_argument& e) { return false; }
+			}
+			else if (m_slot == +NODE_SLOT::FLOAT)
+			{
+				try
+				{
+					float i = std::stof(from_v);
+					this->set(i);
+				}
+				catch (std::invalid_argument& e) { return false; }
+			}
+			else if (m_slot == +NODE_SLOT::STRING)
+			{
+				try
+				{
+					double i = std::stod(from_v);
+					this->set(i);
+				}
+				catch (std::invalid_argument& e) { return false; }
+			}
+			break;
+		}
 	}
+
+	return true;
 }
 
 bool NodeValue::is_eq_to(NodeValue& other)

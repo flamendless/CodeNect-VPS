@@ -28,12 +28,13 @@ void process_cast(void)
 
 		//store
 		NodeValue* from_val = nullptr;
+		Connection* conn = nullptr;
 
 		//get the lhs
 		for (Connection& connection : node_cast->m_connections)
 		{
-			if (from_val)
-				NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
+			if (conn)
+				break;
 
 			Node* out_node = static_cast<Node*>(connection.out_node);
 			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
@@ -52,6 +53,8 @@ void process_cast(void)
 				from_val = out_node_arr_access->m_current_val;
 			else if (out_node_size)
 				from_val = &out_node_size->m_val_size;
+
+			conn = &connection;
 		}
 
 		if (!from_val)
@@ -61,7 +64,9 @@ void process_cast(void)
 
 		NodeValue* res = new NodeValue();
 		res->copy(out_slot);
-		res->cast_from(*from_val);
+		bool success = res->cast_from(*from_val);
+		if (!success)
+			NodeColors::set_connection_color(*conn, COLOR_TYPE::FALSE);
 		node_cast->m_current_val = res;
 	}
 }

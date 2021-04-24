@@ -22,6 +22,7 @@
 #include "node/node_array.hpp"
 #include "node/node_var.hpp"
 #include "node/node_cast.hpp"
+#include "node/node_op.hpp"
 #include "core/project.hpp"
 #include "core/utils.hpp"
 
@@ -127,7 +128,12 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs, 
 			str_incl.append(Templates::incl_string);
 			str_structs.append(Templates::def_cast);
 			has_cast = true;
-			continue;
+		}
+
+		if (!has_stdlib && node_cast)
+		{
+			str_incl.append(Templates::incl_stdlib);
+			has_stdlib = true;
 		}
 
 		if (!has_prompt && node_prompt)
@@ -283,7 +289,7 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 			case NODE_KIND::EMPTY: break;
 			case NODE_KIND::VARIABLE:
 			{
-				NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
+				NodeVariable* node_var = static_cast<NodeVariable*>(node);
 				output.append(NodeToCode::comment(node));
 				output.append(NodeToCode::node_var(node_var));
 				break;
@@ -297,7 +303,7 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 					case NODE_DS::EMPTY: break;
 					case NODE_DS::ARRAY:
 					{
-						NodeArray* node_array = dynamic_cast<NodeArray*>(node);
+						NodeArray* node_array = static_cast<NodeArray*>(node);
 						output.append(NodeToCode::comment(node));
 						output.append(NodeToCode::node_array(node_array));
 						break;
@@ -314,14 +320,14 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 					case NODE_ACTION::EMPTY: break;
 					case NODE_ACTION::PRINT:
 					{
-						NodePrint* node_print = dynamic_cast<NodePrint*>(node);
+						NodePrint* node_print = static_cast<NodePrint*>(node);
 						output.append(NodeToCode::comment(node));
 						output.append(NodeToCode::node_print(node_print));
 						break;
 					}
 					case NODE_ACTION::PROMPT:
 					{
-						NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
+						NodePrompt* node_prompt = static_cast<NodePrompt*>(node);
 						output.append(NodeToCode::comment(node));
 						output.append(NodeToCode::node_prompt(node_prompt));
 						break;
@@ -331,6 +337,13 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 			}
 
 			case NODE_KIND::CAST: break;
+			// case NODE_KIND::OPERATION:
+			// {
+			// 	NodeOperation* node_op = static_cast<NodeOperation*>(node);
+			// 	output.append(NodeToCode::comment(node));
+			// 	output.append(NodeToCode::node_op(node_op));
+			// 	break;
+			// }
 		}
 	}
 }

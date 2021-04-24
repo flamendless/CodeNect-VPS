@@ -22,9 +22,9 @@ std::map<std::string, std::function<double(double, double)>> NodeMath::m_functio
 {
 	{"ROOT", [](double a, double b) -> double { return std::pow(b, 1.0/(int)a); }},
 	{"POW", [](double a, double b) -> double { return std::pow(a, b); }},
-	{"SIN", [](double a, double b) -> double { return std::sin(a); }},
-	{"COS", [](double a, double b) -> double { return std::cos(a); }},
-	{"TAN", [](double a, double b) -> double { return std::tan(a); }},
+	{"SIN", [](double a, double) -> double { return std::sin(a); }},
+	{"COS", [](double a, double) -> double { return std::cos(a); }},
+	{"TAN", [](double a, double) -> double { return std::tan(a); }},
 };
 
 NodeMath::NodeMath(
