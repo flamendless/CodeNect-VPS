@@ -126,6 +126,21 @@ std::string slot_to_str(NODE_SLOT& slot)
 	return "";
 }
 
+std::string slot_to_spec(NODE_SLOT& slot)
+{
+	switch (slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: return "%d"; break;
+		case NODE_SLOT::INTEGER: return "%d"; break;
+		case NODE_SLOT::FLOAT: return "%f"; break;
+		case NODE_SLOT::DOUBLE: return "%lf"; break;
+		case NODE_SLOT::STRING: return "%s"; break;
+	}
+	PPK_ASSERT(false, "this should not be reached");
+	return "";
+}
+
 std::string to_array(NodeArray* node_array)
 {
 	std::vector<std::string> vec;
@@ -238,7 +253,10 @@ std::string node_op(NodeOperation* node_op, bool val_only, std::string& pre)
 	std::string str = "";
 	std::string rhs = "";
 	std::string op = node_op->get_op();
+	NODE_SLOT type = NODE_SLOT::_from_string(node_op->m_in_slots[0].title);
 	std::vector<std::string> v_elements;
+	bool string_concat = false;
+
 	//possible LHS: node_var, node_cast
 	for (const Connection& connection : node_op->m_connections)
 	{
@@ -247,17 +265,79 @@ std::string node_op(NodeOperation* node_op, bool val_only, std::string& pre)
 			continue;
 
 		NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
+		NodeCast* out_node_cast = dynamic_cast<NodeCast*>(out_node);
+
 		if (out_node_var)
 			v_elements.push_back(out_node_var->m_name);
+
+		if (out_node_cast)
+		{
+			if (type == +NODE_SLOT::STRING)
+			{
+				std::string str_cast = NodeToCode::node_cast(out_node_cast, true, pre);
+				v_elements.push_back(Transpiler::recent_temp);
+				string_concat = true;
+				//get all the references (lhs)
+				// for (const Connection& connection : out_node_cast->m_connections)
+				// {
+				// 	Node* in_node = static_cast<Node*>(connection.in_node);
+				// 	if (in_node != out_node_cast)
+				// 		v_elements.push_back(in_node->m_name);
+				// }
+
+  	  	  	  // char* buffer3 = malloc(sizeof(char) * (strlen(buffer) + strlen(buffer2)));
+  	  	  	  // strcpy(buffer3, buffer);
+  	  	  	  // strcat(buffer3, buffer2);
+              //
+			  // std::string size_a = fmt::format("sizeof({:s})", a);
+			  // std::string size_b = fmt::format("sizeof({:s})", b);
+			}
+			else
+			{
+				std::string str_cast = NodeToCode::node_cast(out_node_cast, true, pre);
+				v_elements.push_back(str_cast);
+			}
+		}
 	}
 
-	for (int i = 0; i < v_elements.size(); i++)
+	if (string_concat)
 	{
-		std::string& str = v_elements[i];
-		rhs.append(str);
+		std::string buf_name = Transpiler::get_temp_name(node_op->m_name);
+		std::string str_size = "";
+		std::string str_cat = "";
+		str_cat.append(fmt::format("strcpy({:s}, {:s});", buf_name, v_elements[0]))
+			.append("\n");
 
-		if (i < v_elements.size() - 1)
-			rhs.append(" ").append(op).append(" ");
+		for (int i = 0; i < v_elements.size(); i++)
+		{
+			std::string& ref = v_elements[i];
+			str_size.append(fmt::format("strlen({:s})", ref));
+
+			if (i != 0)
+			{
+				str_cat.append(indent())
+					.append(fmt::format("strcat({:s}, {:s});", buf_name, ref))
+					.append("\n");
+			}
+
+			if (i < v_elements.size() - 1)
+				str_size.append(" + ");
+		}
+		std::string str_buf = fmt::format("char* {:s} = malloc(sizeof(char) * ({:s}));", buf_name, str_size);
+		pre.append(indent()).append(str_buf).append("\n");
+		pre.append(indent()).append(str_cat).append("\n");
+		rhs = buf_name;
+	}
+	else
+	{
+		for (int i = 0; i < v_elements.size(); i++)
+		{
+			std::string& str = v_elements[i];
+			rhs.append(str);
+
+			if (i < v_elements.size() - 1)
+				rhs.append(" ").append(op).append(" ");
+		}
 	}
 
 	if (val_only)
@@ -370,6 +450,7 @@ std::string node_print(NodePrint* node_print)
 			{
 				NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
 				NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
+				NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
 
 				if (node_var)
 				{
@@ -381,6 +462,14 @@ std::string node_print(NodePrint* node_print)
 				{
 					other_spec = "%s";
 					other_val = fmt::format("{:s}.buffer", node_prompt->m_name);
+				}
+
+				if (node_op)
+				{
+					NODE_SLOT slot = NODE_SLOT::_from_string(node_op->m_out_slots[0].title);
+					other_spec = slot_to_spec(slot);
+					std::string rhs = NodeToCode::node_op(node_op, true, str);
+					other_val = fmt::format("({:s})", rhs);
 				}
 			}
 		}

@@ -12,6 +12,7 @@ namespace CodeNect::NodeToCode
 {
 std::string indent(void);
 std::string slot_to_str(NODE_SLOT&);
+std::string slot_to_spec(NODE_SLOT&);
 std::string to_array(NodeArray*);
 std::string comment(Node*);
 

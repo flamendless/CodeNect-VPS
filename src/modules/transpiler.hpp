@@ -24,6 +24,7 @@ struct Transpiler
 	static int level;
 	static bool has_ran;
 	static bool has_compiled;
+	static std::string recent_temp;
 
 	Transpiler() = delete;
 	static int init(void);

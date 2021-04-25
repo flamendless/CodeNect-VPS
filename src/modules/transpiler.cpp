@@ -37,6 +37,7 @@ std::map<std::string, bool> Transpiler::m_temp_names;
 int Transpiler::level = 0;
 bool Transpiler::has_ran = false;
 bool Transpiler::has_compiled = false;
+std::string Transpiler::recent_temp = "";
 
 int Transpiler::init(void)
 {
@@ -84,6 +85,7 @@ std::string Transpiler::get_temp_name(const char* name)
 		out_name.append("_" + std::to_string(i));
 	}
 	Transpiler::m_temp_names.insert({out_name, true});
+	Transpiler::recent_temp = out_name;
 	return out_name;
 }
 
@@ -480,6 +482,7 @@ int Transpiler::compile(void)
 	Terminal::is_open = true;
 	PLOGI << "Compiling code...";
 
+	Transpiler::recent_temp.clear();
 	Transpiler::output_code.clear();
 	Transpiler::runnable_code.clear();
 	// Transpiler::build_runnable_code(Transpiler::output_code, false);
