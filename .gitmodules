@@ -22,3 +22,6 @@
 [submodule "includes/color_text_edit"]
 	path = includes/color_text_edit
 	url = https://github.com/BalazsJako/ImGuiColorTextEdit
+[submodule "includes/imgui_markdown"]
+	path = includes/imgui_markdown
+	url = https://github.com/juliettef/imgui_markdown

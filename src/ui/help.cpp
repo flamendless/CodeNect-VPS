@@ -5,6 +5,7 @@
 #include "core/commands.hpp"
 #include "core/utils.hpp"
 #include "core/font.hpp"
+#include "core/config.hpp"
 #include "ui/alert.hpp"
 #include "node/node_colors.hpp"
 
@@ -57,51 +58,93 @@ Help::tuple_colors_t Help::v_node_colors_items
 	help_tc("Violet", "node is of kind 'Math'", NodeColors::Lookup::VIOLET),
 };
 
-Help::pair_t Help::v_dictionary_items
-{
-	help_p("Connection", "links the data between nodes"),
-	help_p("Node", "basic building block that can be connected with each other"),
-	help_p("Variable Node", "used for storing arbitrary value"),
-	help_p("Operation Node", "used for performing basic operation on values such as:\naddition, subtraction, multiplication, and division"),
-	help_p("Cast Node", "used for converting one data type to another"),
-	help_p("Comparison Node", "used for comparing values using:\nequal, not equal, less than, greater than,\nless than or equals to, greater than or equals to,\nor, and and"),
-	help_p("Branch Node", "used for redirecting evaluation flow based on the boolean input.\nThis works the same as an if-statement"),
-	help_p("Action Node", "used for executing higher-level commands such as:\nprinting text to screen, prompting for user input, and more"),
-	help_p("Math Node", "used for performing Math functions and getting numbers such as:\nroot, power, sine, cosine, and tangent"),
-	help_p("Data Structure Node", "used for creating data structure like array"),
-	help_p("Get Node", "used for getting/accessing value like\nfrom array, size of array, and length of string"),
+std::string Help::str_md_dictionary = u8R"(  * Connection - links the data between nodes
+  * Node - basic building block that can be connected with each other
+  * Variable Node - used for storing arbitrary value
+  * Operation Node - used for performing basic operation on values such as:
+    * addition
+    * subtraction
+    * multiplication
+  * division
+  * Cast Node - used for converting one data type to another
+  * Comparison Node - used for comparing values using:
+    * equal
+    * not equal
+    * less than
+    * greater than
+    * less than or equals to
+    * greater than or equals to
+    * or
+    * and
+  * Branch Node - used for redirecting evaluation flow based on the boolean input. This works the same as an if-statement
+  * Action Node - used for executing higher-level commands such as
+    * printing text to screen
+    * prompting for user input
+  * Math Node - used for performing Math functions and getting numbers such as:
+    * root
+    * power
+    * sine
+    * cosine
+    * tangent
+  * Data Structure Node - used for creating data structure like array
+  * Get Node - used for getting/accessing value like from array, size of array, and length of string
+  * Slots - input or output ID used for connection of nodes. Only matching slot type can be connected
+  * Boolean Slot - data type for true or false value. Only zero value is evaluated as 'false', otherwise it is 'true'
+  * Integer Slot - data type for integer or whole number (no decimal)
+  * Float Slot - data type for single-precision number (can store more integer data type)
+  * Double Slot - data type for double-precision number (can store more than float data type)
+  * String Slot - data type for a series or array of characters
+)";
 
-	help_p("Slots", "input or output ID used for connection of nodes.\nOnly matching slot type can be connected"),
-	help_p("Boolean Slot", "data type for true or false value.\nOnly zero value is evaluated as 'false', otherwise it is 'true'"),
-	help_p("Integer Slot", "data type for integer or whole number\n(no decimal)"),
-	help_p("Float Slot", "data type for single-precision number\n(can store more integer data type)"),
-	help_p("Double Slot", "data type for double-precision number\n(can store more than float data type)"),
-	help_p("String Slot", "data type for a series or array of characters"),
-};
+std::string Help::str_md_libs = u8R"(  * [better-enums](https://github.com/aantron/better-enums)
+  * [ImGuiColorTextEdit](https://github.com/BalazsJako/ImGuiColorTextEdit)
+  * [fmt](https://github.com/fmtlib/fmt)
+  * [IconFontCppHeaders](https://github.com/juliettef/IconFontCppHeaders)
+  * [DearImGui](https://github.com/ocornut/imgui)
+  * [ImGuiMarkdown](https://github.com/juliettef/imgui_markdown)
+  * [ImNodes](https://github.com/rokups/ImNodes)
+  * [nativefiledialog](https://github.com/mlabbe/nativefiledialog/)
+  * [plog](https://github.com/SergiusTheBest/plog)
+  * [PPK_ASSERT](https://github.com/gpakosz/PPK_ASSERT)
+  * [simpleini](https://github.com/brofield/simpleini/)
+  * [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h)
+  * [TinyC Compiler](https://bellard.org/tcc)
+  * [Tweeny](https://github.com/mobius3/tweeny)
+  * [CppVerbalExpressions](https://github.com/VerbalExpressions/CppVerbalExpressions/)
+)";
 
-Help::pair_t Help::v_support_items
-{
-	help_p(ICON_FA_ENVELOPE " E-Mail:", "mailto:flamendless8@gmail.com"),
-	help_p(ICON_FA_GITHUB " Github:", "https://github.com/flamendless/CodeNect-VPS"),
-};
+std::string Help::str_md_support =
+	ICON_FA_ENVELOPE "  "
+	u8R"([E-Mail](mailto:flamendless8@gmail.com))"
+	"\n"
+	ICON_FA_GITHUB "  "
+	u8R"([CodeNect Repository](https://github.com/flamendless/CodeNect-VPS))";
 
-Help::pair_t Help::v_libs_items
+void md_format_cb(const ImGui::MarkdownFormatInfo& md_info, bool start)
 {
-	help_p("better-enums", "https://github.com/aantron/better-enums"),
-	help_p("ImGuiColorTextEdit", "https://github.com/BalazsJako/ImGuiColorTextEdit"),
-	help_p("fmt", "https://github.com/fmtlib/fmt"),
-	help_p("IconFontCppHeaders", "https://github.com/juliettef/IconFontCppHeaders"),
-	help_p("DearImGui", "https://github.com/ocornut/imgui"),
-	help_p("ImNodes", "https://github.com/rokups/ImNodes"),
-	help_p("nativefiledialog", "https://github.com/mlabbe/nativefiledialog/"),
-	help_p("plog", "https://github.com/SergiusTheBest/plog"),
-	help_p("PPK_ASSERT", "https://github.com/gpakosz/PPK_ASSERT"),
-	help_p("simpleini", "https://github.com/brofield/simpleini/"),
-	help_p("stb_image", "https://github.com/nothings/stb/blob/master/stb_image.h"),
-	help_p("TinyC Compiler", "https://bellard.org/tcc"),
-	help_p("Tweeny", "https://github.com/mobius3/tweeny"),
-	help_p("CppVerbalExpressions", "https://github.com/VerbalExpressions/CppVerbalExpressions/"),
-};
+	ImGui::defaultMarkdownFormatCallback(md_info, start);
+}
+
+void md_link_cb(ImGui::MarkdownLinkCallbackData data)
+{
+	std::string url(data.link, data.linkLength);
+	if (!data.isImage)
+		Utils::open_url(url.c_str());
+}
+
+void Help::markdown(const std::string& str_md)
+{
+	Font::md_config.linkCallback = md_link_cb;
+	Font::md_config.tooltipCallback = NULL;
+	Font::md_config.imageCallback = NULL;
+	Font::md_config.linkIcon = ICON_FA_LINK;
+	Font::md_config.headingFormats[0] = { Font::H1, true };
+	Font::md_config.headingFormats[1] = { Font::H2, true };
+	Font::md_config.headingFormats[2] = { Font::H3, false };
+	Font::md_config.userData = NULL;
+	Font::md_config.formatCallback = md_format_cb;
+	ImGui::Markdown(str_md.c_str(), str_md.length(), Font::md_config);
+}
 
 void Help::register_commands(void)
 {
@@ -130,6 +173,7 @@ void Help::draw()
 
 	ImVec2 center_pos(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
 	ImGui::SetNextWindowPos(center_pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+	ImGui::SetNextWindowSize(ImVec2(640, 480));
 
 	if (!ImGui::IsPopupOpen("AlertPopup"))
 		ImGui::SetNextWindowFocus();
@@ -141,17 +185,28 @@ void Help::draw()
 
 		Help::draw_commands();
 		ImGui::Separator();
-
 		Help::draw_interface();
 		ImGui::Separator();
 
-		Help::draw_dictionary();
+		if (ImGui::TreeNode(ICON_FA_SPELL_CHECK " Dictionary"))
+		{
+			Help::markdown(Help::str_md_dictionary);
+			ImGui::TreePop();
+		}
 		ImGui::Separator();
 
-		Help::draw_libs();
+		if (ImGui::TreeNode(ICON_FA_TOOLS " Libraries/Tools Used"))
+		{
+			Help::markdown(Help::str_md_libs);
+			ImGui::TreePop();
+		}
 		ImGui::Separator();
 
-		Help::draw_support();
+		if (ImGui::TreeNode(ICON_FA_ADDRESS_BOOK " Support/Contacts"))
+		{
+			Help::markdown(Help::str_md_support);
+			ImGui::TreePop();
+		}
 		ImGui::Separator();
 
 		if (ImGui::Button(ICON_FA_TIMES " Close"))
@@ -221,86 +276,6 @@ void Help::draw_interface(void)
 			ImGui::TreePop();
 		}
 		ImGui::TreePop();
-	}
-}
-
-void Help::draw_dictionary(void)
-{
-	if (ImGui::TreeNode(ICON_FA_SPELL_CHECK " Dictionary"))
-	{
-		if (ImGui::BeginTable("TableDictionary", 2, ImGuiTableFlags_Borders))
-		{
-			for (const help_p &item : Help::v_dictionary_items)
-			{
-				ImGui::TableNextRow();
-				ImGui::TableNextColumn();
-				ImGui::Text("%s", item.first);
-				ImGui::TableNextColumn();
-				ImGui::Text("%s", item.second);
-			}
-			ImGui::EndTable();
-		}
-		ImGui::TreePop();
-	}
-}
-
-void Help::draw_libs(void)
-{
-	if (ImGui::TreeNode(ICON_FA_TOOLS " Libraries/Tools Used"))
-	{
-		if (ImGui::BeginTable("TableLibs", 2))
-		{
-			for (const help_p &item : Help::v_libs_items)
-			{
-				ImGui::TableNextRow();
-				ImGui::TableNextColumn();
-				ImGui::Text("%s", item.first);
-
-				ImGui::TableNextColumn();
-				ImGui::PushID(item.second);
-
-				if (ImGui::SmallButton(ICON_FA_EXTERNAL_LINK_ALT))
-				{
-					Utils::open_url(item.second);
-					Alert::open(ALERT_TYPE::SUCCESS, "Link opened in browser");
-				}
-
-				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Open link in browser");
-
-				ImGui::PopID();
-			}
-			ImGui::EndTable();
-		}
-		ImGui::TreePop();
-	}
-}
-
-void Help::draw_support(void)
-{
-	Utils::center_text(ICON_FA_ADDRESS_BOOK " Contacts", true);
-	if (ImGui::BeginTable("TableSupport", 2))
-	{
-		for (const help_p &item : Help::v_support_items)
-		{
-			ImGui::TableNextRow();
-			ImGui::TableNextColumn();
-			ImGui::Text("%s", item.first);
-
-			ImGui::TableNextColumn();
-			ImGui::PushID(item.second);
-
-			if (ImGui::SmallButton(ICON_FA_EXTERNAL_LINK_ALT))
-			{
-				Utils::open_url(item.second);
-				Alert::open(ALERT_TYPE::SUCCESS, "Link opened in browser");
-			}
-
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Open link in browser");
-			ImGui::PopID();
-		}
-		ImGui::EndTable();
 	}
 }
 }

@@ -15,7 +15,14 @@ const char* Font::droid_sans_path = "assets/fonts/DroidSans.ttf";
 const char* Font::cousine_regular_path = "assets/fonts/Cousine-Regular.ttf";
 const char* Font::karla_regular_path = "assets/fonts/Karla-Regular.ttf";
 const char* Font::roboto_medium_path = "assets/fonts/Roboto-Medium.ttf";
+const char* Font::md_path = "assets/fonts/kenyan_coffee.ttf";
+const char* Font::md_bold_path = "assets/fonts/kenyan_coffee_bd.ttf";
 map_fonts Font::fonts;
+
+ImFont* Font::H1;
+ImFont* Font::H2;
+ImFont* Font::H3;
+ImGui::MarkdownConfig Font::md_config;
 
 void Font::init(void)
 {
@@ -55,6 +62,7 @@ void Font::init(void)
 	io.Fonts->AddFontFromFileTTF(Font::fab_path, Config::font_size, &config, icon_ranges);
 
 	Font::init_fonts();
+	Font::init_md_fonts();
 
 	PLOGI << fas_path << " fontawesome loaded successfully";
 }
@@ -88,6 +96,42 @@ void Font::init_fonts(void)
 	}
 
 	PLOGI << "Loaded custom fonts successfully";
+}
+
+void Font::init_md_fonts(void)
+{
+	PLOGI << "Loading font for markdown...";
+
+	const float md_font_size = 24.0f;
+	ImGuiIO& io = ImGui::GetIO();
+	io.Fonts->AddFontFromFileTTF(Font::md_path, md_font_size);
+	static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+	ImFontConfig config;
+	config.MergeMode = true;
+	config.PixelSnapH = true;
+	config.GlyphMinAdvanceX = md_font_size;
+	io.Fonts->AddFontFromFileTTF(Font::fas_path, md_font_size, &config, icon_ranges);
+	io.Fonts->AddFontFromFileTTF(Font::fab_path, md_font_size, &config, icon_ranges);
+
+	Font::H2 = io.Fonts->AddFontFromFileTTF(Font::md_bold_path, md_font_size);
+	ImFontConfig config_h2;
+	config_h2.MergeMode = true;
+	config_h2.PixelSnapH = true;
+	config_h2.GlyphMinAdvanceX = md_font_size;
+	io.Fonts->AddFontFromFileTTF(Font::fas_path, md_font_size, &config_h2, icon_ranges);
+	io.Fonts->AddFontFromFileTTF(Font::fab_path, md_font_size, &config_h2, icon_ranges);
+
+	Font::H3 = md_config.headingFormats[1].font;
+
+	Font::H1 = io.Fonts->AddFontFromFileTTF(Font::md_bold_path, md_font_size * 1.1f);
+	ImFontConfig config_h1;
+	config_h1.MergeMode = true;
+	config_h1.PixelSnapH = true;
+	config_h1.GlyphMinAdvanceX = md_font_size * 1.1f;
+	io.Fonts->AddFontFromFileTTF(Font::fas_path, md_font_size * 1.1f, &config_h1, icon_ranges);
+	io.Fonts->AddFontFromFileTTF(Font::fab_path, md_font_size * 1.1f, &config_h1, icon_ranges);
+
+	PLOGI << "Loaded font for markdown successfully";
 }
 
 CustomFont* Font::get_custom_font(FONT_SIZE size)

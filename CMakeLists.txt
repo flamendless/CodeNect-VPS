@@ -125,6 +125,8 @@ target_include_directories(CodeNect PRIVATE
 	includes/fmt/include
 	# iconfontcppheaders
 	includes/iconfont
+	#imgui_markdown
+	includes/imgui_markdown
 	# imnodes
 	includes/imnodes
 	# simpleini
