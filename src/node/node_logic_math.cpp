@@ -37,7 +37,6 @@ void process_math(void)
 		for (const Connection& connection : node_math->m_connections)
 		{
 			Node* out_node = static_cast<Node*>(connection.out_node);
-			//can be node_var or node_op or node_array_access
 			NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
 			NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
 			NodeArrayAccess* node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);

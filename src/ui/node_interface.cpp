@@ -190,6 +190,13 @@ void NodeInterface::draw_nodes_context_menu(void)
 		if (ImGui::MenuItem("Delete"))
 			current_node->m_to_delete = true;
 
+#if DEBUG_MODE
+		if (ImGui::MenuItem("Print Name"))
+		{
+			PLOGD << current_node->m_name;
+		}
+#endif
+
 		ImGui::EndPopup();
 	}
 }

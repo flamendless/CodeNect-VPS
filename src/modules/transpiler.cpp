@@ -34,6 +34,7 @@ std::string Transpiler::runnable_code = "";
 std::vector<std::pair<std::string, OUTPUT_TYPE>> Transpiler::v_output;
 std::vector<std::string> Transpiler::v_declarations;
 std::map<std::string, bool> Transpiler::m_temp_names;
+std::map<std::string, bool> Transpiler::m_declared;
 int Transpiler::level = 0;
 bool Transpiler::has_ran = false;
 bool Transpiler::has_compiled = false;
@@ -74,6 +75,12 @@ void Transpiler::error(const char* str)
 	Transpiler::v_output.push_back({str, OUTPUT_TYPE::ERROR});
 }
 
+void Transpiler::warning(const char* str)
+{
+	PLOGW << str;
+	Transpiler::v_output.push_back({str, OUTPUT_TYPE::WARNING});
+}
+
 std::string Transpiler::get_temp_name(const char* name)
 {
 	std::string out_name = fmt::format("temp_str_{}", name);
@@ -83,10 +90,33 @@ std::string Transpiler::get_temp_name(const char* name)
 	{
 		//found
 		out_name.append("_" + std::to_string(i));
+		i++;
 	}
 	Transpiler::m_temp_names.insert({out_name, true});
 	Transpiler::recent_temp = out_name;
+
 	return out_name;
+}
+
+std::pair<std::string, bool> Transpiler::get_temp_name(const char* name, bool reuse)
+{
+	std::string out_name = fmt::format("temp_str_{}", name);
+	bool is_found = false;
+	int i = 0;
+	while (Transpiler::m_temp_names.find(out_name) !=
+		Transpiler::m_temp_names.end())
+	{
+		//found
+		is_found = true;
+		if (!reuse)
+			out_name.append("_" + std::to_string(i));
+		else
+			break;
+	}
+	Transpiler::m_temp_names.insert({out_name, true});
+	Transpiler::recent_temp = out_name;
+
+	return std::make_pair<>(out_name, is_found);
 }
 
 //fill the string for includes and structs
@@ -147,11 +177,8 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs, 
 
 		if (!has_math && node_math)
 		{
-			if (!is_tcc)
-			{
-				str_incl.append(Templates::incl_math);
-				has_math = true;
-			}
+			str_incl.append(Templates::incl_math);
+			has_math = true;
 			continue;
 		}
 
@@ -224,6 +251,8 @@ void Transpiler::transpile_decls(std::vector<Node*>& v, std::string& output)
 		it++)
 	{
 		Node* node = *it;
+		Transpiler::m_declared.insert({node->m_name, true});
+
 		switch (node->m_kind)
 		{
 			case NODE_KIND::EMPTY: break;
@@ -286,6 +315,13 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 		it++)
 	{
 		Node* node = *it;
+
+		if (Transpiler::m_declared.find(node->m_name) != Transpiler::m_declared.end())
+			//found
+			continue;
+		else
+			Transpiler::m_declared.insert({node->m_name, true});
+
 		switch (node->m_kind)
 		{
 			case NODE_KIND::EMPTY: break;
@@ -339,13 +375,7 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 			}
 
 			case NODE_KIND::CAST: break;
-			// case NODE_KIND::OPERATION:
-			// {
-			// 	NodeOperation* node_op = static_cast<NodeOperation*>(node);
-			// 	output.append(NodeToCode::comment(node));
-			// 	output.append(NodeToCode::node_op(node_op));
-			// 	break;
-			// }
+			case NODE_KIND::OPERATION: break;
 		}
 	}
 }
@@ -360,9 +390,13 @@ std::vector<std::vector<Node*>> Transpiler::get_sequence(std::vector<Node*>& v_s
 	{
 		Node* node = *it;
 		std::vector<Node*> v_seq = Nodes::get_sequence(node);
-		if (v_seq.size() != 0)
-			v_out.push_back(v_seq);
+
+		if (v_seq.size() == 0)
+			v_seq.push_back(node);
+
+		v_out.push_back(v_seq);
 	}
+
 	return v_out;
 }
 

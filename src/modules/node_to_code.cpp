@@ -33,7 +33,11 @@ std::map<std::string, m> m_cast
 			},
 			{"STRING", [](std::string& lhs_name, std::string& pre) -> std::string
 				{
-					std::string buffer_name = Transpiler::get_temp_name(lhs_name.c_str());
+					std::pair<std::string, bool>t = Transpiler::get_temp_name(lhs_name.c_str(), true);
+					std::string& buffer_name = t.first;
+					if (t.second)
+						return buffer_name;
+
 					pre.append(indent())
 						.append(fmt::format("char {:s}[{:d}];", buffer_name, 256)).append("\n")
 						.append(indent())
@@ -195,6 +199,7 @@ std::string node_var(NodeVariable* node_var)
 			NodePrint* out_node_print = dynamic_cast<NodePrint*>(out_node);
 			NodeCast* out_node_cast = dynamic_cast<NodeCast*>(out_node);
 			NodeOperation* out_node_op = dynamic_cast<NodeOperation*>(out_node);
+			NodeMath* out_node_math = dynamic_cast<NodeMath*>(out_node);
 
 			if (out_node_var)
 				val = out_node_var->m_name;
@@ -206,6 +211,8 @@ std::string node_var(NodeVariable* node_var)
 				val = NodeToCode::node_cast(out_node_cast, true, str);
 			else if (out_node_op)
 				val = NodeToCode::node_op(out_node_op, true, str);
+			else if (out_node_math)
+				val = NodeToCode::node_math(out_node_math, true, str);
 		}
 	}
 
@@ -248,6 +255,67 @@ std::string node_cast(NodeCast* node_cast, bool val_only, std::string& pre)
 	return str;
 }
 
+std::string node_math(NodeMath* node_math, bool val_only, std::string& pre)
+{
+	std::string str = "";
+	std::string rhs = "";
+	std::vector<std::string> v_refs;
+	NODE_MATH& math = node_math->m_math;
+
+	//possible LHS: node_var, node_op, node_arr_access, node_size
+	for (const Connection& connection : node_math->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node == node_math)
+			continue;
+
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+		NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
+		if (node_var)
+			v_refs.push_back(node_var->m_name);
+		else if (node_op)
+		{
+		}
+	}
+
+	bool is_single = math == +NODE_MATH::SIN ||
+		math == +NODE_MATH::COS ||
+		math == +NODE_MATH::TAN;
+
+	if (is_single)
+	{
+		std::string& ref = v_refs.back();
+		std::string fn = std::string(math._to_string());
+		std::transform(fn.begin(), fn.end(), fn.begin(),
+			[](unsigned char c){ return std::tolower(c); });
+		rhs = fmt::format("{:s}({:s})", fn, ref);
+	}
+	else
+	{
+		if (v_refs.size() < 2)
+		{
+			std::string err = fmt::format("ERROR at node {:s}: using {:s} must have 2 inputs",
+				node_math->m_name, math._to_string());
+			Transpiler::error(err.c_str());
+			return str;
+		}
+
+		std::string fn = "pow";
+		std::string& ref1 = v_refs[v_refs.size() - 2];
+		std::string& ref2 = v_refs[v_refs.size() - 1];
+
+		if (math == +NODE_MATH::ROOT)
+			ref2 = fmt::format("1.0/(int){:s}", ref2);
+
+		rhs = fmt::format("{:s}({:s}, {:s})", fn, ref1, ref2);
+	}
+
+	if (val_only)
+		str = rhs;
+
+	return str;
+}
+
 std::string node_op(NodeOperation* node_op, bool val_only, std::string& pre)
 {
 	std::string str = "";
@@ -277,20 +345,6 @@ std::string node_op(NodeOperation* node_op, bool val_only, std::string& pre)
 				std::string str_cast = NodeToCode::node_cast(out_node_cast, true, pre);
 				v_elements.push_back(Transpiler::recent_temp);
 				string_concat = true;
-				//get all the references (lhs)
-				// for (const Connection& connection : out_node_cast->m_connections)
-				// {
-				// 	Node* in_node = static_cast<Node*>(connection.in_node);
-				// 	if (in_node != out_node_cast)
-				// 		v_elements.push_back(in_node->m_name);
-				// }
-
-  	  	  	  // char* buffer3 = malloc(sizeof(char) * (strlen(buffer) + strlen(buffer2)));
-  	  	  	  // strcpy(buffer3, buffer);
-  	  	  	  // strcat(buffer3, buffer2);
-              //
-			  // std::string size_a = fmt::format("sizeof({:s})", a);
-			  // std::string size_b = fmt::format("sizeof({:s})", b);
 			}
 			else
 			{
@@ -451,24 +505,30 @@ std::string node_print(NodePrint* node_print)
 				NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
 				NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
 				NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
+				NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
 
 				if (node_var)
 				{
 					other_spec = node_var->m_value_orig.get_spec();
 					other_val = node_var->m_name;
 				}
-
-				if (node_prompt)
+				else if (node_prompt)
 				{
 					other_spec = "%s";
 					other_val = fmt::format("{:s}.buffer", node_prompt->m_name);
 				}
-
-				if (node_op)
+				else if (node_op)
 				{
 					NODE_SLOT slot = NODE_SLOT::_from_string(node_op->m_out_slots[0].title);
 					other_spec = slot_to_spec(slot);
 					std::string rhs = NodeToCode::node_op(node_op, true, str);
+					other_val = fmt::format("({:s})", rhs);
+				}
+				else if (node_math)
+				{
+					NODE_SLOT slot = NODE_SLOT::_from_string(node_math->m_out_slots[0].title);
+					other_spec = slot_to_spec(slot);
+					std::string rhs = NodeToCode::node_math(node_math, true, str);
 					other_val = fmt::format("({:s})", rhs);
 				}
 			}

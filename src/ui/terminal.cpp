@@ -1,6 +1,7 @@
 #include "ui/terminal.hpp"
 
 #include <imgui_internal.h>
+#include "fmt/format.h"
 #include "IconsFontAwesome5.h"
 #include "core/config.hpp"
 #include "core/commands.hpp"
@@ -9,6 +10,11 @@
 #include "modules/input.hpp"
 #include "modules/transpiler.hpp"
 #include "node/node_colors.hpp"
+
+#if DEBUG_MODE
+#include <fstream>
+#include <fmt/chrono.h>
+#endif
 
 namespace CodeNect
 {
@@ -112,6 +118,22 @@ void Terminal::draw_output(void)
 	ImGui::SameLine();
 	if (ImGui::SmallButton("Clear"))
 		Transpiler::clear();
+
+#if DEBUG_MODE
+	ImGui::SameLine();
+	if (ImGui::SmallButton("Save"))
+	{
+		if (Transpiler::runnable_code.length() != 0)
+		{
+			std::time_t t = std::time(nullptr);
+			std::string out_filename = fmt::format("out/out_file_{:%I_%M_%s}.c", fmt::localtime(t));
+			std::ofstream out_file;
+			out_file.open(out_filename);
+			out_file << Transpiler::runnable_code;
+			out_file.close();
+		}
+	}
+#endif
 	ImGui::Separator();
 
 	for (const std::pair<std::string, OUTPUT_TYPE>& p : Transpiler::v_output)
@@ -129,9 +151,14 @@ void Terminal::draw_output(void)
 				ImGui::TextColored(NodeColors::Lookup::RED, "%s", p.first.c_str());
 				break;
 			}
-			case OUTPUT_TYPE::PROMPT:
+			case OUTPUT_TYPE::WARNING:
 			{
 				ImGui::TextColored(NodeColors::Lookup::YELLOW, "%s", p.first.c_str());
+				break;
+			}
+			case OUTPUT_TYPE::PROMPT:
+			{
+				ImGui::TextColored(NodeColors::Lookup::ORANGE, "%s", p.first.c_str());
 				break;
 			}
 		}

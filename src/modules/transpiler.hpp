@@ -11,7 +11,7 @@
 
 namespace CodeNect
 {
-enum class OUTPUT_TYPE { NORMAL = 1, SUCCESS, ERROR, PROMPT };
+enum class OUTPUT_TYPE { NORMAL = 1, SUCCESS, ERROR, WARNING, PROMPT };
 
 struct Transpiler
 {
@@ -21,6 +21,7 @@ struct Transpiler
 	static std::vector<std::pair<std::string, OUTPUT_TYPE>> v_output;
 	static std::vector<std::string> v_declarations;
 	static std::map<std::string, bool> m_temp_names;
+	static std::map<std::string, bool> m_declared;
 	static int level;
 	static bool has_ran;
 	static bool has_compiled;
@@ -30,7 +31,9 @@ struct Transpiler
 	static int init(void);
 	static void register_commands(void);
 	static void error(const char* str);
+	static void warning(const char* str);
 	static std::string get_temp_name(const char* name);
+	static std::pair<std::string, bool> get_temp_name(const char* name, bool reuse);
 	static void set_pre_entry(std::string& str_incl, std::string& str_structs, bool is_tcc);
 	static void build_runnable_code(std::string& out, bool is_tcc);
 	static void transpile_decls(std::vector<Node*>& v, std::string& output);

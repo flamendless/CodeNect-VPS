@@ -7,6 +7,7 @@
 #include "node/node_prompt.hpp"
 #include "node/node_cast.hpp"
 #include "node/node_op.hpp"
+#include "node/node_math.hpp"
 
 namespace CodeNect::NodeToCode
 {
@@ -22,6 +23,7 @@ std::string node_array(NodeArray*);
 std::string node_print(NodePrint*);
 std::string node_prompt(NodePrompt*);
 std::string node_op(NodeOperation*, bool, std::string&);
+std::string node_math(NodeMath*, bool, std::string&);
 }
 
 #endif //_NODE_TO_CODE_HPP
