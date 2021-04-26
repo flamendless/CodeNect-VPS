@@ -98,6 +98,19 @@ std::string Transpiler::get_temp_name(const char* name)
 	return out_name;
 }
 
+bool Transpiler::is_valid_decls(Node* node)
+{
+	bool valid = false;
+	switch (node->m_kind)
+	{
+		case NODE_KIND::VARIABLE: valid = true; break;
+		case NODE_KIND::DS: valid = true; break;
+		case NODE_KIND::ACTION: valid = true; break;
+	}
+
+	return valid;
+}
+
 std::pair<std::string, bool> Transpiler::get_temp_name(const char* name, bool reuse)
 {
 	std::string out_name = fmt::format("temp_str_{}", name);
@@ -449,7 +462,15 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	{
 		Node* node = *it;
 		if (Nodes::check_if_no_lhs(node))
-			v_decls.push_back(node);
+		{
+			if (!Transpiler::is_valid_decls(node))
+			{
+				std::string warning = fmt::format("Node {:s} is not a valid declaration because it needs an inputs", node->m_name);
+				Transpiler::warning(warning.c_str());
+			}
+			else
+				v_decls.push_back(node);
+		}
 	}
 
 	//begin transpiling

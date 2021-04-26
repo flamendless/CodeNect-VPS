@@ -34,6 +34,7 @@ struct Transpiler
 	static void warning(const char* str);
 	static std::string get_temp_name(const char* name);
 	static std::pair<std::string, bool> get_temp_name(const char* name, bool reuse);
+	static bool is_valid_decls(Node*);
 	static void set_pre_entry(std::string& str_incl, std::string& str_structs, bool is_tcc);
 	static void build_runnable_code(std::string& out, bool is_tcc);
 	static void transpile_decls(std::vector<Node*>& v, std::string& output);

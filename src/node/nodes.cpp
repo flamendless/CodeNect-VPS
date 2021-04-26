@@ -19,20 +19,6 @@
 namespace CodeNect
 {
 std::vector<Node*> Nodes::v_nodes;
-std::map<std::string, unsigned int> Nodes::m_ids
-{
-	{"OPERATION", 0},
-	{"CAST", 0},
-	{"COMPARISON", 0},
-	{"BRANCH", 0},
-	{"PRINT", 0},
-	{"PROMPT", 0},
-	{"ARRAY_ACCESS", 0},
-	{"SIZE", 0},
-	{"MATH", 0},
-	{"FIXED", 0},
-	{"DYNAMIC", 0},
-};
 Nodes::m_node_t Nodes::m_available_nodes
 {
 	{
@@ -47,13 +33,23 @@ std::map<std::string, const char*> Nodes::m_names
 	{"COS", "COSINE"},
 	{"TAN", "TANGENT"},
 };
+std::map<const std::string, bool> Nodes::m_ids;
 
-const char* Nodes::get_id(const char* id)
+const char* Nodes::get_id(const char* kind)
 {
-	unsigned int uid = ++Nodes::m_ids[id];
-	std::string* str_id = new std::string(std::string(id) + "_" + std::to_string(uid));
-
-	return str_id->c_str();
+	std::string orig = kind;
+	std::string id = "";
+	int i = 0;
+	while (Nodes::m_ids.find(id) !=
+		Nodes::m_ids.end())
+	{
+		//found
+		id = orig + "_" + std::to_string(i);
+		i++;
+	}
+	Nodes::m_ids.insert({id, true});
+	std::string* ret = new std::string(id);
+	return ret->c_str();
 }
 
 const char* Nodes::get_title(Node* node)
@@ -99,16 +95,17 @@ const char* Nodes::get_title(Node* node)
 
 void Nodes::reset(void)
 {
-	for (std::pair<const std::string, unsigned int>& e : Nodes::m_ids)
-	{
-		e.second = 0;
-	}
+	for (std::pair<const std::string, bool>& e : Nodes::m_ids)
+		e.second = false;
 
 	Nodes::v_nodes.clear();
 }
 
 void Nodes::delete_node(std::vector<Node*>::iterator& it)
 {
+	Node* node = *it;
+	Nodes::m_ids.erase(node->m_name);
+
 	delete *it;
 	it = Nodes::v_nodes.erase(it);
 }

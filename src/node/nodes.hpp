@@ -16,7 +16,7 @@ struct Nodes
 	typedef std::map<std::string, Node*(*)()> m_node_t;
 
 	static std::vector<Node*> v_nodes;
-	static std::map<std::string, unsigned int> m_ids;
+	static std::map<const std::string, bool> m_ids;
 	static m_node_t m_available_nodes;
 	static std::map<std::string, const char*> m_names;
 
