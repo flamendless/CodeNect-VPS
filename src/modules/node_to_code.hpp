@@ -8,12 +8,14 @@
 #include "node/node_cast.hpp"
 #include "node/node_op.hpp"
 #include "node/node_math.hpp"
+#include "node/node_cmp.hpp"
 
 namespace CodeNect::NodeToCode
 {
 std::string indent(void);
 std::string slot_to_str(NODE_SLOT&);
 std::string slot_to_spec(NODE_SLOT&);
+std::string cmp_to_str(NODE_CMP&);
 std::string to_array(NodeArray*);
 std::string comment(Node*);
 
@@ -24,6 +26,7 @@ std::string node_print(NodePrint*);
 std::string node_prompt(NodePrompt*);
 std::string node_op(NodeOperation*, bool, std::string&);
 std::string node_math(NodeMath*, bool, std::string&);
+std::string node_cmp(NodeComparison*, bool, std::string&);
 }
 
 #endif //_NODE_TO_CODE_HPP

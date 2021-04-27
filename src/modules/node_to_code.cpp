@@ -145,6 +145,24 @@ std::string slot_to_spec(NODE_SLOT& slot)
 	return "";
 }
 
+std::string cmp_to_str(NODE_CMP& cmp)
+{
+	switch (cmp)
+	{
+		case NODE_CMP::EMPTY: break;
+		case NODE_CMP::EQ: return "=="; break;
+		case NODE_CMP::NEQ: return "!="; break;
+		case NODE_CMP::GT: return ">"; break;
+		case NODE_CMP::LT: return "<"; break;
+		case NODE_CMP::GTE: return ">="; break;
+		case NODE_CMP::LTE: return "<="; break;
+		case NODE_CMP::OR: return "||"; break;
+		case NODE_CMP::AND: return "&&"; break;
+	}
+	PPK_ASSERT(false, "this should not be reached");
+	return "";
+}
+
 std::string to_array(NodeArray* node_array)
 {
 	std::vector<std::string> vec;
@@ -200,6 +218,7 @@ std::string node_var(NodeVariable* node_var)
 			NodeCast* out_node_cast = dynamic_cast<NodeCast*>(out_node);
 			NodeOperation* out_node_op = dynamic_cast<NodeOperation*>(out_node);
 			NodeMath* out_node_math = dynamic_cast<NodeMath*>(out_node);
+			NodeComparison* out_node_cmp = dynamic_cast<NodeComparison*>(out_node);
 
 			if (out_node_var)
 				val = out_node_var->m_name;
@@ -213,6 +232,8 @@ std::string node_var(NodeVariable* node_var)
 				val = NodeToCode::node_op(out_node_op, true, str);
 			else if (out_node_math)
 				val = NodeToCode::node_math(out_node_math, true, str);
+			else if (out_node_cmp)
+				val = NodeToCode::node_cmp(out_node_cmp, true, str);
 		}
 	}
 
@@ -297,6 +318,7 @@ std::string node_math(NodeMath* node_math, bool val_only, std::string& pre)
 			std::string err = fmt::format("ERROR at node {:s}: using {:s} must have 2 inputs",
 				node_math->m_name, math._to_string());
 			Transpiler::error(err.c_str());
+			//TODO show error (UI) for debug module
 			return str;
 		}
 
@@ -312,6 +334,55 @@ std::string node_math(NodeMath* node_math, bool val_only, std::string& pre)
 
 	if (val_only)
 		str = rhs;
+
+	return str;
+}
+
+std::string node_cmp(NodeComparison* node_cmp, bool val_only, std::string& pre)
+{
+	std::string str = "";
+	std::string rhs = "";
+	std::string str_cmp = NodeToCode::cmp_to_str(node_cmp->m_cmp);
+	std::vector<std::string> v_elements;
+
+	//possible LHS: node_var, node_cast, node_math
+	for (const Connection& connection : node_cmp->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node == node_cmp)
+			continue;
+
+		NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
+
+		if (out_node_var)
+			v_elements.push_back(out_node_var->m_name);
+	}
+
+	if (v_elements.size() < 2)
+	{
+		std::string warning = fmt::format("NodeComparison {:s} must have inputs", node_cmp->m_name);
+		Transpiler::warning(warning.c_str());
+		return "";
+	}
+
+	for (int i = 0; i < v_elements.size(); i++)
+	{
+		std::string& str = v_elements[i];
+		rhs.append(str);
+
+		if (i < v_elements.size() - 1)
+			rhs.append(fmt::format(" {:s} ", str_cmp));
+	}
+
+	if (val_only)
+		str = fmt::format("({:s})", rhs);
+	else
+	{
+		std::string buf_name = Transpiler::get_temp_name(node_cmp->m_name);
+		std::string s = fmt::format("bool {:s} = {:s};", buf_name, rhs);
+		pre.append(indent())
+			.append(s);
+	}
 
 	return str;
 }
@@ -506,6 +577,7 @@ std::string node_print(NodePrint* node_print)
 				NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
 				NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
 				NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
+				NodeComparison* node_cmp = dynamic_cast<NodeComparison*>(out_node);
 
 				if (node_var)
 				{
@@ -529,6 +601,12 @@ std::string node_print(NodePrint* node_print)
 					NODE_SLOT slot = NODE_SLOT::_from_string(node_math->m_out_slots[0].title);
 					other_spec = slot_to_spec(slot);
 					std::string rhs = NodeToCode::node_math(node_math, true, str);
+					other_val = fmt::format("({:s})", rhs);
+				}
+				else if (node_cmp)
+				{
+					other_spec = "%d"; //cmp out is always boolean
+					std::string rhs = NodeToCode::node_cmp(node_cmp, true, str);
 					other_val = fmt::format("({:s})", rhs);
 				}
 			}

@@ -389,6 +389,7 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 
 			case NODE_KIND::CAST: break;
 			case NODE_KIND::OPERATION: break;
+			case NODE_KIND::COMPARISON: break;
 		}
 	}
 }
