@@ -60,7 +60,7 @@ void Terminal::toggle(void)
 	Terminal::is_open = !Terminal::is_open;
 }
 
-bool Terminal::keypress(int key, int scancode, int mods)
+bool Terminal::keypress(int key, int, int mods)
 {
 	if (key == GLFW_KEY_T && mods == (GLFW_MOD_SHIFT | GLFW_MOD_CONTROL))
 		Terminal::toggle();

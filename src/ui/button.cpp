@@ -29,5 +29,8 @@ void Button::draw()
 	CodeNect::Image* img = get_active_image();
 	m_is_clicked = ImGui::ImageButton(img->get_texture(), img->size, m_uv0, m_uv1, 0, m_bg, m_tint);
 	m_is_hovered = ImGui::IsItemHovered();
+
+	if (m_has_tooltip && ImGui::IsItemHovered())
+		ImGui::SetTooltip("%s", m_tooltip);
 }
 }

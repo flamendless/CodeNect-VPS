@@ -13,6 +13,8 @@ struct Button
 	bool m_is_hovered = false;
 	bool m_is_clicked = false;
 	bool m_is_open = false;
+	bool m_has_tooltip = false;
+	const char* m_tooltip;
 
 	ImVec2 m_uv0 = ImVec2();
 	ImVec2 m_uv1 = ImVec2(1, 1);

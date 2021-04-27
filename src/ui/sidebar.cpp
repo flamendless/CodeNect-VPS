@@ -31,10 +31,22 @@ int Sidebar::init(void)
 
 	btn_project = m_ui_buttons["project"];
 	btn_run = m_ui_buttons["run"];
+
 	btn_inspector = m_ui_buttons["inspector"];
+	btn_inspector->m_has_tooltip = true;
+	btn_inspector->m_tooltip = "Inspector";
+
 	btn_settings = m_ui_buttons["settings"];
+	btn_settings->m_has_tooltip = true;
+	btn_settings->m_tooltip = "Settings";
+
 	btn_about = m_ui_buttons["about"];
+	btn_about->m_has_tooltip = true;
+	btn_about->m_tooltip = "About";
+
 	btn_help = m_ui_buttons["help"];
+	btn_help->m_has_tooltip = true;
+	btn_help->m_tooltip = "Help and Support";
 
 	return RES_SUCCESS;
 }
