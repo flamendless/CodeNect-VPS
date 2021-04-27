@@ -43,6 +43,7 @@ std::vector<const char*> NodeInterface::v_str = {
 	ICON_FA_ANGLE_LEFT " Hover on the left side to access the sidebar",
 	ICON_FA_TERMINAL " Press <Ctrl+Shift+p> to access the command palette",
 	ICON_FA_CODE " Press <Ctrl+Shift+t> to open/hide the terminal",
+	ICON_FA_SEARCH " Press <Ctrl+Shift+i> to open/hide the inspector",
 };
 Image NodeInterface::logo;
 ImVec2 NodeInterface::target_node_pos;

@@ -8,12 +8,12 @@
 #include "core/utils.hpp"
 #include "core/font.hpp"
 #include "core/commands.hpp"
-#include "node/node.hpp"
 #include "node/node_var.hpp"
 #include "node/node_array.hpp"
 #include "node/nodes.hpp"
 #include "node/node_renderer.hpp"
 #include "ui/node_interface.hpp"
+#include "modules/input.hpp"
 
 namespace CodeNect
 {
@@ -33,21 +33,30 @@ int Inspector::init(void)
 
 	Inspector::pos = ImVec2(x, y);
 	Inspector::size = Config::Inspector_c::size;
+	Input::register_key_event(Inspector::keypress);
 
 	return RES_SUCCESS;
 }
 
 void Inspector::register_commands(void)
 {
-	Command* cmd = new Command("Inspector", "open inspector window", ICON_FA_SEARCH);
-	cmd->set_fn(Inspector::open);
+	Command* cmd = new Command("Inspector", "open/close inspector window", ICON_FA_SEARCH);
+	cmd->set_fn(Inspector::toggle);
 	cmd->m_close_command_palette = true;
 	Commands::register_cmd(*cmd);
 }
 
-void Inspector::open(void)
+void Inspector::toggle(void)
 {
-	Inspector::is_open = true;
+	Inspector::is_open = !Inspector::is_open;
+}
+
+bool Inspector::keypress(int key, int, int mods)
+{
+	if (key == GLFW_KEY_I && mods == (GLFW_MOD_SHIFT | GLFW_MOD_CONTROL))
+		Inspector::toggle();
+
+	return false;
 }
 
 void Inspector::draw(void)
@@ -96,13 +105,7 @@ void Inspector::draw_variables(void)
 			ImGui::PushID(node_var);
 			std::string str = fmt::format("{}. {}", i, node_var->m_name);
 
-			if (ImGui::SmallButton(ICON_FA_SEARCH))
-			{
-				ImVec2& pos = node_var->m_pos;
-				NodeInterface::has_target_node = true;
-				NodeInterface::target_node_pos.x = pos.x;
-				NodeInterface::target_node_pos.y = pos.y;
-			}
+			Inspector::jump_to_pos(node_var);
 			ImGui::SameLine();
 
 			if (ImGui::TreeNode(str.c_str()))
@@ -149,6 +152,9 @@ void Inspector::draw_ds(void)
 			ImGui::PushID(node_array);
 			std::string str = fmt::format("{}. {}", i, node_array->m_name);
 
+			Inspector::jump_to_pos(node_array);
+			ImGui::SameLine();
+
 			if (ImGui::TreeNode(str.c_str()))
 			{
 				if (ImGui::BeginTable("Info", 2, ImGuiTableFlags_SizingFixedFit))
@@ -171,5 +177,19 @@ void Inspector::draw_ds(void)
 		}
 		ImGui::TreePop();
 	}
+}
+
+void Inspector::jump_to_pos(Node* node)
+{
+	if (ImGui::SmallButton(ICON_FA_SEARCH))
+	{
+		ImVec2& pos = node->m_pos;
+		NodeInterface::has_target_node = true;
+		NodeInterface::target_node_pos.x = pos.x;
+		NodeInterface::target_node_pos.y = pos.y;
+	}
+
+	if (ImGui::IsItemHovered())
+		ImGui::SetTooltip("Jump the camera's position to the node's position");
 }
 }

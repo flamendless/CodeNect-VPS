@@ -19,7 +19,6 @@ ImGuiWindowFlags Help::flags =
 bool Help::is_open = false;
 const char* Help::title = ICON_FA_QUESTION_CIRCLE " HELP";
 
-using help_p = std::pair<const char*, const char*>;
 using help_t = std::tuple<const char*, const char*, const char*>;
 using help_tc = std::tuple<const char*, const char*, ImVec4>;
 
@@ -37,6 +36,7 @@ Help::tuple_t Help::v_key_items
 	help_t(ICON_FA_KEYBOARD " Escape Key", "close inspector window", "'Esc' key in keyboard"),
 	help_t(ICON_FA_TERMINAL " Ctrl + Shift + p", "open/close the command palette", "hold the 'ctrl' and 'shift' key then press 'p'"),
 	help_t(ICON_FA_CODE " Ctrl + Shift + t", "open/close the terminal", "hold the 'ctrl' and 'shift' key then press 't'"),
+	help_t(ICON_FA_SEARCH " Ctrl + Shift + i", "open/close the inspector", "hold the 'ctrl' and 'shift' key then press 'i'"),
 };
 
 Help::tuple_colors_t Help::v_connection_colors_items

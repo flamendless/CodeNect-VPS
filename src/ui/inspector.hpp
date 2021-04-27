@@ -2,6 +2,7 @@
 #define _INSPECTOR_HPP
 
 #include "imgui.h"
+#include "node/node.hpp"
 
 namespace CodeNect
 {
@@ -15,10 +16,12 @@ struct Inspector
 	Inspector() = delete;
 	static int init(void);
 	static void register_commands(void);
-	static void open(void);
+	static void toggle(void);
+	static bool keypress(int key, int scancode, int mods);
 	static void draw(void);
 	static void draw_variables(void);
 	static void draw_ds(void);
+	static void jump_to_pos(Node* node);
 };
 }
 
