@@ -174,6 +174,7 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				Nodes::build_slots(*nm, in, out);
 
 				NodeOperation* node_op = new NodeOperation(op, std::move(in), std::move(out));
+				node_op->m_name = nm->m_name.c_str();
 				node_op->m_pos = ImVec2(nm->x, nm->y);
 				node_op->m_desc = nm->m_desc.c_str();
 				Nodes::v_nodes.push_back(node_op);
@@ -326,6 +327,8 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				}
 			}
 		}
+
+		Nodes::reset_ids();
 	}
 }
 
@@ -380,7 +383,6 @@ Node* Nodes::find_connected_by_value(Node* node, NodeValue* target_val)
 
 		if (out_node)
 		{
-			PLOGD << out_node->m_kind._to_string();
 			NodeValue* val = nullptr;
 			switch (node->m_kind)
 			{
@@ -477,5 +479,19 @@ unsigned int Nodes::count_connections(void)
 	}
 
 	return n;
+}
+
+void Nodes::reset_ids(void)
+{
+	for (std::pair<const std::string, bool>& e : Nodes::m_ids)
+		e.second = false;
+
+	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
+		it != Nodes::v_nodes.end();
+		it++)
+	{
+		Node* node = *it;
+		Nodes::m_ids.insert({node->m_name, true});
+	}
 }
 }
