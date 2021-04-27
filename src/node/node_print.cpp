@@ -21,6 +21,6 @@ NodePrint::NodePrint(
 	m_out_slots = out_slots;
 
 	PPK_ASSERT(NodeAction::m_action != +NODE_ACTION::EMPTY, "NODE_ACTION must not be EMPTY");
-	PLOGD << "Created NodeAction: " << m_name << ", " << Node::m_kind._to_string();
+	PLOGD << "Created NodeAction: " << m_name << ", " << NodeAction::m_action._to_string();
 }
 }

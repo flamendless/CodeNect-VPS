@@ -7,6 +7,7 @@
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
+#include "node/node_print.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -27,6 +28,7 @@ void process_cmp(void)
 		//store the result
 		NodeVariable* res_var = nullptr;
 		NodeBranch* res_branch = nullptr;
+		NodePrint* res_print = nullptr;
 
 		//make preliminary checks
 		if (node_cmp->m_connections.size() < 3)
@@ -35,27 +37,29 @@ void process_cmp(void)
 		//make sure node_cmp has a connected node_var or node_branch for the result (rhs)
 		for (const Connection& connection : node_cmp->m_connections)
 		{
-			if (res_var || res_branch)
-				break;
-
 			Node* in_node = static_cast<Node*>(connection.in_node);
 			NodeVariable* node_var = dynamic_cast<NodeVariable*>(in_node);
 			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(in_node);
+			NodePrint* node_print = dynamic_cast<NodePrint*>(in_node);
 
 			if (node_var)
 			{
 				res_var = node_var;
 				break;
 			}
-
-			if (node_branch)
+			else if (node_branch)
 			{
 				res_branch = node_branch;
 				break;
 			}
+			else if (node_print)
+			{
+				res_print = node_print;
+				break;
+			}
 		}
 
-		if (!res_var && !res_branch)
+		if (!res_var && !res_branch && !res_print)
 			break;
 
 		//for storing the input (lhs) nodes to be compared

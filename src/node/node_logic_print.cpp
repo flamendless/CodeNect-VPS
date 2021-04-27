@@ -6,6 +6,7 @@
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
+#include "node/node_cmp.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -21,8 +22,8 @@ void process_print(void)
 			continue;
 
 		node_print->m_str = node_print->m_orig_str;
-
 		NodeValue* from_val = nullptr;
+
 		//get the value of connected node_var and set to ours (lhs)
 		if (node_print->m_override || node_print->m_append)
 		{
@@ -32,6 +33,7 @@ void process_print(void)
 				NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
 				NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
 				NodeSize* out_node_size = dynamic_cast<NodeSize*>(out_node);
+				NodeComparison* out_node_cmp = dynamic_cast<NodeComparison*>(out_node);
 
 				if (out_node_var)
 					from_val = &out_node_var->m_value;
@@ -39,6 +41,15 @@ void process_print(void)
 					from_val = out_node_arr_access->m_current_val;
 				else if (out_node_size)
 					from_val = &out_node_size->m_val_size;
+				else if (out_node_cmp)
+				{
+					bool res = out_node_cmp->current_res;
+					std::string str_res = res ? "true" : "false";
+					if (node_print->m_override)
+						node_print->m_str = str_res;
+					else if (node_print->m_append)
+						node_print->m_str.append(str_res);
+				}
 
 				if (from_val)
 				{
