@@ -13,6 +13,7 @@
 #include "node/node_array.hpp"
 #include "node/nodes.hpp"
 #include "node/node_renderer.hpp"
+#include "ui/node_interface.hpp"
 
 namespace CodeNect
 {
@@ -94,6 +95,15 @@ void Inspector::draw_variables(void)
 
 			ImGui::PushID(node_var);
 			std::string str = fmt::format("{}. {}", i, node_var->m_name);
+
+			if (ImGui::SmallButton(ICON_FA_SEARCH))
+			{
+				ImVec2& pos = node_var->m_pos;
+				NodeInterface::has_target_node = true;
+				NodeInterface::target_node_pos.x = pos.x;
+				NodeInterface::target_node_pos.y = pos.y;
+			}
+			ImGui::SameLine();
 
 			if (ImGui::TreeNode(str.c_str()))
 			{

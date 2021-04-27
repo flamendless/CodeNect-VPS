@@ -45,6 +45,8 @@ std::vector<const char*> NodeInterface::v_str = {
 	ICON_FA_CODE " Press <Ctrl+Shift+t> to open/hide the terminal",
 };
 Image NodeInterface::logo;
+ImVec2 NodeInterface::target_node_pos;
+bool NodeInterface::has_target_node = false;
 
 Node* current_node;
 ImNodes::CanvasState* canvas;
@@ -105,6 +107,15 @@ void NodeInterface::draw_main(void)
 	{
 		canvas = new ImNodes::CanvasState();
 		NodeInterface::has_changed_theme = false;
+	}
+
+	if (NodeInterface::has_target_node)
+	{
+		float tx = -NodeInterface::target_node_pos.x + NodeInterface::size.x/4;
+		float ty = -NodeInterface::target_node_pos.y + NodeInterface::size.y/4;
+		canvas->Offset.x = tx;
+		canvas->Offset.y = ty;
+		NodeInterface::has_target_node = false;
 	}
 
 	ImNodes::BeginCanvas(canvas);
@@ -317,7 +328,13 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 		ImGui::Separator();
 
 		if (ImGui::MenuItem("Reset Zoom"))
-            canvas.Zoom = 1;
+			canvas.Zoom = 1;
+
+		if (ImGui::MenuItem("Reset View Position"))
+		{
+			canvas.Offset.x = 0;
+			canvas.Offset.y = 0;
+		}
 
 		if (ImGui::IsAnyMouseDown() && !ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered())
 			ImGui::CloseCurrentPopup();

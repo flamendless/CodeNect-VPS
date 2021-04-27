@@ -18,6 +18,8 @@ struct NodeInterface
 	static ImVec2 center_pos;
 	static std::vector<const char*> v_str;
 	static Image logo;
+	static ImVec2 target_node_pos;
+	static bool has_target_node;
 
 	NodeInterface() = delete;
 	static bool init(void);
