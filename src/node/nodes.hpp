@@ -28,7 +28,6 @@ struct Nodes
 	static Node* find_by_name(const char* name);
 	static Node* find_connected_by_value(Node* node, NodeValue* val);
 	static unsigned int count_node_dep(Node* node);
-	static std::vector<Node*> get_sequence(Node* start_node);
 	static void build_slots(NodeMeta& meta, v_slot_info_t& in, v_slot_info_t& out);
 	static void build_from_meta(const std::vector<NodeMeta*> &v_node_meta);
 	static void build_from_meta(const std::vector<ConnectionMeta*> &v_connection_meta);

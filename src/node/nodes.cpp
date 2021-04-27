@@ -344,26 +344,6 @@ unsigned int Nodes::count_node_dep(Node* node)
 	return count;
 }
 
-std::vector<Node*> Nodes::get_sequence(Node* start_node)
-{
-	std::vector<Node*> v;
-	for (const Connection& connection : start_node->m_connections)
-	{
-		Node* in_node = static_cast<Node*>(connection.in_node);
-		if (in_node != start_node)
-		{
-			unsigned int count = Nodes::count_node_dep(in_node);
-			if (count == 1)
-			{
-				v.push_back(in_node);
-				std::vector<Node*> v2 = Nodes::get_sequence(in_node);
-				v.insert(v.end(), v2.begin(), v2.end());
-			}
-		}
-	}
-	return v;
-}
-
 Node* Nodes::find_by_name(const char* name)
 {
 	for (Node* &node : Nodes::v_nodes)

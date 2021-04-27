@@ -19,26 +19,20 @@ void process_branch(void)
 		if (!node_branch)
 			continue;
 
-		if (node_branch->m_connections.size() < 2)
-			continue;
-
 		//store the results
 		bool res = false;
 		std::vector<Connection*> v_c_true;
 		std::vector<Connection*> v_c_false;
 
-		//check if there is a node_var for result
+		//check if there is a node_var for result (rhs)
 		for (Connection& connection : node_branch->m_connections)
 		{
-			Node* in_node = static_cast<Node*>(connection.in_node);
 			Node* out_node = static_cast<Node*>(connection.out_node);
-			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(out_node);
-			NodeVariable* node_var = dynamic_cast<NodeVariable*>(in_node);
+			NodeBranch* out_node_branch = dynamic_cast<NodeBranch*>(out_node);
 
-			if (node_branch && node_var)
+			if (out_node_branch == node_branch)
 			{
 				const char* slot = connection.out_slot;
-
 				if (std::strcmp(slot, "TRUE") == 0)
 				{
 					v_c_true.push_back(&connection);
@@ -56,21 +50,19 @@ void process_branch(void)
 		//check if there's a node_cmp or node_var with (bool) lhs
 		for (const Connection& connection : node_branch->m_connections)
 		{
-			Node* in_node = static_cast<Node*>(connection.in_node);
 			Node* out_node = static_cast<Node*>(connection.out_node);
 			NodeComparison* node_cmp = dynamic_cast<NodeComparison*>(out_node);
 			NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
-			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(in_node);
 
 			//check if lhs is node_cmp
-			if (node_cmp && node_branch)
+			if (node_cmp)
 			{
 				res = node_cmp->current_res;
 				break;
 			}
 
 			//check if lhs is node_var
-			if (node_var && node_branch)
+			if (node_var)
 			{
 				res = std::get<bool>(node_var->m_value.data);
 				break;

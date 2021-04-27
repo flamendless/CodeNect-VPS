@@ -394,7 +394,27 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 	}
 }
 
-std::vector<std::vector<Node*>> Transpiler::get_sequence(std::vector<Node*>& v_start)
+std::vector<Node*> Transpiler::get_sequence(Node* start_node)
+{
+	std::vector<Node*> v;
+	for (const Connection& connection : start_node->m_connections)
+	{
+		Node* in_node = static_cast<Node*>(connection.in_node);
+		if (in_node != start_node)
+		{
+			unsigned int count = Nodes::count_node_dep(in_node);
+			if (count == 1)
+			{
+				v.push_back(in_node);
+				std::vector<Node*> v2 = Transpiler::get_sequence(in_node);
+				v.insert(v.end(), v2.begin(), v2.end());
+			}
+		}
+	}
+	return v;
+}
+
+std::vector<std::vector<Node*>> Transpiler::get_v_sequence(std::vector<Node*>& v_start)
 {
 	std::vector<std::vector<Node*>> v_out;
 	//get the independent sequence/chain of nodes
@@ -403,7 +423,7 @@ std::vector<std::vector<Node*>> Transpiler::get_sequence(std::vector<Node*>& v_s
 		it++)
 	{
 		Node* node = *it;
-		std::vector<Node*> v_seq = Nodes::get_sequence(node);
+		std::vector<Node*> v_seq = Transpiler::get_sequence(node);
 
 		if (v_seq.size() == 0)
 			v_seq.push_back(node);
@@ -483,7 +503,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	// std::vector<std::vector<Node*>>* v_sequence = nullptr;
 	while (1)
 	{
-		std::vector<std::vector<Node*>> v_tmp_seq = Transpiler::get_sequence(v_start);
+		std::vector<std::vector<Node*>> v_tmp_seq = Transpiler::get_v_sequence(v_start);
 		std::vector<Node*> v_rest = Transpiler::get_rest(v_tmp_seq);
 
 		if (v_tmp_seq.size() == 0 && v_rest.size() == 0)
