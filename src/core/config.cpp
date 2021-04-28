@@ -41,6 +41,7 @@ ImVec2 Config::Sidebar_c::indicator_size;
 ImVec2 Config::CommandPalette_c::size;
 
 //NodeInterface_c
+ImVec2 Config::NodeInterface_c::offset;
 ImVec2 Config::NodeInterface_c::pos;
 ImVec2 Config::NodeInterface_c::item_inner_spacing = ImVec2(8, 8);
 ImVec4 Config::NodeInterface_c::color_dark = ImVec4(1, 1, 0, 1);
@@ -223,6 +224,8 @@ void Config::init_command_palette(void)
 
 void Config::init_node_interface(void)
 {
+	const int offx = std::stoi(ini.GetValue("node_interface", "off_x", "0"));
+	const int offy = std::stoi(ini.GetValue("node_interface", "off_y", "0"));
 	const int x = std::stoi(ini.GetValue("node_interface", "pos_x", "-1"));
 	const int y = std::stoi(ini.GetValue("node_interface", "pos_y", "-1"));
 	const int iis_x = std::stoi(ini.GetValue("node_interface", "item_inner_spacing_x", "8"));
@@ -234,6 +237,7 @@ void Config::init_node_interface(void)
 	const float tc_g = std::stof(ini.GetValue("node_interface", "tc_g", "1"));
 	const float tc_b = std::stof(ini.GetValue("node_interface", "tc_b", "0"));
 
+	Config::NodeInterface_c::offset = ImVec2(offx, offy);
 	Config::NodeInterface_c::pos = ImVec2(x, y);
 	Config::NodeInterface_c::item_inner_spacing = ImVec2(iis_x, iis_y);
 	Config::NodeInterface_c::label_color = ImVec4(lc_r, lc_g, lc_b, 1);
@@ -329,11 +333,10 @@ bool Config::save_user_config(void)
 	if (res != 0)
 	{
 		PLOGW << "Failed to save user config: " << res;
-
 		return RES_FAIL;
 	}
 	else
-		PLOGV << "Saving user config: " << res;
+		PLOGV << "Saving user config: " << ((res == 0) ? "success" : "fail");
 
 	return RES_SUCCESS;
 }
@@ -357,6 +360,10 @@ bool Config::reset(void)
 void Config::shutdown(void)
 {
 	PLOGI << "Clearing config...";
+
+	ini.SetValue("node_interface", "off_x", std::to_string(Config::NodeInterface_c::offset.x).c_str());
+	ini.SetValue("node_interface", "off_y", std::to_string(Config::NodeInterface_c::offset.y).c_str());
+	Config::save_user_config();
 
 	Sidebar_c::images_filenames.clear();
 	Sidebar_c::images_filenames_hover.clear();

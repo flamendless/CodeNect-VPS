@@ -20,6 +20,7 @@ struct NodeInterface
 	static Image logo;
 	static ImVec2 target_node_pos;
 	static bool has_target_node;
+	static bool flag_init_setup;
 
 	NodeInterface() = delete;
 	static bool init(void);

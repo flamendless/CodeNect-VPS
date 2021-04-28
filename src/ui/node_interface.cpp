@@ -48,6 +48,7 @@ std::vector<const char*> NodeInterface::v_str = {
 Image NodeInterface::logo;
 ImVec2 NodeInterface::target_node_pos;
 bool NodeInterface::has_target_node = false;
+bool NodeInterface::flag_init_setup = false;
 
 Node* current_node;
 ImNodes::CanvasState* canvas;
@@ -110,6 +111,13 @@ void NodeInterface::draw_main(void)
 		NodeInterface::has_changed_theme = false;
 	}
 
+	if (!NodeInterface::flag_init_setup)
+	{
+		canvas->Offset.x = Config::NodeInterface_c::offset.x;
+		canvas->Offset.y = Config::NodeInterface_c::offset.y;
+		NodeInterface::flag_init_setup = true;
+	}
+
 	if (NodeInterface::has_target_node)
 	{
 		float tx = -NodeInterface::target_node_pos.x + NodeInterface::size.x/4;
@@ -125,6 +133,8 @@ void NodeInterface::draw_main(void)
 	NodeInterface::draw_context_menu(*canvas);
 	CreateNode::draw();
 	Zoom::zoom_factor = canvas->Zoom;
+	Config::NodeInterface_c::offset.x = canvas->Offset.x;
+	Config::NodeInterface_c::offset.y = canvas->Offset.y;
 	ImNodes::EndCanvas();
 }
 
