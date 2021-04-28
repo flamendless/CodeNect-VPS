@@ -19,6 +19,7 @@ struct Inspector
 	static void toggle(void);
 	static bool keypress(int key, int scancode, int mods);
 	static void draw(void);
+	static void draw_all(void);
 	static void draw_variables(void);
 	static void draw_ds(void);
 	static void jump_to_pos(Node* node);

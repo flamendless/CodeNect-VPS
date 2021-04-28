@@ -18,10 +18,10 @@
 namespace CodeNect
 {
 ImGuiWindowFlags Inspector::flags =
-	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
+	ImGuiWindowFlags_NoCollapse |
 	ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
 	ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
-	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
+	ImGuiWindowFlags_AlwaysAutoResize;
 bool Inspector::is_open = false;
 ImVec2 Inspector::pos;
 ImVec2 Inspector::size;
@@ -76,6 +76,7 @@ void Inspector::draw(void)
 		Utils::center_text("press <ESC> to close", true);
 		ImGui::Separator();
 
+		Inspector::draw_all();
 		Inspector::draw_variables();
 		Inspector::draw_ds();
 		ImGui::End();
@@ -87,11 +88,51 @@ void Inspector::draw(void)
 		Inspector::is_open = false;
 }
 
+void Inspector::draw_all(void)
+{
+	int i = 1;
+	if (ImGui::TreeNode("All Nodes"))
+	{
+		for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
+			it != Nodes::v_nodes.end();
+			it++)
+		{
+			Node* node = *it;
+
+			ImGui::PushID(node);
+			std::string str = fmt::format("{}. {}", i, node->m_name);
+
+			Inspector::jump_to_pos(node);
+			ImGui::SameLine();
+
+			if (ImGui::TreeNode(str.c_str()))
+			{
+				if (ImGui::BeginTable("Info", 2, ImGuiTableFlags_SizingFixedFit))
+				{
+					ImGui::TableNextRow();
+					ImGui::TableNextColumn();
+					ImGui::TextColored(Config::NodeInterface_c::label_color, "Name:");
+					ImGui::TextColored(Config::NodeInterface_c::label_color, "Kind:");
+					ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+					ImGui::TableNextColumn();
+					ImGui::Text("%s", node->m_name);
+					ImGui::Text("%s", node->m_kind._to_string());
+					ImGui::Text("%s", node->m_desc);
+					ImGui::EndTable();
+				}
+				ImGui::TreePop();
+			}
+			ImGui::PopID();
+			i++;
+		}
+		ImGui::TreePop();
+	}
+}
+
 void Inspector::draw_variables(void)
 {
 	int i = 1;
-
-	if (ImGui::TreeNodeEx("Variables", ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::TreeNode("Variables"))
 	{
 		for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
 			it != Nodes::v_nodes.end();
@@ -137,8 +178,7 @@ void Inspector::draw_variables(void)
 void Inspector::draw_ds(void)
 {
 	int i = 1;
-
-	if (ImGui::TreeNodeEx("Data Structures", ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::TreeNode("Data Structures"))
 	{
 		for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
 			it != Nodes::v_nodes.end();

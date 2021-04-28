@@ -1,5 +1,6 @@
 #include "ui/help.hpp"
 
+#include <imgui_internal.h>
 #include "IconsFontAwesome5Brands.h"
 #include "plog/Log.h"
 #include "core/commands.hpp"
@@ -15,7 +16,7 @@ ImGuiWindowFlags Help::flags =
 	ImGuiWindowFlags_NoCollapse |
 	ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
 	ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
-	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
+	ImGuiWindowFlags_AlwaysAutoResize;
 bool Help::is_open = false;
 const char* Help::title = ICON_FA_QUESTION_CIRCLE " HELP";
 
@@ -37,6 +38,7 @@ Help::tuple_t Help::v_key_items
 	help_t(ICON_FA_TERMINAL " Ctrl + Shift + p", "open/close the command palette", "hold the 'ctrl' and 'shift' key then press 'p'"),
 	help_t(ICON_FA_CODE " Ctrl + Shift + t", "open/close the terminal", "hold the 'ctrl' and 'shift' key then press 't'"),
 	help_t(ICON_FA_SEARCH " Ctrl + Shift + i", "open/close the inspector", "hold the 'ctrl' and 'shift' key then press 'i'"),
+	help_t(ICON_FA_SEARCH " Escape Key", "close active window", "press the 'Esc' key in the keyboard"),
 };
 
 Help::tuple_colors_t Help::v_connection_colors_items
@@ -214,6 +216,9 @@ void Help::draw()
 
 		ImGui::End();
 	}
+
+	if (ImGui::IsKeyPressedMap(ImGuiKey_Escape))
+		Help::is_open = false;
 }
 
 void Help::draw_commands(void)
