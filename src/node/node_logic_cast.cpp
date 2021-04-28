@@ -62,6 +62,18 @@ void process_cast(void)
 
 		NODE_SLOT out_slot = NODE_SLOT::_from_string(node_cast->m_out_slots[0].title);
 
+		//set rhs connection
+		if (out_slot == +NODE_SLOT::STRING)
+		{
+			for (Connection& connection : node_cast->m_connections)
+			{
+				Node* out_node = static_cast<Node*>(connection.out_node);
+				NodeCast* out_node_cast = dynamic_cast<NodeCast*>(out_node);
+				if (out_node_cast == node_cast)
+					NodeColors::set_connection_color(connection, COLOR_TYPE::RUNTIME);
+			}
+		}
+
 		NodeValue* res = new NodeValue();
 		res->copy(out_slot);
 		bool success = res->cast_from(*from_val);

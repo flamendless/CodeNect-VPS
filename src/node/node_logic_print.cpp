@@ -78,8 +78,9 @@ void process_print(void)
 bool validate_node_print(Node* in_node, Node* out_node)
 {
 	NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
+	NodePrint* node_print = dynamic_cast<NodePrint*>(in_node);
 
-	if (node_array)
+	if (node_array && node_print)
 		return false;
 
 	return true;
