@@ -9,6 +9,7 @@
 #include "node/node_op.hpp"
 #include "node/node_math.hpp"
 #include "node/node_cmp.hpp"
+#include "node/node_size.hpp"
 
 namespace CodeNect::NodeToCode
 {
@@ -19,14 +20,15 @@ std::string cmp_to_str(NODE_CMP&);
 std::string to_array(NodeArray*);
 std::string comment(Node*);
 
-std::string node_var(NodeVariable*);
-std::string node_cast(NodeCast*, bool, std::string&);
-std::string node_array(NodeArray*);
-std::string node_print(NodePrint*);
-std::string node_prompt(NodePrompt*);
-std::string node_op(NodeOperation*, bool, std::string&);
-std::string node_math(NodeMath*, bool, std::string&);
-std::string node_cmp(NodeComparison*, bool, std::string&);
+std::string ntc_var(NodeVariable*);
+std::string ntc_cast(NodeCast*, bool, std::string&);
+std::string ntc_array(NodeArray*);
+std::string ntc_print(NodePrint*);
+std::string ntc_prompt(NodePrompt*);
+std::string ntc_op(NodeOperation*, bool, std::string&);
+std::string ntc_math(NodeMath*, bool, std::string&);
+std::string ntc_cmp(NodeComparison*, bool, std::string&);
+std::string ntc_size(NodeSize*, bool, std::string&);
 }
 
 #endif //_NODE_TO_CODE_HPP

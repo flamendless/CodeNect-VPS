@@ -273,7 +273,7 @@ void Transpiler::transpile_decls(std::vector<Node*>& v, std::string& output)
 			{
 				NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
 				output.append(NodeToCode::comment(node));
-				output.append(NodeToCode::node_var(node_var));
+				output.append(NodeToCode::ntc_var(node_var));
 				break;
 			}
 
@@ -287,7 +287,7 @@ void Transpiler::transpile_decls(std::vector<Node*>& v, std::string& output)
 					{
 						NodeArray* node_array = dynamic_cast<NodeArray*>(node);
 						output.append(NodeToCode::comment(node));
-						output.append(NodeToCode::node_array(node_array));
+						output.append(NodeToCode::ntc_array(node_array));
 						break;
 					}
 				}
@@ -304,14 +304,14 @@ void Transpiler::transpile_decls(std::vector<Node*>& v, std::string& output)
 					{
 						NodePrint* node_print = dynamic_cast<NodePrint*>(node);
 						output.append(NodeToCode::comment(node));
-						output.append(NodeToCode::node_print(node_print));
+						output.append(NodeToCode::ntc_print(node_print));
 						break;
 					}
 					case NODE_ACTION::PROMPT:
 					{
 						NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
 						output.append(NodeToCode::comment(node));
-						output.append(NodeToCode::node_prompt(node_prompt));
+						output.append(NodeToCode::ntc_prompt(node_prompt));
 						break;
 					}
 				}
@@ -342,7 +342,7 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 			{
 				NodeVariable* node_var = static_cast<NodeVariable*>(node);
 				output.append(NodeToCode::comment(node));
-				output.append(NodeToCode::node_var(node_var));
+				output.append(NodeToCode::ntc_var(node_var));
 				break;
 			}
 
@@ -356,7 +356,7 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 					{
 						NodeArray* node_array = static_cast<NodeArray*>(node);
 						output.append(NodeToCode::comment(node));
-						output.append(NodeToCode::node_array(node_array));
+						output.append(NodeToCode::ntc_array(node_array));
 						break;
 					}
 				}
@@ -373,14 +373,14 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 					{
 						NodePrint* node_print = static_cast<NodePrint*>(node);
 						output.append(NodeToCode::comment(node));
-						output.append(NodeToCode::node_print(node_print));
+						output.append(NodeToCode::ntc_print(node_print));
 						break;
 					}
 					case NODE_ACTION::PROMPT:
 					{
 						NodePrompt* node_prompt = static_cast<NodePrompt*>(node);
 						output.append(NodeToCode::comment(node));
-						output.append(NodeToCode::node_prompt(node_prompt));
+						output.append(NodeToCode::ntc_prompt(node_prompt));
 						break;
 					}
 				}
@@ -390,6 +390,7 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 			case NODE_KIND::CAST: break;
 			case NODE_KIND::OPERATION: break;
 			case NODE_KIND::COMPARISON: break;
+			case NODE_KIND::GET: break;
 		}
 	}
 }

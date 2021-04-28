@@ -198,7 +198,7 @@ std::string comment(Node* node)
 	return "";
 }
 
-std::string node_var(NodeVariable* node_var)
+std::string ntc_var(NodeVariable* node_var)
 {
 	std::string str = "";
 	NodeValue* value = &node_var->m_value;
@@ -219,6 +219,7 @@ std::string node_var(NodeVariable* node_var)
 			NodeOperation* out_node_op = dynamic_cast<NodeOperation*>(out_node);
 			NodeMath* out_node_math = dynamic_cast<NodeMath*>(out_node);
 			NodeComparison* out_node_cmp = dynamic_cast<NodeComparison*>(out_node);
+			NodeSize* out_node_size = dynamic_cast<NodeSize*>(out_node);
 
 			if (out_node_var)
 				val = out_node_var->m_name;
@@ -227,13 +228,15 @@ std::string node_var(NodeVariable* node_var)
 			else if (out_node_print)
 				val = fmt::format("\"{:s}\"", out_node_print->m_orig_str);
 			else if (out_node_cast)
-				val = NodeToCode::node_cast(out_node_cast, true, str);
+				val = NodeToCode::ntc_cast(out_node_cast, true, str);
 			else if (out_node_op)
-				val = NodeToCode::node_op(out_node_op, true, str);
+				val = NodeToCode::ntc_op(out_node_op, true, str);
 			else if (out_node_math)
-				val = NodeToCode::node_math(out_node_math, true, str);
+				val = NodeToCode::ntc_math(out_node_math, true, str);
 			else if (out_node_cmp)
-				val = NodeToCode::node_cmp(out_node_cmp, true, str);
+				val = NodeToCode::ntc_cmp(out_node_cmp, true, str);
+			else if (out_node_size)
+				val = NodeToCode::ntc_size(out_node_size, true, str);
 		}
 	}
 
@@ -241,7 +244,49 @@ std::string node_var(NodeVariable* node_var)
 	return str;
 }
 
-std::string node_cast(NodeCast* node_cast, bool val_only, std::string& pre)
+std::string ntc_size(NodeSize* node_size, bool val_only, std::string& pre)
+{
+	std::string str = "";
+	std::string rhs = "";
+
+	//get the lhs
+	for (const Connection& connection : node_size->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node == node_size)
+			continue;
+		NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
+		NodeArray* out_node_arr = dynamic_cast<NodeArray*>(out_node);
+
+		if (out_node_var)
+		{
+			if (out_node_var->m_value_orig.m_slot == +NODE_SLOT::STRING)
+				rhs = fmt::format("strlen({:s})", out_node_var->m_name);
+			else
+			{
+				std::string err = fmt::format("ERROR: node {:s} can't get size of variable that is not of type 'STRING'", node_size->m_name);
+				Transpiler::error(err.c_str());
+				return "";
+			}
+		}
+		else if (out_node_arr)
+		{
+			if (out_node_arr->m_array == +NODE_ARRAY::DYNAMIC)
+				rhs = fmt::format("{:s}.used", out_node_arr->m_name);
+			else if (out_node_arr->m_array == +NODE_ARRAY::FIXED)
+				rhs = fmt::format("(sizeof({:s})/sizeof({:s}[0]))", out_node_arr->m_name, out_node_arr->m_name);
+		}
+	}
+
+	if (val_only)
+		return rhs;
+	else
+		str = fmt::format("int {:s} = {:s};", node_size->m_name, rhs);
+
+	return str;
+}
+
+std::string ntc_cast(NodeCast* node_cast, bool val_only, std::string& pre)
 {
 	std::string str = "";
 	NODE_SLOT in_slot = NODE_SLOT::_from_string(node_cast->m_in_slots[0].title);
@@ -252,13 +297,17 @@ std::string node_cast(NodeCast* node_cast, bool val_only, std::string& pre)
 	for (const Connection& connection : node_cast->m_connections)
 	{
 		Node* out_node = static_cast<Node*>(connection.out_node);
-		if (out_node != node_cast)
-		{
-			lhs_name = out_node->m_name;
-			NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
-			if (node_prompt)
-				lhs_name.append(".buffer");
-		}
+		if (out_node == node_cast)
+			continue;
+		lhs_name = out_node->m_name;
+		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
+		NodeSize* node_size = dynamic_cast<NodeSize*>(out_node);
+		if (node_prompt)
+			lhs_name.append(".buffer");
+		else if (node_size)
+			pre.append(indent())
+				.append(NodeToCode::ntc_size(node_size, false, pre))
+				.append("\n");
 	}
 
 	std::string type = NodeToCode::slot_to_str(out_slot);
@@ -276,7 +325,7 @@ std::string node_cast(NodeCast* node_cast, bool val_only, std::string& pre)
 	return str;
 }
 
-std::string node_math(NodeMath* node_math, bool val_only, std::string& pre)
+std::string ntc_math(NodeMath* node_math, bool val_only, std::string& pre)
 {
 	std::string str = "";
 	std::string rhs = "";
@@ -338,7 +387,7 @@ std::string node_math(NodeMath* node_math, bool val_only, std::string& pre)
 	return str;
 }
 
-std::string node_cmp(NodeComparison* node_cmp, bool val_only, std::string& pre)
+std::string ntc_cmp(NodeComparison* node_cmp, bool val_only, std::string& pre)
 {
 	std::string str = "";
 	std::string rhs = "";
@@ -387,7 +436,7 @@ std::string node_cmp(NodeComparison* node_cmp, bool val_only, std::string& pre)
 	return str;
 }
 
-std::string node_op(NodeOperation* node_op, bool val_only, std::string& pre)
+std::string ntc_op(NodeOperation* node_op, bool val_only, std::string& pre)
 {
 	std::string str = "";
 	std::string rhs = "";
@@ -413,13 +462,13 @@ std::string node_op(NodeOperation* node_op, bool val_only, std::string& pre)
 		{
 			if (type == +NODE_SLOT::STRING)
 			{
-				std::string str_cast = NodeToCode::node_cast(out_node_cast, true, pre);
+				std::string str_cast = NodeToCode::ntc_cast(out_node_cast, true, pre);
 				v_elements.push_back(Transpiler::recent_temp);
 				string_concat = true;
 			}
 			else
 			{
-				std::string str_cast = NodeToCode::node_cast(out_node_cast, true, pre);
+				std::string str_cast = NodeToCode::ntc_cast(out_node_cast, true, pre);
 				v_elements.push_back(str_cast);
 			}
 		}
@@ -471,7 +520,7 @@ std::string node_op(NodeOperation* node_op, bool val_only, std::string& pre)
 	return str;
 }
 
-std::string node_array(NodeArray* node_array)
+std::string ntc_array(NodeArray* node_array)
 {
 	std::string str = "";
 	std::string type = slot_to_str(node_array->m_slot);
@@ -554,10 +603,24 @@ std::string node_array(NodeArray* node_array)
 		}
 	}
 
+	//get lhs value
+	for (const Connection& connection : node_array->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node == node_array)
+			continue;
+
+		NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
+		if (out_node_var)
+		{
+			//TODO insert to array
+		}
+	}
+
 	return str;
 }
 
-std::string node_print(NodePrint* node_print)
+std::string ntc_print(NodePrint* node_print)
 {
 	std::string str = "";
 	std::string spec = "%s";
@@ -578,6 +641,7 @@ std::string node_print(NodePrint* node_print)
 				NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
 				NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
 				NodeComparison* node_cmp = dynamic_cast<NodeComparison*>(out_node);
+				NodeSize* node_size = dynamic_cast<NodeSize*>(out_node);
 
 				if (node_var)
 				{
@@ -593,20 +657,26 @@ std::string node_print(NodePrint* node_print)
 				{
 					NODE_SLOT slot = NODE_SLOT::_from_string(node_op->m_out_slots[0].title);
 					other_spec = slot_to_spec(slot);
-					std::string rhs = NodeToCode::node_op(node_op, true, str);
+					std::string rhs = NodeToCode::ntc_op(node_op, true, str);
 					other_val = fmt::format("({:s})", rhs);
 				}
 				else if (node_math)
 				{
 					NODE_SLOT slot = NODE_SLOT::_from_string(node_math->m_out_slots[0].title);
 					other_spec = slot_to_spec(slot);
-					std::string rhs = NodeToCode::node_math(node_math, true, str);
+					std::string rhs = NodeToCode::ntc_math(node_math, true, str);
 					other_val = fmt::format("({:s})", rhs);
 				}
 				else if (node_cmp)
 				{
 					other_spec = "%d"; //cmp out is always boolean
-					std::string rhs = NodeToCode::node_cmp(node_cmp, true, str);
+					std::string rhs = NodeToCode::ntc_cmp(node_cmp, true, str);
+					other_val = fmt::format("({:s})", rhs);
+				}
+				else if (node_size)
+				{
+					other_spec = "%d"; //size is always int
+					std::string rhs = NodeToCode::ntc_size(node_size, true, str);
 					other_val = fmt::format("({:s})", rhs);
 				}
 			}
@@ -637,7 +707,7 @@ std::string node_print(NodePrint* node_print)
 	return str;
 }
 
-std::string node_prompt(NodePrompt* node_prompt)
+std::string ntc_prompt(NodePrompt* node_prompt)
 {
 	const char* name = node_prompt->m_name;
 	std::string str = "";
