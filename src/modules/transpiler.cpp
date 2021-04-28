@@ -145,6 +145,11 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs, 
 	bool has_d_a_float = false;
 	bool has_d_a_double = false;
 	bool has_d_a_str = false;
+	bool has_f_a_bool = false;
+	bool has_f_a_int = false;
+	bool has_f_a_float = false;
+	bool has_f_a_double = false;
+	bool has_f_a_str = false;
 	bool has_prompt = false;
 
 	if (is_tcc)
@@ -193,6 +198,65 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs, 
 			str_incl.append(Templates::incl_math);
 			has_math = true;
 			continue;
+		}
+
+		if (node_array && node_array->m_array == +NODE_ARRAY::FIXED)
+		{
+			if (!has_stdlib && !is_tcc)
+			{
+				str_incl.append(Templates::incl_stdlib);
+				has_stdlib = true;
+			}
+
+			switch (node_array->m_slot)
+			{
+				case NODE_SLOT::EMPTY: break;
+				case NODE_SLOT::BOOL:
+				{
+					if (!has_f_a_bool)
+					{
+						str_structs.append(Templates::f_arr_bool);
+						has_f_a_bool = true;
+					}
+					break;
+				}
+				case NODE_SLOT::INTEGER:
+				{
+					if (!has_f_a_int)
+					{
+						str_structs.append(Templates::f_arr_int);
+						has_f_a_int = true;
+					}
+					break;
+				}
+				case NODE_SLOT::FLOAT:
+				{
+					if (!has_f_a_float)
+					{
+						str_structs.append(Templates::f_arr_float);
+						has_f_a_float = true;
+					}
+					break;
+				}
+				case NODE_SLOT::DOUBLE:
+				{
+					if (!has_f_a_double)
+					{
+						str_structs.append(Templates::f_arr_double);
+						has_f_a_double = true;
+					}
+					break;
+				}
+				case NODE_SLOT::STRING:
+				{
+					if (!has_f_a_str)
+					{
+						str_structs.append(Templates::f_arr_string);
+						has_f_a_str = true;
+					}
+					break;
+				}
+			}
 		}
 
 		if (node_array && node_array->m_array == +NODE_ARRAY::DYNAMIC)
@@ -317,6 +381,13 @@ void Transpiler::transpile_decls(std::vector<Node*>& v, std::string& output)
 				}
 				break;
 			}
+
+			default:
+			{
+				std::string warning = fmt::format("WARNING: node {:s} is parsed as part of decls but it is not transpiled", node->m_name);
+				Transpiler::warning(warning.c_str());
+				break;
+			}
 		}
 	}
 }
@@ -330,8 +401,11 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 		Node* node = *it;
 
 		if (Transpiler::m_declared.find(node->m_name) != Transpiler::m_declared.end())
+		{
 			//found
+			PLOGD << node->m_name << " is declared already. Skipping.";
 			continue;
+		}
 		else
 			Transpiler::m_declared.insert({node->m_name, true});
 
@@ -390,7 +464,22 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 			case NODE_KIND::CAST: break;
 			case NODE_KIND::OPERATION: break;
 			case NODE_KIND::COMPARISON: break;
-			case NODE_KIND::GET: break;
+			case NODE_KIND::GET:
+			{
+				NodeGet* node_get = static_cast<NodeGet*>(node);
+				switch (node_get->m_get)
+				{
+					case NODE_GET::EMPTY: break;
+					case NODE_GET::SIZE:
+					{
+						NodeSize* node_size = static_cast<NodeSize*>(node_get);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::ntc_size(node_size, false, output));
+						break;
+					}
+				}
+				break;
+			}
 		}
 	}
 }
@@ -497,29 +586,63 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 
 	//begin transpiling
 	Transpiler::level++;
+#if 1
+		PLOGD << "---start decls---";
+		for (Node* &node : v_decls)
+			PLOGD << node->m_name;
+		PLOGD << "---end decls---";
+#endif
+	PLOGD << "Transpiling decls...";
 	Transpiler::transpile_decls(v_decls, str_decls);
+	PLOGD << "Transpiled decls";
 
 	//repeat
+	int pass = 1;
 	std::vector<Node*> v_start = v_decls;
 	// std::vector<std::vector<Node*>>* v_sequence = nullptr;
 	while (1)
 	{
 		std::vector<std::vector<Node*>> v_tmp_seq = Transpiler::get_v_sequence(v_start);
+#if 1
+		PLOGD << "---PASS #" << pass << "---";
+		for (std::vector<Node*>& v : v_tmp_seq)
+		{
+			PLOGD << "--start seq--";
+			for (Node* &node : v)
+				PLOGD << "\t" << node->m_name;
+			PLOGD << "--end seq--";
+		}
+#endif
+
 		std::vector<Node*> v_rest = Transpiler::get_rest(v_tmp_seq);
+
+#if 1
+		PLOGD << "--start rest--";
+		for (Node* &node : v_rest)
+			PLOGD << "\t" << node->m_name;
+		PLOGD << "--end rest--";
+		PLOGD << "---END PASS #" << pass << "---";
+#endif
 
 		if (v_tmp_seq.size() == 0 && v_rest.size() == 0)
 			break;
 
-		//transpile sequence
+		PLOGD << "Transpiling sequence...";
 		for (std::vector<Node*>& v : v_tmp_seq)
 			Transpiler::transpile(v, str_next);
-		//transpile rest
+		PLOGD << "Transpiled sequence";
+
+		PLOGD << "Transpiling rest...";
 		Transpiler::transpile(v_rest, str_rest);
+		PLOGD << "Transpiled rest";
 
 		//set for the next loop
 		v_start = v_rest;
+		pass++;
 	}
 	Transpiler::level--;
+
+	//TODO iterate again to add cleanup of memory
 
 	//closing
 	str_closing.append("  printf(\"PRESS ENTER TO EXIT\\n\");").append("\n");

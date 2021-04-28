@@ -81,13 +81,13 @@ inline static const char* tpl_dynamic_arr = "//START OF DYNAMIC ARRAY METHOD FOR
 	"  int used;\n"
 	"  int size;\n"
 	"}} {name};\n\n"
-	"void init_d_arr_{type_name}({name}* array, int size)\n"
+	"void d_init_arr_{type_name}({name}* array, int size)\n"
 	"{{\n"
 	"  array->array = malloc(size * sizeof({type}));\n"
 	"  array->used = 0;\n"
 	"  array->size = size;\n"
 	"}}\n\n"
-	"void insert_{type_name}({name}* array, {type} value)\n"
+	"void d_insert_{type_name}({name}* array, {type} value)\n"
 	"{{\n"
 	"  if (array->used == array->size)\n"
 	"  {{\n"
@@ -96,14 +96,14 @@ inline static const char* tpl_dynamic_arr = "//START OF DYNAMIC ARRAY METHOD FOR
 	"  }}\n"
 	"  array->array[array->used++] = value;\n"
 	"}}\n\n"
-	"void insert_{type_name}_array({name}* array, {type}* elements, int size)\n"
+	"void d_insert_{type_name}_array({name}* array, {type}* elements, int size)\n"
 	"{{\n"
 	"  for (int i = 0; i < size; i++)\n"
 	"  {{\n"
-	"    insert_{type_name}(array, elements[i]);\n"
+	"    d_insert_{type_name}(array, elements[i]);\n"
 	"  }}\n"
 	"}}\n\n"
-	"void free_{type_name}({name}* array)\n"
+	"void d_free_{type_name}({name}* array)\n"
 	"{{\n"
 	"  free(array->array);\n"
 	"  array->array = NULL;\n"
@@ -111,20 +111,61 @@ inline static const char* tpl_dynamic_arr = "//START OF DYNAMIC ARRAY METHOD FOR
 	"}}\n"
 	"//END OF DYNAMIC ARRAY STRUCT FOR {type}\n";
 
+inline static const char* tpl_fixed_arr = "//START OF FIXED ARRAY METHOD FOR {type}\n"
+	"typedef struct {name}\n"
+	"{{\n"
+	"  {type}* array;\n"
+	"  int used;\n"
+	"  int size;\n"
+	"}} {name};\n\n"
+	"void f_init_arr_{type_name}({name}* array, int size)\n"
+	"{{\n"
+	"  array->array = malloc(size * sizeof({type}));\n"
+	"  array->used = 0;\n"
+	"  array->size = size;\n"
+	"}}\n\n"
+	"void f_insert_{type_name}({name}* array, {type} value)\n"
+	"{{\n"
+	"  array->array[array->used++] = value;\n"
+	"}}\n\n"
+	"void f_insert_{type_name}_array({name}* array, {type}* elements, int size)\n"
+	"{{\n"
+	"  for (int i = 0; i < size; i++)\n"
+	"  {{\n"
+	"    f_insert_{type_name}(array, elements[i]);\n"
+	"  }}\n"
+	"}}\n\n"
+	"void f_free_{type_name}({name}* array)\n"
+	"{{\n"
+	"  free(array->array);\n"
+	"  array->array = NULL;\n"
+	"  array->used = array->size = 0;\n"
+	"}}\n"
+	"//END OF FIXED ARRAY STRUCT FOR {type}\n";
+
+//Dynamic
 inline static const std::string d_arr_bool = fmt::format(tpl_dynamic_arr,
 	fmt::arg("type", "bool"), fmt::arg("name", "DynamicArrayBool"), fmt::arg("type_name", "bool"));
-
 inline static const std::string d_arr_int = fmt::format(tpl_dynamic_arr,
 	fmt::arg("type", "int"), fmt::arg("name", "DynamicArrayInt"), fmt::arg("type_name", "int"));
-
 inline static const std::string d_arr_float = fmt::format(tpl_dynamic_arr,
 	fmt::arg("type", "float"), fmt::arg("name", "DynamicArrayFloat"), fmt::arg("type_name", "float"));
-
 inline static const std::string d_arr_double = fmt::format(tpl_dynamic_arr,
 	fmt::arg("type", "double"), fmt::arg("name", "DynamicArrayDouble"), fmt::arg("type_name", "double"));
-
 inline static const std::string d_arr_string = fmt::format(tpl_dynamic_arr,
 	fmt::arg("type", "const char*"), fmt::arg("name", "DynamicArrayString"), fmt::arg("type_name", "string"));
+
+//Fixed
+inline static const std::string f_arr_bool = fmt::format(tpl_fixed_arr,
+	fmt::arg("type", "bool"), fmt::arg("name", "FixedArrayBool"), fmt::arg("type_name", "bool"));
+inline static const std::string f_arr_int = fmt::format(tpl_fixed_arr,
+	fmt::arg("type", "int"), fmt::arg("name", "FixedArrayInt"), fmt::arg("type_name", "int"));
+inline static const std::string f_arr_float = fmt::format(tpl_fixed_arr,
+	fmt::arg("type", "float"), fmt::arg("name", "FixedArrayFloat"), fmt::arg("type_name", "float"));
+inline static const std::string f_arr_double = fmt::format(tpl_fixed_arr,
+	fmt::arg("type", "double"), fmt::arg("name", "FixedArrayDouble"), fmt::arg("type_name", "double"));
+inline static const std::string f_arr_string = fmt::format(tpl_fixed_arr,
+	fmt::arg("type", "const char*"), fmt::arg("name", "FixedArrayString"), fmt::arg("type_name", "string"));
 }
 
 #endif //_TEMPLATES_HPP

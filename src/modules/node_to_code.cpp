@@ -200,6 +200,7 @@ std::string comment(Node* node)
 
 std::string ntc_var(NodeVariable* node_var)
 {
+	PLOGD << "Transpiling: " << node_var->m_name;
 	std::string str = "";
 	NodeValue* value = &node_var->m_value;
 	std::string type = value->get_type_str();
@@ -246,6 +247,7 @@ std::string ntc_var(NodeVariable* node_var)
 
 std::string ntc_size(NodeSize* node_size, bool val_only, std::string& pre)
 {
+	PLOGD << "Transpiling: " << node_size->m_name << ", val_only: " << val_only;
 	std::string str = "";
 	std::string rhs = "";
 
@@ -271,23 +273,29 @@ std::string ntc_size(NodeSize* node_size, bool val_only, std::string& pre)
 		}
 		else if (out_node_arr)
 		{
-			if (out_node_arr->m_array == +NODE_ARRAY::DYNAMIC)
-				rhs = fmt::format("{:s}.used", out_node_arr->m_name);
-			else if (out_node_arr->m_array == +NODE_ARRAY::FIXED)
-				rhs = fmt::format("(sizeof({:s})/sizeof({:s}[0]))", out_node_arr->m_name, out_node_arr->m_name);
+			rhs = fmt::format("{:s}.used", out_node_arr->m_name);
+			// if (out_node_arr->m_array == +NODE_ARRAY::DYNAMIC)
+			// 	rhs = fmt::format("{:s}.used", out_node_arr->m_name);
+			// else if (out_node_arr->m_array == +NODE_ARRAY::FIXED)
+			// 	// rhs = fmt::format("(sizeof({:s})/sizeof({:s}[0]))", out_node_arr->m_name, out_node_arr->m_name);
+			// 	rhs = fmt::format("({:s}.used)", out_node_arr->m_name, out_node_arr->m_name);
 		}
 	}
 
 	if (val_only)
 		return rhs;
 	else
-		str = fmt::format("int {:s} = {:s};", node_size->m_name, rhs);
+	{
+		std::string d = fmt::format("int {:s} = {:s};", node_size->m_name, rhs);
+		str.append(indent()).append(d);
+	}
 
 	return str;
 }
 
 std::string ntc_cast(NodeCast* node_cast, bool val_only, std::string& pre)
 {
+	PLOGD << "Transpiling: " << node_cast->m_name << ", val_only: " << val_only;
 	std::string str = "";
 	NODE_SLOT in_slot = NODE_SLOT::_from_string(node_cast->m_in_slots[0].title);
 	NODE_SLOT out_slot = NODE_SLOT::_from_string(node_cast->m_out_slots[0].title);
@@ -327,6 +335,7 @@ std::string ntc_cast(NodeCast* node_cast, bool val_only, std::string& pre)
 
 std::string ntc_math(NodeMath* node_math, bool val_only, std::string& pre)
 {
+	PLOGD << "Transpiling: " << node_math->m_name << ", val_only: " << val_only;
 	std::string str = "";
 	std::string rhs = "";
 	std::vector<std::string> v_refs;
@@ -389,6 +398,7 @@ std::string ntc_math(NodeMath* node_math, bool val_only, std::string& pre)
 
 std::string ntc_cmp(NodeComparison* node_cmp, bool val_only, std::string& pre)
 {
+	PLOGD << "Transpiling: " << node_cmp->m_name << ", val_only: " << val_only;
 	std::string str = "";
 	std::string rhs = "";
 	std::string str_cmp = NodeToCode::cmp_to_str(node_cmp->m_cmp);
@@ -438,6 +448,7 @@ std::string ntc_cmp(NodeComparison* node_cmp, bool val_only, std::string& pre)
 
 std::string ntc_op(NodeOperation* node_op, bool val_only, std::string& pre)
 {
+	PLOGD << "Transpiling: " << node_op->m_name << ", val_only: " << val_only;
 	std::string str = "";
 	std::string rhs = "";
 	std::string op = node_op->get_op();
@@ -522,86 +533,60 @@ std::string ntc_op(NodeOperation* node_op, bool val_only, std::string& pre)
 
 std::string ntc_array(NodeArray* node_array)
 {
+	PLOGD << "Transpiling: " << node_array->m_name;
 	std::string str = "";
 	std::string type = slot_to_str(node_array->m_slot);
 	const char* name = node_array->m_name;
+	std::string pre_name = "";
+	std::string pre_method = "";
+	std::string type_name = "";
 
-	switch (node_array->m_array)
+	if (node_array->m_array == +NODE_ARRAY::FIXED)
 	{
-		case NODE_ARRAY::EMPTY: break;
-		case NODE_ARRAY::FIXED:
-		{
-			std::string size = fmt::format("[{:d}]", node_array->m_fixed_size);
-			std::string val = to_array(node_array);
-			str = fmt::format("{:s}{:s} {:s}{:s} = {:s};", indent(), type, name, size, val).append("\n");
-			break;
-		}
-		case NODE_ARRAY::DYNAMIC:
-		{
-			std::string array_name = "";
-			std::string init_name = "";
-			std::string insert_name = "";
-
-			switch (node_array->m_slot)
-			{
-				case NODE_SLOT::EMPTY: break;
-				case NODE_SLOT::BOOL:
-				{
-					array_name = "DynamicArrayBool";
-					init_name = "init_d_arr_bool";
-					insert_name = "insert_bool_array";
-					break;
-				}
-				case NODE_SLOT::INTEGER:
-				{
-					array_name = "DynamicArrayInt";
-					init_name = "init_d_arr_int";
-					insert_name = "insert_int_array";
-					break;
-				}
-				case NODE_SLOT::FLOAT:
-				{
-					array_name = "DynamicArrayFloat";
-					init_name = "init_d_arr_float";
-					insert_name = "insert_float_array";
-					break;
-				}
-				case NODE_SLOT::DOUBLE:
-				{
-					array_name = "DynamicArrayDouble";
-					init_name = "init_d_arr_double";
-					insert_name = "insert_double_array";
-					break;
-				}
-				case NODE_SLOT::STRING:
-				{
-					array_name = "DynamicArrayString";
-					init_name = "init_d_arr_string";
-					insert_name = "insert_string_array";
-					break;
-				}
-			}
-
-			//{1, 2, 3};
-			const int val_size = node_array->m_elements.size();
-			std::string val = to_array(node_array);
-			std::string val_name = std::string(name) + "_val";
-			//DynamicArrayT name;
-			std::string a = fmt::format("{:s} {:s};", array_name, name);
-			//init_d_arr_T(&name, size)
-			std::string b = fmt::format("{:s}(&{:s}, {:d});", init_name, name, val_size);
-			//T val_name[] = {val}
-			std::string c = fmt::format("{:s} {:s}[] = {:s};", type, val_name, val);
-			//insert_T_array(&name, val, val_size);
-			std::string d = fmt::format("{:s}(&{:s}, {:s}, {:d});", insert_name, name, val_name, val_size);
-
-			str.append(indent()).append(a).append("\n")
-				.append(indent()).append(b).append("\n")
-				.append(indent()).append(c).append("\n")
-				.append(indent()).append(d).append("\n");
-			break;
-		}
+		pre_name = "FixedArray";
+		pre_method = "f";
 	}
+	else if (node_array->m_array == +NODE_ARRAY::DYNAMIC)
+	{
+		pre_name = "DynamicArray";
+		pre_method = "d";
+	}
+
+	switch (node_array->m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: type_name = "Bool"; break;
+		case NODE_SLOT::INTEGER: type_name = "Int"; break;
+		case NODE_SLOT::FLOAT: type_name = "Float"; break;
+		case NODE_SLOT::DOUBLE: type_name = "Double"; break;
+		case NODE_SLOT::STRING: type_name = "String"; break;
+	}
+	std::string type_name_l = type_name;
+	std::transform(type_name_l.begin(), type_name_l.end(), type_name_l.begin(),
+			[](unsigned char c){ return std::tolower(c); });
+
+	std::string array_name = pre_name + type_name;
+	std::string init_name = pre_method + "_init_arr_" + type_name_l;
+	std::string insert_name = pre_method + "_insert_" + type_name_l + "_array";
+
+	//{1, 2, 3};
+	const int val_size = node_array->m_elements.size();
+	std::string val = to_array(node_array);
+	std::string val_name = std::string(name) + "_val";
+	std::string size = fmt::format("(sizeof({:s})/sizeof({:s}[0]))", val_name, val_name);
+	//Dynamic/FixedArrayT name;
+	std::string a = fmt::format("{:s} {:s};", array_name, name);
+	//init_d_arr_T(&name, size)
+	std::string b = fmt::format("{:s}(&{:s}, {:d});", init_name, name, val_size);
+	//T val_name[] = {val}
+	std::string c = fmt::format("{:s} {:s}[] = {:s};", type, val_name, val);
+	//insert_T_array(&name, val, val_size);
+	std::string d = fmt::format("{:s}(&{:s}, {:s}, {:s});", insert_name, name, val_name, size);
+
+	str.append(indent()).append(a).append("\n")
+		.append(indent()).append(b).append("\n")
+		.append(indent()).append(c).append("\n")
+		.append(indent()).append(d).append("\n");
 
 	//get lhs value
 	for (const Connection& connection : node_array->m_connections)
@@ -622,6 +607,7 @@ std::string ntc_array(NodeArray* node_array)
 
 std::string ntc_print(NodePrint* node_print)
 {
+	PLOGD << "Transpiling: " << node_print->m_name;
 	std::string str = "";
 	std::string spec = "%s";
 	std::string value = fmt::format("\"{:s}\"", node_print->m_orig_str);
@@ -709,6 +695,7 @@ std::string ntc_print(NodePrint* node_print)
 
 std::string ntc_prompt(NodePrompt* node_prompt)
 {
+	PLOGD << "Transpiling: " << node_prompt->m_name;
 	const char* name = node_prompt->m_name;
 	std::string str = "";
 	std::string value = "";

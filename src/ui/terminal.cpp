@@ -126,11 +126,11 @@ void Terminal::draw_output(void)
 		if (Transpiler::runnable_code.length() != 0)
 		{
 			std::time_t t = std::time(nullptr);
-			std::string out_filename = fmt::format("out/out_file_{:%I_%M_%s}.c", fmt::localtime(t));
-			std::ofstream out_file;
-			out_file.open(out_filename);
+			std::string out_filename = fmt::format("out/out_file_{:%Y_%m_%d_%I_%M_%s}.c", fmt::localtime(t));
+			std::ofstream out_file(out_filename);
 			out_file << Transpiler::runnable_code;
 			out_file.close();
+			Transpiler::v_output.push_back({"Saved to " + out_filename, OUTPUT_TYPE::SUCCESS});
 		}
 	}
 #endif
