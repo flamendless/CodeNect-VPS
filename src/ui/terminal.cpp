@@ -103,7 +103,11 @@ void Terminal::draw(void)
 		ImGui::End();
 	}
 
-	if (ImGui::IsKeyPressedMap(ImGuiKey_Escape))
+	if (ImGui::IsKeyPressedMap(ImGuiKey_C))
+		Transpiler::compile();
+	else if (ImGui::IsKeyPressedMap(ImGuiKey_C))
+		Transpiler::run();
+	else if (ImGui::IsKeyPressedMap(ImGuiKey_Escape))
 		Terminal::is_open = false;
 }
 
