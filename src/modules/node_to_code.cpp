@@ -562,7 +562,6 @@ std::string ntc_array_decls(NodeArray* node_array)
 	std::string a = fmt::format("{:s} {:s};", array_name, name);
 
 	str.append(indent()).append(a).append("\n");
-	PLOGE << str;
 
 	return str;
 }
@@ -608,17 +607,15 @@ std::string ntc_array(NodeArray* node_array)
 
 	//{1, 2, 3};
 	const int val_size = node_array->m_elements.size();
-	std::string val = to_array(node_array);
+	std::string val = NodeToCode::to_array(node_array);
 	std::string val_name = std::string(name) + "_val";
 	std::string size = fmt::format("(sizeof({:s})/sizeof({:s}[0]))", val_name, val_name);
 	//Dynamic/FixedArrayT name;
-	std::string a = "";
-
 	bool found = Transpiler::m_declared.find(node_array->m_name) != Transpiler::m_declared.end();
 	PLOGE << node_array->m_name << ", found = " << found;
 	if (!found)
 	{
-		a = fmt::format("{:s} {:s};", array_name, name);
+		std::string a = fmt::format("{:s} {:s};", array_name, name);
 		str.append(indent()).append(a).append("\n");
 	}
 	//init_d_arr_T(&name, size)
