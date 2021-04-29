@@ -22,6 +22,7 @@
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
+#include "modules/transpiler.hpp"
 
 namespace CodeNect
 {
@@ -97,6 +98,7 @@ int Project::open(void)
 	{
 		PLOGV << "Opened: " << Project::meta.filepath;
 		Nodes::reset();
+		Transpiler::clear();
 
 		if (Project::parse() == RES_FAIL)
 			return RES_FAIL;
@@ -545,6 +547,7 @@ void Project::close(void)
 	Project::nodes_count = 0;
 	Project::connections_count = 0;
 	Nodes::v_nodes.clear();
+	Transpiler::clear();
 
 	PLOGV << "Project closed";
 }

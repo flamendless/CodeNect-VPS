@@ -403,7 +403,7 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 		if (Transpiler::m_declared.find(node->m_name) != Transpiler::m_declared.end())
 		{
 			//found
-			PLOGD << node->m_name << " is declared already. Skipping.";
+			PLOGW << node->m_name << " is declared already. Skipping.";
 			continue;
 		}
 		else
@@ -484,30 +484,10 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 	}
 }
 
-std::vector<Node*> Transpiler::get_sequence(Node* start_node)
-{
-	std::vector<Node*> v;
-	for (const Connection& connection : start_node->m_connections)
-	{
-		Node* in_node = static_cast<Node*>(connection.in_node);
-		if (in_node != start_node)
-		{
-			unsigned int count = Nodes::count_node_dep(in_node);
-			if (count == 1)
-			{
-				v.push_back(in_node);
-				std::vector<Node*> v2 = Transpiler::get_sequence(in_node);
-				v.insert(v.end(), v2.begin(), v2.end());
-			}
-		}
-	}
-	return v;
-}
-
 std::vector<std::vector<Node*>> Transpiler::get_v_sequence(std::vector<Node*>& v_start)
 {
-	std::vector<std::vector<Node*>> v_out;
 	//get the independent sequence/chain of nodes
+	std::vector<std::vector<Node*>> v_out;
 	for (std::vector<Node*>::iterator it = v_start.begin();
 		it != v_start.end();
 		it++)
@@ -516,33 +496,70 @@ std::vector<std::vector<Node*>> Transpiler::get_v_sequence(std::vector<Node*>& v
 		std::vector<Node*> v_seq = Transpiler::get_sequence(node);
 
 		if (v_seq.size() == 0)
+		{
 			v_seq.push_back(node);
-
+			PLOGW << "v_seq size is 0 so " << node->m_name << " was added to sequence";
+		}
 		v_out.push_back(v_seq);
 	}
 
 	return v_out;
 }
 
+std::vector<Node*> Transpiler::get_sequence(Node* start_node)
+{
+	std::vector<Node*> v;
+	PLOGW << "seq. start_node: " << start_node->m_name;
+	for (const Connection& connection : start_node->m_connections)
+	{
+		Node* in_node = static_cast<Node*>(connection.in_node);
+		if (in_node != start_node)
+		{
+			unsigned int count = Nodes::count_node_dep(in_node);
+			PLOGD << "\t" << in_node->m_name << " = " << count;
+			if (count == 1)
+			{
+				v.push_back(in_node);
+				std::vector<Node*> v2 = Transpiler::get_sequence(in_node);
+				v.insert(v.end(), v2.begin(), v2.end());
+				PLOGW << "\t" << in_node->m_name << " dep. count is 1 so it's added to sequence";
+			}
+			else
+				PLOGW << "\t" << in_node->m_name << " dep. count is not 1 so it's not added to sequence";
+		}
+	}
+	PLOGW << "seq. end";
+	return v;
+}
+
 std::vector<Node*> Transpiler::get_rest(std::vector<std::vector<Node*>>& v_start)
 {
-	std::vector<Node*> v_out;
 	//get the rest to be transpiled using the last node in the sequence/chain
+	std::vector<Node*> v_out;
+	PLOGW << "begin rest. vv_size = " << v_start.size();
 	for (std::vector<Node*>& v : v_start)
 	{
+		PLOGD << "v_size = " << v.size();
 		Node* last = v.back(); //last node in the sequence
+		PLOGD << "last node: " << last->m_name;
 		for (const Connection& connection : last->m_connections)
 		{
 			Node* in_node = static_cast<Node*>(connection.in_node);
 			if (in_node != last)
 			{
+				PLOGD << "\t" << "in_node: " << in_node->m_name;
 				//check if node was already added
-				if (std::find(v_out.begin(), v_out.end(), in_node)!= v_out.end())
+				if (std::find(v_out.begin(), v_out.end(), in_node) != v_out.end())
+				{
+					PLOGW << "\t" << in_node->m_name << " was already added to rest. Skipping";
 					continue;
+				}
 				v_out.push_back(in_node);
+				PLOGW << "\t" << in_node->m_name << " is added to rest";
 			}
 		}
 	}
+	PLOGW << "end rest";
 	return v_out;
 }
 
@@ -553,7 +570,6 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	std::string str_entry = "";
 	std::string str_decls = "";
 	std::string str_next = "";
-	std::string str_rest = "";
 	std::string str_closing = "";
 
 	Transpiler::m_temp_names.clear();
@@ -599,12 +615,12 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	//repeat
 	int pass = 1;
 	std::vector<Node*> v_start = v_decls;
-	// std::vector<std::vector<Node*>>* v_sequence = nullptr;
 	while (1)
 	{
+		PLOGD << "PASS #" << pass;
 		std::vector<std::vector<Node*>> v_tmp_seq = Transpiler::get_v_sequence(v_start);
 #if 1
-		PLOGD << "---PASS #" << pass << "---";
+		PLOGD << "Sequence. size = " << v_tmp_seq.size();
 		for (std::vector<Node*>& v : v_tmp_seq)
 		{
 			PLOGD << "--start seq--";
@@ -612,16 +628,16 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 				PLOGD << "\t" << node->m_name;
 			PLOGD << "--end seq--";
 		}
+		PLOGD << "End Sequence";
 #endif
 
 		std::vector<Node*> v_rest = Transpiler::get_rest(v_tmp_seq);
 
 #if 1
-		PLOGD << "--start rest--";
+		PLOGD << "Rest. size = " << v_rest.size();
 		for (Node* &node : v_rest)
 			PLOGD << "\t" << node->m_name;
-		PLOGD << "--end rest--";
-		PLOGD << "---END PASS #" << pass << "---";
+		PLOGD << "End Rest";
 #endif
 
 		if (v_tmp_seq.size() == 0 && v_rest.size() == 0)
@@ -633,7 +649,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		PLOGD << "Transpiled sequence";
 
 		PLOGD << "Transpiling rest...";
-		Transpiler::transpile(v_rest, str_rest);
+		Transpiler::transpile(v_rest, str_next);
 		PLOGD << "Transpiled rest";
 
 		//set for the next loop
@@ -664,7 +680,6 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		.append(str_entry)
 		.append(str_decls).append("\n")
 		.append(str_next).append("\n")
-		.append(str_rest).append("\n")
 		.append(str_closing);
 	Transpiler::m_temp_names.clear();
 }
@@ -677,6 +692,9 @@ int Transpiler::compile(void)
 		return RES_FAIL;
 	}
 
+	Transpiler::v_declarations.clear();
+	Transpiler::m_temp_names.clear();
+	Transpiler::m_declared.clear();
 	tcc_delete(Transpiler::tcc_state);
 	Transpiler::init();
 	Terminal::is_open = true;
@@ -751,6 +769,9 @@ int Transpiler::run(void)
 void Transpiler::clear(void)
 {
 	Transpiler::v_output.clear();
+	Transpiler::v_declarations.clear();
+	Transpiler::m_temp_names.clear();
+	Transpiler::m_declared.clear();
 	Transpiler::has_ran = false;
 	Transpiler::has_compiled = false;
 	tcc_delete(Transpiler::tcc_state);

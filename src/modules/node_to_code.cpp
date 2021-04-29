@@ -274,20 +274,16 @@ std::string ntc_size(NodeSize* node_size, bool val_only, std::string& pre)
 		else if (out_node_arr)
 		{
 			rhs = fmt::format("{:s}.used", out_node_arr->m_name);
-			// if (out_node_arr->m_array == +NODE_ARRAY::DYNAMIC)
-			// 	rhs = fmt::format("{:s}.used", out_node_arr->m_name);
-			// else if (out_node_arr->m_array == +NODE_ARRAY::FIXED)
-			// 	// rhs = fmt::format("(sizeof({:s})/sizeof({:s}[0]))", out_node_arr->m_name, out_node_arr->m_name);
-			// 	rhs = fmt::format("({:s}.used)", out_node_arr->m_name, out_node_arr->m_name);
 		}
 	}
 
 	if (val_only)
-		return rhs;
+		str = rhs;
 	else
 	{
 		std::string d = fmt::format("int {:s} = {:s};", node_size->m_name, rhs);
-		str.append(indent()).append(d);
+		str.append(indent()).append(d).append("\n");
+		Transpiler::m_declared.insert({node_size->m_name, true});
 	}
 
 	return str;
@@ -313,9 +309,15 @@ std::string ntc_cast(NodeCast* node_cast, bool val_only, std::string& pre)
 		if (node_prompt)
 			lhs_name.append(".buffer");
 		else if (node_size)
-			pre.append(indent())
-				.append(NodeToCode::ntc_size(node_size, false, pre))
-				.append("\n");
+		{
+			if (Transpiler::m_declared.find(node_size->m_name) == Transpiler::m_declared.end())
+			{
+				//not found
+				pre.append(indent())
+					.append(NodeToCode::ntc_size(node_size, false, pre))
+					.append("\n");
+			}
+		}
 	}
 
 	std::string type = NodeToCode::slot_to_str(out_slot);
@@ -568,6 +570,7 @@ std::string ntc_array(NodeArray* node_array)
 	std::string array_name = pre_name + type_name;
 	std::string init_name = pre_method + "_init_arr_" + type_name_l;
 	std::string insert_name = pre_method + "_insert_" + type_name_l + "_array";
+	std::string insert_var = pre_method + "_insert_" + type_name_l;
 
 	//{1, 2, 3};
 	const int val_size = node_array->m_elements.size();
@@ -599,6 +602,8 @@ std::string ntc_array(NodeArray* node_array)
 		if (out_node_var)
 		{
 			//TODO insert to array
+			std::string ins = fmt::format("{:s}(&{:s}, {:s});", insert_var, name, out_node_var->m_name);
+			str.append(indent()).append(ins).append("\n");
 		}
 	}
 
