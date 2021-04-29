@@ -533,6 +533,40 @@ std::string ntc_op(NodeOperation* node_op, bool val_only, std::string& pre)
 	return str;
 }
 
+std::string ntc_array_decls(NodeArray* node_array)
+{
+	PLOGD << "Transpiling: " << node_array->m_name;
+	std::string str = "";
+	const char* name = node_array->m_name;
+	std::string pre_name = "";
+	std::string type_name = "";
+
+	if (node_array->m_array == +NODE_ARRAY::FIXED)
+		pre_name = "FixedArray";
+	else if (node_array->m_array == +NODE_ARRAY::DYNAMIC)
+		pre_name = "DynamicArray";
+
+	switch (node_array->m_slot)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: type_name = "Bool"; break;
+		case NODE_SLOT::INTEGER: type_name = "Int"; break;
+		case NODE_SLOT::FLOAT: type_name = "Float"; break;
+		case NODE_SLOT::DOUBLE: type_name = "Double"; break;
+		case NODE_SLOT::STRING: type_name = "String"; break;
+	}
+
+	std::string array_name = pre_name + type_name;
+
+	//Dynamic/FixedArrayT name;
+	std::string a = fmt::format("{:s} {:s};", array_name, name);
+
+	str.append(indent()).append(a).append("\n");
+	PLOGE << str;
+
+	return str;
+}
+
 std::string ntc_array(NodeArray* node_array)
 {
 	PLOGD << "Transpiling: " << node_array->m_name;
@@ -578,7 +612,15 @@ std::string ntc_array(NodeArray* node_array)
 	std::string val_name = std::string(name) + "_val";
 	std::string size = fmt::format("(sizeof({:s})/sizeof({:s}[0]))", val_name, val_name);
 	//Dynamic/FixedArrayT name;
-	std::string a = fmt::format("{:s} {:s};", array_name, name);
+	std::string a = "";
+
+	bool found = Transpiler::m_declared.find(node_array->m_name) != Transpiler::m_declared.end();
+	PLOGE << node_array->m_name << ", found = " << found;
+	if (!found)
+	{
+		a = fmt::format("{:s} {:s};", array_name, name);
+		str.append(indent()).append(a).append("\n");
+	}
 	//init_d_arr_T(&name, size)
 	std::string b = fmt::format("{:s}(&{:s}, {:d});", init_name, name, val_size);
 	//T val_name[] = {val}
@@ -586,8 +628,7 @@ std::string ntc_array(NodeArray* node_array)
 	//insert_T_array(&name, val, val_size);
 	std::string d = fmt::format("{:s}(&{:s}, {:s}, {:s});", insert_name, name, val_name, size);
 
-	str.append(indent()).append(a).append("\n")
-		.append(indent()).append(b).append("\n")
+	str.append(indent()).append(b).append("\n")
 		.append(indent()).append(c).append("\n")
 		.append(indent()).append(d).append("\n");
 
@@ -605,6 +646,49 @@ std::string ntc_array(NodeArray* node_array)
 			std::string ins = fmt::format("{:s}(&{:s}, {:s});", insert_var, name, out_node_var->m_name);
 			str.append(indent()).append(ins).append("\n");
 		}
+	}
+
+	Transpiler::m_declared.insert({node_array->m_name, true});
+
+	return str;
+}
+
+std::string ntc_array_access(NodeArrayAccess* node_array_access, bool val_only, std::string& pre)
+{
+	PLOGD << "Transpiling: " << node_array_access->m_name;
+	std::string str = "";
+	std::string index = std::to_string(node_array_access->m_index);
+	std::string ref_name = "";
+	NODE_SLOT out_slot = NODE_SLOT::_from_string(node_array_access->m_out_slots[0].title);
+	std::string type = NodeToCode::slot_to_str(out_slot);
+
+	//get the lhs
+	for (const Connection& connection : node_array_access->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node == node_array_access)
+			continue;
+		NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+		if (node_array)
+		{
+			ref_name = node_array->m_name;
+			ref_name.append(".array");
+		}
+		else if (node_var)
+			index = node_var->m_name;
+	}
+
+	std::string rhs = fmt::format("{:s}[{:s}]", ref_name, index);
+
+	if (val_only)
+		str = rhs;
+	else
+	{
+		std::string d = fmt::format("{:s} {:s} = {:s};",
+				type, node_array_access->m_name, rhs);
+		str.append(indent()).append(d).append("\n");
+		Transpiler::m_declared.insert({node_array_access->m_name, true});
 	}
 
 	return str;

@@ -38,6 +38,7 @@ struct Transpiler
 	static void set_pre_entry(std::string& str_incl, std::string& str_structs, bool is_tcc);
 	static void build_runnable_code(std::string& out, bool is_tcc);
 	static void transpile_decls(std::vector<Node*>& v, std::string& output);
+	static void transpile_decls_array(std::vector<Node*>& v, std::string& output);
 	static void transpile(std::vector<Node*>& v, std::string& output);
 	static std::vector<Node*> get_sequence(Node* start_node);
 	static std::vector<std::vector<Node*>> get_v_sequence(std::vector<Node*>& v_start);

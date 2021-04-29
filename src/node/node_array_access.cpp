@@ -16,6 +16,7 @@ NodeArrayAccess::NodeArrayAccess(
 	Node::m_kind = NodeGet::m_kind;
 	Node::m_name = Nodes::get_id(m_get._to_string());
 
+	m_index_orig = index;
 	m_index = index;
 	m_in_slots = in_slots;
 	m_out_slots = out_slots;

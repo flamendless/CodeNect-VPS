@@ -10,7 +10,9 @@ struct NodeArrayAccess : public NodeGet
 	NODE_GET m_get = NODE_GET::ARRAY_ACCESS;
 
 	unsigned int m_index = 0;
+	unsigned int m_index_orig = 0;
 	NodeValue* m_current_val = nullptr;
+	bool m_has_array = false;
 
 	explicit NodeArrayAccess(
 		unsigned int index,

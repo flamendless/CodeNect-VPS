@@ -23,6 +23,7 @@
 #include "node/node_var.hpp"
 #include "node/node_cast.hpp"
 #include "node/node_op.hpp"
+#include "node/node_array_access.hpp"
 #include "core/project.hpp"
 #include "core/utils.hpp"
 
@@ -104,7 +105,7 @@ bool Transpiler::is_valid_decls(Node* node)
 	switch (node->m_kind)
 	{
 		case NODE_KIND::VARIABLE: valid = true; break;
-		case NODE_KIND::DS: valid = true; break;
+		// case NODE_KIND::DS: valid = true; break;
 		case NODE_KIND::ACTION: valid = true; break;
 	}
 
@@ -392,6 +393,25 @@ void Transpiler::transpile_decls(std::vector<Node*>& v, std::string& output)
 	}
 }
 
+void Transpiler::transpile_decls_array(std::vector<Node*>& v, std::string& output)
+{
+	//the following are only possible to be nodes without any LHS
+	for (std::vector<Node*>::iterator it = v.begin();
+		it != v.end();
+		it++)
+	{
+		Node* node = *it;
+		NodeArray* node_array = static_cast<NodeArray*>(node);
+		bool found = Transpiler::m_declared.find(node_array->m_name) != Transpiler::m_declared.end();
+		if (!found)
+		{
+			output.append(NodeToCode::comment(node));
+			output.append(NodeToCode::ntc_array_decls(node_array));
+			Transpiler::m_declared.insert({node_array->m_name, true});
+		}
+	}
+}
+
 void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 {
 	for (std::vector<Node*>::iterator it = v.begin();
@@ -403,8 +423,12 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 		if (Transpiler::m_declared.find(node->m_name) != Transpiler::m_declared.end())
 		{
 			//found
-			PLOGW << node->m_name << " is declared already. Skipping.";
-			continue;
+			NodeArray* node_array = dynamic_cast<NodeArray*>(node);
+			if (!node_array)
+			{
+				PLOGW << node->m_name << " is declared already. Skipping.";
+				continue;
+			}
 		}
 		else
 			Transpiler::m_declared.insert({node->m_name, true});
@@ -417,6 +441,7 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 				NodeVariable* node_var = static_cast<NodeVariable*>(node);
 				output.append(NodeToCode::comment(node));
 				output.append(NodeToCode::ntc_var(node_var));
+				output.append("\n");
 				break;
 			}
 
@@ -431,6 +456,7 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 						NodeArray* node_array = static_cast<NodeArray*>(node);
 						output.append(NodeToCode::comment(node));
 						output.append(NodeToCode::ntc_array(node_array));
+						output.append("\n");
 						break;
 					}
 				}
@@ -448,6 +474,7 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 						NodePrint* node_print = static_cast<NodePrint*>(node);
 						output.append(NodeToCode::comment(node));
 						output.append(NodeToCode::ntc_print(node_print));
+						output.append("\n");
 						break;
 					}
 					case NODE_ACTION::PROMPT:
@@ -455,6 +482,7 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 						NodePrompt* node_prompt = static_cast<NodePrompt*>(node);
 						output.append(NodeToCode::comment(node));
 						output.append(NodeToCode::ntc_prompt(node_prompt));
+						output.append("\n");
 						break;
 					}
 				}
@@ -475,6 +503,15 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 						NodeSize* node_size = static_cast<NodeSize*>(node_get);
 						output.append(NodeToCode::comment(node));
 						output.append(NodeToCode::ntc_size(node_size, false, output));
+						output.append("\n");
+						break;
+					}
+					case NODE_GET::ARRAY_ACCESS:
+					{
+						NodeArrayAccess* node_array_access = static_cast<NodeArrayAccess*>(node_get);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::ntc_array_access(node_array_access, false, output));
+						output.append("\n");
 						break;
 					}
 				}
@@ -581,6 +618,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 
 	//store
 	std::vector<Node*> v_decls;
+	std::vector<Node*> v_decls_array;
 
 	//find all nodes that do NOT have any LHS, this means that they are for declarations
 	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
@@ -598,11 +636,16 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 			else
 				v_decls.push_back(node);
 		}
+
+		//exception: still define all arrays
+		NodeArray* node_array = dynamic_cast<NodeArray*>(node);
+		if (node_array)
+			v_decls_array.push_back(node);
 	}
 
 	//begin transpiling
 	Transpiler::level++;
-#if 1
+#if 0
 		PLOGD << "---start decls---";
 		for (Node* &node : v_decls)
 			PLOGD << node->m_name;
@@ -612,6 +655,16 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	Transpiler::transpile_decls(v_decls, str_decls);
 	PLOGD << "Transpiled decls";
 
+#if 0
+		PLOGD << "---start decls array---";
+		for (Node* &node : v_decls_array)
+			PLOGD << node->m_name;
+		PLOGD << "---end decls array---";
+#endif
+	PLOGD << "Transpiling decls array...";
+	Transpiler::transpile_decls_array(v_decls_array, str_decls);
+	PLOGD << "Transpiled decls array";
+
 	//repeat
 	int pass = 1;
 	std::vector<Node*> v_start = v_decls;
@@ -619,7 +672,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	{
 		PLOGD << "PASS #" << pass;
 		std::vector<std::vector<Node*>> v_tmp_seq = Transpiler::get_v_sequence(v_start);
-#if 1
+#if 0
 		PLOGD << "Sequence. size = " << v_tmp_seq.size();
 		for (std::vector<Node*>& v : v_tmp_seq)
 		{
@@ -633,7 +686,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 
 		std::vector<Node*> v_rest = Transpiler::get_rest(v_tmp_seq);
 
-#if 1
+#if 0
 		PLOGD << "Rest. size = " << v_rest.size();
 		for (Node* &node : v_rest)
 			PLOGD << "\t" << node->m_name;
