@@ -17,6 +17,7 @@ struct ProjectMeta
 	std::string filepath;
 	std::string author;
 	std::string creation_dt;
+	ImVec2 offset;
 };
 
 struct Project
@@ -49,6 +50,7 @@ struct Project
 	static void draw(void);
 	static void close(void);
 	static bool has_unsaved_changes(void);
+	static void shutdown(void);
 };
 }
 

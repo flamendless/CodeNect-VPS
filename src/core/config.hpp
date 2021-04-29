@@ -48,7 +48,6 @@ struct Config
 
 	struct NodeInterface_c
 	{
-		static ImVec2 offset;
 		static ImVec2 pos;
 		static ImVec2 item_inner_spacing;
 		static ImVec4 color_dark;

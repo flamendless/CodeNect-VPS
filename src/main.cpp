@@ -76,7 +76,7 @@ int main(int argv, char** args)
 
 	//test
 #if DEBUG_MODE
-	CodeNect::Project::open("test_op.cn");
+	CodeNect::Project::open("test_arrays.cn");
 #endif
 
 	if (argv > 1)
@@ -121,6 +121,7 @@ int main(int argv, char** args)
 	CodeNect::Commands::shutdown();
 	CodeNect::Font::shutdown();
 	CodeNect::Config::shutdown();
+	CodeNect::Project::shutdown();
 	CodeNect::Transpiler::shutdown();
 	app.shutdown();
 

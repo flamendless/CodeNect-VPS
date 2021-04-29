@@ -113,8 +113,8 @@ void NodeInterface::draw_main(void)
 
 	if (!NodeInterface::flag_init_setup)
 	{
-		canvas->Offset.x = Config::NodeInterface_c::offset.x;
-		canvas->Offset.y = Config::NodeInterface_c::offset.y;
+		canvas->Offset.x = Project::meta.offset.x;
+		canvas->Offset.y = Project::meta.offset.y;
 		NodeInterface::flag_init_setup = true;
 	}
 
@@ -133,8 +133,8 @@ void NodeInterface::draw_main(void)
 	NodeInterface::draw_context_menu(*canvas);
 	CreateNode::draw();
 	Zoom::zoom_factor = canvas->Zoom;
-	Config::NodeInterface_c::offset.x = canvas->Offset.x;
-	Config::NodeInterface_c::offset.y = canvas->Offset.y;
+	Project::meta.offset.x = canvas->Offset.x;
+	Project::meta.offset.y = canvas->Offset.y;
 	ImNodes::EndCanvas();
 }
 

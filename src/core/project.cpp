@@ -167,6 +167,10 @@ int Project::save(void)
 		ini.Delete(section.pItem, nullptr);
 	}
 
+	//Save meta
+	ini.SetValue("meta", "offsetx", std::to_string(Project::meta.offset.x).c_str());
+	ini.SetValue("meta", "offsety", std::to_string(Project::meta.offset.y).c_str());
+
 	//save nodes
 	int s_i = 0;
 
@@ -375,6 +379,9 @@ int Project::parse(void)
 	Project::meta.creation_dt = ini.GetValue("meta", "creation_dt", "");
 	PLOGV << "Project Creation Datetime: " << Project::meta.creation_dt;
 
+	Project::meta.offset.x = std::stoi(ini.GetValue("meta", "offsetx", "0"));
+	Project::meta.offset.y = std::stoi(ini.GetValue("meta", "offsety", "0"));
+
 	CSimpleIniA::TNamesDepend sections;
 	ini.GetAllSections(sections);
 	std::vector<NodeMeta*> v_node_meta;
@@ -577,5 +584,33 @@ bool Project::has_unsaved_changes(void)
 	}
 
 	return false;
+}
+
+void Project::shutdown(void)
+{
+	if (!Project::has_open_proj)
+		return;
+
+	PLOGI << "Saving camera offset to project file...";
+	CSimpleIniA ini;
+	ini.SetUnicode();
+	SI_Error res = ini.LoadFile(Project::meta.filepath.c_str());
+
+	if (res < 0)
+	{
+		PLOGE << "File not found anymore";
+		return;
+	}
+
+	ini.SetValue("meta", "offsetx", std::to_string(Project::meta.offset.x).c_str());
+	ini.SetValue("meta", "offsety", std::to_string(Project::meta.offset.y).c_str());
+
+	if (ini.SaveFile(Project::meta.filepath.c_str()) < 0)
+	{
+		PLOGE << "Failed to save project to disk";
+		return;
+	}
+
+	PLOGI << "Saved camera offset to project file successfully";
 }
 }
