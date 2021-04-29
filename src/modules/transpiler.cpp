@@ -3,8 +3,6 @@
 
 #include <stdio.h>
 #include <functional>
-#include <sys/wait.h>
-#include <sys/mman.h>
 #include "plog/Log.h"
 #include "ppk_assert.h"
 #include "IconsFontAwesome5.h"
@@ -559,10 +557,7 @@ std::vector<Node*> Transpiler::get_sequence(Node* start_node)
 				v.push_back(in_node);
 				std::vector<Node*> v2 = Transpiler::get_sequence(in_node);
 				v.insert(v.end(), v2.begin(), v2.end());
-				PLOGW << "\t" << in_node->m_name << " dep. count is 1 so it's added to sequence";
 			}
-			else
-				PLOGW << "\t" << in_node->m_name << " dep. count is not 1 so it's not added to sequence";
 		}
 	}
 	PLOGW << "seq. end";
@@ -577,22 +572,24 @@ std::vector<Node*> Transpiler::get_rest(std::vector<std::vector<Node*>>& v_start
 	for (std::vector<Node*>& v : v_start)
 	{
 		PLOGD << "v_size = " << v.size();
-		Node* last = v.back(); //last node in the sequence
-		PLOGD << "last node: " << last->m_name;
-		for (const Connection& connection : last->m_connections)
+		for (Node* &node : v)
 		{
-			Node* in_node = static_cast<Node*>(connection.in_node);
-			if (in_node != last)
+			PLOGD << node->m_name;
+			for (const Connection& connection : node->m_connections)
 			{
-				PLOGD << "\t" << "in_node: " << in_node->m_name;
-				//check if node was already added
-				if (std::find(v_out.begin(), v_out.end(), in_node) != v_out.end())
+				Node* in_node = static_cast<Node*>(connection.in_node);
+				if (in_node != node)
 				{
-					PLOGW << "\t" << in_node->m_name << " was already added to rest. Skipping";
-					continue;
+					PLOGD << "\t" << "in_node: " << in_node->m_name;
+					//check if node was already added
+					if (std::find(v_out.begin(), v_out.end(), in_node) != v_out.end())
+					{
+						PLOGW << "\t" << in_node->m_name << " was already added to rest. Skipping";
+						continue;
+					}
+					v_out.push_back(in_node);
+					PLOGW << "\t" << in_node->m_name << " is added to rest";
 				}
-				v_out.push_back(in_node);
-				PLOGW << "\t" << in_node->m_name << " is added to rest";
 			}
 		}
 	}
