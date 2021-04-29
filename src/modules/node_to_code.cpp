@@ -221,6 +221,7 @@ std::string ntc_var(NodeVariable* node_var)
 			NodeMath* out_node_math = dynamic_cast<NodeMath*>(out_node);
 			NodeComparison* out_node_cmp = dynamic_cast<NodeComparison*>(out_node);
 			NodeSize* out_node_size = dynamic_cast<NodeSize*>(out_node);
+			NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
 
 			if (out_node_var)
 				val = out_node_var->m_name;
@@ -238,6 +239,8 @@ std::string ntc_var(NodeVariable* node_var)
 				val = NodeToCode::ntc_cmp(out_node_cmp, true, str);
 			else if (out_node_size)
 				val = NodeToCode::ntc_size(out_node_size, true, str);
+			else if (out_node_arr_access)
+				val = NodeToCode::ntc_array_access(out_node_arr_access, true, str);
 		}
 	}
 
@@ -306,6 +309,8 @@ std::string ntc_cast(NodeCast* node_cast, bool val_only, std::string& pre)
 		lhs_name = out_node->m_name;
 		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
 		NodeSize* node_size = dynamic_cast<NodeSize*>(out_node);
+		NodeArrayAccess* node_array_access = dynamic_cast<NodeArrayAccess*>(out_node);
+
 		if (node_prompt)
 			lhs_name.append(".buffer");
 		else if (node_size)
@@ -458,7 +463,7 @@ std::string ntc_op(NodeOperation* node_op, bool val_only, std::string& pre)
 	std::vector<std::string> v_elements;
 	bool string_concat = false;
 
-	//possible LHS: node_var, node_cast
+	//get LHS
 	for (const Connection& connection : node_op->m_connections)
 	{
 		Node* out_node = static_cast<Node*>(connection.out_node);
@@ -467,11 +472,11 @@ std::string ntc_op(NodeOperation* node_op, bool val_only, std::string& pre)
 
 		NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
 		NodeCast* out_node_cast = dynamic_cast<NodeCast*>(out_node);
+		NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
 
 		if (out_node_var)
 			v_elements.push_back(out_node_var->m_name);
-
-		if (out_node_cast)
+		else if (out_node_cast)
 		{
 			if (type == +NODE_SLOT::STRING)
 			{
@@ -483,6 +488,17 @@ std::string ntc_op(NodeOperation* node_op, bool val_only, std::string& pre)
 			{
 				std::string str_cast = NodeToCode::ntc_cast(out_node_cast, true, pre);
 				v_elements.push_back(str_cast);
+			}
+		}
+		else if (out_node_arr_access)
+		{
+			if (type == +NODE_SLOT::STRING)
+			{
+			}
+			else
+			{
+				std::string str_aa = NodeToCode::ntc_array_access(out_node_arr_access, true, pre);
+				v_elements.push_back(str_aa);
 			}
 		}
 	}
@@ -612,7 +628,6 @@ std::string ntc_array(NodeArray* node_array)
 	std::string size = fmt::format("(sizeof({:s})/sizeof({:s}[0]))", val_name, val_name);
 	//Dynamic/FixedArrayT name;
 	bool found = Transpiler::m_declared.find(node_array->m_name) != Transpiler::m_declared.end();
-	PLOGE << node_array->m_name << ", found = " << found;
 	if (!found)
 	{
 		std::string a = fmt::format("{:s} {:s};", array_name, name);
@@ -714,6 +729,7 @@ std::string ntc_print(NodePrint* node_print)
 				NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
 				NodeComparison* node_cmp = dynamic_cast<NodeComparison*>(out_node);
 				NodeSize* node_size = dynamic_cast<NodeSize*>(out_node);
+				NodeArrayAccess* node_array_access = dynamic_cast<NodeArrayAccess*>(out_node);
 
 				if (node_var)
 				{
@@ -749,6 +765,13 @@ std::string ntc_print(NodePrint* node_print)
 				{
 					other_spec = "%d"; //size is always int
 					std::string rhs = NodeToCode::ntc_size(node_size, true, str);
+					other_val = fmt::format("({:s})", rhs);
+				}
+				else if (node_array_access)
+				{
+					NODE_SLOT slot = NODE_SLOT::_from_string(node_array_access->m_out_slots[0].title);
+					other_spec = slot_to_spec(slot);
+					std::string rhs = NodeToCode::ntc_array_access(node_array_access, true, str);
 					other_val = fmt::format("({:s})", rhs);
 				}
 			}
