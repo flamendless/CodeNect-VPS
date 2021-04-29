@@ -60,7 +60,9 @@ void CreateNode::draw_array_access(void)
 	ImGui::InputInt("Index", &tmp->index);
 	static const char* txt_help = "Array index is zero-based\n"
 		"this means that the index of the first element is zero";
+	static const char* txt_help2 = "Array index can also be set using a NodeVariable";
 	Utils::help_marker(txt_help, true);
+	Utils::help_marker(txt_help2, true);
 
 	if (tmp->index < 0)
 		ImGui::TextColored(ImVec4(1, 0, 0, 1), "Array index can not be negative");

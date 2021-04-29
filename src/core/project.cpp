@@ -279,7 +279,7 @@ int Project::save(void)
 				ini.SetValue(section, "get", node_get->m_get._to_string());
 
 				if (node_arr_access)
-					ini.SetValue(section, "index", std::to_string(node_arr_access->m_index).c_str());
+					ini.SetValue(section, "index", std::to_string(node_arr_access->m_index_orig).c_str());
 				else if (node_size)
 					ini.SetValue(section, "size", std::to_string(node_size->m_size).c_str());
 			}

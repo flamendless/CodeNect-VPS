@@ -8,6 +8,15 @@
 
 namespace CodeNect::NodeLogic
 {
+bool index_within_array_bounds(NodeArray* node_array, const int index)
+{
+	const int size_a = node_array->m_elements.size();
+	const int size_b = node_array->m_other_elements.size();
+	const unsigned int total_size = size_a + size_b;
+
+	return index < total_size;
+}
+
 void process_array_access(void)
 {
 	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
@@ -22,34 +31,34 @@ void process_array_access(void)
 		if (node_arr_access->m_current_val)
 			delete node_arr_access->m_current_val;
 		node_arr_access->m_current_val = nullptr;
+		node_arr_access->m_index = node_arr_access->m_index_orig;
+		node_arr_access->m_has_array = false;
+
+		//first check if there's a node_var connected
+		for (Connection& connection : node_arr_access->m_connections)
+		{
+			Node* out_node = static_cast<Node*>(connection.out_node);
+			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
+			if (out_node_var)
+			{
+				const int index = std::get<int>(out_node_var->m_value.data);
+				node_arr_access->m_index = index;
+			}
+		}
 
 		//get the "from" array
 		NodeArray* from_node_array = nullptr;
 		for (Connection& connection : node_arr_access->m_connections)
 		{
 			Node* out_node = static_cast<Node*>(connection.out_node);
-			//check if two node_array_access are connected
-			NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
-			if (out_node_arr_access && out_node_arr_access != node_arr_access)
-			{
-				NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
-				continue;
-			}
-
 			NodeArray* out_node_array = dynamic_cast<NodeArray*>(out_node);
 			if (out_node_array)
 			{
-				//check if our index is within array bounds
-				const int size_a = out_node_array->m_elements.size();
-				const int size_b = out_node_array->m_other_elements.size();
-				const unsigned int total_size = size_a + size_b;
-
-				if (node_arr_access->m_index < total_size)
+				bool res = NodeLogic::index_within_array_bounds(out_node_array, node_arr_access->m_index);
+				if (res)
 				{
-					if (!from_node_array)
-						from_node_array = out_node_array;
-					else
-						NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
+					node_arr_access->m_has_array = true;
+					from_node_array = out_node_array;
 				}
 				else
 				{
@@ -90,13 +99,14 @@ void process_array_access(void)
 
 bool validate_node_array_access(Node* in_node, Node* out_node)
 {
-	//connection must be from node_array to node_array_access only
+	//connection must be from node_array or node_var to node_array_access only
 	NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
+	NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
 	NodeArrayAccess* node_arr_access = dynamic_cast<NodeArrayAccess*>(in_node);
 
 	if (node_arr_access)
 	{
-		if (node_array)
+		if (node_array || node_var)
 			return true;
 		else
 			return false;

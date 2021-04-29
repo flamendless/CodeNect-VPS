@@ -4,6 +4,7 @@
 #include "node/connection.hpp"
 #include "node/node.hpp"
 #include "node/node_math.hpp"
+#include "node/node_array.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -18,6 +19,7 @@ void process_prompt(void);
 void process_math(void);
 double calculate_math(NodeMath* node_math, std::function<double(double, double)> fn);
 void process_array(void);
+bool index_within_array_bounds(NodeArray*, const int);
 void process_array_access(void);
 void process_size(void);
 
