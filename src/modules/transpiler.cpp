@@ -453,9 +453,9 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 					case NODE_DS::ARRAY:
 					{
 						NodeArray* node_array = static_cast<NodeArray*>(node);
-						// bool found = Transpiler::m_array_init.find(node_array->m_name) != Transpiler::m_array_init.end();
-						// if (found)
-						// 	continue;
+						bool found = Transpiler::m_array_init.find(node_array->m_name) != Transpiler::m_array_init.end();
+						if (found)
+							continue;
 						output.append(NodeToCode::comment(node));
 						output.append(NodeToCode::ntc_array(node_array));
 						output.append("\n");
@@ -601,6 +601,33 @@ std::vector<Node*> Transpiler::get_rest(std::vector<std::vector<Node*>>& v_start
 	return v_out;
 }
 
+void Transpiler::arrange_v(std::vector<Node*>& v)
+{
+	std::sort(v.begin(), v.end(),
+		[](Node* &a, Node* &b) -> bool
+		{
+			NodeArray* node_array_a = dynamic_cast<NodeArray*>(a);
+			if (!node_array_a)
+				return false;
+
+			bool has_array_dep = false;
+			for (const Connection& connection : a->m_connections)
+			{
+				Node* out_node = static_cast<Node*>(connection.out_node);
+				if (out_node == a)
+					continue;
+				NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
+				if (node_array && node_array == b)
+				{
+					PLOGD << "swapped " << a->m_name << " with " << b->m_name;
+					has_array_dep = true;
+					break;
+				}
+			}
+			return !has_array_dep;
+		});
+}
+
 void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 {
 	std::string str_incl = "";
@@ -632,11 +659,25 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		{
 			if (!Transpiler::is_valid_decls(node))
 			{
-				std::string warning = fmt::format("Node {:s} is not a valid declaration because it needs an inputs", node->m_name);
+				std::string warning = fmt::format("Node {:s} is not a valid declaration because it needs an inputs",
+						node->m_name);
 				Transpiler::warning(warning.c_str());
 			}
 			else
 				v_decls.push_back(node);
+		}
+
+		//check if inputs are satisfied
+		NodeOperation* node_op = dynamic_cast<NodeOperation*>(node);
+		if (node_op)
+		{
+			const int count = Nodes::count_node_dep(node_op);
+			if (count < 2)
+			{
+				std::string warning = fmt::format("Node {:s} must have two inputs. Got {:d}",
+						node->m_name, count);
+				Transpiler::warning(warning.c_str());
+			}
 		}
 
 		//exception: still define all arrays
@@ -674,6 +715,9 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	{
 		PLOGD << "PASS #" << pass;
 		std::vector<std::vector<Node*>> v_tmp_seq = Transpiler::get_v_sequence(v_start);
+		for (std::vector<Node*>& v : v_tmp_seq)
+			Transpiler::arrange_v(v);
+
 #if 0
 		PLOGD << "Sequence. size = " << v_tmp_seq.size();
 		for (std::vector<Node*>& v : v_tmp_seq)
@@ -687,6 +731,9 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 #endif
 
 		std::vector<Node*> v_rest = Transpiler::get_rest(v_tmp_seq);
+
+		//arrange v_rest to fix arrays dependencies
+		Transpiler::arrange_v(v_rest);
 
 #if 0
 		PLOGD << "Rest. size = " << v_rest.size();

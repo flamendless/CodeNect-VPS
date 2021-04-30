@@ -41,6 +41,7 @@ struct Transpiler
 	static void transpile_decls(std::vector<Node*>& v, std::string& output);
 	static void transpile_decls_array(std::vector<Node*>& v, std::string& output);
 	static void transpile(std::vector<Node*>& v, std::string& output);
+	static void arrange_v(std::vector<Node*>&);
 	static std::vector<Node*> get_sequence(Node* start_node);
 	static std::vector<std::vector<Node*>> get_v_sequence(std::vector<Node*>& v_start);
 	static std::vector<Node*> get_rest(std::vector<std::vector<Node*>>& v_start);
