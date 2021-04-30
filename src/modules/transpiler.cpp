@@ -34,6 +34,7 @@ std::vector<std::pair<std::string, OUTPUT_TYPE>> Transpiler::v_output;
 std::vector<std::string> Transpiler::v_declarations;
 std::map<std::string, bool> Transpiler::m_temp_names;
 std::map<std::string, bool> Transpiler::m_declared;
+std::map<std::string, std::string> Transpiler::m_array_init;
 int Transpiler::level = 0;
 bool Transpiler::has_ran = false;
 bool Transpiler::has_compiled = false;
@@ -452,6 +453,9 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 					case NODE_DS::ARRAY:
 					{
 						NodeArray* node_array = static_cast<NodeArray*>(node);
+						// bool found = Transpiler::m_array_init.find(node_array->m_name) != Transpiler::m_array_init.end();
+						// if (found)
+						// 	continue;
 						output.append(NodeToCode::comment(node));
 						output.append(NodeToCode::ntc_array(node_array));
 						output.append("\n");
@@ -605,6 +609,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	std::string str_decls = "";
 	std::string str_next = "";
 	std::string str_closing = "";
+	std::string str_free = "";
 
 	Transpiler::m_temp_names.clear();
 	Transpiler::set_pre_entry(str_incl, str_structs, is_tcc);
@@ -706,6 +711,13 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		v_start = v_rest;
 		pass++;
 	}
+
+	//get structs to be freed
+	for (std::pair<const std::string, std::string>& e : Transpiler::m_array_init)
+	{
+		std::string str = fmt::format("  {:s}(&{:s});", e.second, e.first);
+		str_free.append(str).append("\n");
+	}
 	Transpiler::level--;
 
 	//TODO iterate again to add cleanup of memory
@@ -730,6 +742,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		.append(str_entry)
 		.append(str_decls).append("\n")
 		.append(str_next).append("\n")
+		.append(str_free).append("\n")
 		.append(str_closing);
 	Transpiler::m_temp_names.clear();
 }
@@ -745,6 +758,7 @@ int Transpiler::compile(void)
 	Transpiler::v_declarations.clear();
 	Transpiler::m_temp_names.clear();
 	Transpiler::m_declared.clear();
+	Transpiler::m_array_init.clear();
 	tcc_delete(Transpiler::tcc_state);
 	Transpiler::init();
 	Terminal::is_open = true;
@@ -822,6 +836,7 @@ void Transpiler::clear(void)
 	Transpiler::v_declarations.clear();
 	Transpiler::m_temp_names.clear();
 	Transpiler::m_declared.clear();
+	Transpiler::m_array_init.clear();
 	Transpiler::has_ran = false;
 	Transpiler::has_compiled = false;
 	tcc_delete(Transpiler::tcc_state);

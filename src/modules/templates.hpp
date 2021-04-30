@@ -8,7 +8,9 @@ namespace CodeNect::Templates
 inline static const char* incl_tcc = "#include <tcclib.h>";
 inline static const char* incl_stdio = "//for using input and output functions like printf and getline\n"
 	"#include <stdio.h>\n";
-inline static const char* incl_stdlib = "//for using malloc, realloc\n"
+inline static const char* incl_stdlib = "//for assert for checking array out of bounds\n"
+	"#include <assert.h>\n"
+	"//for using malloc, realloc\n"
 	"#include <stdlib.h>\n";
 inline static const char* incl_math = "//for using math functions like sin, cos, tan, pow, and more\n"
 	"#include <math.h>\n";
@@ -126,6 +128,7 @@ inline static const char* tpl_fixed_arr = "//START OF FIXED ARRAY METHOD FOR {ty
 	"}}\n\n"
 	"void f_insert_{type_name}({name}* array, {type} value)\n"
 	"{{\n"
+	"  assert((++array->used > array->size) && \"Out of bounds error. Can't insert element to FixedArray as it exceeds max size\");\n"
 	"  array->array[array->used++] = value;\n"
 	"}}\n\n"
 	"void f_insert_{type_name}_array({name}* array, {type}* elements, int size)\n"

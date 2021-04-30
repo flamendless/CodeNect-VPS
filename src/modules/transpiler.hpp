@@ -22,6 +22,7 @@ struct Transpiler
 	static std::vector<std::string> v_declarations;
 	static std::map<std::string, bool> m_temp_names;
 	static std::map<std::string, bool> m_declared;
+	static std::map<std::string, std::string> m_array_init; //array_name, free_method_name
 	static int level;
 	static bool has_ran;
 	static bool has_compiled;

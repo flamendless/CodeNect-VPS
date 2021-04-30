@@ -134,6 +134,7 @@ void Nodes::build_slots(NodeMeta& meta, v_slot_info_t& in, v_slot_info_t& out)
 
 void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 {
+	PLOGI << "Building nodes...";
 	for (NodeMeta* nm : v_node_meta)
 	{
 		NODE_KIND kind = NODE_KIND::_from_string(nm->m_kind.c_str());
@@ -330,6 +331,7 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 
 		Nodes::reset_ids();
 	}
+	PLOGI << "Built nodes successfully";
 }
 
 unsigned int Nodes::count_node_dep(Node* node)
@@ -427,6 +429,7 @@ Node* Nodes::find_connected_by_value(Node* node, NodeValue* target_val)
 
 void Nodes::build_from_meta(const std::vector<ConnectionMeta*> &v_connection_meta)
 {
+	PLOGI << "Building connections...";
 	for (ConnectionMeta* cm : v_connection_meta)
 	{
 		Node* in_node = Nodes::find_by_name(cm->m_in_name.c_str());
@@ -444,6 +447,7 @@ void Nodes::build_from_meta(const std::vector<ConnectionMeta*> &v_connection_met
 			out_node->new_connection(connection);
 		}
 	}
+	PLOGI << "Built connections successfully";
 }
 
 unsigned int Nodes::count_connections(void)

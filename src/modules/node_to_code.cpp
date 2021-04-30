@@ -556,11 +556,18 @@ std::string ntc_array_decls(NodeArray* node_array)
 	const char* name = node_array->m_name;
 	std::string pre_name = "";
 	std::string type_name = "";
+	std::string pre_method = "";
 
 	if (node_array->m_array == +NODE_ARRAY::FIXED)
+	{
 		pre_name = "FixedArray";
+		pre_method = "f";
+	}
 	else if (node_array->m_array == +NODE_ARRAY::DYNAMIC)
+	{
 		pre_name = "DynamicArray";
+		pre_method = "d";
+	}
 
 	switch (node_array->m_slot)
 	{
@@ -571,13 +578,24 @@ std::string ntc_array_decls(NodeArray* node_array)
 		case NODE_SLOT::DOUBLE: type_name = "Double"; break;
 		case NODE_SLOT::STRING: type_name = "String"; break;
 	}
+	std::string type_name_l = type_name;
+	std::transform(type_name_l.begin(), type_name_l.end(), type_name_l.begin(),
+			[](unsigned char c){ return std::tolower(c); });
 
 	std::string array_name = pre_name + type_name;
+	std::string init_name = pre_method + "_init_arr_" + type_name_l;
+
+	//{1, 2, 3};
+	const int val_size = node_array->m_elements.size();
+	std::string val_name = std::string(name) + "_val";
 
 	//Dynamic/FixedArrayT name;
 	std::string a = fmt::format("{:s} {:s};", array_name, name);
+	//init_d_arr_T(&name, size)
+	std::string b = fmt::format("{:s}(&{:s}, {:d});", init_name, name, val_size);
 
 	str.append(indent()).append(a).append("\n");
+	str.append(indent()).append(b).append("\n");
 
 	return str;
 }
@@ -618,31 +636,40 @@ std::string ntc_array(NodeArray* node_array)
 
 	std::string array_name = pre_name + type_name;
 	std::string init_name = pre_method + "_init_arr_" + type_name_l;
-	std::string insert_name = pre_method + "_insert_" + type_name_l + "_array";
+	std::string insert_array = pre_method + "_insert_" + type_name_l + "_array";
 	std::string insert_var = pre_method + "_insert_" + type_name_l;
+	std::string free_method = pre_method + "_free_" + type_name_l;
 
 	//{1, 2, 3};
-	const int val_size = node_array->m_elements.size();
+	// const int val_size = node_array->m_elements.size();
 	std::string val = NodeToCode::to_array(node_array);
 	std::string val_name = std::string(name) + "_val";
 	std::string size = fmt::format("(sizeof({:s})/sizeof({:s}[0]))", val_name, val_name);
+
 	//Dynamic/FixedArrayT name;
-	bool found = Transpiler::m_declared.find(node_array->m_name) != Transpiler::m_declared.end();
-	if (!found)
+	bool found_str = Transpiler::m_declared.find(node_array->m_name) != Transpiler::m_declared.end();
+	if (!found_str)
 	{
 		std::string a = fmt::format("{:s} {:s};", array_name, name);
 		str.append(indent()).append(a).append("\n");
 	}
-	//init_d_arr_T(&name, size)
-	std::string b = fmt::format("{:s}(&{:s}, {:d});", init_name, name, val_size);
-	//T val_name[] = {val}
-	std::string c = fmt::format("{:s} {:s}[] = {:s};", type, val_name, val);
-	//insert_T_array(&name, val, val_size);
-	std::string d = fmt::format("{:s}(&{:s}, {:s}, {:s});", insert_name, name, val_name, size);
 
-	str.append(indent()).append(b).append("\n")
-		.append(indent()).append(c).append("\n")
-		.append(indent()).append(d).append("\n");
+	//init_d_arr_T(&name, size)
+	// std::string b = fmt::format("{:s}(&{:s}, {:d});", init_name, name, val_size);
+	// str.append(indent()).append(b).append("\n");
+
+	//T val_name[] = {val}
+	bool found_arr = Transpiler::m_declared.find(val_name) != Transpiler::m_declared.end();
+	if (!found_arr)
+	{
+		std::string c = fmt::format("{:s} {:s}[] = {:s};", type, val_name, val);
+		str.append(indent()).append(c).append("\n");
+		Transpiler::m_declared.insert({val_name, true});
+	}
+
+	//insert_T_array(&name, val, val_size);
+	std::string d = fmt::format("{:s}(&{:s}, {:s}, {:s});", insert_array, name, val_name, size);
+	str.append(indent()).append(d).append("\n");
 
 	//get lhs value
 	for (const Connection& connection : node_array->m_connections)
@@ -652,15 +679,26 @@ std::string ntc_array(NodeArray* node_array)
 			continue;
 
 		NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
+		NodeArray* out_node_array = dynamic_cast<NodeArray*>(out_node);
 		if (out_node_var)
 		{
-			//TODO insert to array
-			std::string ins = fmt::format("{:s}(&{:s}, {:s});", insert_var, name, out_node_var->m_name);
+			std::string ins = fmt::format("{:s}(&{:s}, {:s});",
+					insert_var, name, out_node_var->m_name);
+			str.append(indent()).append(ins).append("\n");
+		}
+		else if (out_node_array && out_node_array != node_array)
+		{
+			const int size_a = out_node_array->m_elements.size();
+			const int size_b = out_node_array->m_other_elements.size();
+			std::string str_size = std::to_string(size_a + size_b);
+			std::string ins = fmt::format("{:s}(&{:s}, {:s}.array, {:s});",
+					insert_array, name, out_node_array->m_name, str_size);
 			str.append(indent()).append(ins).append("\n");
 		}
 	}
 
 	Transpiler::m_declared.insert({node_array->m_name, true});
+	Transpiler::m_array_init.insert({node_array->m_name, free_method});
 
 	return str;
 }
