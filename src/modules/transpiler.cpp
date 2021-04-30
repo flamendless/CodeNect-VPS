@@ -523,6 +523,11 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 	}
 }
 
+//TODO maybe arrange sequence by length of sequence??
+//for example:
+//sequence A : 5 nodes
+//sequence B : 3 nodes
+//Sequence B should be first before Sequence A
 std::vector<std::vector<Node*>> Transpiler::get_v_sequence(std::vector<Node*>& v_start)
 {
 	//get the independent sequence/chain of nodes
