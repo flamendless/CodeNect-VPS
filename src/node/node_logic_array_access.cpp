@@ -4,6 +4,8 @@
 #include "node/nodes.hpp"
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
+#include "node/node_cast.hpp"
+#include "node/node_op.hpp"
 #include "node/node_colors.hpp"
 
 namespace CodeNect::NodeLogic
@@ -34,16 +36,38 @@ void process_array_access(void)
 		node_arr_access->m_index = node_arr_access->m_index_orig;
 		node_arr_access->m_has_array = false;
 
-		//first check if there's a node_var connected
+		//first check if there's a node connected that will set the index
 		for (Connection& connection : node_arr_access->m_connections)
 		{
 			Node* out_node = static_cast<Node*>(connection.out_node);
 			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
+			NodeCast* out_node_cast = dynamic_cast<NodeCast*>(out_node);
+			NodeMath* out_node_math = dynamic_cast<NodeMath*>(out_node);
+			NodeOperation* out_node_op = dynamic_cast<NodeOperation*>(out_node);
+			int index = node_arr_access->m_index_orig;
+
 			if (out_node_var)
+				index = std::get<int>(out_node_var->m_value.data);
+			else if (out_node_cast)
 			{
-				const int index = std::get<int>(out_node_var->m_value.data);
-				node_arr_access->m_index = index;
+				if (!out_node_cast->m_current_val)
+					continue;
+				index = std::get<int>(out_node_cast->m_current_val->data);
 			}
+			else if (out_node_math)
+			{
+				if (!out_node_math->m_current_val)
+					continue;
+				index = std::get<int>(out_node_math->m_current_val->data);
+			}
+			else if (out_node_op)
+			{
+				if (!out_node_op->m_current_val)
+					continue;
+				index = std::get<int>(out_node_op->m_current_val->data);
+			}
+
+			node_arr_access->m_index = index;
 		}
 
 		//get the "from" array
@@ -95,23 +119,5 @@ void process_array_access(void)
 		res_val->copy(*val_from_array);
 		node_arr_access->m_current_val = res_val;
 	}
-}
-
-bool validate_node_array_access(Node* in_node, Node* out_node)
-{
-	//connection must be from node_array or node_var to node_array_access only
-	NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
-	NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
-	NodeArrayAccess* node_arr_access = dynamic_cast<NodeArrayAccess*>(in_node);
-
-	if (node_arr_access)
-	{
-		if (node_array || node_var)
-			return true;
-		else
-			return false;
-	}
-
-	return true;
 }
 }

@@ -677,9 +677,10 @@ std::string ntc_array(NodeArray* node_array)
 		Node* out_node = static_cast<Node*>(connection.out_node);
 		if (out_node == node_array)
 			continue;
-
 		NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
 		NodeArray* out_node_array = dynamic_cast<NodeArray*>(out_node);
+		NodeCast* out_node_cast = dynamic_cast<NodeCast*>(out_node);
+
 		if (out_node_var)
 		{
 			std::string ins = fmt::format("{:s}(&{:s}, {:s});",
@@ -693,6 +694,16 @@ std::string ntc_array(NodeArray* node_array)
 			std::string str_size = std::to_string(size_a + size_b);
 			std::string ins = fmt::format("{:s}(&{:s}, {:s}.array, {:s});",
 					insert_array, name, out_node_array->m_name, str_size);
+			str.append(indent()).append(ins).append("\n");
+		}
+		else if (out_node_cast)
+		{
+			std::string pre = "";
+			std::string c = NodeToCode::ntc_cast(out_node_cast, true, pre);
+			std::string ins = fmt::format("{:s}(&{:s}, {:s});",
+					insert_var, name, c);
+			if (pre.length() != 0)
+				str.append(indent()).append(c).append("\n");
 			str.append(indent()).append(ins).append("\n");
 		}
 	}
@@ -720,6 +731,10 @@ std::string ntc_array_access(NodeArrayAccess* node_array_access, bool val_only, 
 			continue;
 		NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
 		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+		NodeCast* node_cast = dynamic_cast<NodeCast*>(out_node);
+		NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
+		NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
+
 		if (node_array)
 		{
 			ref_name = node_array->m_name;
@@ -727,6 +742,12 @@ std::string ntc_array_access(NodeArrayAccess* node_array_access, bool val_only, 
 		}
 		else if (node_var)
 			index = node_var->m_name;
+		else if (node_cast)
+			index = NodeToCode::ntc_cast(node_cast, true, pre);
+		else if (node_math)
+			index = NodeToCode::ntc_math(node_math, true, pre);
+		else if (node_op)
+			index = NodeToCode::ntc_op(node_op, true, pre);
 	}
 
 	std::string rhs = fmt::format("{:s}[{:s}]", ref_name, index);
