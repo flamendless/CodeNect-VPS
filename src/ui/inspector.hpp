@@ -22,7 +22,6 @@ struct Inspector
 	static void draw_all(void);
 	static void draw_variables(void);
 	static void draw_ds(void);
-	static void jump_to_pos(Node* node);
 };
 }
 

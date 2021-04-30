@@ -9,6 +9,7 @@
 #include "core/utils.hpp"
 #include "modules/input.hpp"
 #include "modules/transpiler.hpp"
+#include "modules/debugger.hpp"
 #include "node/node_colors.hpp"
 
 #if DEBUG_MODE
@@ -140,6 +141,7 @@ void Terminal::draw_output(void)
 #endif
 	ImGui::Separator();
 
+	int i = 1;
 	for (const std::pair<std::string, OUTPUT_TYPE>& p : Transpiler::v_output)
 	{
 		switch (p.second)
@@ -158,6 +160,11 @@ void Terminal::draw_output(void)
 			case OUTPUT_TYPE::WARNING:
 			{
 				ImGui::TextColored(NodeColors::Lookup::YELLOW, "%s", p.first.c_str());
+				ImGui::SameLine();
+				if (ImGui::SmallButton(ICON_FA_SEARCH))
+					Debugger::jump_to_node_at_index(i);
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Jump the camera's position to the node's position");
 				break;
 			}
 			case OUTPUT_TYPE::PROMPT:
@@ -166,6 +173,7 @@ void Terminal::draw_output(void)
 				break;
 			}
 		}
+		i++;
 	}
 }
 

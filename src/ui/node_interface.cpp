@@ -353,4 +353,12 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 		ImGui::EndPopup();
 	}
 }
+
+void NodeInterface::jump_to_pos(Node* node)
+{
+	ImVec2& pos = node->m_pos;
+	NodeInterface::has_target_node = true;
+	NodeInterface::target_node_pos.x = pos.x;
+	NodeInterface::target_node_pos.y = pos.y;
+}
 }

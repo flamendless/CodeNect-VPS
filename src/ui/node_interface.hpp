@@ -30,6 +30,7 @@ struct NodeInterface
 	static void draw_nodes(void);
 	static void draw_nodes_context_menu(void);
 	static void draw_context_menu(ImNodes::CanvasState& canvas);
+	static void jump_to_pos(Node* node);
 };
 }
 

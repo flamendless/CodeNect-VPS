@@ -24,6 +24,7 @@
 #include "node/node_array_access.hpp"
 #include "core/project.hpp"
 #include "core/utils.hpp"
+#include "modules/debugger.hpp"
 
 namespace CodeNect
 {
@@ -75,10 +76,12 @@ void Transpiler::error(const char* str)
 	Transpiler::v_output.push_back({str, OUTPUT_TYPE::ERROR});
 }
 
-void Transpiler::warning(const char* str)
+void Transpiler::warning(const char* str, Node* node)
 {
 	PLOGW << str;
 	Transpiler::v_output.push_back({str, OUTPUT_TYPE::WARNING});
+	const int index = Transpiler::v_output.size();
+	Debugger::m_nodes.insert({index, node});
 }
 
 std::string Transpiler::get_temp_name(const char* name)
@@ -385,7 +388,7 @@ void Transpiler::transpile_decls(std::vector<Node*>& v, std::string& output)
 			default:
 			{
 				std::string warning = fmt::format("WARNING: node {:s} is parsed as part of decls but it is not transpiled", node->m_name);
-				Transpiler::warning(warning.c_str());
+				Transpiler::warning(warning.c_str(), node);
 				break;
 			}
 		}
@@ -666,7 +669,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 			{
 				std::string warning = fmt::format("Node {:s} is not a valid declaration because it needs an inputs",
 						node->m_name);
-				Transpiler::warning(warning.c_str());
+				Transpiler::warning(warning.c_str(), node);
 			}
 			else
 				v_decls.push_back(node);
@@ -681,7 +684,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 			{
 				std::string warning = fmt::format("Node {:s} must have two inputs. Got {:d}",
 						node->m_name, count);
-				Transpiler::warning(warning.c_str());
+				Transpiler::warning(warning.c_str(), node_op);
 			}
 		}
 

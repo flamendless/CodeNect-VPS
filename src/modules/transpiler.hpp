@@ -32,7 +32,7 @@ struct Transpiler
 	static int init(void);
 	static void register_commands(void);
 	static void error(const char* str);
-	static void warning(const char* str);
+	static void warning(const char* str, Node*);
 	static std::string get_temp_name(const char* name);
 	static std::pair<std::string, bool> get_temp_name(const char* name, bool reuse);
 	static bool is_valid_decls(Node*);

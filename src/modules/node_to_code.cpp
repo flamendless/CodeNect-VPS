@@ -3,6 +3,7 @@
 #include "ppk_assert.h"
 #include "modules/transpiler.hpp"
 #include "node/nodes.hpp"
+#include "modules/debugger.hpp"
 
 namespace CodeNect::NodeToCode
 {
@@ -427,7 +428,7 @@ std::string ntc_cmp(NodeComparison* node_cmp, bool val_only, std::string& pre)
 	if (v_elements.size() < 2)
 	{
 		std::string warning = fmt::format("NodeComparison {:s} must have inputs", node_cmp->m_name);
-		Transpiler::warning(warning.c_str());
+		Transpiler::warning(warning.c_str(), node_cmp);
 		return "";
 	}
 

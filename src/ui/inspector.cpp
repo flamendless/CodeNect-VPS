@@ -102,7 +102,11 @@ void Inspector::draw_all(void)
 			ImGui::PushID(node);
 			std::string str = fmt::format("{}. {}", i, node->m_name);
 
-			Inspector::jump_to_pos(node);
+			if (ImGui::SmallButton(ICON_FA_SEARCH))
+				NodeInterface::jump_to_pos(node);
+
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Jump the camera's position to the node's position");
 			ImGui::SameLine();
 
 			if (ImGui::TreeNode(str.c_str()))
@@ -146,7 +150,11 @@ void Inspector::draw_variables(void)
 			ImGui::PushID(node_var);
 			std::string str = fmt::format("{}. {}", i, node_var->m_name);
 
-			Inspector::jump_to_pos(node_var);
+			if (ImGui::SmallButton(ICON_FA_SEARCH))
+				NodeInterface::jump_to_pos(node_var);
+
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Jump the camera's position to the node's position");
 			ImGui::SameLine();
 
 			if (ImGui::TreeNode(str.c_str()))
@@ -192,7 +200,11 @@ void Inspector::draw_ds(void)
 			ImGui::PushID(node_array);
 			std::string str = fmt::format("{}. {}", i, node_array->m_name);
 
-			Inspector::jump_to_pos(node_array);
+			if (ImGui::SmallButton(ICON_FA_SEARCH))
+				NodeInterface::jump_to_pos(node_array);
+
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Jump the camera's position to the node's position");
 			ImGui::SameLine();
 
 			if (ImGui::TreeNode(str.c_str()))
@@ -217,19 +229,5 @@ void Inspector::draw_ds(void)
 		}
 		ImGui::TreePop();
 	}
-}
-
-void Inspector::jump_to_pos(Node* node)
-{
-	if (ImGui::SmallButton(ICON_FA_SEARCH))
-	{
-		ImVec2& pos = node->m_pos;
-		NodeInterface::has_target_node = true;
-		NodeInterface::target_node_pos.x = pos.x;
-		NodeInterface::target_node_pos.y = pos.y;
-	}
-
-	if (ImGui::IsItemHovered())
-		ImGui::SetTooltip("Jump the camera's position to the node's position");
 }
 }

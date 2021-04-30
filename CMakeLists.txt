@@ -19,6 +19,7 @@ add_executable(CodeNect
 	src/core/project.cpp
 	src/core/utils.cpp
 	src/core/validator.cpp
+	src/modules/debugger.cpp
 	src/modules/filesystem.cpp
 	src/modules/input.cpp
 	src/modules/node_to_code.cpp
