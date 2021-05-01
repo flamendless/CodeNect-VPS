@@ -271,7 +271,7 @@ std::string ntc_size(NodeSize* node_size, bool val_only, std::string& pre)
 			else
 			{
 				std::string err = fmt::format("ERROR: node {:s} can't get size of variable that is not of type 'STRING'", node_size->m_name);
-				Transpiler::error(err.c_str());
+				Transpiler::add_message(err, OUTPUT_TYPE::ERROR, node_size);
 				return "";
 			}
 		}
@@ -383,7 +383,7 @@ std::string ntc_math(NodeMath* node_math, bool val_only, std::string& pre)
 		{
 			std::string err = fmt::format("ERROR at node {:s}: using {:s} must have 2 inputs",
 				node_math->m_name, math._to_string());
-			Transpiler::error(err.c_str());
+			Transpiler::add_message(err, OUTPUT_TYPE::ERROR, node_math);
 			//TODO show error (UI) for debug module
 			return str;
 		}
@@ -428,7 +428,7 @@ std::string ntc_cmp(NodeComparison* node_cmp, bool val_only, std::string& pre)
 	if (v_elements.size() < 2)
 	{
 		std::string warning = fmt::format("NodeComparison {:s} must have inputs", node_cmp->m_name);
-		Transpiler::warning(warning.c_str(), node_cmp);
+		Transpiler::add_message(warning, OUTPUT_TYPE::WARNING, node_cmp);
 		return "";
 	}
 

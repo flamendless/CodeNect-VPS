@@ -31,7 +31,7 @@ namespace CodeNect
 TCCState* Transpiler::tcc_state = nullptr;
 std::string Transpiler::output_code = "";
 std::string Transpiler::runnable_code = "";
-std::vector<std::pair<std::string, OUTPUT_TYPE>> Transpiler::v_output;
+std::vector<MessageInfo> Transpiler::v_output;
 std::vector<std::string> Transpiler::v_declarations;
 std::map<std::string, bool> Transpiler::m_temp_names;
 std::map<std::string, bool> Transpiler::m_declared;
@@ -70,18 +70,14 @@ void Transpiler::register_commands(void)
 	Commands::register_cmd(*cmd_run);
 }
 
-void Transpiler::error(const char* str)
+void Transpiler::add_message(const std::string& msg, OUTPUT_TYPE type, Node* node)
 {
-	PLOGE << str;
-	Transpiler::v_output.push_back({str, OUTPUT_TYPE::ERROR});
-}
-
-void Transpiler::warning(const char* str, Node* node)
-{
-	PLOGW << str;
-	Transpiler::v_output.push_back({str, OUTPUT_TYPE::WARNING});
-	const int index = Transpiler::v_output.size();
-	Debugger::m_nodes.insert({index, node});
+	PLOGW << msg;
+	MessageInfo info;
+	info.m_msg = msg;
+	info.m_type = type;
+	info.m_node = node;
+	Transpiler::v_output.push_back(std::move(info));
 }
 
 std::string Transpiler::get_temp_name(const char* name)
@@ -388,7 +384,7 @@ void Transpiler::transpile_decls(std::vector<Node*>& v, std::string& output)
 			default:
 			{
 				std::string warning = fmt::format("WARNING: node {:s} is parsed as part of decls but it is not transpiled", node->m_name);
-				Transpiler::warning(warning.c_str(), node);
+				Transpiler::add_message(warning, OUTPUT_TYPE::WARNING, node);
 				break;
 			}
 		}
@@ -669,7 +665,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 			{
 				std::string warning = fmt::format("Node {:s} is not a valid declaration because it needs an inputs",
 						node->m_name);
-				Transpiler::warning(warning.c_str(), node);
+				Transpiler::add_message(warning, OUTPUT_TYPE::WARNING, node);
 			}
 			else
 				v_decls.push_back(node);
@@ -684,7 +680,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 			{
 				std::string warning = fmt::format("Node {:s} must have two inputs. Got {:d}",
 						node->m_name, count);
-				Transpiler::warning(warning.c_str(), node_op);
+				Transpiler::add_message(warning, OUTPUT_TYPE::WARNING, node_op);
 			}
 		}
 
@@ -828,12 +824,12 @@ int Transpiler::compile(void)
 
 	if (tcc_compile_string(Transpiler::tcc_state, Transpiler::runnable_code.c_str()) == -1)
 	{
-		Transpiler::error("Could not compile program. Make sure you clear first?");
+		Transpiler::add_message("Could not compile program. Make sure you clear first?", OUTPUT_TYPE::ERROR);
 		return RES_FAIL;
 	}
 
 	PLOGI << "Compiled code successfully";
-	Transpiler::v_output.push_back({"Compiled code successfully", OUTPUT_TYPE::SUCCESS});
+	Transpiler::add_message("Compiled code successfully");
 	Terminal::editor.SetText(Transpiler::output_code);
 	Transpiler::has_ran = false;
 	Transpiler::has_compiled = true;
@@ -857,14 +853,14 @@ int Transpiler::run(void)
 
 	Terminal::is_open = true;
 	PLOGI << "Running code...";
-	Transpiler::v_output.push_back({"Running code...", OUTPUT_TYPE::SUCCESS});
-	Transpiler::v_output.push_back({"Saving code...", OUTPUT_TYPE::SUCCESS});
+	Transpiler::add_message("Running code...");
+	Transpiler::add_message("Saving code...");
 	std::string filename = fmt::format(".__cn_bin_{:s}", Project::meta.title);
 
 	if (!Transpiler::has_ran)
 	{
 		tcc_output_file(Transpiler::tcc_state, filename.c_str());
-		Transpiler::v_output.push_back({"Launching program", OUTPUT_TYPE::SUCCESS});
+		Transpiler::add_message("Launching program");
 		Transpiler::has_ran = true;
 	}
 
@@ -873,11 +869,11 @@ int Transpiler::run(void)
 	FILE* p = popen(cmd.c_str(), "r");
 	if (p == NULL)
 	{
-		Transpiler::error("Failed to launch program");
+		Transpiler::add_message("Failed to launch program", OUTPUT_TYPE::ERROR);
 		return RES_FAIL;
 	}
 	pclose(p);
-	Transpiler::v_output.push_back({"Finished running the program", OUTPUT_TYPE::SUCCESS});
+	Transpiler::add_message("Finished running the program");
 #elif OS_WIN
 	//TODO
 #endif

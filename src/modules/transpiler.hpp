@@ -13,12 +13,19 @@ namespace CodeNect
 {
 enum class OUTPUT_TYPE { NORMAL = 1, SUCCESS, ERROR, WARNING, PROMPT };
 
+struct MessageInfo
+{
+	OUTPUT_TYPE m_type = OUTPUT_TYPE::NORMAL;
+	std::string m_msg;
+	Node* m_node = nullptr;
+};
+
 struct Transpiler
 {
 	static TCCState* tcc_state;
 	static std::string output_code;
 	static std::string runnable_code;
-	static std::vector<std::pair<std::string, OUTPUT_TYPE>> v_output;
+	static std::vector<MessageInfo> v_output;
 	static std::vector<std::string> v_declarations;
 	static std::map<std::string, bool> m_temp_names;
 	static std::map<std::string, bool> m_declared;
@@ -31,8 +38,7 @@ struct Transpiler
 	Transpiler() = delete;
 	static int init(void);
 	static void register_commands(void);
-	static void error(const char* str);
-	static void warning(const char* str, Node*);
+	static void add_message(const std::string&, OUTPUT_TYPE = OUTPUT_TYPE::SUCCESS, Node* = nullptr);
 	static std::string get_temp_name(const char* name);
 	static std::pair<std::string, bool> get_temp_name(const char* name, bool reuse);
 	static bool is_valid_decls(Node*);

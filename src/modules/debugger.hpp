@@ -7,9 +7,6 @@ namespace CodeNect
 {
 struct Debugger
 {
-	static std::map<int, Node*> m_nodes;
-
-	static void jump_to_node_at_index(int);
 };
 }
 

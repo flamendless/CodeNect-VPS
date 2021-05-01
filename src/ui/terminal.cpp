@@ -11,6 +11,7 @@
 #include "modules/transpiler.hpp"
 #include "modules/debugger.hpp"
 #include "node/node_colors.hpp"
+#include "ui/node_interface.hpp"
 
 #if DEBUG_MODE
 #include <fstream>
@@ -135,45 +136,48 @@ void Terminal::draw_output(void)
 			std::ofstream out_file(out_filename);
 			out_file << Transpiler::runnable_code;
 			out_file.close();
-			Transpiler::v_output.push_back({"Saved to " + out_filename, OUTPUT_TYPE::SUCCESS});
+			std::string msg = "Saved to " + out_filename;
+			Transpiler::add_message(msg);
 		}
 	}
 #endif
 	ImGui::Separator();
 
-	int i = 1;
-	for (const std::pair<std::string, OUTPUT_TYPE>& p : Transpiler::v_output)
+	for (MessageInfo& msg : Transpiler::v_output)
 	{
-		switch (p.second)
+		switch (msg.m_type)
 		{
-			case OUTPUT_TYPE::NORMAL: ImGui::Text("%s", p.first.c_str()); break;
+			case OUTPUT_TYPE::NORMAL: ImGui::Text("%s", msg.m_msg.c_str()); break;
 			case OUTPUT_TYPE::SUCCESS:
 			{
-				ImGui::TextColored(NodeColors::Lookup::GREEN, "%s", p.first.c_str());
+				ImGui::TextColored(NodeColors::Lookup::GREEN, "%s", msg.m_msg.c_str());
 				break;
 			}
 			case OUTPUT_TYPE::ERROR:
 			{
-				ImGui::TextColored(NodeColors::Lookup::RED, "%s", p.first.c_str());
+				ImGui::TextColored(NodeColors::Lookup::RED, "%s", msg.m_msg.c_str());
 				break;
 			}
 			case OUTPUT_TYPE::WARNING:
 			{
-				ImGui::TextColored(NodeColors::Lookup::YELLOW, "%s", p.first.c_str());
-				ImGui::SameLine();
-				if (ImGui::SmallButton(ICON_FA_SEARCH))
-					Debugger::jump_to_node_at_index(i);
-				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Jump the camera's position to the node's position");
+				ImGui::TextColored(NodeColors::Lookup::YELLOW, "%s", msg.m_msg.c_str());
 				break;
 			}
 			case OUTPUT_TYPE::PROMPT:
 			{
-				ImGui::TextColored(NodeColors::Lookup::ORANGE, "%s", p.first.c_str());
+				ImGui::TextColored(NodeColors::Lookup::ORANGE, "%s", msg.m_msg.c_str());
 				break;
 			}
 		}
-		i++;
+
+		if (msg.m_node)
+		{
+			ImGui::SameLine();
+			if (ImGui::SmallButton(ICON_FA_SEARCH))
+				NodeInterface::jump_to_pos(msg.m_node);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Jump the camera's position to the node's position");
+		}
 	}
 }
 
