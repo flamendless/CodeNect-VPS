@@ -22,6 +22,7 @@ struct Inspector
 	static void draw_all(void);
 	static void draw_variables(void);
 	static void draw_ds(void);
+	static void draw_buttons(Node*);
 };
 }
 

@@ -12,6 +12,7 @@
 #include "modules/debugger.hpp"
 #include "node/node_colors.hpp"
 #include "ui/node_interface.hpp"
+#include "ui/create_node.hpp"
 
 #if DEBUG_MODE
 #include <fstream>
@@ -177,6 +178,12 @@ void Terminal::draw_output(void)
 				NodeInterface::jump_to_pos(msg.m_node);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("Jump the camera's position to the node's position");
+
+			ImGui::SameLine();
+			if (ImGui::SmallButton(ICON_FA_EDIT))
+				CreateNode::edit(msg.m_node);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Edit node");
 		}
 	}
 }

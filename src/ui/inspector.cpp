@@ -13,6 +13,7 @@
 #include "node/nodes.hpp"
 #include "node/node_renderer.hpp"
 #include "ui/node_interface.hpp"
+#include "ui/create_node.hpp"
 #include "modules/input.hpp"
 
 namespace CodeNect
@@ -102,11 +103,7 @@ void Inspector::draw_all(void)
 			ImGui::PushID(node);
 			std::string str = fmt::format("{}. {}", i, node->m_name);
 
-			if (ImGui::SmallButton(ICON_FA_SEARCH))
-				NodeInterface::jump_to_pos(node);
-
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Jump the camera's position to the node's position");
+			Inspector::draw_buttons(node);
 			ImGui::SameLine();
 
 			if (ImGui::TreeNode(str.c_str()))
@@ -150,11 +147,7 @@ void Inspector::draw_variables(void)
 			ImGui::PushID(node_var);
 			std::string str = fmt::format("{}. {}", i, node_var->m_name);
 
-			if (ImGui::SmallButton(ICON_FA_SEARCH))
-				NodeInterface::jump_to_pos(node_var);
-
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Jump the camera's position to the node's position");
+			Inspector::draw_buttons(node_var);
 			ImGui::SameLine();
 
 			if (ImGui::TreeNode(str.c_str()))
@@ -200,11 +193,7 @@ void Inspector::draw_ds(void)
 			ImGui::PushID(node_array);
 			std::string str = fmt::format("{}. {}", i, node_array->m_name);
 
-			if (ImGui::SmallButton(ICON_FA_SEARCH))
-				NodeInterface::jump_to_pos(node_array);
-
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Jump the camera's position to the node's position");
+			Inspector::draw_buttons(node_array);
 			ImGui::SameLine();
 
 			if (ImGui::TreeNode(str.c_str()))
@@ -229,5 +218,20 @@ void Inspector::draw_ds(void)
 		}
 		ImGui::TreePop();
 	}
+}
+
+void Inspector::draw_buttons(Node* node)
+{
+	if (ImGui::SmallButton(ICON_FA_SEARCH))
+		NodeInterface::jump_to_pos(node);
+	if (ImGui::IsItemHovered())
+		ImGui::SetTooltip("Jump the camera's position to the node's position");
+
+	ImGui::SameLine();
+
+	if (ImGui::SmallButton(ICON_FA_EDIT))
+		CreateNode::edit(node);
+	if (ImGui::IsItemHovered())
+		ImGui::SetTooltip("Edit node");
 }
 }
