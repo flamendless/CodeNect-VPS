@@ -423,8 +423,6 @@ Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 		{
 			//found
 			NodeArray* node_array = dynamic_cast<NodeArray*>(node);
-			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
-			// if (!node_array && !node_branch)
 			if (!node_array)
 			{
 				PLOGW << node->m_name << " is declared already. Skipping.";
@@ -563,21 +561,39 @@ std::vector<std::vector<Node*>> Transpiler::get_v_sequence(State* state)
 	for (std::vector<Node*>& v : v_out)
 	{
 		bool branch_found = false;
+		std::vector<Node*> v_temp;
 		for (std::vector<Node*>::iterator it = v.begin();
 			it != v.end();
 			it++)
 		{
-			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(*it);
-			if (!node_branch)
-				continue;
-			branch_found = true;
-			std::vector<Node*> v_new;
-			v_new.push_back(node_branch);
-			v_final.push_back(v_new);
+			Node* node = static_cast<Node*>(*it);
+			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
+			if (node_branch)
+			{
+				branch_found = true;
+				std::vector<Node*> v_new;
+				v_new.push_back(node_branch);
+				v_final.push_back(v_new);
+			}
+			else
+				v_temp.push_back(node);
 		}
-		if (!branch_found)
+
+		if (branch_found)
+			v_final.push_back(v_temp);
+		else
 			v_final.push_back(v);
 	}
+
+	PLOGD << "start seq";
+	for (std::vector<Node*>& v : v_final)
+	{
+		PLOGD << "{";
+		for (Node* &node : v)
+			PLOGD << "\t" << node->m_name;
+		PLOGD << "}";
+	}
+	PLOGD << "end seq";
 
 	return v_final;
 }
@@ -602,7 +618,6 @@ std::vector<Node*> Transpiler::get_sequence(Node* start_node)
 		if (in_node != start_node)
 		{
 			unsigned int count = Nodes::count_node_dep(in_node);
-			// PLOGD << "\t" << in_node->m_name << " = " << count;
 			if (count == 1)
 			{
 				v.push_back(in_node);
@@ -763,6 +778,11 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	while (1)
 	{
 		PLOGD << "PASS #" << pass << "; SUBPASS #" << subpass;
+		if (prev_state.is_branch)
+		{
+			PLOGD << "On Branch: " << prev_state.branch_name;
+		}
+
 		State current_state = prev_state;
 
 		// PLOGD << "start entry";
@@ -777,7 +797,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 			Transpiler::arrange_v(v);
 
 		// PLOGD << "start seq";
-		// for (std::vector<Node*>& v : state.v_seq)
+		// for (std::vector<Node*>& v : current_state.v_seq)
 		// {
 		// 	PLOGD << "{";
 		// 	for (Node* &node : v)
@@ -793,6 +813,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		{
 			if (current_state.is_branch)
 			{
+				PLOGD << "Leaving Branch: " << prev_state.branch_name;
 				subpass--;
 				Transpiler::level--;
 				str_next.append(NodeToCode::indent()).append("}").append("\n");
@@ -851,8 +872,6 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		str_free.append(str).append("\n");
 	}
 	Transpiler::level--;
-
-	//TODO iterate again to add cleanup of memory
 
 	//closing
 	str_closing.append("  printf(\"PRESS ENTER TO EXIT\\n\");").append("\n");
