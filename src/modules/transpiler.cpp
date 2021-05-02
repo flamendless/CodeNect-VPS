@@ -22,6 +22,7 @@
 #include "node/node_cast.hpp"
 #include "node/node_op.hpp"
 #include "node/node_array_access.hpp"
+#include "node/node_branch.hpp"
 #include "core/project.hpp"
 #include "core/utils.hpp"
 #include "modules/debugger.hpp"
@@ -72,7 +73,7 @@ void Transpiler::register_commands(void)
 
 void Transpiler::add_message(const std::string& msg, OUTPUT_TYPE type, Node* node)
 {
-	PLOGW << msg;
+	PLOGD << msg;
 	MessageInfo info;
 	info.m_msg = msg;
 	info.m_type = type;
@@ -410,7 +411,7 @@ void Transpiler::transpile_decls_array(std::vector<Node*>& v, std::string& outpu
 	}
 }
 
-void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
+Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 {
 	for (std::vector<Node*>::iterator it = v.begin();
 		it != v.end();
@@ -422,6 +423,8 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 		{
 			//found
 			NodeArray* node_array = dynamic_cast<NodeArray*>(node);
+			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
+			// if (!node_array && !node_branch)
 			if (!node_array)
 			{
 				PLOGW << node->m_name << " is declared already. Skipping.";
@@ -518,8 +521,21 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 				}
 				break;
 			}
+
+			case NODE_KIND::BRANCH:
+			{
+				NodeBranch* node_branch = static_cast<NodeBranch*>(node);
+				output.append(NodeToCode::comment(node));
+				output.append(NodeToCode::ntc_branch(node_branch));
+				output.append(NodeToCode::indent()).append("{").append("\n");
+				Transpiler::level++;
+				output.append("\n");
+				return node_branch;
+				break;
+			}
 		}
 	}
+	return nullptr;
 }
 
 //TODO maybe arrange sequence by length of sequence??
@@ -527,39 +543,66 @@ void Transpiler::transpile(std::vector<Node*>& v, std::string& output)
 //sequence A : 5 nodes
 //sequence B : 3 nodes
 //Sequence B should be first before Sequence A
-std::vector<std::vector<Node*>> Transpiler::get_v_sequence(std::vector<Node*>& v_start)
+std::vector<std::vector<Node*>> Transpiler::get_v_sequence(State* state)
 {
 	//get the independent sequence/chain of nodes
 	std::vector<std::vector<Node*>> v_out;
-	for (std::vector<Node*>::iterator it = v_start.begin();
-		it != v_start.end();
+	for (std::vector<Node*>::iterator it = state->v_rest.begin();
+		it != state->v_rest.end();
 		it++)
 	{
 		Node* node = *it;
 		std::vector<Node*> v_seq = Transpiler::get_sequence(node);
 
 		if (v_seq.size() == 0)
-		{
 			v_seq.push_back(node);
-			PLOGW << "v_seq size is 0 so " << node->m_name << " was added to sequence";
-		}
 		v_out.push_back(v_seq);
 	}
 
-	return v_out;
+	std::vector<std::vector<Node*>> v_final;
+	for (std::vector<Node*>& v : v_out)
+	{
+		bool branch_found = false;
+		for (std::vector<Node*>::iterator it = v.begin();
+			it != v.end();
+			it++)
+		{
+			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(*it);
+			if (!node_branch)
+				continue;
+			branch_found = true;
+			std::vector<Node*> v_new;
+			v_new.push_back(node_branch);
+			v_final.push_back(v_new);
+		}
+		if (!branch_found)
+			v_final.push_back(v);
+	}
+
+	return v_final;
 }
 
 std::vector<Node*> Transpiler::get_sequence(Node* start_node)
 {
 	std::vector<Node*> v;
-	PLOGW << "seq. start_node: " << start_node->m_name;
+	std::vector<Node*> v_last;
+	// PLOGD << "seq. start_node: " << start_node->m_name;
 	for (const Connection& connection : start_node->m_connections)
 	{
 		Node* in_node = static_cast<Node*>(connection.in_node);
+		NodeBranch* node_branch = dynamic_cast<NodeBranch*>(in_node);
+		// PLOGD << "\t" << in_node->m_name;
+		if (node_branch)
+		{
+			PLOGW << "found NodeBranch " << node_branch->m_name << ". Skipping";
+			v_last.push_back(node_branch);
+			continue;
+		}
+
 		if (in_node != start_node)
 		{
 			unsigned int count = Nodes::count_node_dep(in_node);
-			PLOGD << "\t" << in_node->m_name << " = " << count;
+			// PLOGD << "\t" << in_node->m_name << " = " << count;
 			if (count == 1)
 			{
 				v.push_back(in_node);
@@ -568,40 +611,49 @@ std::vector<Node*> Transpiler::get_sequence(Node* start_node)
 			}
 		}
 	}
-	PLOGW << "seq. end";
+	v.insert(v.end(), v_last.begin(), v_last.end());
+	// PLOGD << "seq. end";
 	return v;
 }
 
-std::vector<Node*> Transpiler::get_rest(std::vector<std::vector<Node*>>& v_start)
+std::vector<Node*> Transpiler::get_rest(State* state)
 {
 	//get the rest to be transpiled using the last node in the sequence/chain
 	std::vector<Node*> v_out;
-	PLOGW << "begin rest. vv_size = " << v_start.size();
-	for (std::vector<Node*>& v : v_start)
+	// PLOGD << "begin rest. vv_size = " << v_start.size();
+	for (std::vector<Node*>& v : state->v_seq)
 	{
-		PLOGD << "v_size = " << v.size();
+		// PLOGD << "v_size = " << v.size();
 		for (Node* &node : v)
 		{
-			PLOGD << node->m_name;
+			PLOGD << "getting rest of: " << node->m_name;
+			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
+			if (node_branch)
+			{
+				if (!state->is_branch)
+					continue;
+			}
+
+			// PLOGD << node->m_name;
 			for (const Connection& connection : node->m_connections)
 			{
 				Node* in_node = static_cast<Node*>(connection.in_node);
 				if (in_node != node)
 				{
-					PLOGD << "\t" << "in_node: " << in_node->m_name;
+					// PLOGD << "\t" << "in_node: " << in_node->m_name;
 					//check if node was already added
 					if (std::find(v_out.begin(), v_out.end(), in_node) != v_out.end())
 					{
-						PLOGW << "\t" << in_node->m_name << " was already added to rest. Skipping";
+						// PLOGD << "\t" << in_node->m_name << " was already added to rest. Skipping";
 						continue;
 					}
 					v_out.push_back(in_node);
-					PLOGW << "\t" << in_node->m_name << " is added to rest";
+					// PLOGD << "\t" << in_node->m_name << " is added to rest";
 				}
 			}
 		}
 	}
-	PLOGW << "end rest";
+	// PLOGD << "end rest";
 	return v_out;
 }
 
@@ -692,75 +744,104 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 
 	//begin transpiling
 	Transpiler::level++;
-#if 0
-		PLOGD << "---start decls---";
-		for (Node* &node : v_decls)
-			PLOGD << node->m_name;
-		PLOGD << "---end decls---";
-#endif
+
 	PLOGD << "Transpiling decls...";
 	Transpiler::transpile_decls(v_decls, str_decls);
 	PLOGD << "Transpiled decls";
 
-#if 0
-		PLOGD << "---start decls array---";
-		for (Node* &node : v_decls_array)
-			PLOGD << node->m_name;
-		PLOGD << "---end decls array---";
-#endif
 	PLOGD << "Transpiling decls array...";
 	Transpiler::transpile_decls_array(v_decls_array, str_decls);
 	PLOGD << "Transpiled decls array";
 
 	//repeat
 	int pass = 1;
-	std::vector<Node*> v_start = v_decls;
+	int subpass = 0; //for branch
+	std::vector<State> v_states;
+	State prev_state;
+	prev_state.v_rest = v_decls;
+
 	while (1)
 	{
-		PLOGD << "PASS #" << pass;
-		std::vector<std::vector<Node*>> v_tmp_seq = Transpiler::get_v_sequence(v_start);
-		for (std::vector<Node*>& v : v_tmp_seq)
+		PLOGD << "PASS #" << pass << "; SUBPASS #" << subpass;
+		State current_state = prev_state;
+
+		// PLOGD << "start entry";
+		// PLOGD << "{";
+		// for (Node* &node : state.v_rest)
+		// 	PLOGD << "\t" << node->m_name;
+		// PLOGD << "}";
+		// PLOGD << "end entry";
+
+		current_state.v_seq = Transpiler::get_v_sequence(&current_state);
+		for (std::vector<Node*>& v : current_state.v_seq)
 			Transpiler::arrange_v(v);
 
-#if 0
-		PLOGD << "Sequence. size = " << v_tmp_seq.size();
-		for (std::vector<Node*>& v : v_tmp_seq)
+		// PLOGD << "start seq";
+		// for (std::vector<Node*>& v : state.v_seq)
+		// {
+		// 	PLOGD << "{";
+		// 	for (Node* &node : v)
+		// 		PLOGD << "\t" << node->m_name;
+		// 	PLOGD << "}";
+		// }
+		// PLOGD << "end seq";
+
+		current_state.v_rest = Transpiler::get_rest(&current_state);
+		Transpiler::arrange_v(current_state.v_rest);
+
+		if (current_state.v_seq.size() == 0 && current_state.v_rest.size() == 0)
 		{
-			PLOGD << "--start seq--";
-			for (Node* &node : v)
-				PLOGD << "\t" << node->m_name;
-			PLOGD << "--end seq--";
+			if (current_state.is_branch)
+			{
+				subpass--;
+				Transpiler::level--;
+				str_next.append(NodeToCode::indent()).append("}").append("\n");
+				prev_state = v_states.back();
+				v_states.pop_back();
+				continue;
+			}
+			else
+				break;
 		}
-		PLOGD << "End Sequence";
-#endif
-
-		std::vector<Node*> v_rest = Transpiler::get_rest(v_tmp_seq);
-
-		//arrange v_rest to fix arrays dependencies
-		Transpiler::arrange_v(v_rest);
-
-#if 0
-		PLOGD << "Rest. size = " << v_rest.size();
-		for (Node* &node : v_rest)
-			PLOGD << "\t" << node->m_name;
-		PLOGD << "End Rest";
-#endif
-
-		if (v_tmp_seq.size() == 0 && v_rest.size() == 0)
-			break;
 
 		PLOGD << "Transpiling sequence...";
-		for (std::vector<Node*>& v : v_tmp_seq)
-			Transpiler::transpile(v, str_next);
+		bool should_branch_out = false;
+		for (std::vector<Node*>& v : current_state.v_seq)
+		{
+			Node* node = Transpiler::transpile(v, str_next);
+			if (!node)
+				continue;
+			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
+			if (node_branch)
+			{
+				v_states.push_back(current_state);
+				std::vector<Node*> v_new_rest;
+				v_new_rest.push_back(node_branch);
+
+				State branch_state;
+				branch_state.is_branch = true;
+				branch_state.branch_name = node_branch->m_name;
+				branch_state.v_rest = v_new_rest;
+				prev_state = branch_state;
+				subpass++;
+				should_branch_out = true;
+				break;
+			}
+		}
+
+		if (should_branch_out)
+			continue;
+
 		PLOGD << "Transpiled sequence";
 
 		PLOGD << "Transpiling rest...";
-		Transpiler::transpile(v_rest, str_next);
+		Transpiler::transpile(current_state.v_rest, str_next);
 		PLOGD << "Transpiled rest";
 
 		//set for the next loop
-		v_start = v_rest;
-		pass++;
+		prev_state = current_state;
+		if (!current_state.is_branch)
+			pass++;
 	}
 
 	//get structs to be freed

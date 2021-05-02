@@ -310,7 +310,7 @@ std::string ntc_cast(NodeCast* node_cast, bool val_only, std::string& pre)
 		lhs_name = out_node->m_name;
 		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
 		NodeSize* node_size = dynamic_cast<NodeSize*>(out_node);
-		NodeArrayAccess* node_array_access = dynamic_cast<NodeArrayAccess*>(out_node);
+		// NodeArrayAccess* node_array_access = dynamic_cast<NodeArrayAccess*>(out_node);
 
 		if (node_prompt)
 			lhs_name.append(".buffer");
@@ -427,7 +427,8 @@ std::string ntc_cmp(NodeComparison* node_cmp, bool val_only, std::string& pre)
 
 	if (v_elements.size() < 2)
 	{
-		std::string warning = fmt::format("NodeComparison {:s} must have inputs", node_cmp->m_name);
+		std::string warning = fmt::format("NodeComparison {:s} must have at least 2 inputs",
+				node_cmp->m_name);
 		Transpiler::add_message(warning, OUTPUT_TYPE::WARNING, node_cmp);
 		return "";
 	}
@@ -443,13 +444,6 @@ std::string ntc_cmp(NodeComparison* node_cmp, bool val_only, std::string& pre)
 
 	if (val_only)
 		str = fmt::format("({:s})", rhs);
-	else
-	{
-		std::string buf_name = Transpiler::get_temp_name(node_cmp->m_name);
-		std::string s = fmt::format("bool {:s} = {:s};", buf_name, rhs);
-		pre.append(indent())
-			.append(s);
-	}
 
 	return str;
 }
@@ -932,6 +926,44 @@ std::string ntc_prompt(NodePrompt* node_prompt)
 		.append(indent()).append(init).append("\n")
 		.append(pre)
 		.append(indent()).append(run).append("\n");
+
+	return str;
+}
+
+std::string ntc_branch(NodeBranch* node_branch)
+{
+	PLOGD << "ntc_branch: " << node_branch->m_name;
+	std::string str = "";
+	std::string pre = "";
+	std::string rhs = "";
+
+	//get the lhs
+	for (const Connection& connection : node_branch->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node == node_branch)
+			continue;
+
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+		NodeComparison* node_cmp = dynamic_cast<NodeComparison*>(out_node);
+
+		if (node_var)
+			rhs = node_var->m_name;
+		else if (node_cmp)
+			rhs = NodeToCode::ntc_cmp(node_cmp, true, pre);
+	}
+
+	std::string str_if = fmt::format("if ({:s})", rhs);
+
+	//opening brace and closing brace for code block is handled by Transpiler
+	str.append(indent()).append(str_if).append("\n");
+		// .append(indent()).append("{").append("\n");
+	// Transpiler::level++;
+
+	// str.append(indent()).append("//code block").append("\n");
+    //
+	// Transpiler::level--;
+	// str.append(indent()).append("}").append("\n");
 
 	return str;
 }
