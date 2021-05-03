@@ -645,7 +645,7 @@ std::vector<Node*> Transpiler::get_rest(State* state)
 			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
 			if (node_branch)
 			{
-				if (!state->is_branch)
+				if (!state->node_branch)
 					continue;
 			}
 
@@ -778,9 +778,9 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	while (1)
 	{
 		PLOGD << "PASS #" << pass << "; SUBPASS #" << subpass;
-		if (prev_state.is_branch)
+		if (prev_state.node_branch)
 		{
-			PLOGD << "On Branch: " << prev_state.branch_name;
+			PLOGD << "On Branch: " << prev_state.node_branch->m_name;
 		}
 
 		State current_state = prev_state;
@@ -811,9 +811,9 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 
 		if (current_state.v_seq.size() == 0 && current_state.v_rest.size() == 0)
 		{
-			if (current_state.is_branch)
+			if (current_state.node_branch)
 			{
-				PLOGD << "Leaving Branch: " << prev_state.branch_name;
+				PLOGD << "Leaving Branch: " << prev_state.node_branch->m_name;
 				subpass--;
 				Transpiler::level--;
 				str_next.append(NodeToCode::indent()).append("}").append("\n");
@@ -840,8 +840,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 				v_new_rest.push_back(node_branch);
 
 				State branch_state;
-				branch_state.is_branch = true;
-				branch_state.branch_name = node_branch->m_name;
+				branch_state.node_branch = node_branch;
 				branch_state.v_rest = v_new_rest;
 				prev_state = branch_state;
 				subpass++;
@@ -854,14 +853,13 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 			continue;
 
 		PLOGD << "Transpiled sequence";
-
 		PLOGD << "Transpiling rest...";
 		Transpiler::transpile(current_state.v_rest, str_next);
 		PLOGD << "Transpiled rest";
 
 		//set for the next loop
 		prev_state = current_state;
-		if (!current_state.is_branch)
+		if (!current_state.node_branch)
 			pass++;
 	}
 

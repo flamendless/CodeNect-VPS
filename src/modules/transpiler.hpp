@@ -14,8 +14,7 @@ namespace CodeNect
 {
 struct State
 {
-	bool is_branch = false;
-	std::string branch_name = "";
+	Node* node_branch = nullptr;
 	std::vector<std::vector<Node*>> v_seq;
 	std::vector<Node*> v_rest;
 };
