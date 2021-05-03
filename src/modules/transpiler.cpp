@@ -42,6 +42,11 @@ bool Transpiler::has_ran = false;
 bool Transpiler::has_compiled = false;
 std::string Transpiler::recent_temp = "";
 
+void Transpiler::handle_error(void* opaque, const char* msg)
+{
+	Transpiler::add_message(std::move(msg), OUTPUT_TYPE::ERROR);
+}
+
 int Transpiler::init(void)
 {
 	Transpiler::tcc_state = tcc_new();
@@ -52,6 +57,7 @@ int Transpiler::init(void)
 		return RES_FAIL;
 	}
 
+	tcc_set_error_func(Transpiler::tcc_state, stderr, Transpiler::handle_error);
 	tcc_set_output_type(Transpiler::tcc_state, TCC_OUTPUT_EXE);
 
 	return RES_SUCCESS;
