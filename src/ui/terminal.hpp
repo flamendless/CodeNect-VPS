@@ -3,6 +3,7 @@
 
 #include "imgui.h"
 #include "TextEditor.h"
+#include "core/message_info.hpp"
 
 namespace CodeNect
 {
@@ -24,6 +25,7 @@ struct Terminal
 	static void toggle(void);
 	static bool keypress(int key, int scancode, int mods);
 	static void draw(void);
+	static void draw_message_info(std::vector<MessageInfo>& v);
 	static void draw_output(void);
 	static void draw_code(void);
 };

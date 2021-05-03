@@ -5,4 +5,19 @@
 
 namespace CodeNect
 {
+std::vector<MessageInfo> Debugger::v_msg_info;
+
+void Debugger::add_message(const std::string& msg, OUTPUT_TYPE type, Node* node)
+{
+	MessageInfo info;
+	info.m_msg = std::move(msg);
+	info.m_type = type;
+	info.m_node = node;
+	Debugger::v_msg_info.push_back(std::move(info));
+}
+
+void Debugger::clear(void)
+{
+	Debugger::v_msg_info.clear();
+}
 }

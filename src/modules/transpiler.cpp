@@ -75,7 +75,7 @@ void Transpiler::add_message(const std::string& msg, OUTPUT_TYPE type, Node* nod
 {
 	PLOGD << msg;
 	MessageInfo info;
-	info.m_msg = msg;
+	info.m_msg = std::move(msg);
 	info.m_type = type;
 	info.m_node = node;
 	Transpiler::v_output.push_back(std::move(info));
@@ -385,7 +385,7 @@ void Transpiler::transpile_decls(std::vector<Node*>& v, std::string& output)
 			default:
 			{
 				std::string warning = fmt::format("WARNING: node {:s} is parsed as part of decls but it is not transpiled", node->m_name);
-				Transpiler::add_message(warning, OUTPUT_TYPE::WARNING, node);
+				Transpiler::add_message(std::move(warning), OUTPUT_TYPE::WARNING, node);
 				break;
 			}
 		}
@@ -732,7 +732,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 			{
 				std::string warning = fmt::format("Node {:s} is not a valid declaration because it needs an inputs",
 						node->m_name);
-				Transpiler::add_message(warning, OUTPUT_TYPE::WARNING, node);
+				Transpiler::add_message(std::move(warning), OUTPUT_TYPE::WARNING, node);
 			}
 			else
 				v_decls.push_back(node);
@@ -747,7 +747,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 			{
 				std::string warning = fmt::format("Node {:s} must have two inputs. Got {:d}",
 						node->m_name, count);
-				Transpiler::add_message(warning, OUTPUT_TYPE::WARNING, node_op);
+				Transpiler::add_message(std::move(warning), OUTPUT_TYPE::WARNING, node_op);
 			}
 		}
 
@@ -924,12 +924,12 @@ int Transpiler::compile(void)
 
 	if (tcc_compile_string(Transpiler::tcc_state, Transpiler::runnable_code.c_str()) == -1)
 	{
-		Transpiler::add_message("Could not compile program. Make sure you clear first?", OUTPUT_TYPE::ERROR);
+		Transpiler::add_message(std::move("Could not compile program. Make sure you clear first?"), OUTPUT_TYPE::ERROR);
 		return RES_FAIL;
 	}
 
 	PLOGI << "Compiled code successfully";
-	Transpiler::add_message("Compiled code successfully");
+	Transpiler::add_message(std::move("Compiled code successfully"));
 	Terminal::editor.SetText(Transpiler::output_code);
 	Transpiler::has_ran = false;
 	Transpiler::has_compiled = true;
@@ -953,14 +953,14 @@ int Transpiler::run(void)
 
 	Terminal::is_open = true;
 	PLOGI << "Running code...";
-	Transpiler::add_message("Running code...");
-	Transpiler::add_message("Saving code...");
+	Transpiler::add_message(std::move("Running code..."));
+	Transpiler::add_message(std::move("Saving code..."));
 	std::string filename = fmt::format(".__cn_bin_{:s}", Project::meta.title);
 
 	if (!Transpiler::has_ran)
 	{
 		tcc_output_file(Transpiler::tcc_state, filename.c_str());
-		Transpiler::add_message("Launching program");
+		Transpiler::add_message(std::move("Launching program"));
 		Transpiler::has_ran = true;
 	}
 
@@ -969,11 +969,11 @@ int Transpiler::run(void)
 	FILE* p = popen(cmd.c_str(), "r");
 	if (p == NULL)
 	{
-		Transpiler::add_message("Failed to launch program", OUTPUT_TYPE::ERROR);
+		Transpiler::add_message(std::move("Failed to launch program"), OUTPUT_TYPE::ERROR);
 		return RES_FAIL;
 	}
 	pclose(p);
-	Transpiler::add_message("Finished running the program");
+	Transpiler::add_message(std::move("Finished running the program"));
 #elif OS_WIN
 	//TODO
 #endif

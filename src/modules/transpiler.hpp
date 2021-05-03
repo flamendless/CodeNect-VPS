@@ -8,18 +8,10 @@
 #include "libtcc.h"
 #include "core/defines.hpp"
 #include "node/node.hpp"
+#include "core/message_info.hpp"
 
 namespace CodeNect
 {
-enum class OUTPUT_TYPE { NORMAL = 1, SUCCESS, ERROR, WARNING, PROMPT };
-
-struct MessageInfo
-{
-	OUTPUT_TYPE m_type = OUTPUT_TYPE::NORMAL;
-	std::string m_msg;
-	Node* m_node = nullptr;
-};
-
 struct State
 {
 	bool is_branch = false;

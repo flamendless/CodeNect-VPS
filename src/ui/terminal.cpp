@@ -114,6 +114,54 @@ void Terminal::draw(void)
 		Terminal::is_open = false;
 }
 
+void Terminal::draw_message_info(std::vector<MessageInfo>& v)
+{
+	for (MessageInfo& msg : v)
+	{
+		switch (msg.m_type)
+		{
+			case OUTPUT_TYPE::NORMAL: ImGui::Text("%s", msg.m_msg.c_str()); break;
+			case OUTPUT_TYPE::SUCCESS:
+			{
+				ImGui::TextColored(NodeColors::Lookup::GREEN, "%s", msg.m_msg.c_str());
+				break;
+			}
+			case OUTPUT_TYPE::ERROR:
+			{
+				ImGui::TextColored(NodeColors::Lookup::RED, ICON_FA_TIMES_CIRCLE " %s", msg.m_msg.c_str());
+				break;
+			}
+			case OUTPUT_TYPE::WARNING:
+			{
+				ImGui::TextColored(NodeColors::Lookup::YELLOW, ICON_FA_EXCLAMATION_TRIANGLE " %s", msg.m_msg.c_str());
+				break;
+			}
+			case OUTPUT_TYPE::PROMPT:
+			{
+				ImGui::TextColored(NodeColors::Lookup::ORANGE, "%s", msg.m_msg.c_str());
+				break;
+			}
+		}
+
+		if (msg.m_node)
+		{
+			ImGui::SameLine();
+			ImGui::Text("%s", msg.m_node->m_name);
+			ImGui::SameLine();
+			if (ImGui::SmallButton(ICON_FA_SEARCH))
+				NodeInterface::jump_to_pos(msg.m_node);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Jump the camera's position to the node's position");
+
+			ImGui::SameLine();
+			if (ImGui::SmallButton(ICON_FA_EDIT))
+				CreateNode::edit(msg.m_node);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Edit node");
+		}
+	}
+}
+
 void Terminal::draw_output(void)
 {
 	Utils::center_text(ICON_FA_TERMINAL " OUTPUT", true);
@@ -138,54 +186,20 @@ void Terminal::draw_output(void)
 			out_file << Transpiler::runnable_code;
 			out_file.close();
 			std::string msg = "Saved to " + out_filename;
-			Transpiler::add_message(msg);
+			Transpiler::add_message(std::move(msg));
 		}
 	}
 #endif
 	ImGui::Separator();
 
-	for (MessageInfo& msg : Transpiler::v_output)
+	if (Debugger::v_msg_info.size() != 0)
 	{
-		switch (msg.m_type)
-		{
-			case OUTPUT_TYPE::NORMAL: ImGui::Text("%s", msg.m_msg.c_str()); break;
-			case OUTPUT_TYPE::SUCCESS:
-			{
-				ImGui::TextColored(NodeColors::Lookup::GREEN, "%s", msg.m_msg.c_str());
-				break;
-			}
-			case OUTPUT_TYPE::ERROR:
-			{
-				ImGui::TextColored(NodeColors::Lookup::RED, "%s", msg.m_msg.c_str());
-				break;
-			}
-			case OUTPUT_TYPE::WARNING:
-			{
-				ImGui::TextColored(NodeColors::Lookup::YELLOW, "%s", msg.m_msg.c_str());
-				break;
-			}
-			case OUTPUT_TYPE::PROMPT:
-			{
-				ImGui::TextColored(NodeColors::Lookup::ORANGE, "%s", msg.m_msg.c_str());
-				break;
-			}
-		}
-
-		if (msg.m_node)
-		{
-			ImGui::SameLine();
-			if (ImGui::SmallButton(ICON_FA_SEARCH))
-				NodeInterface::jump_to_pos(msg.m_node);
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Jump the camera's position to the node's position");
-
-			ImGui::SameLine();
-			if (ImGui::SmallButton(ICON_FA_EDIT))
-				CreateNode::edit(msg.m_node);
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Edit node");
-		}
+		ImGui::TextColored(NodeColors::Lookup::YELLOW, ICON_FA_EXCLAMATION_TRIANGLE " %s", "There are warnings with your node structure");
+		ImGui::TextColored(NodeColors::Lookup::YELLOW, ICON_FA_EXCLAMATION_TRIANGLE " %s", "This may result in error with the transpiled code");
+		Terminal::draw_message_info(Debugger::v_msg_info);
 	}
+
+	Terminal::draw_message_info(Transpiler::v_output);
 }
 
 void Terminal::draw_code(void)

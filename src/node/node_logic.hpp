@@ -24,6 +24,10 @@ void process_array_access(void);
 void process_size(void);
 
 bool validate_node_print(Node* in_node, Node* out_node);
+
+std::vector<std::vector<Node*>> get_branch_path(Node* node);
+std::vector<Node*> traverse_node(Node* node);
+void validate_branches(void);
 }
 
 #endif //_NODE_LOGIC_HPP
