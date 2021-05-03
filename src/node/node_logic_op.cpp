@@ -7,6 +7,7 @@
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
+#include "modules/debugger.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -106,7 +107,11 @@ void process_op(void)
 		}
 
 		if (res.v_values.size() < 2)
+		{
+			Debugger::add_message(std::move("NodeOperation needs atleast 2 inputs"),
+					OUTPUT_TYPE::WARNING, node_op);
 			continue;
+		}
 
 		//here we are sure that they are of the same slot
 		// process the v_values and perform the operation

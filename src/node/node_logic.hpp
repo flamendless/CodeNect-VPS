@@ -25,8 +25,10 @@ void process_size(void);
 
 bool validate_node_print(Node* in_node, Node* out_node);
 
-std::vector<std::vector<Node*>> get_branch_path(Node* node);
-std::vector<Node*> traverse_node(Node* node);
+std::vector<std::vector<Node*>> get_branch_path(Node*);
+std::vector<Node*> traverse_node(Node*);
+bool valid_branch_path(std::vector<std::vector<Node*>>&);
+void invalid_branch_colorize(Node*);
 void validate_branches(void);
 }
 

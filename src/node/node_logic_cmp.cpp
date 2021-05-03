@@ -8,6 +8,7 @@
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
 #include "node/node_print.hpp"
+#include "modules/debugger.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -32,7 +33,12 @@ void process_cmp(void)
 
 		//make preliminary checks
 		if (node_cmp->m_connections.size() < 3)
+		{
+
+			Debugger::add_message(std::move("NodeComparison needs atleast 3 inputs"),
+					OUTPUT_TYPE::WARNING, node_cmp);
 			continue;
+		}
 
 		//make sure node_cmp has a connected node_var or node_branch for the result (rhs)
 		for (const Connection& connection : node_cmp->m_connections)
