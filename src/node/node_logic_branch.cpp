@@ -19,6 +19,8 @@ void process_branch(void)
 		if (!node_branch)
 			continue;
 
+		node_branch->m_has_else = false;
+
 		//store the results
 		bool res = false;
 		std::vector<Connection*> v_c_true;
@@ -42,6 +44,7 @@ void process_branch(void)
 				if (std::strcmp(slot, "FALSE") == 0)
 				{
 					v_c_false.push_back(&connection);
+					node_branch->m_has_else = true;
 					continue;
 				}
 			}

@@ -1,4 +1,6 @@
 #include "node/node_logic.hpp"
+
+#include <set>
 #include "node/node_var.hpp"
 #include "node/node_array.hpp"
 #include "node/node_print.hpp"
@@ -10,9 +12,9 @@
 
 namespace CodeNect::NodeLogic
 {
-std::vector<Node*> traverse_node(Node* node)
+std::vector<BranchInfo> traverse_node(Node* node)
 {
-	std::vector<Node*> v_out;
+	std::vector<BranchInfo> v_out;
 	for (const Connection& connection : node->m_connections)
 	{
 		Node* out_node = static_cast<Node*>(connection.out_node);
@@ -21,43 +23,61 @@ std::vector<Node*> traverse_node(Node* node)
 
 		NodeBranch* node_branch = dynamic_cast<NodeBranch*>(out_node);
 		if (node_branch)
-			v_out.push_back(node_branch);
-
-		std::vector<Node*> v_temp = NodeLogic::traverse_node(out_node);
-		for (Node* &node : v_temp)
 		{
-			bool found = std::find(v_out.begin(), v_out.end(), node) != v_out.end();
+			BranchInfo bi;
+			bi.node_branch = node_branch;
+
+			//check if this is connected to the FALSE slot of node_branch
+			for (const Connection& connection : node_branch->m_connections)
+			{
+				Node* out_node = static_cast<Node*>(connection.out_node);
+				Node* in_node = static_cast<Node*>(connection.in_node);
+				if (out_node == node_branch && in_node == node)
+				{
+					const char* slot = connection.out_slot;
+					if (std::strcmp(slot, "FALSE") == 0)
+						bi.is_else = true;
+				}
+			}
+
+			v_out.push_back(bi);
+		}
+
+		std::vector<BranchInfo> v_temp = NodeLogic::traverse_node(out_node);
+		for (BranchInfo& bi : v_temp)
+		{
+			bool found = std::find(v_out.begin(), v_out.end(), bi) != v_out.end();
 			if (!found)
-				v_out.push_back(node);
+				v_out.push_back(bi);
 		}
 	}
 	return v_out;
 }
 
-std::vector<std::vector<Node*>> get_branch_path(Node* node)
+std::vector<std::vector<BranchInfo>> get_branch_path(Node* node)
 {
-	std::vector<std::vector<Node*>> v_out;
+	std::vector<std::vector<BranchInfo>> v_out;
 	for (const Connection& connection : node->m_connections)
 	{
 		Node* out_node = static_cast<Node*>(connection.out_node);
 		if (out_node == node)
 			continue;
 
-		std::vector<Node*> v_temp = NodeLogic::traverse_node(node);
+		std::vector<BranchInfo> v_temp = NodeLogic::traverse_node(node);
 		if (v_temp.size() != 0)
 			v_out.push_back(v_temp);
 	}
 	return v_out;
 }
 
-bool valid_branch_path(std::vector<std::vector<Node*>>& v_branch_seq)
+bool valid_branch_path(std::vector<std::vector<BranchInfo>>& v_branch_seq)
 {
 	bool is_valid = true;
-	std::vector<Node*>& v_main_path = v_branch_seq[0];
-	Node* first_branch = v_main_path[0];
+	std::vector<BranchInfo>& v_main_path = v_branch_seq[0];
+	Node* first_branch = v_main_path[0].node_branch;
 	if (v_main_path.size() > 1)
 	{
-		std::vector<std::vector<Node*>> v_sub_path = NodeLogic::get_branch_path(first_branch);
+		std::vector<std::vector<BranchInfo>> v_sub_path = NodeLogic::get_branch_path(first_branch);
 		if (v_sub_path.size() == 0)
 			return false;
 		else
@@ -76,6 +96,8 @@ bool valid_branch_path(std::vector<std::vector<Node*>>& v_branch_seq)
 	return is_valid;
 }
 
+#define TEST 0
+
 void validate_branches(void)
 {
 	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
@@ -86,10 +108,44 @@ void validate_branches(void)
 		const int dep_count = Nodes::count_node_dep(node);
 		if (dep_count == 0)
 			continue;
-		std::vector<std::vector<Node*>> v_branch_seq = NodeLogic::get_branch_path(node);
+
+		std::vector<std::vector<BranchInfo>> v_branch_seq = NodeLogic::get_branch_path(node);
+
+#if TEST
+		for (std::vector<BranchInfo>& v : v_branch_seq)
+		{
+			PLOGD << "branch path of: " << node->m_name;
+			PLOGD << "{";
+			for (BranchInfo& bi : v)
+			{
+				PLOGD << "\t" << bi.node_branch->m_name;
+				PLOGD << "\t" << bi.is_else;
+			}
+			PLOGD << "}";
+		}
+#endif
+
 		if (v_branch_seq.size() > 1)
+		{
 			if (!NodeLogic::valid_branch_path(v_branch_seq))
 				NodeLogic::invalid_branch_colorize(node);
+		}
+
+		// check node if in else and is connected to a if branch path
+		// if (v_branch_seq.size() > 0)
+		// {
+		// 	for (std::vector<Node*>& v : v_branch_seq)
+		// 	{
+		// 		for (Node* &nb : v)
+		// 		{
+		// 			NodeBranch* node_branch = static_cast<NodeBranch*>(nb);
+		// 			bool found = std::find(s_branches_name.begin(), s_branches_name.end(), node_branch)
+		// 				!= s_branches_name.end();
+		// 			if (found)
+		// 				NodeLogic::invalid_branch_colorize(node);
+		// 		}
+		// 	}
+		// }
 	}
 }
 
@@ -133,5 +189,8 @@ void process(void)
 	NodeLogic::process_prompt();
 
 	NodeLogic::validate_branches();
+#if TEST
+	exit(1);
+#endif
 }
 }

@@ -8,6 +8,7 @@
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
 #include "node/node_print.hpp"
+#include "node/node_colors.hpp"
 #include "modules/debugger.hpp"
 
 namespace CodeNect::NodeLogic
@@ -37,6 +38,10 @@ void process_cmp(void)
 
 			Debugger::add_message(std::move("NodeComparison needs atleast 3 inputs"),
 					OUTPUT_TYPE::WARNING, node_cmp);
+
+			for (Connection& connection : node_cmp->m_connections)
+				NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
+
 			continue;
 		}
 

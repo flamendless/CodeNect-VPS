@@ -9,6 +9,7 @@ namespace CodeNect
 struct NodeBranch : public Node
 {
 	NODE_KIND m_kind = NODE_KIND::BRANCH;
+	bool m_has_else = false;
 
 	explicit NodeBranch();
 	inline ~NodeBranch() {}

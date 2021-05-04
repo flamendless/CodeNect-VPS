@@ -5,6 +5,7 @@
 #include "node/node.hpp"
 #include "node/node_math.hpp"
 #include "node/node_array.hpp"
+#include "node/node_branch.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -25,9 +26,25 @@ void process_size(void);
 
 bool validate_node_print(Node* in_node, Node* out_node);
 
-std::vector<std::vector<Node*>> get_branch_path(Node*);
-std::vector<Node*> traverse_node(Node*);
-bool valid_branch_path(std::vector<std::vector<Node*>>&);
+struct BranchInfo
+{
+	NodeBranch* node_branch = nullptr;
+	bool is_else = false;
+
+	bool operator==(const BranchInfo& other) const
+	{
+		return node_branch == other.node_branch
+			&& is_else == other.is_else;
+	}
+	bool operator!=(const BranchInfo& other) const
+	{
+		return !operator ==(other);
+	}
+};
+
+std::vector<std::vector<BranchInfo>> get_branch_path(Node*);
+std::vector<BranchInfo> traverse_node(Node*);
+bool valid_branch_path(std::vector<std::vector<BranchInfo>>&);
 void invalid_branch_colorize(Node*);
 void validate_branches(void);
 }
