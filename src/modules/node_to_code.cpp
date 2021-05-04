@@ -930,7 +930,7 @@ std::string ntc_prompt(NodePrompt* node_prompt)
 	return str;
 }
 
-std::string ntc_branch(NodeBranch* node_branch)
+std::string ntc_branch(NodeBranch* node_branch, bool is_in_else)
 {
 	PLOGD << "ntc_branch: " << node_branch->m_name;
 	std::string str = "";
@@ -953,10 +953,15 @@ std::string ntc_branch(NodeBranch* node_branch)
 			rhs = NodeToCode::ntc_cmp(node_cmp, true, pre);
 	}
 
-	std::string str_if = fmt::format("if ({:s})", rhs);
+	std::string str_statement = "";
+
+	if (!is_in_else)
+		str_statement = fmt::format("if ({:s})", rhs);
+	else
+		str_statement = "else";
 
 	//opening brace and closing brace for code block is handled by Transpiler
-	str.append(indent()).append(str_if).append("\n");
+	str.append(indent()).append(str_statement).append("\n");
 		// .append(indent()).append("{").append("\n");
 	// Transpiler::level++;
 

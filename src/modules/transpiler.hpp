@@ -8,13 +8,15 @@
 #include "libtcc.h"
 #include "core/defines.hpp"
 #include "node/node.hpp"
+#include "node/node_branch.hpp"
 #include "core/message_info.hpp"
 
 namespace CodeNect
 {
 struct State
 {
-	Node* node_branch = nullptr;
+	NodeBranch* node_branch = nullptr;
+	bool is_in_else = false;
 	std::vector<std::vector<Node*>> v_seq;
 	std::vector<Node*> v_rest;
 };
@@ -46,9 +48,9 @@ struct Transpiler
 	static void build_runnable_code(std::string& out, bool is_tcc);
 	static void transpile_decls(std::vector<Node*>& v, std::string& output);
 	static void transpile_decls_array(std::vector<Node*>& v, std::string& output);
-	static Node* transpile(std::vector<Node*>& v, std::string& output);
+	static Node* transpile(std::vector<Node*>& v, std::string& output, State* = nullptr);
 	static void arrange_v(std::vector<Node*>&);
-	static std::vector<Node*> get_sequence(Node* start_node);
+	static std::vector<Node*> get_sequence(Node*, State*);
 	static std::vector<std::vector<Node*>> get_v_sequence(State*);
 	static std::vector<Node*> get_rest(State*);
 	static int compile(void);

@@ -33,7 +33,7 @@ std::string ntc_math(NodeMath*, bool, std::string&);
 std::string ntc_cmp(NodeComparison*, bool, std::string&);
 std::string ntc_size(NodeSize*, bool, std::string&);
 std::string ntc_array_access(NodeArrayAccess*, bool, std::string&);
-std::string ntc_branch(NodeBranch*);
+std::string ntc_branch(NodeBranch*, bool);
 }
 
 #endif //_NODE_TO_CODE_HPP
