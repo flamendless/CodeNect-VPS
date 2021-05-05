@@ -11,6 +11,7 @@
 #include "core/project.hpp"
 #include "core/defines.hpp"
 #include "ui/command_palette.hpp"
+#include "ui/docs.hpp"
 #include "ui/settings.hpp"
 #include "ui/about.hpp"
 #include "ui/help.hpp"
@@ -39,6 +40,9 @@ int main(int argv, char** args)
 	CodeNect::Settings::register_commands();
 	CodeNect::About::register_commands();
 	CodeNect::Help::register_commands();
+
+	if (CodeNect::Docs::init() != RES_SUCCESS) return -1;
+	CodeNect::Docs::register_commands();
 
 	//Inspector
 	if (CodeNect::Inspector::init() != RES_SUCCESS) return -1;
@@ -114,6 +118,7 @@ int main(int argv, char** args)
 		CodeNect::Inspector::draw();
 		CodeNect::Zoom::draw();
 		CodeNect::Terminal::draw();
+		CodeNect::Docs::draw();
 
 		app.render_end();
 	}

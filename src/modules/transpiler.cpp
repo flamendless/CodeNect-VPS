@@ -93,13 +93,14 @@ void Transpiler::register_commands(void)
 	Commands::register_cmd(*cmd_run);
 }
 
-void Transpiler::add_message(const std::string& msg, OUTPUT_TYPE type, Node* node)
+void Transpiler::add_message(const std::string& msg, OUTPUT_TYPE type, Node* node, DOC_ID doc_id)
 {
 	PLOGD << msg;
 	MessageInfo info;
 	info.m_msg = std::move(msg);
 	info.m_type = type;
 	info.m_node = node;
+	info.m_doc_id = doc_id;
 	Transpiler::v_output.push_back(std::move(info));
 }
 
@@ -778,7 +779,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 				{
 					std::string warning = fmt::format("Node {:s} is not a valid declaration because it needs an inputs",
 							node->m_name);
-					Transpiler::add_message(std::move(warning), OUTPUT_TYPE::WARNING, node);
+					Transpiler::add_message(std::move(warning), OUTPUT_TYPE::WARNING, node, DOC_ID::NEED_INPUTS);
 				}
 			}
 			else
@@ -794,7 +795,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 			{
 				std::string warning = fmt::format("Node {:s} must have two inputs. Got {:d}",
 						node->m_name, count);
-				Transpiler::add_message(std::move(warning), OUTPUT_TYPE::WARNING, node_op);
+				Transpiler::add_message(std::move(warning), OUTPUT_TYPE::WARNING, node_op, DOC_ID::OP_REQ);
 			}
 		}
 

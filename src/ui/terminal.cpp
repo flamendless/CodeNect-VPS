@@ -13,6 +13,7 @@
 #include "node/node_colors.hpp"
 #include "ui/node_interface.hpp"
 #include "ui/create_node.hpp"
+#include "ui/docs.hpp"
 
 #if DEBUG_MODE
 #include <fstream>
@@ -158,6 +159,15 @@ void Terminal::draw_message_info(std::vector<MessageInfo>& v)
 				CreateNode::edit(msg.m_node);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("Edit node");
+
+			if (msg.m_doc_id != +DOC_ID::EMPTY)
+			{
+				ImGui::SameLine();
+				if (ImGui::SmallButton(ICON_FA_BOOK))
+					Docs::open_doc_id(msg.m_doc_id);
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("View more info in the Docs");
+			}
 		}
 	}
 }
@@ -196,6 +206,7 @@ void Terminal::draw_output(void)
 	{
 		ImGui::TextColored(NodeColors::Lookup::YELLOW, ICON_FA_EXCLAMATION_TRIANGLE " %s", "There are warnings with your node structure");
 		ImGui::TextColored(NodeColors::Lookup::YELLOW, ICON_FA_EXCLAMATION_TRIANGLE " %s", "This may result in error with the transpiled code");
+		ImGui::TextColored(NodeColors::Lookup::YELLOW, ICON_FA_EXCLAMATION_TRIANGLE " %s", "You may check the Docs for more info regarding the warning or error");
 		Terminal::draw_message_info(Debugger::v_msg_info);
 	}
 

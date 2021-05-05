@@ -3,17 +3,20 @@
 
 #include <string>
 #include "node/node.hpp"
+#include "enums.h"
 
 namespace CodeNect
 {
 enum class OUTPUT_TYPE { NORMAL = 1, SUCCESS, ERROR, WARNING, PROMPT };
+BETTER_ENUM(DOC_ID, int, EMPTY = 1, BRANCH_CONFLICT, AOOB, VAR_SIZE, NEED_INPUTS,
+		CMP_REQ, MATH_REQ, OP_REQ)
 
 struct MessageInfo
 {
 	OUTPUT_TYPE m_type = OUTPUT_TYPE::NORMAL;
 	std::string m_msg;
 	Node* m_node = nullptr;
-	//TODO add here uid for docu message, e.g DOC_ID::BRANCH_CONFLICT
+	DOC_ID m_doc_id = DOC_ID::EMPTY;
 };
 }
 

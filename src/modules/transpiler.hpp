@@ -40,7 +40,7 @@ struct Transpiler
 	static int init(void);
 	static void register_commands(void);
 	static void handle_error(void* opaque, const char* msg);
-	static void add_message(const std::string&, OUTPUT_TYPE = OUTPUT_TYPE::SUCCESS, Node* = nullptr);
+	static void add_message(const std::string&, OUTPUT_TYPE = OUTPUT_TYPE::SUCCESS, Node* = nullptr, DOC_ID = DOC_ID::EMPTY);
 	static std::string get_temp_name(const char* name);
 	static std::pair<std::string, bool> get_temp_name(const char* name, bool reuse);
 	static bool is_valid_decls(Node*);

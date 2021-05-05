@@ -10,7 +10,7 @@ struct Debugger
 {
 	static std::vector<MessageInfo> v_msg_info;
 
-	static void add_message(const std::string&, OUTPUT_TYPE = OUTPUT_TYPE::WARNING, Node* = nullptr);
+	static void add_message(const std::string&, OUTPUT_TYPE = OUTPUT_TYPE::WARNING, Node* = nullptr, DOC_ID = DOC_ID::EMPTY);
 	static void clear(void);
 };
 }

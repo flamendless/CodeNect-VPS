@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 #include "imgui.h"
-#include "imgui_markdown.h"
 #include "IconsFontAwesome5.h"
 
 namespace CodeNect
@@ -25,7 +24,6 @@ struct Help
 	static std::string str_md_dictionary;
 	static std::string str_md_libs;
 	static std::string str_md_support;
-	static void markdown(const std::string& str_md);
 
 	Help() = delete;
 	static void register_commands(void);

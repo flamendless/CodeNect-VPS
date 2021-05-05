@@ -27,9 +27,7 @@ ImGui::MarkdownConfig Font::md_config;
 void Font::init(void)
 {
 	PLOGI << "Loading fonts...";
-
 	ImGuiIO& io = ImGui::GetIO();
-
 	const char* font_path;
 
 	if (Config::font == "ProggyClean")
