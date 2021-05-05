@@ -441,9 +441,10 @@ Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output, State* c
 	{
 		Node* node = *it;
 		bool found = Transpiler::m_declared.find(node->m_name) != Transpiler::m_declared.end();
+		PLOGD << "transpiling: " << node->m_name << ", found = " << found;
 		if (found)
 		{
-			if (current_state->node_branch && current_state->is_in_else)
+			if (current_state && current_state->node_branch && current_state->is_in_else)
 			{
 				NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
 				if (!node_branch)
@@ -563,15 +564,11 @@ Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output, State* c
 				break;
 			}
 		}
+		PLOGD << "transpiled: " << node->m_name;
 	}
 	return nullptr;
 }
 
-//TODO maybe arrange sequence by length of sequence??
-//for example:
-//sequence A : 5 nodes
-//sequence B : 3 nodes
-//Sequence B should be first before Sequence A
 std::vector<std::vector<Node*>> Transpiler::get_v_sequence(State* state)
 {
 	//get the independent sequence/chain of nodes
@@ -698,7 +695,6 @@ std::vector<Node*> Transpiler::get_rest(State* current_state)
 					continue;
 			}
 
-			//for the rest (i.e not after NodeBranch)
 			for (const Connection& connection : node->m_connections)
 			{
 				Node* in_node = static_cast<Node*>(connection.in_node);
@@ -777,9 +773,13 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		{
 			if (!Transpiler::is_valid_decls(node))
 			{
-				std::string warning = fmt::format("Node {:s} is not a valid declaration because it needs an inputs",
-						node->m_name);
-				Transpiler::add_message(std::move(warning), OUTPUT_TYPE::WARNING, node);
+				NodeArray* node_array = dynamic_cast<NodeArray*>(node);
+				if (!node_array)
+				{
+					std::string warning = fmt::format("Node {:s} is not a valid declaration because it needs an inputs",
+							node->m_name);
+					Transpiler::add_message(std::move(warning), OUTPUT_TYPE::WARNING, node);
+				}
 			}
 			else
 				v_decls.push_back(node);
@@ -807,11 +807,11 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	//begin transpiling
 	Transpiler::level++;
 
-	PLOGD << "Transpiling decls...";
+	PLOGD << "Transpiling decls... size = " << v_decls.size();
 	Transpiler::transpile_decls(v_decls, str_decls);
 	PLOGD << "Transpiled decls";
 
-	PLOGD << "Transpiling decls array...";
+	PLOGD << "Transpiling decls array... size = " << v_decls_array.size();
 	Transpiler::transpile_decls_array(v_decls_array, str_decls);
 	PLOGD << "Transpiled decls array";
 
@@ -821,12 +821,10 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	std::vector<State> v_states;
 	State prev_state;
 	prev_state.v_rest = v_decls;
+	prev_state.v_rest.insert(prev_state.v_rest.end(), v_decls_array.begin(), v_decls_array.end());
 
 	while (1)
 	{
-		if (subpass > 4)
-			exit(1);
-
 		PLOGD << "PASS #" << pass << "; SUBPASS #" << subpass;
 		if (prev_state.node_branch)
 		{

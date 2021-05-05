@@ -5,7 +5,9 @@
 
 namespace CodeNect::Templates
 {
-inline static const char* incl_tcc = "#include <tcclib.h>";
+inline static const char* incl_tcc = "#include <tcclib.h>\n"
+	"//for assert for checking array out of bounds\n"
+	"#include <assert.h>\n";
 inline static const char* incl_stdio = "//for using input and output functions like printf and getline\n"
 	"#include <stdio.h>\n";
 inline static const char* incl_stdlib = "//for assert for checking array out of bounds\n"

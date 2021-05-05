@@ -40,7 +40,7 @@ int Terminal::init(void)
 	Input::register_key_event(Terminal::keypress);
 
 	Terminal::pos = ImVec2(x, y);
-	Terminal::size = ImVec2(480, 360);
+	Terminal::size = ImVec2(640, 480);
 
 	Terminal::lang_c = TextEditor::LanguageDefinition::C();
 	Terminal::editor.SetLanguageDefinition(Terminal::lang_c);
