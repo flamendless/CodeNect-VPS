@@ -18,12 +18,16 @@ struct NodeInterface
 	static ImVec2 center_pos;
 	static std::vector<const char*> v_str;
 	static Image logo;
-	static ImVec2 target_node_pos;
+	static Node* target_node;
 	static bool has_target_node;
 	static bool flag_init_setup;
+	static bool is_highlighting;
+	static bool has_jumped;
+	static ImVec4 color_highlight;
 
 	NodeInterface() = delete;
 	static bool init(void);
+	static void update(float dt);
 	static void draw(void);
 	static void draw_startup(void);
 	static void draw_main(void);

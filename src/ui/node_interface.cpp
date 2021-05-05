@@ -3,12 +3,15 @@
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #   define IMGUI_DEFINE_MATH_OPERATORS
 #endif
+
+#include <cstdint>
 #include <vector>
 #include <map>
 #include <string>
 #include <imgui.h>
 #include <imgui_internal.h>
 #include "ImNodesEz.h"
+#include "tweeny.h"
 #include "plog/Log.h"
 #include "IconsFontAwesome5.h"
 #include "core/project.hpp"
@@ -19,6 +22,7 @@
 #include "node/nodes.hpp"
 #include "node/node_logic.hpp"
 #include "node/node_renderer.hpp"
+#include "node/node_colors.hpp"
 #include "ui/create_node.hpp"
 #include "ui/zoom.hpp"
 #include "modules/filesystem.hpp"
@@ -46,12 +50,16 @@ std::vector<const char*> NodeInterface::v_str = {
 	ICON_FA_SEARCH " Press <Ctrl+Shift+i> to open/hide the inspector",
 };
 Image NodeInterface::logo;
-ImVec2 NodeInterface::target_node_pos;
+Node* NodeInterface::target_node = nullptr;
 bool NodeInterface::has_target_node = false;
 bool NodeInterface::flag_init_setup = false;
+bool NodeInterface::is_highlighting = false;
+bool NodeInterface::has_jumped = false;
+ImVec4 NodeInterface::color_highlight = ImVec4(0, 0, 0, 0);
 
 Node* current_node;
 ImNodes::CanvasState* canvas;
+tweeny::tween<float> tween_highlight;
 
 bool NodeInterface::init(void)
 {
@@ -67,6 +75,22 @@ bool NodeInterface::init(void)
 	Filesystem::load_texture_from_file("assets/logo.png", NodeInterface::logo);
 
 	return RES_SUCCESS;
+}
+
+void NodeInterface::update(float dt)
+{
+	if (!NodeInterface::is_highlighting)
+		return;
+
+	tween_highlight = tweeny::from(NodeInterface::color_highlight.w)
+		.to(0)
+		.during(100)
+		.via(tweeny::easing::cubicInOutEasing());
+	const int value = tween_highlight.step(static_cast<int>(dt * 1000));
+	NodeInterface::color_highlight.w = value;
+
+	if (value == 0)
+		NodeInterface::is_highlighting = false;
 }
 
 void NodeInterface::draw(void)
@@ -118,13 +142,14 @@ void NodeInterface::draw_main(void)
 		NodeInterface::flag_init_setup = true;
 	}
 
-	if (NodeInterface::has_target_node)
+	if (NodeInterface::has_target_node && !NodeInterface::has_jumped)
 	{
-		float tx = -NodeInterface::target_node_pos.x + NodeInterface::size.x/4;
-		float ty = -NodeInterface::target_node_pos.y + NodeInterface::size.y/4;
+		ImVec2& pos = NodeInterface::target_node->m_pos;
+		float tx = -pos.x + NodeInterface::size.x/4;
+		float ty = -pos.y + NodeInterface::size.y/4;
 		canvas->Offset.x = tx;
 		canvas->Offset.y = ty;
-		NodeInterface::has_target_node = false;
+		NodeInterface::has_jumped = true;
 	}
 
 	ImNodes::BeginCanvas(canvas);
@@ -136,6 +161,12 @@ void NodeInterface::draw_main(void)
 	Project::meta.offset.x = canvas->Offset.x;
 	Project::meta.offset.y = canvas->Offset.y;
 	ImNodes::EndCanvas();
+
+	if (NodeInterface::has_target_node && !NodeInterface::is_highlighting && NodeInterface::has_jumped)
+	{
+		NodeInterface::has_target_node = false;
+		NodeInterface::target_node = nullptr;
+	}
 }
 
 void NodeInterface::draw_nodes(void)
@@ -160,8 +191,26 @@ void NodeInterface::draw_nodes(void)
 			ImNodes::Ez::OutputSlots(node->m_out_slots.data(), node->m_out_slots.size());
 			NodeRenderer::draw_connections(*node);
 		}
-
 		ImNodes::Ez::EndNode();
+
+		if (NodeInterface::has_target_node && NodeInterface::target_node == node && NodeInterface::is_highlighting)
+		{
+			//highlight/show feedback to the user to identify the found node
+			ImDrawList* draw_list = ImGui::GetWindowDrawList();
+			ImVec2 rect_min = ImGui::GetItemRectMin();
+			ImVec2 rect_max = ImGui::GetItemRectMax();
+			const float r = NodeInterface::color_highlight.x;
+			const float g = NodeInterface::color_highlight.y;
+			const float b = NodeInterface::color_highlight.z;
+			const float a = NodeInterface::color_highlight.w;
+			const float offset = 8;
+			rect_min.x -= offset;
+			rect_min.y -= offset;
+			rect_max.x += offset;
+			rect_max.y += offset;
+			draw_list->AddRect(rect_min, rect_max, IM_COL32(r, g, b, a), offset, ImDrawCornerFlags_All, offset);
+		}
+
 		NodeRenderer::pop_node_style();
 
 		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
@@ -356,9 +405,15 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 
 void NodeInterface::jump_to_pos(Node* node)
 {
-	ImVec2& pos = node->m_pos;
+	NodeInterface::target_node = node;
 	NodeInterface::has_target_node = true;
-	NodeInterface::target_node_pos.x = pos.x;
-	NodeInterface::target_node_pos.y = pos.y;
+	NodeInterface::is_highlighting = true;
+	NodeInterface::has_jumped = false;
+
+	const ImVec4& node_color = NodeColors::m_kind[node->m_kind._to_string()];
+	NodeInterface::color_highlight.x = (int)(node_color.x * 255);
+	NodeInterface::color_highlight.y = (int)(node_color.y * 255);
+	NodeInterface::color_highlight.z = (int)(node_color.z * 255);
+	NodeInterface::color_highlight.w = (int)(node_color.w * 255);
 }
 }

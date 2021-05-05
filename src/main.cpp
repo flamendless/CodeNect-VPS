@@ -96,6 +96,7 @@ int main(int argv, char** args)
 
 		//update
 		sidebar_handler.update(dt);
+		CodeNect::NodeInterface::update(dt);
 
 		app.render_start();
 
