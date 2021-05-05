@@ -45,6 +45,11 @@ void Inspector::register_commands(void)
 	cmd->set_fn(Inspector::toggle);
 	cmd->m_close_command_palette = true;
 	Commands::register_cmd(*cmd);
+
+	Command* cmd_find = new Command("Search Node", "search node through the Inspector", ICON_FA_SEARCH);
+	cmd_find->set_fn([](){ Inspector::is_open = true; });
+	cmd_find->m_close_command_palette = true;
+	Commands::register_cmd(*cmd_find);
 }
 
 void Inspector::toggle(void)
