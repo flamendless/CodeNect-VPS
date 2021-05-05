@@ -157,8 +157,8 @@ void invalid_branch_colorize(Node* node)
 		if (out_node == node)
 			continue;
 
-		NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
-		Debugger::add_message(std::move("Conflict with branches"), OUTPUT_TYPE::WARNING, node);
+		NodeColors::set_connection_color(connection, COLOR_TYPE::FAIL);
+		Debugger::add_message(std::move("Conflict with branches"), OUTPUT_TYPE::WARNING, node, DOC_ID::BRANCH_CONFLICT);
 	}
 }
 

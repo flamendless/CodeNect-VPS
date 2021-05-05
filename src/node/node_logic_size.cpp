@@ -44,7 +44,7 @@ void process_size(void)
 					node_size->m_val_size.set((int)node_size->m_size);
 				}
 				else
-					NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
+					NodeColors::set_connection_color(connection, COLOR_TYPE::FAIL);
 			}
 		}
 	}

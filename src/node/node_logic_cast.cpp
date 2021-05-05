@@ -78,7 +78,7 @@ void process_cast(void)
 		res->copy(out_slot);
 		bool success = res->cast_from(*from_val);
 		if (!success)
-			NodeColors::set_connection_color(*conn, COLOR_TYPE::FALSE);
+			NodeColors::set_connection_color(*conn, COLOR_TYPE::FAIL);
 		node_cast->m_current_val = res;
 	}
 }

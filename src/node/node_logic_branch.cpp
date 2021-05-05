@@ -77,13 +77,13 @@ void process_branch(void)
 			for (Connection* c_true : v_c_true)
 			{
 				c_true->is_valid = true;
-				NodeColors::set_connection_color(*c_true, COLOR_TYPE::TRUE);
+				NodeColors::set_connection_color(*c_true, COLOR_TYPE::SUCCESS);
 			}
 
 			for (Connection* c_false : v_c_false)
 			{
 				c_false->is_valid = false;
-				NodeColors::set_connection_color(*c_false, COLOR_TYPE::FALSE);
+				NodeColors::set_connection_color(*c_false, COLOR_TYPE::FAIL);
 			}
 		}
 		else
@@ -91,13 +91,13 @@ void process_branch(void)
 			for (Connection* c_true : v_c_true)
 			{
 				c_true->is_valid = false;
-				NodeColors::set_connection_color(*c_true, COLOR_TYPE::FALSE);
+				NodeColors::set_connection_color(*c_true, COLOR_TYPE::FAIL);
 			}
 
 			for (Connection* c_false : v_c_false)
 			{
 				c_false->is_valid = true;
-				NodeColors::set_connection_color(*c_false, COLOR_TYPE::TRUE);
+				NodeColors::set_connection_color(*c_false, COLOR_TYPE::SUCCESS);
 			}
 		}
 	}

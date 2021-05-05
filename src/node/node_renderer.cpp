@@ -440,10 +440,10 @@ void draw_connections(Node& node)
 	for (const Connection& connection : node.m_connections)
 	{
 		if (connection.out_node != &node) continue;
-		if (connection.color == COLOR_TYPE::FALSE)
-			canvas->Colors[ImNodes::ColConnection] = NodeColors::ConnectionColors::FALSE;
-		else if (connection.color == COLOR_TYPE::TRUE)
-			canvas->Colors[ImNodes::ColConnection] = NodeColors::ConnectionColors::TRUE;
+		if (connection.color == COLOR_TYPE::FAIL)
+			canvas->Colors[ImNodes::ColConnection] = NodeColors::ConnectionColors::FAIL;
+		else if (connection.color == COLOR_TYPE::SUCCESS)
+			canvas->Colors[ImNodes::ColConnection] = NodeColors::ConnectionColors::SUCCESS;
 		else if (connection.color == COLOR_TYPE::RUNTIME)
 			canvas->Colors[ImNodes::ColConnection] = NodeColors::ConnectionColors::RUNTIME;
 

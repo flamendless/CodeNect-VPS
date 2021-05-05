@@ -8,11 +8,7 @@
 
 namespace CodeNect
 {
-enum ALERT_TYPE
-{
-	SUCCESS,
-	ERROR,
-};
+enum class ALERT_TYPE { SUCCESS, ERROR };
 
 struct Alert
 {

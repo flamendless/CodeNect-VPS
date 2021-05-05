@@ -109,7 +109,7 @@ void process_op(void)
 		if (res.v_values.size() < 2)
 		{
 			Debugger::add_message(std::move("NodeOperation needs atleast 2 inputs"),
-					OUTPUT_TYPE::WARNING, node_op);
+					OUTPUT_TYPE::WARNING, node_op, DOC_ID::OP_REQ);
 			continue;
 		}
 

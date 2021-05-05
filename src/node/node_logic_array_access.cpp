@@ -86,7 +86,7 @@ void process_array_access(void)
 				}
 				else
 				{
-					NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
+					NodeColors::set_connection_color(connection, COLOR_TYPE::FAIL);
 					continue;
 				}
 			}
@@ -100,7 +100,7 @@ void process_array_access(void)
 				Node* out_node = static_cast<Node*>(connection.out_node);
 				NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
 				if (out_node_arr_access)
-					NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
+					NodeColors::set_connection_color(connection, COLOR_TYPE::FAIL);
 			}
 			continue;
 		}

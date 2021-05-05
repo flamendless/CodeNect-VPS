@@ -35,12 +35,11 @@ void process_cmp(void)
 		//make preliminary checks
 		if (node_cmp->m_connections.size() < 3)
 		{
-
 			Debugger::add_message(std::move("NodeComparison needs atleast 3 inputs"),
-					OUTPUT_TYPE::WARNING, node_cmp);
+					OUTPUT_TYPE::WARNING, node_cmp, DOC_ID::CMP_REQ);
 
 			for (Connection& connection : node_cmp->m_connections)
-				NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
+				NodeColors::set_connection_color(connection, COLOR_TYPE::FAIL);
 
 			continue;
 		}

@@ -40,7 +40,7 @@ void process_array(void)
 				NodeValue* val = &out_node_var->m_value;
 				if (node_array->m_array == +NODE_ARRAY::FIXED && !can_add)
 				{
-					NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
+					NodeColors::set_connection_color(connection, COLOR_TYPE::FAIL);
 					continue;
 				}
 				node_array->m_other_elements.push_back(val);
@@ -50,7 +50,7 @@ void process_array(void)
 				NodeValue* val = out_node_op->m_current_val;
 				if (node_array->m_array == +NODE_ARRAY::FIXED && !can_add)
 				{
-					NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
+					NodeColors::set_connection_color(connection, COLOR_TYPE::FAIL);
 					continue;
 				}
 				node_array->m_other_elements.push_back(val);
@@ -60,7 +60,7 @@ void process_array(void)
 				NodeValue* val = out_node_math->m_current_val;
 				if (node_array->m_array == +NODE_ARRAY::FIXED && !can_add)
 				{
-					NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
+					NodeColors::set_connection_color(connection, COLOR_TYPE::FAIL);
 					continue;
 				}
 				node_array->m_other_elements.push_back(val);
@@ -71,7 +71,7 @@ void process_array(void)
 				{
 					if (node_array->m_array == +NODE_ARRAY::FIXED && !can_add)
 					{
-						NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
+						NodeColors::set_connection_color(connection, COLOR_TYPE::FAIL);
 						continue;
 					}
 					node_array->m_other_elements.push_back(out_node_arr_access->m_current_val);
@@ -89,7 +89,7 @@ void process_array(void)
 
 					if (exceeds)
 					{
-						NodeColors::set_connection_color(connection, COLOR_TYPE::FALSE);
+						NodeColors::set_connection_color(connection, COLOR_TYPE::FAIL);
 						continue;
 					}
 				}

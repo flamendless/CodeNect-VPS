@@ -45,9 +45,9 @@ Help::tuple_t Help::v_key_items
 
 Help::tuple_colors_t Help::v_connection_colors_items
 {
-	help_tc("Green", "path processed because the result of node branch is 'true'", NodeColors::ConnectionColors::TRUE),
-	help_tc("Red", "path NOT processed because the result of node branch is 'false'", NodeColors::ConnectionColors::FALSE),
-	help_tc("Red", "value can't be added to array because it exceeds array's fixed size", NodeColors::ConnectionColors::FALSE),
+	help_tc("Green", "path processed because the result of node branch is 'true'", NodeColors::ConnectionColors::SUCCESS),
+	help_tc("Red", "path NOT processed because the result of node branch is 'false'", NodeColors::ConnectionColors::FAIL),
+	help_tc("Red", "value can't be added to array because it exceeds array's fixed size", NodeColors::ConnectionColors::FAIL),
 	help_tc("Yellow", "path can only be determined during runtime", NodeColors::ConnectionColors::RUNTIME),
 };
 

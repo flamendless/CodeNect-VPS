@@ -27,8 +27,8 @@ struct NodeColors
 	{
 		static ImVec4 DEFAULT;
 		static ImVec4 HOVERED;
-		static ImVec4 TRUE;
-		static ImVec4 FALSE;
+		static ImVec4 SUCCESS;
+		static ImVec4 FAIL;
 		static ImVec4 RUNTIME;
 	};
 

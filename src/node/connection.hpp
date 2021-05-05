@@ -5,7 +5,7 @@
 
 namespace CodeNect
 {
-enum COLOR_TYPE { DEFAULT = 0, TRUE, FALSE, RUNTIME};
+enum class COLOR_TYPE { DEFAULT = 0, SUCCESS, FAIL, RUNTIME};
 
 struct Connection
 {
