@@ -1,12 +1,12 @@
 u8R"====(# VARIABLE SIZE
 ## EXPLANATION
-Variable size error is a special error implemented by CodeNect. This occurs
-during transpilation stage when a *NodeVariable* that is *not* of type *string*
-is connected to a *NodeSize* In programming languages, the size of a variable
+*Variable size error* is a special error implemented by CodeNect. This occurs
+during transpilation stage when a *Variable Node* that is *not* of type *string*
+is connected to a *Size Node* In programming languages, the size of a variable
 depends on the data type of the variable but they are measured in bytes which
 is not beginner-friendly (though understanding this fundamental concept is
-important!). *NodeVariable* of type *string* however, can be connected to
-a *NodeSize* because usually, programmers want to determine at runtime the
+important!). *Variable Node* of type *string* however, can be connected to
+a *Size Node* because usually, programmers want to determine at runtime the
 length of a string. A length of a string is its number of characters.
 ## SAMPLE CODE
 Here is a *pseudo-code* example:
@@ -27,4 +27,7 @@ size(d); //13 characters (whitespace and exclamation mark are counted)
 size(e); //11 characters
 size(f); //28 characters
 ```
+## KEY POINTS
+  * You can get the *size* or *character length* of a *Variable Node* if it is of type *string*
+  * You can get the *size* or *number of elements stored* of a *Array Node*
 )===="

@@ -1,6 +1,6 @@
 u8R"====(# NEED INPUTS/LACK OF INPUTS
 ## EXPLANATION
-Need inputs or lack of inputs is a special error implemented by CodeNect. This
+*Need inputs or lack of inputs* is a special error implemented by CodeNect. This
 occurs whenever user declares a *Node* that requires a number of inputs but
 were not provided one. The inputs are necessary in order to transpile the node
 into actual code. Instead of transpiling the code and then the compiler will
@@ -20,4 +20,7 @@ int a = 1;
 int b = 2;
 int result = +; //syntax error because CodeNect does not know what to put there because there is no given input
 ```
+## KEY POINTS
+  * Check carefully the warnings in the *Terminal* to catch these issues before transpiling
+  * Make sure you provide enough data or input to *Nodes* that need it
 )===="

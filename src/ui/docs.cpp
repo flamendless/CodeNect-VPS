@@ -29,6 +29,15 @@ std::string doc_var_size =
 std::string doc_need_inputs =
 #include "markdown/doc_need_inputs.md"
 ;
+std::string doc_cmp_req =
+#include "markdown/doc_cmp_req.md"
+;
+std::string doc_math_req =
+#include "markdown/doc_math_req.md"
+;
+std::string doc_op_req =
+#include "markdown/doc_op_req.md"
+;
 
 std::vector<const char*> Docs::v_title = {
 	"Branch Conflict", "Array Out of Bounds", "Variable Size", "Need Inputs/Lack of Inputs",
@@ -41,9 +50,9 @@ std::vector<std::string*> Docs::v_doc_id = {
 	&doc_aoob,
 	&doc_var_size,
 	&doc_need_inputs,
-	&doc_branch_conflict,
-	&doc_branch_conflict,
-	&doc_branch_conflict,
+	&doc_cmp_req,
+	&doc_math_req,
+	&doc_op_req,
 };
 
 int Docs::init(void)
@@ -78,6 +87,7 @@ void Docs::open_doc_id(DOC_ID& doc_id)
 	is_open_doc_id.fill(false);
 	Docs::is_open = true;
 	is_open_doc_id[doc_id._to_index()] = true;
+	PLOGD << "Opened Docs in " << doc_id._to_string();
 }
 
 void Docs::draw(void)
