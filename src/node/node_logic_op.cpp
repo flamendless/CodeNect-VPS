@@ -7,6 +7,7 @@
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
+#include "node/node_colors.hpp"
 #include "modules/debugger.hpp"
 
 namespace CodeNect::NodeLogic
@@ -44,6 +45,9 @@ void process_op(void)
 		for (const Connection& connection : node_op->m_connections)
 		{
 			Node* in_node = static_cast<Node*>(connection.in_node);
+			if (in_node == node_op)
+				continue;
+
 			NodeVariable* in_node_var = dynamic_cast<NodeVariable*>(in_node);
 			NodeMath* in_node_math = dynamic_cast<NodeMath*>(in_node);
 			NodeArray* in_node_array = dynamic_cast<NodeArray*>(in_node);
@@ -68,39 +72,29 @@ void process_op(void)
 			}
 		}
 
-		//make sure that there is a "resulting" var connected
-		if (res.slot_res == +NODE_SLOT::EMPTY)
-			continue;
-
 		//get all the lhs of the node_op
 		for (const Connection& connection : node_op->m_connections)
 		{
 			Node* out_node = static_cast<Node*>(connection.out_node);
+			if (out_node == node_op)
+				continue;
+
 			NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
 			NodeMath* out_node_math = dynamic_cast<NodeMath*>(out_node);
 			NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
 			NodeSize* out_node_size = dynamic_cast<NodeSize*>(out_node);
 
 			if (out_node_var)
-			{
-				if (out_node_var->m_value_orig.m_slot == res.slot_res)
-					res.v_values.push_back(&out_node_var->m_value);
-			}
+				res.v_values.push_back(&out_node_var->m_value);
 			else if (out_node_math)
 			{
-				if (out_node_math->m_out_slots[0].kind == res.slot_res)
-				{
-					if (out_node_math->m_current_val)
-						res.v_values.push_back(out_node_math->m_current_val);
-				}
+				if (out_node_math->m_current_val)
+					res.v_values.push_back(out_node_math->m_current_val);
 			}
 			else if (out_node_arr_access)
 			{
-				if (out_node_arr_access->m_out_slots[0].kind == res.slot_res)
-				{
-					if (out_node_arr_access->m_current_val)
-						res.v_values.push_back(out_node_arr_access->m_current_val);
-				}
+				if (out_node_arr_access->m_current_val)
+					res.v_values.push_back(out_node_arr_access->m_current_val);
 			}
 			else if (out_node_size)
 				res.v_values.push_back(&out_node_size->m_val_size);
@@ -108,10 +102,16 @@ void process_op(void)
 
 		if (res.v_values.size() < 2)
 		{
-			Debugger::add_message(std::move("NodeOperation needs atleast 2 inputs"),
+			Debugger::add_message(std::move("NodeOperation needs at least 2 inputs"),
 					OUTPUT_TYPE::WARNING, node_op, DOC_ID::OP_REQ);
+			for (Connection& connection : node_op->m_connections)
+				NodeColors::set_connection_color(connection, COLOR_TYPE::FAIL);
 			continue;
 		}
+
+		//make sure that there is a "resulting" var connected
+		if (res.slot_res == +NODE_SLOT::EMPTY)
+			continue;
 
 		//here we are sure that they are of the same slot
 		// process the v_values and perform the operation

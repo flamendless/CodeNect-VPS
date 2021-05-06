@@ -117,6 +117,7 @@ void Terminal::draw(void)
 
 void Terminal::draw_message_info(std::vector<MessageInfo>& v)
 {
+	int i = 0;
 	for (MessageInfo& msg : v)
 	{
 		switch (msg.m_type)
@@ -149,8 +150,14 @@ void Terminal::draw_message_info(std::vector<MessageInfo>& v)
 			ImGui::SameLine();
 			ImGui::Text("%s", msg.m_node->m_name);
 			ImGui::SameLine();
+			ImGui::PushID(i);
+
 			if (ImGui::SmallButton(ICON_FA_SEARCH))
+			{
+				PLOGD << msg.m_node;
+				PLOGD << msg.m_node->m_name;
 				NodeInterface::jump_to_pos(msg.m_node);
+			}
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("Jump the camera's position to the node's position");
 
@@ -168,7 +175,9 @@ void Terminal::draw_message_info(std::vector<MessageInfo>& v)
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("View more info in the Docs");
 			}
+			ImGui::PopID();
 		}
+		i++;
 	}
 }
 

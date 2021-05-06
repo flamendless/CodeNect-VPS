@@ -130,22 +130,6 @@ void validate_branches(void)
 			if (!NodeLogic::valid_branch_path(v_branch_seq))
 				NodeLogic::invalid_branch_colorize(node);
 		}
-
-		// check node if in else and is connected to a if branch path
-		// if (v_branch_seq.size() > 0)
-		// {
-		// 	for (std::vector<Node*>& v : v_branch_seq)
-		// 	{
-		// 		for (Node* &nb : v)
-		// 		{
-		// 			NodeBranch* node_branch = static_cast<NodeBranch*>(nb);
-		// 			bool found = std::find(s_branches_name.begin(), s_branches_name.end(), node_branch)
-		// 				!= s_branches_name.end();
-		// 			if (found)
-		// 				NodeLogic::invalid_branch_colorize(node);
-		// 		}
-		// 	}
-		// }
 	}
 }
 

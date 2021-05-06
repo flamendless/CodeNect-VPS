@@ -777,9 +777,8 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 				NodeArray* node_array = dynamic_cast<NodeArray*>(node);
 				if (!node_array)
 				{
-					std::string warning = fmt::format("Node {:s} is not a valid declaration because it needs an inputs",
-							node->m_name);
-					Transpiler::add_message(std::move(warning), OUTPUT_TYPE::WARNING, node, DOC_ID::NEED_INPUTS);
+					Transpiler::add_message(std::move("Node is not a valid declaration because it needs an inputs"),
+							OUTPUT_TYPE::WARNING, node, DOC_ID::NEED_INPUTS);
 				}
 			}
 			else
@@ -792,11 +791,8 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		{
 			const int count = Nodes::count_node_dep(node_op);
 			if (count < 2)
-			{
-				std::string warning = fmt::format("Node {:s} must have two inputs. Got {:d}",
-						node->m_name, count);
-				Transpiler::add_message(std::move(warning), OUTPUT_TYPE::WARNING, node_op, DOC_ID::OP_REQ);
-			}
+				Transpiler::add_message(std::move("NodeOperation must have at least 2 inputs"),
+						OUTPUT_TYPE::WARNING, node_op, DOC_ID::OP_REQ);
 		}
 
 		//exception: still define all arrays
