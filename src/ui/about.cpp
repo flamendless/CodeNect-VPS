@@ -1,5 +1,6 @@
 #include "ui/about.hpp"
 
+#include "imgui_internal.h"
 #include "plog/Log.h"
 #include "core/utils.hpp"
 #include "core/config.hpp"
@@ -76,5 +77,8 @@ void About::draw()
 
 		ImGui::End();
 	}
+
+	if (ImGui::IsKeyPressedMap(ImGuiKey_Escape))
+		About::is_open = false;
 }
 }

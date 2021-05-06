@@ -1,5 +1,7 @@
 #include "settings.hpp"
+
 #include <string>
+#include "imgui_internal.h"
 #include "IconsFontAwesome5.h"
 #include "plog/Log.h"
 #include "core/config.hpp"
@@ -133,6 +135,9 @@ void Settings::draw(void)
 
 		ImGui::End();
 	}
+
+	if (ImGui::IsKeyPressedMap(ImGuiKey_Escape))
+		Settings::is_open = false;
 }
 
 void Settings::draw_theme_select(void)

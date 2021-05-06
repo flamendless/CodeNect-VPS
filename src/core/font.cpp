@@ -3,6 +3,7 @@
 #include "IconsFontAwesome5.h"
 #include "plog/Log.h"
 #include "core/config.hpp"
+#include "core/markdown.hpp"
 
 namespace CodeNect
 {
@@ -15,14 +16,9 @@ const char* Font::droid_sans_path = "assets/fonts/DroidSans.ttf";
 const char* Font::cousine_regular_path = "assets/fonts/Cousine-Regular.ttf";
 const char* Font::karla_regular_path = "assets/fonts/Karla-Regular.ttf";
 const char* Font::roboto_medium_path = "assets/fonts/Roboto-Medium.ttf";
-const char* Font::md_path = "assets/fonts/kenyan_coffee.ttf";
-const char* Font::md_bold_path = "assets/fonts/kenyan_coffee_bd.ttf";
+const char* Font::md_path = "assets/fonts/built_tiltling_lt.ttf";
+const char* Font::md_bold_path = "assets/fonts/built_tiltling_bd.ttf";
 map_fonts Font::fonts;
-
-ImFont* Font::H1;
-ImFont* Font::H2;
-ImFont* Font::H3;
-ImGui::MarkdownConfig Font::md_config;
 
 void Font::init(void)
 {
@@ -100,7 +96,7 @@ void Font::init_md_fonts(void)
 {
 	PLOGI << "Loading font for markdown...";
 
-	const float md_font_size = 24.0f;
+	const float md_font_size = 18.0f;
 	ImGuiIO& io = ImGui::GetIO();
 	io.Fonts->AddFontFromFileTTF(Font::md_path, md_font_size);
 	static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
@@ -111,23 +107,25 @@ void Font::init_md_fonts(void)
 	io.Fonts->AddFontFromFileTTF(Font::fas_path, md_font_size, &config, icon_ranges);
 	io.Fonts->AddFontFromFileTTF(Font::fab_path, md_font_size, &config, icon_ranges);
 
-	Font::H2 = io.Fonts->AddFontFromFileTTF(Font::md_bold_path, md_font_size);
 	ImFontConfig config_h2;
 	config_h2.MergeMode = true;
 	config_h2.PixelSnapH = true;
 	config_h2.GlyphMinAdvanceX = md_font_size;
+	Markdown::MD::H2 = io.Fonts->AddFontFromFileTTF(Font::md_bold_path, md_font_size);
 	io.Fonts->AddFontFromFileTTF(Font::fas_path, md_font_size, &config_h2, icon_ranges);
 	io.Fonts->AddFontFromFileTTF(Font::fab_path, md_font_size, &config_h2, icon_ranges);
 
-	Font::H3 = md_config.headingFormats[1].font;
+	Markdown::MD::H3 = Markdown::MD::md_config.headingFormats[1].font;
 
-	Font::H1 = io.Fonts->AddFontFromFileTTF(Font::md_bold_path, md_font_size * 1.1f);
+	const float md_h1_font_size = md_font_size * 1.1f;
 	ImFontConfig config_h1;
+	config_h1.SizePixels = md_h1_font_size;
 	config_h1.MergeMode = true;
 	config_h1.PixelSnapH = true;
-	config_h1.GlyphMinAdvanceX = md_font_size * 1.1f;
-	io.Fonts->AddFontFromFileTTF(Font::fas_path, md_font_size * 1.1f, &config_h1, icon_ranges);
-	io.Fonts->AddFontFromFileTTF(Font::fab_path, md_font_size * 1.1f, &config_h1, icon_ranges);
+	config_h1.GlyphMinAdvanceX = md_h1_font_size;
+	Markdown::MD::H1 = io.Fonts->AddFontFromFileTTF(Font::md_bold_path, md_h1_font_size);
+	io.Fonts->AddFontFromFileTTF(Font::fas_path, md_h1_font_size, &config_h1, icon_ranges);
+	io.Fonts->AddFontFromFileTTF(Font::fab_path, md_h1_font_size, &config_h1, icon_ranges);
 
 	PLOGI << "Loaded font for markdown successfully";
 }

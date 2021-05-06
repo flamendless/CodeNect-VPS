@@ -16,6 +16,7 @@ add_executable(CodeNect
 	src/core/commands.cpp
 	src/core/config.cpp
 	src/core/font.cpp
+	src/core/markdown.cpp
 	src/core/project.cpp
 	src/core/utils.cpp
 	src/core/validator.cpp
@@ -116,6 +117,7 @@ set_target_properties(CodeNect PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED 
 
 target_include_directories(CodeNect PRIVATE
 	src
+	src/core/
 	# better-enums
 	includes/better-enums
 	# color text editor
