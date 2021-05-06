@@ -98,6 +98,11 @@ struct TempGetData
 	bool valid_get = false;
 };
 
+struct TempStringData
+{
+	bool valid_string = false;
+};
+
 struct TempEntryData
 {
 	NODE_SLOT slot_out = NODE_SLOT::EMPTY;

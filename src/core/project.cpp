@@ -4,6 +4,7 @@
 #include <ctime>
 #include <GLFW/glfw3.h>
 #include "plog/Log.h"
+#include "ppk_assert.h"
 #include "modules/filesystem.hpp"
 #include "core/app.hpp"
 #include "core/defines.hpp"
@@ -22,6 +23,7 @@
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
+#include "node/node_string.hpp"
 #include "modules/transpiler.hpp"
 
 namespace CodeNect
@@ -286,6 +288,21 @@ int Project::save(void)
 					ini.SetValue(section, "index", std::to_string(node_arr_access->m_index_orig).c_str());
 				else if (node_size)
 					ini.SetValue(section, "size", std::to_string(node_size->m_size).c_str());
+				break;
+			}
+			case NODE_KIND::STRING:
+			{
+				NodeString* node_str = dynamic_cast<NodeString*>(node);
+				ini.SetValue(section, "str", node_str->m_string._to_string());
+				break;
+			}
+			default:
+			{
+#if DEBUG_MODE
+				std::string str = fmt::format("{:s} {:s} was not handled",
+						node->m_name, node->m_kind._to_string());
+				PPK_ASSERT(false, "%s", str.c_str());
+#endif
 			}
 		}
 
@@ -434,6 +451,7 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 	const char* math = ini.GetValue(section, "math", "EMPTY");
 	const char* ds = ini.GetValue(section, "ds", "EMPTY");
 	const char* get = ini.GetValue(section, "get", "EMPTY");
+	const char* str = ini.GetValue(section, "str", "EMPTY");
 
 	NodeMeta* nm = new NodeMeta();
 	nm->m_name = name;
@@ -446,6 +464,7 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 	nm->m_op = op;
 	nm->m_cmp = cmp;
 	nm->m_math = math;
+	nm->m_string = str;
 
 	if (std::strcmp(action, "PROMPT") == 0)
 	{

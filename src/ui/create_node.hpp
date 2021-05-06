@@ -27,6 +27,7 @@ struct CreateNode
 	static NODE_MATH math;
 	static NODE_DS ds;
 	static NODE_GET get;
+	static NODE_STRING str;
 
 	static Node* node_to_edit;
 	static bool can_create;
@@ -35,16 +36,18 @@ struct CreateNode
 			TempCastData*, TempComparisonData*,
 			TempBranchData*, TempActionData*,
 			TempMathData*, TempArrayData*,
-			TempGetData*, TempEntryData*
+			TempGetData*, TempEntryData*,
+			TempStringData*
 		>data;
 	static char buf_desc[BUF_SIZE * 2];
 
 	CreateNode() = delete;
 	static void open(NODE_KIND kind);
-	static void open_action(NODE_KIND kind, NODE_ACTION action);
-	static void open_math(NODE_KIND kind, NODE_MATH math);
-	static void open_ds(NODE_KIND kind, NODE_DS ds);
-	static void open_get(NODE_KIND kind, NODE_GET get);
+	static void open_action(NODE_KIND, NODE_ACTION);
+	static void open_math(NODE_KIND, NODE_MATH);
+	static void open_ds(NODE_KIND, NODE_DS);
+	static void open_get(NODE_KIND, NODE_GET);
+	static void open_string(NODE_KIND, NODE_STRING);
 	static void edit(Node* node);
 	static void close(void);
 
@@ -60,6 +63,7 @@ struct CreateNode
 	static void create_node_array(void);
 	static void create_node_array_access(void);
 	static void create_node_size(void);
+	static void create_node_string(void);
 
 	static void draw(void);
 	static void draw_desc(void);

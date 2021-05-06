@@ -53,6 +53,9 @@ struct NodeMeta
 	//NodeSize
 	std::string m_size;
 
+	//NodeString
+	std::string m_string;
+
 	inline NodeMeta() {}
 };
 

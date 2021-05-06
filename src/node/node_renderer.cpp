@@ -1,6 +1,7 @@
 #include "node/node_renderer.hpp"
 
 #include "imgui.h"
+#include "ppk_assert.h"
 #include "core/config.hpp"
 #include "core/utils.hpp"
 #include "node/node_logic.hpp"
@@ -94,6 +95,22 @@ void draw_node(Node* node)
 					break;
 				}
 			}
+			break;
+		}
+		case NODE_KIND::STRING:
+		{
+			NodeString* node_str = static_cast<NodeString*>(node);
+			NodeRenderer::draw_node_string(node_str);
+			break;
+		}
+
+		default:
+		{
+#if DEBUG_MODE
+			std::string str = fmt::format("{:s} {:s} was not handled",
+					node->m_name, node->m_kind._to_string());
+			PPK_ASSERT(false, "%s", str.c_str());
+#endif
 		}
 	}
 }
@@ -409,6 +426,10 @@ void draw_node_size(NodeSize* node_size)
 		ImGui::Text("%s", node_size->m_desc);
 		ImGui::EndTable();
 	}
+}
+
+void draw_node_string(NodeString* node_str)
+{
 }
 
 void draw_connections(Node& node)

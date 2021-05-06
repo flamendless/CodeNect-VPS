@@ -40,6 +40,7 @@ add_executable(CodeNect
 	src/node/node_prompt.cpp
 	src/node/node_renderer.cpp
 	src/node/node_size.cpp
+	src/node/node_string.cpp
 	src/node/node_val.cpp
 	src/node/node_var.cpp
 	src/node/nodes.cpp
@@ -76,6 +77,7 @@ add_executable(CodeNect
 	src/ui/create_node_print.cpp
 	src/ui/create_node_prompt.cpp
 	src/ui/create_node_size.cpp
+	src/ui/create_node_string.cpp
 	src/ui/create_node_var.cpp
 	src/ui/docs.cpp
 	src/ui/help.cpp

@@ -14,6 +14,7 @@
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
+#include "node/node_string.hpp"
 #include "ui/alert.hpp"
 
 namespace CodeNect
@@ -34,6 +35,7 @@ NODE_ACTION CreateNode::action = NODE_ACTION::EMPTY;
 NODE_MATH CreateNode::math = NODE_MATH::EMPTY;
 NODE_DS CreateNode::ds = NODE_DS::EMPTY;
 NODE_GET CreateNode::get = NODE_GET::EMPTY;
+NODE_STRING CreateNode::str = NODE_STRING::EMPTY;
 Node* CreateNode::node_to_edit;
 bool CreateNode::can_create = false;
 std::variant<
@@ -41,7 +43,8 @@ std::variant<
 		TempCastData*, TempComparisonData*,
 		TempBranchData*, TempActionData*,
 		TempMathData*, TempArrayData*,
-		TempGetData*, TempEntryData*
+		TempGetData*, TempEntryData*,
+		TempStringData*
 	>CreateNode::data;
 char CreateNode::buf_desc[BUF_SIZE * 2] = "";
 
@@ -67,6 +70,7 @@ void CreateNode::open(NODE_KIND kind)
 			break;
 		}
 		case NODE_KIND::GET: CreateNode::data = new TempGetData(); break;
+		case NODE_KIND::STRING: CreateNode::data = new TempStringData(); CreateNode::can_create = true; break;
 	}
 
 	CreateNode::buf_desc[0] = '\0';
@@ -96,6 +100,12 @@ void CreateNode::open_ds(NODE_KIND kind, NODE_DS ds)
 void CreateNode::open_get(NODE_KIND kind, NODE_GET get)
 {
 	CreateNode::get = get;
+	CreateNode::open(kind);
+}
+
+void CreateNode::open_string(NODE_KIND kind, NODE_STRING str)
+{
+	CreateNode::str = str;
 	CreateNode::open(kind);
 }
 
@@ -269,6 +279,16 @@ void CreateNode::edit(Node* node)
 				}
 			}
 			CreateNode::data = temp;
+			break;
+		}
+		case NODE_KIND::STRING:
+		{
+			NodeString* node_str = static_cast<NodeString*>(node);
+			TempStringData* temp = new TempStringData();
+			temp->valid_string = true;
+			CreateNode::str = node_str->m_string;
+			CreateNode::data = temp;
+			break;
 		}
 	}
 
@@ -284,7 +304,10 @@ void CreateNode::close(void)
 {
 	CreateNode::kind = NODE_KIND::EMPTY;
 	CreateNode::action = NODE_ACTION::EMPTY;
+	CreateNode::math = NODE_MATH::EMPTY;
 	CreateNode::ds = NODE_DS::EMPTY;
+	CreateNode::get = NODE_GET::EMPTY;
+	CreateNode::str = NODE_STRING::EMPTY;
 	CreateNode::is_open = false;
 
 	if (CreateNode::is_edit_mode)
@@ -352,7 +375,9 @@ void CreateNode::draw(void)
 					case NODE_GET::ARRAY_ACCESS: CreateNode::draw_array_access(); break;
 					case NODE_GET::SIZE: CreateNode::draw_size(); break;
 				}
+				break;
 			}
+			case NODE_KIND::STRING: break;
 		}
 
 		CreateNode::draw_desc();
@@ -418,7 +443,9 @@ void CreateNode::draw_buttons(void)
 						case NODE_GET::ARRAY_ACCESS: CreateNode::create_node_array_access(); break;
 						case NODE_GET::SIZE: CreateNode::create_node_size(); break;
 					}
+					break;
 				}
+				case NODE_KIND::STRING: CreateNode::create_node_string(); break;
 			}
 
 			CreateNode::close();

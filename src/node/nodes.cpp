@@ -15,6 +15,7 @@
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
+#include "node/node_string.hpp"
 
 namespace CodeNect
 {
@@ -32,6 +33,9 @@ std::map<std::string, const char*> Nodes::m_names
 	{"SIN", "SINE"},
 	{"COS", "COSINE"},
 	{"TAN", "TANGENT"},
+	{"TLC", "TO LOWERCASE"},
+	{"TUC", "TO UPPERCASE"},
+	{"TOARRAY", "TO ARRAY"},
 };
 std::map<const std::string, bool> Nodes::m_ids;
 
@@ -86,6 +90,19 @@ const char* Nodes::get_title(Node* node)
 		{
 			NodeGet* node_get = static_cast<NodeGet*>(node);
 			return node_get->m_get._to_string();
+		}
+		case NODE_KIND::STRING:
+		{
+			NodeString* node_str = static_cast<NodeString*>(node);
+			switch (node_str->m_string)
+			{
+				case NODE_STRING::EMPTY: break;
+				case NODE_STRING::TUC:
+				case NODE_STRING::TLC:
+				case NODE_STRING::TOARRAY: return m_names[node_str->m_string._to_string()]; break;
+				case NODE_STRING::REVERSE: return "REVERSE"; break;
+			}
+			break;
 		}
 	}
 
@@ -326,6 +343,27 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 						break;
 					}
 				}
+				break;
+			}
+			case NODE_KIND::STRING:
+			{
+				NODE_STRING str = NODE_STRING::_from_string(nm->m_string.c_str());
+				v_slot_info_t&& in = {};
+				v_slot_info_t&& out = {};
+				Nodes::build_slots(*nm, in, out);
+				NodeString* node_str = new NodeString(str, std::move(in), std::move(out));
+				node_str->m_name = nm->m_name.c_str();
+				node_str->m_pos = ImVec2(nm->x, nm->y);
+				node_str->m_desc = nm->m_desc.c_str();
+				Nodes::v_nodes.push_back(node_str);
+				break;
+			}
+			default:
+			{
+#if DEBUG_MODE
+			std::string str = fmt::format("{:s} was not handled", kind._to_string());
+			PPK_ASSERT(false, "%s", str.c_str());
+#endif
 			}
 		}
 

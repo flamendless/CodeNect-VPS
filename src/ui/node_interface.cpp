@@ -284,6 +284,7 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 					kind == +NODE_KIND::ACTION ||
 					kind == +NODE_KIND::MATH ||
 					kind == +NODE_KIND::DS ||
+					kind == +NODE_KIND::STRING ||
 					kind == +NODE_KIND::GET)
 					continue;
 
@@ -318,7 +319,7 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Math Node"))
+		if (ImGui::BeginMenu("Math Functions"))
 		{
 			for (NODE_MATH math : NODE_MATH::_values())
 			{
@@ -331,6 +332,32 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 				if (ImGui::MenuItem(item.c_str()))
 				{
 					CreateNode::open_math(NODE_KIND::MATH, math);
+					ImGui::CloseCurrentPopup();
+				}
+			}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("String Methods"))
+		{
+			for (NODE_STRING str : NODE_STRING::_values())
+			{
+				if (str == +NODE_STRING::EMPTY)
+					continue;
+
+				const char* id;
+				if (str == +NODE_STRING::TLC)
+					id = "ToLowerCase";
+				else if (str == +NODE_STRING::TUC)
+					id = "ToUpperCase";
+				else if (str == +NODE_STRING::REVERSE)
+					id = "Reverse";
+				else if (str == +NODE_STRING::TOARRAY)
+					id = "ToArray";
+
+				if (ImGui::MenuItem(id))
+				{
+					CreateNode::open_string(NODE_KIND::STRING, str);
 					ImGui::CloseCurrentPopup();
 				}
 			}

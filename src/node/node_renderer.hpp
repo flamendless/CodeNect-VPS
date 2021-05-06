@@ -17,30 +17,32 @@
 #include "node/node_array_access.hpp"
 #include "node/node_get.hpp"
 #include "node/node_size.hpp"
+#include "node/node_string.hpp"
 
 namespace CodeNect::NodeRenderer
 {
 void draw_node(Node* node);
 
-void draw_node_val(NodeValue* node_val);
-void draw_node_var(NodeVariable* node_var);
-void draw_node_op(NodeOperation* node_op);
-void draw_node_cast(NodeCast* node_cast);
-void draw_node_cmp(NodeComparison* node_cmp);
-void draw_node_branch(NodeBranch* node_branch);
-void draw_node_print(NodePrint* node_print);
-void draw_node_prompt(NodePrompt* node_prompt);
-void draw_node_array_access(NodeArrayAccess* node_arr_access);
-void draw_node_math(NodeMath* node_math);
-void draw_node_array(NodeArray* node_array);
-void draw_node_size(NodeSize* node_size);
+void draw_node_val(NodeValue*);
+void draw_node_var(NodeVariable*);
+void draw_node_op(NodeOperation*);
+void draw_node_cast(NodeCast*);
+void draw_node_cmp(NodeComparison*);
+void draw_node_branch(NodeBranch*);
+void draw_node_print(NodePrint*);
+void draw_node_prompt(NodePrompt*);
+void draw_node_array_access(NodeArrayAccess*);
+void draw_node_math(NodeMath*);
+void draw_node_array(NodeArray*);
+void draw_node_size(NodeSize*);
+void draw_node_string(NodeString*);
 
-void draw_connections(Node& node);
-void draw_connected_values(Node* node);
+void draw_connections(Node&);
+void draw_connected_values(Node*);
 
 void push_node_style(void);
 void pop_node_style(void);
-void push_node_color(Node* node);
+void push_node_color(Node*);
 void pop_node_color(void);
 }
 
