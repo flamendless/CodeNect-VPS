@@ -27,7 +27,6 @@ void process_op(void)
 		it++)
 	{
 		NodeOperation* node_op = dynamic_cast<NodeOperation*>(*it);
-
 		if (!node_op)
 			continue;
 
@@ -111,7 +110,11 @@ void process_op(void)
 
 		//make sure that there is a "resulting" var connected
 		if (res.slot_res == +NODE_SLOT::EMPTY)
+		{
+			Debugger::add_message(std::move("NodeOperation does not have any output connection"),
+					OUTPUT_TYPE::WARNING, node_op, DOC_ID::OP_REQ);
 			continue;
+		}
 
 		//here we are sure that they are of the same slot
 		// process the v_values and perform the operation

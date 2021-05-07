@@ -23,9 +23,11 @@ void process_array(void);
 bool index_within_array_bounds(NodeArray*, const int);
 void process_array_access(void);
 void process_size(void);
+void process_string(void);
 
 bool validate_node_print(Node* in_node, Node* out_node);
 bool validate_node_array(Node* in_node, Node* out_node);
+bool validate_node_string(Node* in_node, Node* out_node);
 
 struct BranchInfo
 {

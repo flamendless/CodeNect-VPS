@@ -10,7 +10,9 @@ struct NodeString : public Node
 {
 	NODE_KIND m_kind = NODE_KIND::STRING;
 	NODE_STRING m_string = NODE_STRING::EMPTY;
-	NodeValue* m_current_val = nullptr;
+
+	std::string m_from_str;
+	std::string m_current_str;
 
 	explicit NodeString(
 		NODE_STRING str,

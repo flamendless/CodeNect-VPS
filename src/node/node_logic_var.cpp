@@ -5,6 +5,9 @@
 #include "node/node_cast.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
+#include "node/node_string.hpp"
+#include "node/node_print.hpp"
+#include "node/node_prompt.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -38,6 +41,9 @@ void process_var(void)
 			NodeCast* out_node_cast = dynamic_cast<NodeCast*>(out_node);
 			NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
 			NodeSize* out_node_size = dynamic_cast<NodeSize*>(out_node);
+			NodeString* out_node_str = dynamic_cast<NodeString*>(out_node);
+			NodePrint* out_node_print = dynamic_cast<NodePrint*>(out_node);
+			NodePrompt* out_node_prompt = dynamic_cast<NodePrompt*>(out_node);
 
 			if (out_node_var)
 			{
@@ -55,9 +61,13 @@ void process_var(void)
 					node_var->m_value = *out_node_arr_access->m_current_val;
 			}
 			else if (out_node_size)
-			{
 				node_var->m_value.set((int)out_node_size->m_size);
-			}
+			else if (out_node_str)
+				node_var->m_value.set((std::string)out_node_str->m_current_str);
+			else if (out_node_print)
+				node_var->m_value.set((std::string)out_node_print->m_str);
+			else if (out_node_prompt)
+				node_var->m_value.set((std::string)out_node_prompt->m_str);
 		}
 	}
 }

@@ -430,6 +430,20 @@ void draw_node_size(NodeSize* node_size)
 
 void draw_node_string(NodeString* node_str)
 {
+	if (ImGui::BeginTable("TableNode##NodeString", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Source:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Result:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+
+		ImGui::TableNextColumn();
+		ImGui::Text("%s", node_str->m_from_str.c_str());
+		ImGui::Text("%s", node_str->m_current_str.c_str());
+		ImGui::Text("%s", node_str->m_desc);
+		ImGui::EndTable();
+	}
 }
 
 void draw_connections(Node& node)
@@ -446,6 +460,7 @@ void draw_connections(Node& node)
 		bool can_add = true;
 		can_add &= NodeLogic::validate_node_print(in_node, out_node);
 		can_add &= NodeLogic::validate_node_array(in_node, out_node);
+		can_add &= NodeLogic::validate_node_string(in_node, out_node);
 
 		if (can_add)
 		{

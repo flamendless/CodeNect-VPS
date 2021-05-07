@@ -171,6 +171,7 @@ void process(void)
 	NodeLogic::process_branch();
 	NodeLogic::process_print();
 	NodeLogic::process_prompt();
+	NodeLogic::process_string();
 
 	NodeLogic::validate_branches();
 #if TEST
