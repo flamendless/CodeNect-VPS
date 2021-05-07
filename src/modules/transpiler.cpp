@@ -43,7 +43,10 @@ bool Transpiler::has_compiled = false;
 std::string Transpiler::recent_temp = "";
 
 bool has_warning_added = false;
-std::string ignored_warning = "warning: assignment discards qualifiers from pointer target type";
+std::array<std::string, 2> ignored_warnings = {
+	"warning: assignment discards qualifiers from pointer target type",
+	"warning: assignment from incompatible pointer type",
+};
 
 void Transpiler::handle_error(void* opaque, const char* msg)
 {
@@ -51,12 +54,18 @@ void Transpiler::handle_error(void* opaque, const char* msg)
 	std::string str_msg = msg;
 
 	//check if it's warning or error
-	std::string::size_type pos = str_msg.find("warning");
-	std::string::size_type pos2 = str_msg.find(ignored_warning);
-	if (pos != std::string::npos)
+	if (str_msg.find("warning") != std::string::npos)
 		out_type = OUTPUT_TYPE::WARNING;
-	if (pos2 != std::string::npos)
-		return;
+
+	//check for ignored messages
+	for (std::string& str : ignored_warnings)
+	{
+		if (str_msg.find(str) != std::string::npos)
+		{
+			PLOGW << "ignored warning: " << msg;
+			return;
+		}
+	}
 
 	Transpiler::add_message(std::move(msg), out_type);
 	if (!has_warning_added)

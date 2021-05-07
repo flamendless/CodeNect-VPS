@@ -27,7 +27,7 @@ std::string ntc_var(NodeVariable*);
 std::string ntc_cast(NodeCast*, bool, std::string&);
 std::string ntc_array(NodeArray*);
 std::string ntc_array_decls(NodeArray*);
-std::string ntc_print(NodePrint*);
+std::string ntc_print(NodePrint*, bool = false);
 std::string ntc_prompt(NodePrompt*);
 std::string ntc_op(NodeOperation*, bool, std::string&);
 std::string ntc_math(NodeMath*, bool, std::string&);

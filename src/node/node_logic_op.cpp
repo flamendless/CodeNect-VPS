@@ -8,6 +8,7 @@
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
 #include "node/node_colors.hpp"
+#include "node/node_string.hpp"
 #include "modules/debugger.hpp"
 
 namespace CodeNect::NodeLogic
@@ -16,7 +17,7 @@ struct Result
 {
 	std::vector<NodeValue*> v_values;
 	NodeOperation* node_op;
-	std::variant<NodeVariable*, NodeMath*, NodeArray*> node_res;
+	std::variant<NodeVariable*, NodeMath*, NodeArray*, NodeString*> node_res;
 	NODE_SLOT slot_res = NODE_SLOT::EMPTY;
 };
 
@@ -50,6 +51,7 @@ void process_op(void)
 			NodeVariable* in_node_var = dynamic_cast<NodeVariable*>(in_node);
 			NodeMath* in_node_math = dynamic_cast<NodeMath*>(in_node);
 			NodeArray* in_node_array = dynamic_cast<NodeArray*>(in_node);
+			NodeString* in_node_str = dynamic_cast<NodeString*>(in_node);
 
 			if (in_node_var)
 			{
@@ -66,6 +68,12 @@ void process_op(void)
 			else if (in_node_array)
 			{
 				res.node_res = in_node_array;
+				res.slot_res = NODE_SLOT::_from_string(node_op->m_in_slots[0].title);
+				break;
+			}
+			else if (in_node_str)
+			{
+				res.node_res = in_node_str;
 				res.slot_res = NODE_SLOT::_from_string(node_op->m_in_slots[0].title);
 				break;
 			}

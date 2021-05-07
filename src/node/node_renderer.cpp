@@ -11,6 +11,9 @@ namespace CodeNect::NodeRenderer
 {
 void draw_node(Node* node)
 {
+#if DEBUG_MODE
+	ImGui::Text("(%s)", node->m_name);
+#endif
 	switch(node->m_kind)
 	{
 		case NODE_KIND::EMPTY: break;

@@ -230,7 +230,7 @@ std::string ntc_var(NodeVariable* node_var)
 			else if (out_node_prompt)
 				val = fmt::format("{:s}.buffer", out_node_prompt->m_name);
 			else if (out_node_print)
-				val = fmt::format("\"{:s}\"", out_node_print->m_orig_str);
+				val = NodeToCode::ntc_print(out_node_print, true);
 			else if (out_node_cast)
 				val = NodeToCode::ntc_cast(out_node_cast, true, str);
 			else if (out_node_op)
@@ -244,7 +244,13 @@ std::string ntc_var(NodeVariable* node_var)
 			else if (out_node_arr_access)
 				val = NodeToCode::ntc_array_access(out_node_arr_access, true, str);
 			else if (out_node_str)
-				val = NodeToCode::ntc_string(out_node_str, true, str);
+			{
+				bool found = Transpiler::m_declared.find(out_node_str->m_name) != Transpiler::m_declared.end();
+				if (found)
+					val = out_node_str->m_name;
+				else
+					val = NodeToCode::ntc_string(out_node_str, true, str);
+			}
 		}
 	}
 
@@ -421,19 +427,20 @@ std::string ntc_string(NodeString* node_str, bool val_only, std::string& pre)
 
 		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
 		NodeString* node_str2 = dynamic_cast<NodeString*>(out_node);
-		NodePrint* node_print = dynamic_cast<NodePrint*>(out_node);
 		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
 		NodeCast* node_cast = dynamic_cast<NodeCast*>(out_node);
+		NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
+
 		if (node_var)
 			ref_name = node_var->m_name;
 		else if (node_str2)
 			ref_name = node_str2->m_name;
-		else if (node_print)
-			ref_name = node_print->m_name;
 		else if (node_prompt)
 			ref_name = fmt::format("{:s}.buffer", node_prompt->m_name);
 		else if (node_cast)
 			ref_name = NodeToCode::ntc_cast(node_cast, true, str);
+		else if (node_op)
+			ref_name = NodeToCode::ntc_op(node_op, true, str);
 	}
 
 	std::string method_name;
@@ -848,7 +855,7 @@ std::string ntc_array_access(NodeArrayAccess* node_array_access, bool val_only, 
 	return str;
 }
 
-std::string ntc_print(NodePrint* node_print)
+std::string ntc_print(NodePrint* node_print, bool val_only)
 {
 	PLOGD << "Transpiling: " << node_print->m_name;
 	std::string str = "";
@@ -938,8 +945,13 @@ std::string ntc_print(NodePrint* node_print)
 	if (node_print->m_append_newline)
 		newline = "\\n";
 
-	std::string print = fmt::format("printf(\"{:s}{:s}\", {:s});", spec, newline, value);
-	str.append(indent()).append(print).append("\n");
+	if (val_only)
+		str = value;
+	else
+	{
+		std::string print = fmt::format("printf(\"{:s}{:s}\", {:s});", spec, newline, value);
+		str.append(indent()).append(print).append("\n");
+	}
 
 	return str;
 }

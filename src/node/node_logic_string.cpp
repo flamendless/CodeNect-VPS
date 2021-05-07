@@ -5,6 +5,7 @@
 #include "node/node_var.hpp"
 #include "node/node_prompt.hpp"
 #include "node/node_print.hpp"
+#include "node/node_op.hpp"
 #include "node/node_cast.hpp"
 #include "node/node_colors.hpp"
 
@@ -32,16 +33,19 @@ void process_string(void)
 
 			NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
 			NodeString* node_str2 = dynamic_cast<NodeString*>(out_node);
-			NodePrint* node_print = dynamic_cast<NodePrint*>(out_node);
 			NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
 			NodeCast* node_cast = dynamic_cast<NodeCast*>(out_node);
+			NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
 
 			if (node_var)
 				node_str->m_from_str = std::get<std::string>(node_var->m_value.data);
 			else if (node_str2)
 				node_str->m_from_str = node_str2->m_current_str;
-			else if (node_print)
-				node_str->m_from_str = node_print->m_str;
+			else if (node_op)
+			{
+				if (node_op->m_current_val)
+					node_str->m_from_str = std::get<std::string>(node_op->m_current_val->data);
+			}
 			else if (node_prompt)
 			{
 				node_str->m_from_str = node_prompt->m_str;
@@ -107,8 +111,9 @@ bool validate_node_string(Node* in_node, Node* out_node)
 {
 	NodeString* node_str = dynamic_cast<NodeString*>(in_node);
 	NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
+	NodePrint* node_print = dynamic_cast<NodePrint*>(out_node);
 
-	if (node_str && node_array)
+	if (node_str && (node_array || node_print))
 		return false;
 
 	return true;
