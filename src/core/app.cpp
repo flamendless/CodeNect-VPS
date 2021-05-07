@@ -90,7 +90,7 @@ int App::init_app(void)
 void App::init_window(void)
 {
 	App::window = glfwCreateWindow(CodeNect::Config::win_width, CodeNect::Config::win_height,
-		CodeNect::Config::app_title.c_str(), NULL, NULL);
+		"CodeNect", NULL, NULL);
 
 	glfwSetWindowCloseCallback(App::window, glfw_close_callback);
 	glfwSetKeyCallback(App::window, Input::key_callback);

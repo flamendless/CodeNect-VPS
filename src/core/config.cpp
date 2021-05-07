@@ -6,7 +6,6 @@
 namespace CodeNect
 {
 //General
-std::string Config::app_title;
 int Config::win_width;
 int Config::win_height;
 int Config::vsync;
@@ -72,7 +71,10 @@ int Config::init(void)
 	Config::init_node_interface();
 	Config::init_inspector();
 
-	PLOGI << "Config loaded";
+	PLOGI << "Config loaded:";
+	PLOGI << "\tVersion" << Config::version;
+	PLOGI << "\tWindow width: " << Config::win_width;
+	PLOGI << "\tWindow height: " << Config::win_height;
 
 	return RES_SUCCESS;
 }
@@ -136,8 +138,7 @@ void Config::set_style(int idx)
 void Config::init_general(void)
 {
 	Config::version = ini.GetValue("general", "version", "???");
-	Config::app_title = ini.GetValue("general", "title", "CodeNect");
-	Config::win_width = std::stoi(ini.GetValue("general", "width", "1024"));
+	Config::win_width = std::stoi(ini.GetValue("general", "width", "1280"));
 	Config::win_height = std::stoi(ini.GetValue("general", "height", "720"));
 	Config::vsync = std::stoi(ini.GetValue("general", "vsync", "1"));
 
