@@ -17,7 +17,9 @@ inline static const char* incl_stdlib = "//for assert for checking array out of 
 inline static const char* incl_math = "//for using math functions like sin, cos, tan, pow, and more\n"
 	"#include <math.h>\n";
 inline static const char* incl_string = "//for using strcmp and other string-related functions\n"
-	"#include <string.h>\n";
+	"#include <string.h>\n"
+	"//for using tolower, toupper\n"
+	"#include <ctype.h>\n";
 inline static const char* incl_bool = "//C doesn't have native bool, so we implement our own\n"
 	"#define bool int\n"
 	"#define true 1\n"
@@ -27,6 +29,46 @@ inline static const char* s_incl_section = "//START OF INCLUDES SECTION\n";
 inline static const char* e_incl_section = "//END OF INCLUDES SECTION\n\n";
 inline static const char* s_structs_section = "//START OF STRUCTS SECTION\n";
 inline static const char* e_structs_section = "//END OF STRUCTS SECTION\n\n";
+
+inline static const char* string_methods = "//START OF STRING METHODS\n"
+	"char* string_to_lowercase(char* str)\n"
+	"{\n"
+	"  char* buffer = malloc(sizeof(char) * strlen(str));\n"
+	"  strcpy(buffer, str);\n"
+	"  for (int i = 0; i < strlen(buffer); i++)\n"
+	"  {\n"
+	"    buffer[i] = tolower(buffer[i]);\n"
+	"  }\n"
+	"  return buffer;\n"
+	"}\n"
+	"char* string_to_uppercase(char* str)\n"
+	"{\n"
+	"  char* buffer = malloc(sizeof(char) * strlen(str));\n"
+	"  strcpy(buffer, str);\n"
+	"  for (int i = 0; i < strlen(buffer); i++)\n"
+	"  {\n"
+	"    buffer[i] = toupper(buffer[i]);\n"
+	"  }\n"
+	"  return buffer;\n"
+	"}\n"
+	"char* reverse_string(char* str)\n"
+	"{\n"
+	"  char* buffer = malloc(sizeof(char) * strlen(str));\n"
+	"  strcpy(buffer, str);\n"
+	"  int start = 0;\n"
+	"  int end = strlen(buffer) - 1;\n"
+	"  char ch;\n"
+	"  while (start < end)\n"
+	"  {\n"
+	"    ch = buffer[start];\n"
+	"    buffer[start] = buffer[end];\n"
+	"    buffer[end] = ch;\n"
+	"    start++;\n"
+	"    end--;\n"
+	"  }\n"
+	"  return buffer;\n"
+	"}\n"
+	"//END OF STRING METHODS\n";
 
 inline static const char* struct_prompt = "//START OF PROMPT STRUCT\n"
 	"typedef struct Prompt\n"

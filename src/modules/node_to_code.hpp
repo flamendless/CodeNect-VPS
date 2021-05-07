@@ -12,6 +12,7 @@
 #include "node/node_size.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_branch.hpp"
+#include "node/node_string.hpp"
 
 namespace CodeNect::NodeToCode
 {
@@ -34,6 +35,7 @@ std::string ntc_cmp(NodeComparison*, bool, std::string&);
 std::string ntc_size(NodeSize*, bool, std::string&);
 std::string ntc_array_access(NodeArrayAccess*, bool, std::string&);
 std::string ntc_branch(NodeBranch*, bool);
+std::string ntc_string(NodeString*, bool, std::string&);
 }
 
 #endif //_NODE_TO_CODE_HPP

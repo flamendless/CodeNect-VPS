@@ -42,19 +42,37 @@ bool Transpiler::has_ran = false;
 bool Transpiler::has_compiled = false;
 std::string Transpiler::recent_temp = "";
 
+bool has_warning_added = false;
+std::string ignored_warning = "warning: assignment discards qualifiers from pointer target type";
+
 void Transpiler::handle_error(void* opaque, const char* msg)
 {
-	Transpiler::add_message(std::move(msg), OUTPUT_TYPE::ERROR);
-	Transpiler::add_message(std::move("You can see error markers in the code tab"), OUTPUT_TYPE::ERROR);
+	OUTPUT_TYPE out_type = OUTPUT_TYPE::NORMAL;
+	std::string str_msg = msg;
+
+	//check if it's warning or error
+	std::string::size_type pos = str_msg.find("warning");
+	std::string::size_type pos2 = str_msg.find(ignored_warning);
+	if (pos != std::string::npos)
+		out_type = OUTPUT_TYPE::WARNING;
+	if (pos2 != std::string::npos)
+		return;
+
+	Transpiler::add_message(std::move(msg), out_type);
+	if (!has_warning_added)
+	{
+		Transpiler::add_message(std::move("You can see error markers in the code tab"), out_type);
+		has_warning_added = true;
+	}
 
 	//get the line number (not perfect)
-	std::string str_msg = msg;
 	int i = 0;
 	for (i = 0; i < str_msg.length(); i++)
 	{
 		if (isdigit(str_msg[i]))
 			break;
 	}
+
 	str_msg = str_msg.substr(i, str_msg.length() - i);
 	int ln = std::atoi(str_msg.c_str());
 	TextEditor::ErrorMarkers markers;
@@ -174,6 +192,7 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs, 
 	bool has_f_a_double = false;
 	bool has_f_a_str = false;
 	bool has_prompt = false;
+	bool has_string = false;
 
 	if (is_tcc)
 		str_incl.append(Templates::incl_tcc).append("\n");
@@ -189,6 +208,7 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs, 
 		NodeMath* node_math = dynamic_cast<NodeMath*>(*it);
 		NodeArray* node_array = dynamic_cast<NodeArray*>(*it);
 		NodeCast* node_cast = dynamic_cast<NodeCast*>(*it);
+		NodeString* node_str = dynamic_cast<NodeString*>(*it);
 
 		if (!has_io && (node_print || node_prompt) && !is_tcc)
 		{
@@ -220,6 +240,13 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs, 
 		{
 			str_incl.append(Templates::incl_math);
 			has_math = true;
+			continue;
+		}
+
+		if (!has_string && node_str)
+		{
+			str_structs.append(Templates::string_methods);
+			has_string = true;
 			continue;
 		}
 
@@ -564,6 +591,15 @@ Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output, State* c
 					return node_branch;
 				break;
 			}
+
+			case NODE_KIND::STRING:
+			{
+				NodeString* node_str = static_cast<NodeString*>(node);
+				output.append(NodeToCode::comment(node));
+				output.append(NodeToCode::ntc_string(node_str, false, output));
+				output.append("\n");
+				break;
+			}
 		}
 		PLOGD << "transpiled: " << node->m_name;
 	}
@@ -713,29 +749,23 @@ std::vector<Node*> Transpiler::get_rest(State* current_state)
 
 void Transpiler::arrange_v(std::vector<Node*>& v)
 {
-	std::sort(v.begin(), v.end(),
-		[](Node* &a, Node* &b) -> bool
-		{
-			NodeArray* node_array_a = dynamic_cast<NodeArray*>(a);
-			if (!node_array_a)
-				return false;
+	std::vector<Node*> temp_v;
+	std::vector<Node*>::iterator it = v.begin();
+	while (it != v.end())
+	{
+		Node* node = *it;
+		NodeArray* node_array = dynamic_cast<NodeArray*>(node);
 
-			bool has_array_dep = false;
-			for (const Connection& connection : a->m_connections)
-			{
-				Node* out_node = static_cast<Node*>(connection.out_node);
-				if (out_node == a)
-					continue;
-				NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
-				if (node_array && node_array == b)
-				{
-					PLOGD << "swapped " << a->m_name << " with " << b->m_name;
-					has_array_dep = true;
-					break;
-				}
-			}
-			return !has_array_dep;
-		});
+		if (node_array)
+		{
+			temp_v.push_back(node_array);
+			it = v.erase(it);
+		}
+		else
+			++it;
+	}
+	for (Node* &node : temp_v)
+		v.push_back(node);
 }
 
 void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
@@ -1048,6 +1078,7 @@ int Transpiler::run(void)
 
 void Transpiler::clear(void)
 {
+	has_warning_added = false;
 	Transpiler::v_output.clear();
 	Transpiler::v_declarations.clear();
 	Transpiler::m_temp_names.clear();

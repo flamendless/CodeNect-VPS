@@ -378,6 +378,23 @@ void draw_node_array(NodeArray* node_array)
 			str.append("\n");
 		i++;
 	}
+
+	i = 0;
+	for (std::vector<NodeValue*>::iterator it = node_array->m_from_string.begin();
+		it != node_array->m_from_string.end();
+		it++)
+	{
+		NodeValue* val = *it;
+		if (i == 0 && size_a != 0)
+			str.append(", ");
+		str.append(val->get_value_str_ex());
+		if (i < node_array->m_from_string.size() - 1)
+			str.append(", ");
+		if (i != 0 && i % 6 == 0)
+			str.append("\n");
+		i++;
+	}
+
 	str.append("]");
 	ImGui::TextColored(Config::NodeInterface_c::label_color, "Elements:");
 	ImGui::BulletText("%s", str.c_str());

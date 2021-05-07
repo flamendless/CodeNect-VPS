@@ -223,6 +223,7 @@ std::string ntc_var(NodeVariable* node_var)
 			NodeComparison* out_node_cmp = dynamic_cast<NodeComparison*>(out_node);
 			NodeSize* out_node_size = dynamic_cast<NodeSize*>(out_node);
 			NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
+			NodeString* out_node_str = dynamic_cast<NodeString*>(out_node);
 
 			if (out_node_var)
 				val = out_node_var->m_name;
@@ -242,6 +243,8 @@ std::string ntc_var(NodeVariable* node_var)
 				val = NodeToCode::ntc_size(out_node_size, true, str);
 			else if (out_node_arr_access)
 				val = NodeToCode::ntc_array_access(out_node_arr_access, true, str);
+			else if (out_node_str)
+				val = NodeToCode::ntc_string(out_node_str, true, str);
 		}
 	}
 
@@ -403,6 +406,72 @@ std::string ntc_math(NodeMath* node_math, bool val_only, std::string& pre)
 	return str;
 }
 
+std::string ntc_string(NodeString* node_str, bool val_only, std::string& pre)
+{
+	PLOGD << "Transpiling: " << node_str->m_name << ", str: " << node_str->m_string._to_string();
+	std::string str = "";
+	std::string ref_name = "";
+
+	//get the LHS
+	for (const Connection& connection : node_str->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node == node_str)
+			continue;
+
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+		NodeString* node_str2 = dynamic_cast<NodeString*>(out_node);
+		NodePrint* node_print = dynamic_cast<NodePrint*>(out_node);
+		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
+		NodeCast* node_cast = dynamic_cast<NodeCast*>(out_node);
+		if (node_var)
+			ref_name = node_var->m_name;
+		else if (node_str2)
+			ref_name = node_str2->m_name;
+		else if (node_print)
+			ref_name = node_print->m_name;
+		else if (node_prompt)
+			ref_name = fmt::format("{:s}.buffer", node_prompt->m_name);
+		else if (node_cast)
+			ref_name = NodeToCode::ntc_cast(node_cast, true, str);
+	}
+
+	std::string method_name;
+
+	switch (node_str->m_string)
+	{
+		case NODE_STRING::EMPTY: break;
+		case NODE_STRING::TLC:
+		{
+			method_name = "string_to_lowercase";
+			break;
+		}
+		case NODE_STRING::TUC:
+		{
+			method_name = "string_to_uppercase";
+			break;
+		}
+		case NODE_STRING::REVERSE:
+		{
+			method_name = "reverse_string";
+			break;
+		}
+	}
+
+	if (val_only)
+	{
+		std::string rhs = fmt::format("{:s}({:s});", method_name, ref_name);
+		str.append(rhs);
+	}
+	else
+	{
+		std::string rhs = fmt::format("char* {:s} = {:s}({:s});", node_str->m_name, method_name, ref_name);
+		str.append(indent()).append(rhs);
+	}
+
+	return str;
+}
+
 std::string ntc_cmp(NodeComparison* node_cmp, bool val_only, std::string& pre)
 {
 	PLOGD << "Transpiling: " << node_cmp->m_name << ", val_only: " << val_only;
@@ -456,6 +525,8 @@ std::string ntc_op(NodeOperation* node_op, bool val_only, std::string& pre)
 	NODE_SLOT type = NODE_SLOT::_from_string(node_op->m_in_slots[0].title);
 	std::vector<std::string> v_elements;
 	bool string_concat = false;
+	if (type == +NODE_SLOT::STRING)
+		string_concat = true;
 
 	//get LHS
 	for (const Connection& connection : node_op->m_connections)
@@ -674,6 +745,7 @@ std::string ntc_array(NodeArray* node_array)
 		NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
 		NodeArray* out_node_array = dynamic_cast<NodeArray*>(out_node);
 		NodeCast* out_node_cast = dynamic_cast<NodeCast*>(out_node);
+		NodeString* out_node_str = dynamic_cast<NodeString*>(out_node);
 
 		if (out_node_var)
 		{
@@ -699,6 +771,23 @@ std::string ntc_array(NodeArray* node_array)
 			if (pre.length() != 0)
 				str.append(indent()).append(c).append("\n");
 			str.append(indent()).append(ins).append("\n");
+		}
+		else if (out_node_str)
+		{
+			if (out_node_str->m_string == +NODE_STRING::TOARRAY)
+			{
+				const int size = out_node_str->m_from_str.length() - 1;
+				std::string str_size = std::to_string(size);
+				std::string ins = fmt::format("{:s}(&{:s}, {:s}, {:s});",
+						insert_array, name, out_node_str->m_name, str_size);
+				str.append(indent()).append(ins).append("\n");
+			}
+			else
+			{
+				std::string ins = fmt::format("{:s}(&{:s}, {:s});",
+						insert_var, name, out_node_str->m_name);
+				str.append(indent()).append(ins).append("\n");
+			}
 		}
 	}
 

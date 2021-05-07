@@ -6,6 +6,7 @@
 #include "node/node_op.hpp"
 #include "node/node_array.hpp"
 #include "node/node_array_access.hpp"
+#include "node/node_string.hpp"
 #include "node/node_colors.hpp"
 
 namespace CodeNect::NodeLogic
@@ -21,6 +22,16 @@ void process_array(void)
 		if (!node_array)
 			continue;
 
+		if (node_array->m_from_string.size() != 0)
+		{
+			for (std::vector<NodeValue*>::iterator it = node_array->m_from_string.begin();
+				it != node_array->m_from_string.end();
+				it++)
+			{
+				delete *it;
+			}
+			node_array->m_from_string.clear();
+		}
 		node_array->m_other_elements.clear();
 		const int size_a = node_array->m_elements.size();
 		const int size_b = node_array->m_other_elements.size();
@@ -34,6 +45,7 @@ void process_array(void)
 			NodeMath* out_node_math = dynamic_cast<NodeMath*>(out_node);
 			NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
 			NodeArray* out_node_array = dynamic_cast<NodeArray*>(out_node); //"from" array
+			NodeString* out_node_str = dynamic_cast<NodeString*>(out_node);
 
 			if (out_node_var)
 			{
@@ -75,6 +87,21 @@ void process_array(void)
 						continue;
 					}
 					node_array->m_other_elements.push_back(out_node_arr_access->m_current_val);
+				}
+			}
+			else if (out_node_str)
+			{
+				for (char& ch : out_node_str->m_from_str)
+				{
+					if (node_array->m_array == +NODE_ARRAY::FIXED && !can_add)
+					{
+						NodeColors::set_connection_color(connection, COLOR_TYPE::FAIL);
+						break;
+					}
+					std::string str_ch(1, ch);
+					NodeValue* val = new NodeValue();
+					val->set((std::string)str_ch);
+					node_array->m_from_string.push_back(val);
 				}
 			}
 			else if (out_node_array && out_node_array != node_array)
