@@ -28,6 +28,7 @@ struct CreateNode
 	static NODE_DS ds;
 	static NODE_GET get;
 	static NODE_STRING str;
+	static NODE_LOOP loop;
 
 	static Node* node_to_edit;
 	static bool can_create;
@@ -36,8 +37,8 @@ struct CreateNode
 			TempCastData*, TempComparisonData*,
 			TempBranchData*, TempActionData*,
 			TempMathData*, TempArrayData*,
-			TempGetData*, TempEntryData*,
-			TempStringData*
+			TempGetData*, TempStringData*,
+			TempLoopData*
 		>data;
 	static char buf_desc[BUF_SIZE * 2];
 
@@ -48,6 +49,7 @@ struct CreateNode
 	static void open_ds(NODE_KIND, NODE_DS);
 	static void open_get(NODE_KIND, NODE_GET);
 	static void open_string(NODE_KIND, NODE_STRING);
+	static void open_loop(NODE_KIND, NODE_LOOP);
 	static void edit(Node* node);
 	static void close(void);
 
@@ -64,6 +66,7 @@ struct CreateNode
 	static void create_node_array_access(void);
 	static void create_node_size(void);
 	static void create_node_string(void);
+	static void create_node_for(void);
 
 	static void draw(void);
 	static void draw_desc(void);
@@ -107,6 +110,9 @@ struct CreateNode
 	static void draw_array_access(void);
 	//NodeSize
 	static void draw_size(void);
+
+	//Loop
+	static void draw_for(void);
 };
 }
 

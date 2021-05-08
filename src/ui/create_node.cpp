@@ -15,6 +15,8 @@
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
 #include "node/node_string.hpp"
+#include "node/node_loop.hpp"
+#include "node/node_for.hpp"
 #include "ui/alert.hpp"
 
 namespace CodeNect
@@ -36,6 +38,7 @@ NODE_MATH CreateNode::math = NODE_MATH::EMPTY;
 NODE_DS CreateNode::ds = NODE_DS::EMPTY;
 NODE_GET CreateNode::get = NODE_GET::EMPTY;
 NODE_STRING CreateNode::str = NODE_STRING::EMPTY;
+NODE_LOOP CreateNode::loop = NODE_LOOP::EMPTY;
 Node* CreateNode::node_to_edit;
 bool CreateNode::can_create = false;
 std::variant<
@@ -43,8 +46,8 @@ std::variant<
 		TempCastData*, TempComparisonData*,
 		TempBranchData*, TempActionData*,
 		TempMathData*, TempArrayData*,
-		TempGetData*, TempEntryData*,
-		TempStringData*
+		TempGetData*, TempStringData*,
+		TempLoopData*
 	>CreateNode::data;
 char CreateNode::buf_desc[BUF_SIZE * 2] = "";
 
@@ -71,6 +74,7 @@ void CreateNode::open(NODE_KIND kind)
 		}
 		case NODE_KIND::GET: CreateNode::data = new TempGetData(); break;
 		case NODE_KIND::STRING: CreateNode::data = new TempStringData(); CreateNode::can_create = true; break;
+		case NODE_KIND::LOOP: CreateNode::data = new TempLoopData(); break;
 	}
 
 	CreateNode::buf_desc[0] = '\0';
@@ -106,6 +110,12 @@ void CreateNode::open_get(NODE_KIND kind, NODE_GET get)
 void CreateNode::open_string(NODE_KIND kind, NODE_STRING str)
 {
 	CreateNode::str = str;
+	CreateNode::open(kind);
+}
+
+void CreateNode::open_loop(NODE_KIND kind, NODE_LOOP loop)
+{
+	CreateNode::loop = loop;
 	CreateNode::open(kind);
 }
 
@@ -290,6 +300,28 @@ void CreateNode::edit(Node* node)
 			CreateNode::data = temp;
 			break;
 		}
+		case NODE_KIND::LOOP:
+		{
+			TempLoopData* temp = new TempLoopData();
+			NodeLoop* node_loop = static_cast<NodeLoop*>(node);
+			switch (node_loop->m_loop)
+			{
+				case NODE_LOOP::EMPTY: break;
+				case NODE_LOOP::FOR:
+				{
+					NodeFor* node_for = static_cast<NodeFor*>(node);
+					temp->start_index = node_for->m_start_index;
+					temp->end_index = node_for->m_end_index;
+					temp->increment = node_for->m_increment;
+					std::strcpy(temp->buf_iterator_name, node_for->m_iterator_name.c_str());
+					temp->cmp = node_for->m_cmp;
+					CreateNode::loop = node_for->m_loop;
+					break;
+				}
+			}
+			CreateNode::data = temp;
+			break;
+		}
 	}
 
 	std::strcpy(CreateNode::buf_desc, node->m_desc);
@@ -378,6 +410,15 @@ void CreateNode::draw(void)
 				break;
 			}
 			case NODE_KIND::STRING: break;
+			case NODE_KIND::LOOP:
+			{
+				switch (CreateNode::loop)
+				{
+					case NODE_LOOP::EMPTY: break;
+					case NODE_LOOP::FOR: CreateNode::draw_for(); break;
+				}
+				break;
+			}
 		}
 
 		CreateNode::draw_desc();
@@ -446,6 +487,15 @@ void CreateNode::draw_buttons(void)
 					break;
 				}
 				case NODE_KIND::STRING: CreateNode::create_node_string(); break;
+				case NODE_KIND::LOOP:
+				{
+					switch (CreateNode::loop)
+					{
+						case NODE_LOOP::EMPTY: break;
+						case NODE_LOOP::FOR: CreateNode::create_node_for(); break;
+					}
+					break;
+				}
 			}
 
 			CreateNode::close();

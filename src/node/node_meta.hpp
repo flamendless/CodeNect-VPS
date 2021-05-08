@@ -56,6 +56,14 @@ struct NodeMeta
 	//NodeString
 	std::string m_string;
 
+	//NodeLoop
+	std::string m_loop;
+	std::string m_start_index;
+	std::string m_end_index;
+	std::string m_increment;
+	std::string m_iterator_name;
+	std::string m_loop_cmp;
+
 	inline NodeMeta() {}
 };
 

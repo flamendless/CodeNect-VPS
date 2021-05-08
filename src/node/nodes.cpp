@@ -16,6 +16,8 @@
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
 #include "node/node_string.hpp"
+#include "node/node_loop.hpp"
+#include "node/node_for.hpp"
 
 namespace CodeNect
 {
@@ -102,6 +104,12 @@ const char* Nodes::get_title(Node* node)
 				case NODE_STRING::TOARRAY: return m_names[node_str->m_string._to_string()]; break;
 				case NODE_STRING::REVERSE: return "REVERSE"; break;
 			}
+			break;
+		}
+		case NODE_KIND::LOOP:
+		{
+			NodeLoop* node_loop = static_cast<NodeLoop*>(node);
+			return node_loop->m_loop._to_string();
 			break;
 		}
 	}
@@ -358,6 +366,25 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 				Nodes::v_nodes.push_back(node_str);
 				break;
 			}
+			case NODE_KIND::LOOP:
+			{
+				NODE_LOOP loop = NODE_LOOP::_from_string(nm->m_loop.c_str());
+				NODE_CMP cmp = NODE_CMP::_from_string(nm->m_loop_cmp.c_str());
+				v_slot_info_t&& in = {};
+				v_slot_info_t&& out = {};
+				Nodes::build_slots(*nm, in, out);
+
+				if (loop == +NODE_LOOP::FOR)
+				{
+					NodeFor* node_for = new NodeFor(cmp, std::move(in), std::move(out));
+					node_for->m_name = nm->m_name.c_str();
+					node_for->m_pos = ImVec2(nm->x, nm->y);
+					node_for->m_desc = nm->m_desc.c_str();
+					Nodes::v_nodes.push_back(node_for);
+				}
+				break;
+			}
+
 			default:
 			{
 #if DEBUG_MODE

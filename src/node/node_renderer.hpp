@@ -18,6 +18,8 @@
 #include "node/node_get.hpp"
 #include "node/node_size.hpp"
 #include "node/node_string.hpp"
+#include "node/node_loop.hpp"
+#include "node/node_for.hpp"
 
 namespace CodeNect::NodeRenderer
 {
@@ -36,6 +38,7 @@ void draw_node_math(NodeMath*);
 void draw_node_array(NodeArray*);
 void draw_node_size(NodeSize*);
 void draw_node_string(NodeString*);
+void draw_node_for(NodeFor*);
 
 void draw_connections(Node&);
 void draw_connected_values(Node*);

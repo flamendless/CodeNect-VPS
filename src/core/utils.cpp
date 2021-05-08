@@ -148,4 +148,21 @@ void string_to_name(std::string& str)
 			return std::tolower(c);
 		});
 }
+
+const char* cmp_to_op_str(NODE_CMP& cmp)
+{
+	switch (cmp)
+	{
+		case NODE_CMP::EMPTY: break;
+		case NODE_CMP::EQ: return "=="; break;
+		case NODE_CMP::NEQ: return "!="; break;
+		case NODE_CMP::LT: return "<"; break;
+		case NODE_CMP::GT: return ">"; break;
+		case NODE_CMP::LTE: return "<="; break;
+		case NODE_CMP::GTE: return ">="; break;
+		case NODE_CMP::OR: return "||"; break;
+		case NODE_CMP::AND: return "&&"; break;
+	}
+	return "";
+}
 }

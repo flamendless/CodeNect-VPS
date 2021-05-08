@@ -24,6 +24,8 @@
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
 #include "node/node_string.hpp"
+#include "node/node_loop.hpp"
+#include "node/node_for.hpp"
 #include "modules/transpiler.hpp"
 
 namespace CodeNect
@@ -279,7 +281,7 @@ int Project::save(void)
 			}
 			case NODE_KIND::GET:
 			{
-				NodeGet* node_get = dynamic_cast<NodeGet*>(node);
+				NodeGet* node_get = static_cast<NodeGet*>(node);
 				NodeArrayAccess* node_arr_access = dynamic_cast<NodeArrayAccess*>(node);
 				NodeSize* node_size = dynamic_cast<NodeSize*>(node);
 				ini.SetValue(section, "get", node_get->m_get._to_string());
@@ -292,8 +294,23 @@ int Project::save(void)
 			}
 			case NODE_KIND::STRING:
 			{
-				NodeString* node_str = dynamic_cast<NodeString*>(node);
+				NodeString* node_str = static_cast<NodeString*>(node);
 				ini.SetValue(section, "str", node_str->m_string._to_string());
+				break;
+			}
+			case NODE_KIND::LOOP:
+			{
+				NodeLoop* node_loop = static_cast<NodeLoop*>(node);
+				NodeFor* node_for = dynamic_cast<NodeFor*>(node);
+				ini.SetValue(section, "loop", node_loop->m_loop._to_string());
+				if (node_for)
+				{
+					ini.SetValue(section, "start_index", std::to_string(node_for->m_start_index).c_str());
+					ini.SetValue(section, "end_index", std::to_string(node_for->m_end_index).c_str());
+					ini.SetValue(section, "increment", std::to_string(node_for->m_increment).c_str());
+					ini.SetValue(section, "iterator_name", node_for->m_iterator_name.c_str());
+					ini.SetValue(section, "loop_cmp", node_for->m_cmp._to_string());
+				}
 				break;
 			}
 			default:
@@ -452,6 +469,7 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 	const char* ds = ini.GetValue(section, "ds", "EMPTY");
 	const char* get = ini.GetValue(section, "get", "EMPTY");
 	const char* str = ini.GetValue(section, "str", "EMPTY");
+	const char* loop = ini.GetValue(section, "loop", "EMPTY");
 
 	NodeMeta* nm = new NodeMeta();
 	nm->m_name = name;
@@ -501,6 +519,16 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 		nm->m_array = ini.GetValue(section, "array", "EMPTY");
 		nm->m_array_size = ini.GetValue(section, "array_size");
 		nm->m_array_slot = ini.GetValue(section, "array_slot", "EMPTY");
+	}
+
+	if (std::strcmp(loop, "FOR") == 0)
+	{
+		nm->m_loop = loop;
+		nm->m_start_index = ini.GetValue(section, "start_index", "0");
+		nm->m_end_index = ini.GetValue(section, "end_index", "0");
+		nm->m_increment = ini.GetValue(section, "increment", "0");
+		nm->m_iterator_name = ini.GetValue(section, "iterator_name", "i");
+		nm->m_loop_cmp = ini.GetValue(section, "loop_cmp", "EMPTY");
 	}
 
 	//get input/output slots

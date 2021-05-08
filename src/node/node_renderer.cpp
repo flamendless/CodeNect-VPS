@@ -106,6 +106,21 @@ void draw_node(Node* node)
 			NodeRenderer::draw_node_string(node_str);
 			break;
 		}
+		case NODE_KIND::LOOP:
+		{
+			NodeLoop* node_loop = static_cast<NodeLoop*>(node);
+			switch (node_loop->m_loop)
+			{
+				case NODE_LOOP::EMPTY: break;
+				case NODE_LOOP::FOR:
+				{
+					NodeFor* node_for = static_cast<NodeFor*>(node);
+					NodeRenderer::draw_node_for(node_for);
+					break;
+				}
+			}
+			break;
+		}
 
 		default:
 		{
@@ -462,6 +477,32 @@ void draw_node_string(NodeString* node_str)
 		ImGui::Text("%s", node_str->m_from_str.c_str());
 		ImGui::Text("%s", node_str->m_current_str.c_str());
 		ImGui::Text("%s", node_str->m_desc);
+		ImGui::EndTable();
+	}
+}
+
+void draw_node_for(NodeFor* node_for)
+{
+	if (ImGui::BeginTable("TableNode##NodeFor", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Iterator:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Start Index:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "End Index:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Increment:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Comparison:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Code:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+
+		ImGui::TableNextColumn();
+		ImGui::Text("%s", node_for->m_iterator_name.c_str());
+		ImGui::Text("%d", node_for->m_start_index);
+		ImGui::Text("%d", node_for->m_end_index);
+		ImGui::Text("%d", node_for->m_increment);
+		ImGui::Text("%s", node_for->m_cmp._to_string());
+		ImGui::Text("%s", node_for->m_code.c_str());
+		ImGui::Text("%s", node_for->m_desc);
 		ImGui::EndTable();
 	}
 }

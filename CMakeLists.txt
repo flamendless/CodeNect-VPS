@@ -34,6 +34,7 @@ add_executable(CodeNect
 	src/node/node_cast.cpp
 	src/node/node_cmp.cpp
 	src/node/node_colors.cpp
+	src/node/node_for.cpp
 	src/node/node_math.cpp
 	src/node/node_op.cpp
 	src/node/node_print.cpp
@@ -74,6 +75,7 @@ add_executable(CodeNect
 	src/ui/create_node_cmp.cpp
 	src/ui/create_node.cpp
 	src/ui/create_node_op.cpp
+	src/ui/create_node_for.cpp
 	src/ui/create_node_math.cpp
 	src/ui/create_node_print.cpp
 	src/ui/create_node_prompt.cpp

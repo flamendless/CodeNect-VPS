@@ -285,6 +285,7 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 					kind == +NODE_KIND::MATH ||
 					kind == +NODE_KIND::DS ||
 					kind == +NODE_KIND::STRING ||
+					kind == +NODE_KIND::LOOP ||
 					kind == +NODE_KIND::GET)
 					continue;
 
@@ -396,6 +397,25 @@ void NodeInterface::draw_context_menu(ImNodes::CanvasState& canvas)
 				if (ImGui::MenuItem(item.c_str()))
 				{
 					CreateNode::open_get(NODE_KIND::GET, get);
+					ImGui::CloseCurrentPopup();
+				}
+			}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Loop"))
+		{
+			for (NODE_LOOP loop : NODE_LOOP::_values())
+			{
+				if (loop == +NODE_LOOP::EMPTY)
+					continue;
+
+				std::string item = loop._to_string();
+				Utils::string_to_name(item);
+
+				if (ImGui::MenuItem(item.c_str()))
+				{
+					CreateNode::open_loop(NODE_KIND::LOOP, loop);
 					ImGui::CloseCurrentPopup();
 				}
 			}

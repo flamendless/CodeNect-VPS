@@ -103,10 +103,19 @@ struct TempStringData
 	bool valid_string = false;
 };
 
-struct TempEntryData
+struct TempLoopData
 {
-	NODE_SLOT slot_out = NODE_SLOT::EMPTY;
-	bool valid_entry = false;
+	//for loop
+	int start_index = 0;
+	int end_index = 0;
+	int increment = 0;
+	char buf_iterator_name[BUF_SIZE] = "i";
+	NODE_CMP cmp = NODE_CMP::EMPTY;
+	std::string str_cmp = "EMPTY";
+
+	//output
+
+	bool valid_loop = false;
 };
 }
 
