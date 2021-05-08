@@ -6,6 +6,8 @@
 #include "node/node_math.hpp"
 #include "node/node_array.hpp"
 #include "node/node_branch.hpp"
+#include "ui/alert.hpp"
+#include "ui/docs.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -28,6 +30,7 @@ void process_string(void);
 bool validate_node_print(Node* in_node, Node* out_node);
 bool validate_node_array(Node* in_node, Node* out_node);
 bool validate_node_string(Node* in_node, Node* out_node);
+bool validate_node_for(Node* in_node, Node* out_node);
 
 struct BranchInfo
 {

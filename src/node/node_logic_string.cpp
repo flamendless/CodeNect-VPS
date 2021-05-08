@@ -106,7 +106,6 @@ void process_string(void)
 	}
 }
 
-//NodeArray to NodeString is not allowed
 bool validate_node_string(Node* in_node, Node* out_node)
 {
 	NodeString* node_str = dynamic_cast<NodeString*>(in_node);
@@ -114,7 +113,10 @@ bool validate_node_string(Node* in_node, Node* out_node)
 	NodePrint* node_print = dynamic_cast<NodePrint*>(out_node);
 
 	if (node_str && (node_array || node_print))
+	{
+		Alert::open_for_docs("String/Print Node can't reference an array", DOC_ID::CANT_REF_ARRAY);
 		return false;
+	}
 
 	return true;
 }

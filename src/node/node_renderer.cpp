@@ -525,6 +525,7 @@ void draw_connections(Node& node)
 		can_add &= NodeLogic::validate_node_print(in_node, out_node);
 		can_add &= NodeLogic::validate_node_array(in_node, out_node);
 		can_add &= NodeLogic::validate_node_string(in_node, out_node);
+		can_add &= NodeLogic::validate_node_for(in_node, out_node);
 
 		if (can_add)
 		{

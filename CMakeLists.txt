@@ -52,6 +52,7 @@ add_executable(CodeNect
 	src/node/node_logic_cast.cpp
 	src/node/node_logic_cmp.cpp
 	src/node/node_logic.cpp
+	src/node/node_logic_for.cpp
 	src/node/node_logic_math.cpp
 	src/node/node_logic_op.cpp
 	src/node/node_logic_print.cpp

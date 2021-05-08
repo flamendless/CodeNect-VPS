@@ -16,7 +16,7 @@ struct Docs
 	static const char* title;
 
 	static std::vector<const char*> v_title;
-	static std::vector<std::string*> v_doc_id;
+	static std::vector<std::string> v_doc_id;
 
 	Docs() = delete;
 	static int init(void);
@@ -24,6 +24,7 @@ struct Docs
 	static void open(void);
 	static void open_doc_id(DOC_ID&);
 	static void draw(void);
+	static void draw_doc(void);
 };
 }
 

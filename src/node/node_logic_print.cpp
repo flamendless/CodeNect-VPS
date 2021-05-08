@@ -81,7 +81,10 @@ bool validate_node_print(Node* in_node, Node* out_node)
 	NodePrint* node_print = dynamic_cast<NodePrint*>(in_node);
 
 	if (node_array && node_print)
+	{
+		Alert::open_for_docs("Arrays can not be directly printed", DOC_ID::ARRAY_TO_PRINT);
 		return false;
+	}
 
 	return true;
 }

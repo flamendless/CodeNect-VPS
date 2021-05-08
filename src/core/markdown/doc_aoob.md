@@ -1,5 +1,4 @@
-u8R"====(# ARRAY OUT OF BOUNDS
-## EXPLANATION
+u8R"====(## EXPLANATION
 An *array out of bounds error* occur when the program is *accessing* a memory that
 is *out of the scope* of an array. An array is a data structure that contains
 multiple values *contiguously* that is, each element is next to each other in
@@ -10,13 +9,11 @@ exceeds the size of array leads into accessing other value in memory, and that
 is unwanted because of security issues and corruption.
 ## SAMPLE CODE
 Here is a *wrong* C code example:
-```
 //here we declare an array of integers that can store up to 5 elements
 int array[5];
 array[5] = 5; //index 6 exceeds the size of array which is 5, this results in error
-```
+***
 Here is a *correct* C code example:
-```
 //here we declare an array of integers that can store up to 5 elements
 int array[5];
 
@@ -26,7 +23,7 @@ array[1] = 1; //second element
 array[2] = 2; //third element
 array[3] = 3; //fourth element
 array[4] = 4; //fifth element
-```
+***
 ## ILLUSTRATION
 Think of array as a container for your lunch, even better think of it as
 Japanese bento. Each of the food in your lunch is arranged in a row and column.

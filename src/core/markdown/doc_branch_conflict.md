@@ -1,5 +1,4 @@
-u8R"====(# BRANCH CONFLICT
-## EXPLANATION
+u8R"====(## EXPLANATION
 Think of *Branch Node* as a *code block*. A code block is a block of code that
 has a separate stack in memory. Code blocks in C/C++, Java, and other programming
 languages are denoted by the combination of *curly braces {}*. All code that is inside
@@ -15,7 +14,6 @@ that variable in the 'else-statement' because the code block inside 'else-statem
 has no idea or memory of what is declared the 'if-statement'.
 ## SAMPLE CODE
 Here is a *wrong* C code example:
-```
 if (true)
 {
 	int a = 100;
@@ -25,9 +23,8 @@ else
 {
 	int c = a; //ERROR here because this code block does not know the variable 'a'
 }
-```
+***
 Here is a *correct* C code example:
-```
 int a = 0; //since 'a' is in the parent scope, both the if and else statements can access this
 if (true)
 {
@@ -41,7 +38,7 @@ else
 	//this is another code block
 	printf("value of a: %d\n", a); //we can access 'a'
 }
-```
+***
 ## ILLUSTRATION
 Think of a code block as a house. A house has many rooms (code block inside
 another code block). Each room can have different utens (variables). The scope

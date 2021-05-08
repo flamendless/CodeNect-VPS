@@ -13,6 +13,7 @@ ALERT_TYPE Alert::type;
 std::string Alert::message;
 bool Alert::is_open = false;
 bool Alert::has_cb = false;
+DOC_ID Alert::doc_id = DOC_ID::EMPTY;
 ImGuiWindowFlags Alert::flags =
 	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
 	ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
@@ -45,9 +46,18 @@ void Alert::open(ALERT_TYPE type, std::string msg)
 	Alert::is_open = true;
 }
 
+void Alert::open_for_docs(std::string msg, DOC_ID doc_id)
+{
+	Alert::type = ALERT_TYPE::WARNING;
+	Alert::message = msg;
+	Alert::is_open = true;
+	Alert::doc_id = doc_id;
+}
+
 void Alert::close(void)
 {
 	Alert::has_cb = false;
+	Alert::doc_id = DOC_ID::EMPTY;
 	Alert::fn_custom_draw = nullptr;
 	Alert::is_open = false;
 	ImGui::CloseCurrentPopup();
@@ -63,10 +73,12 @@ void Alert::draw(void)
 
 	if (ImGui::BeginPopupModal("AlertPopup", &is_open, flags))
 	{
-		if (type == ALERT_TYPE::SUCCESS)
-			ImGui::Text("%s SUCCESS!", ICON_FA_CHECK);
-		else if (type == ALERT_TYPE::ERROR)
-			ImGui::Text("%s ERROR!", ICON_FA_BUG);
+		switch (type)
+		{
+			case ALERT_TYPE::SUCCESS: ImGui::Text("%s SUCCESS!", ICON_FA_CHECK); break;
+			case ALERT_TYPE::ERROR: ImGui::Text("%s ERROR!", ICON_FA_BUG); break;
+			case ALERT_TYPE::WARNING: ImGui::Text("%s WARNING!", ICON_FA_EXCLAMATION_CIRCLE); break;
+		}
 
 		ImGui::Separator();
 		ImGui::Text("%s", Alert::message.c_str());
@@ -76,6 +88,16 @@ void Alert::draw(void)
 			Alert::fn_custom_draw();
 		else
 		{
+			if (Alert::doc_id != +DOC_ID::EMPTY)
+			{
+				if (ImGui::Button("Open in Docs for more info"))
+				{
+					Docs::open_doc_id(Alert::doc_id);
+					Alert::close();
+				}
+				ImGui::SameLine();
+			}
+
 			if (ImGui::Button(ICON_FA_TIMES " Close"))
 				Alert::close();
 		}

@@ -133,14 +133,16 @@ void process_array(void)
 	}
 }
 
-//node_array can't be directly connected to node_var
 bool validate_node_array(Node* in_node, Node* out_node)
 {
 	NodeArray* node_array = dynamic_cast<NodeArray*>(out_node);
 	NodeVariable* node_var = dynamic_cast<NodeVariable*>(in_node);
 
 	if (node_array && node_var)
+	{
+		Alert::open_for_docs("Variable Node can't be assigned an array", DOC_ID::CANT_REF_ARRAY);
 		return false;
+	}
 
 	return true;
 }

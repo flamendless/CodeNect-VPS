@@ -16,7 +16,6 @@ u8R"====(  * *Connection* - links the data between nodes
     * greater than or equals to (>=)
     * or (||)
     * and (&&)
-  * *Branch Node* - used for redirecting evaluation flow based on the boolean input. Same as an if-statement
   * *Action Node* - used for executing higher-level commands such as
     * printing text to screen
     * prompting for user input
@@ -26,6 +25,8 @@ u8R"====(  * *Connection* - links the data between nodes
     * sine
     * cosine
     * tangent
+  * *Branch Node* - used for redirecting evaluation flow based on the boolean input. Same as an if-statement
+  * *For Node* - used for repeating/iterating code multiple times. Same as a for-loop statement
   * *Data Structure Node* - used for creating data structure like array
   * *Get Node* - used for getting/accessing value like from array, size of array, and length of string
   * *Slots* - input or output ID used for connection of nodes. Only matching slot type can be connected
