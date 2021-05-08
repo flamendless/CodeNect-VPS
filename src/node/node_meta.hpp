@@ -63,6 +63,7 @@ struct NodeMeta
 	std::string m_increment;
 	std::string m_iterator_name;
 	std::string m_loop_cmp;
+	std::string m_loop_out;
 
 	inline NodeMeta() {}
 };

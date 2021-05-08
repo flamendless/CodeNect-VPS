@@ -370,16 +370,23 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 			{
 				NODE_LOOP loop = NODE_LOOP::_from_string(nm->m_loop.c_str());
 				NODE_CMP cmp = NODE_CMP::_from_string(nm->m_loop_cmp.c_str());
+				NODE_SLOT slot_out = NODE_SLOT::_from_string(nm->m_loop_out.c_str());
 				v_slot_info_t&& in = {};
 				v_slot_info_t&& out = {};
-				Nodes::build_slots(*nm, in, out);
 
 				if (loop == +NODE_LOOP::FOR)
 				{
 					NodeFor* node_for = new NodeFor(cmp, std::move(in), std::move(out));
+					node_for->m_cmp = cmp;
+					node_for->m_start_index = std::stoi(nm->m_start_index);
+					node_for->m_end_index = std::stoi(nm->m_end_index);
+					node_for->m_increment = std::stoi(nm->m_increment);
+					node_for->m_iterator_name = nm->m_iterator_name;
 					node_for->m_name = nm->m_name.c_str();
 					node_for->m_pos = ImVec2(nm->x, nm->y);
 					node_for->m_desc = nm->m_desc.c_str();
+					node_for->m_out_slots.push_back({slot_out._to_string(), slot_out});
+					node_for->create_str_code();
 					Nodes::v_nodes.push_back(node_for);
 				}
 				break;

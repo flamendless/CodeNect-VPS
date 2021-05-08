@@ -19,27 +19,20 @@ void CreateNode::create_node_for(void)
 		node_for->m_iterator_name = temp->buf_iterator_name;
 		node_for->m_cmp = temp->cmp;
 		node_for->m_desc = CreateNode::buf_desc;
+		node_for->m_out_slots[1] = {temp->slot_out._to_string(), temp->slot_out};
 		PLOGD << "Edited NodeFor: " << node_for->m_name;
 	}
 	else
 	{
 		v_slot_info_t&& in = {};
 		v_slot_info_t&& out = {};
-		NODE_SLOT in_slot_si = NODE_SLOT::INTEGER;
-		NODE_SLOT in_slot_ei = NODE_SLOT::INTEGER;
-		NODE_SLOT in_slot_inc = NODE_SLOT::INTEGER;
-		NODE_SLOT out_slot_it = NODE_SLOT::INTEGER;
-
-		in.push_back({in_slot_si._to_string(), in_slot_si});
-		in.push_back({in_slot_ei._to_string(), in_slot_ei});
-		in.push_back({in_slot_inc._to_string(), in_slot_inc});
-		out.push_back({out_slot_it._to_string(), out_slot_it});
-
 		NodeFor* node = new NodeFor(temp->cmp, std::move(in), std::move(out));
 		node->m_start_index = temp->start_index;
 		node->m_end_index = temp->end_index;
 		node->m_increment = temp->increment;
 		node->m_iterator_name = temp->buf_iterator_name;
+		node->m_out_slots.push_back({temp->slot_out._to_string(), temp->slot_out});
+		node->create_str_code();
 		node->set_desc(CreateNode::buf_desc);
 		Nodes::v_nodes.push_back(node);
 		ImNodes::AutoPositionNode(Nodes::v_nodes.back());
@@ -201,6 +194,21 @@ void CreateNode::draw_for(void)
 		ImGui::EndCombo();
 	}
 
+	if (ImGui::BeginCombo("Out type", tmp->slot_out._to_string()))
+	{
+		for (NODE_SLOT slot : NODE_SLOT::_values())
+		{
+			if (slot == +NODE_SLOT::EMPTY)
+				continue;
+			ImGui::PushID(slot);
+			const char* txt = slot._to_string();
+			if (ImGui::Selectable(txt, tmp->slot_out._to_string() == txt))
+				tmp->slot_out = slot;
+			ImGui::PopID();
+		}
+		ImGui::EndCombo();
+	}
+
 	if (tmp->cmp == +NODE_CMP::NEQ)
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: using 'not equals' can result in infinite loop.\n\
 				Not recommended");
@@ -216,7 +224,8 @@ void CreateNode::draw_for(void)
 
 	bool is_valid = validate_cmp(tmp);
 
-	tmp->valid_loop = (std::strlen(tmp->buf_iterator_name) != 0) && is_valid;
+	tmp->valid_loop = (std::strlen(tmp->buf_iterator_name) != 0) && is_valid &&
+		tmp->slot_out != +NODE_SLOT::EMPTY;
 	CreateNode::can_create = tmp->valid_loop;
 }
 }

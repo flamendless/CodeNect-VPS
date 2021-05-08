@@ -310,6 +310,7 @@ int Project::save(void)
 					ini.SetValue(section, "increment", std::to_string(node_for->m_increment).c_str());
 					ini.SetValue(section, "iterator_name", node_for->m_iterator_name.c_str());
 					ini.SetValue(section, "loop_cmp", node_for->m_cmp._to_string());
+					ini.SetValue(section, "slot_out", node_for->m_out_slots[1].title);
 				}
 				break;
 			}
@@ -529,6 +530,7 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 		nm->m_increment = ini.GetValue(section, "increment", "0");
 		nm->m_iterator_name = ini.GetValue(section, "iterator_name", "i");
 		nm->m_loop_cmp = ini.GetValue(section, "loop_cmp", "EMPTY");
+		nm->m_loop_out = ini.GetValue(section, "slot_out", "EMPTY");
 	}
 
 	//get input/output slots

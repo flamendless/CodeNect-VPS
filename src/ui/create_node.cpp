@@ -315,6 +315,8 @@ void CreateNode::edit(Node* node)
 					temp->increment = node_for->m_increment;
 					std::strcpy(temp->buf_iterator_name, node_for->m_iterator_name.c_str());
 					temp->cmp = node_for->m_cmp;
+					temp->str_cmp = NodeComparison::m_cmp_str[node_for->m_cmp._to_string()];
+					temp->slot_out = NODE_SLOT::_from_string(node_for->m_out_slots[1].title);
 					CreateNode::loop = node_for->m_loop;
 					break;
 				}

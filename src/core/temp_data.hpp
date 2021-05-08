@@ -114,6 +114,7 @@ struct TempLoopData
 	std::string str_cmp = "EMPTY";
 
 	//output
+	NODE_SLOT slot_out = NODE_SLOT::EMPTY;
 
 	bool valid_loop = false;
 };

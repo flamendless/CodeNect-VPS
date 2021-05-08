@@ -492,7 +492,6 @@ void draw_node_for(NodeFor* node_for)
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "End Index:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Increment:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Comparison:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Code:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
 
 		ImGui::TableNextColumn();
@@ -500,11 +499,15 @@ void draw_node_for(NodeFor* node_for)
 		ImGui::Text("%d", node_for->m_start_index);
 		ImGui::Text("%d", node_for->m_end_index);
 		ImGui::Text("%d", node_for->m_increment);
-		ImGui::Text("%s", node_for->m_cmp._to_string());
-		ImGui::Text("%s", node_for->m_code.c_str());
+		ImGui::Text("%s", NodeComparison::m_cmp_str[node_for->m_cmp._to_string()]);
 		ImGui::Text("%s", node_for->m_desc);
 		ImGui::EndTable();
 	}
+
+	static bool show_code = false;
+	ImGui::Checkbox("Show Code", &show_code);
+	if (show_code)
+		ImGui::Text("  %s", node_for->m_code.c_str());
 }
 
 void draw_connections(Node& node)

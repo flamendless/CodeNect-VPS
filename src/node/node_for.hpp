@@ -28,6 +28,7 @@ struct NodeFor : public NodeLoop
 		const v_slot_info_t&& out_slots
 	);
 	inline ~NodeFor() {}
+	void create_str_code(void);
 };
 }
 

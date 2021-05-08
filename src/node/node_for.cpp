@@ -24,13 +24,34 @@ NodeFor::NodeFor(
 	m_in_slots = in_slots;
 	m_out_slots = out_slots;
 
-	const char* cmp_op = Utils::cmp_to_op_str(m_cmp);
-	const char* sign = (m_increment > 0) ? "+" : "-";
+	NODE_SLOT in_slot_si = NODE_SLOT::INTEGER;
+	NODE_SLOT in_slot_ei = NODE_SLOT::INTEGER;
+	NODE_SLOT in_slot_inc = NODE_SLOT::INTEGER;
+	NODE_SLOT out_slot_it = NODE_SLOT::INTEGER;
 
-	m_code = fmt::format("for (int {:s} = {:d}; {:s} {:s} {:d}; {:s} {:s} {:s})",
-		m_iterator_name, m_start_index, m_start_index, cmp_op, m_end_index,
-		m_iterator_name, sign, m_increment);
+	m_in_slots.push_back({"INTEGER - start index", in_slot_si});
+	m_in_slots.push_back({"INTEGER - end index", in_slot_ei});
+	m_in_slots.push_back({"INTEGER - increment", in_slot_inc});
+	m_out_slots.push_back({"INTEGER - iterator", out_slot_it});
 
 	PLOGD << "Created NodeLoop: " << m_name;
+}
+
+void NodeFor::create_str_code(void)
+{
+	const char* cmp_op = Utils::cmp_to_op_str(m_cmp);
+	const char* sign = (m_increment > 0) ? "+" : "-";
+	std::string str_inc;
+
+	if (m_increment == 1)
+		str_inc = fmt::format("{:s}++", m_iterator_name);
+	else if (m_increment == -1)
+		str_inc = fmt::format("{:s}--", m_iterator_name);
+	else
+		str_inc = fmt::format("{:s} {:s} {:d}", m_iterator_name, sign, m_increment);
+
+
+	m_code = fmt::format("for (int {:s} = {:d}; {:s} {:s} {:d}; {:s})",
+		m_iterator_name, m_start_index, m_iterator_name, cmp_op, m_end_index, str_inc);
 }
 }
