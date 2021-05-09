@@ -496,18 +496,32 @@ void draw_node_for(NodeFor* node_for)
 
 		ImGui::TableNextColumn();
 		ImGui::Text("%s", node_for->m_iterator_name.c_str());
-		ImGui::Text("%d", node_for->m_start_index);
-		ImGui::Text("%d", node_for->m_end_index);
-		ImGui::Text("%d", node_for->m_increment);
+		ImGui::Text("%d", node_for->m_cur_start_index);
+		ImGui::Text("%d", node_for->m_cur_end_index);
+		ImGui::Text("%d", node_for->m_cur_increment);
 		ImGui::Text("%s", NodeComparison::m_cmp_str[node_for->m_cmp._to_string()]);
 		ImGui::Text("%s", node_for->m_desc);
 		ImGui::EndTable();
 	}
 
+	bool is_valid = Utils::validate_for(node_for->m_cur_start_index,
+			node_for->m_cur_end_index, node_for->m_cur_increment, node_for->m_cmp);
+	if (!is_valid)
+	{
+		ImGui::SameLine();
+		if (ImGui::SmallButton(ICON_FA_BOOK))
+			Docs::open_doc_id(DOC_ID::FOR_LOOP);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Open in Docs for more info");
+	}
+
 	static bool show_code = false;
 	ImGui::Checkbox("Show Code", &show_code);
 	if (show_code)
+	{
+		node_for->create_str_code();
 		ImGui::Text("  %s", node_for->m_code.c_str());
+	}
 }
 
 void draw_connections(Node& node)

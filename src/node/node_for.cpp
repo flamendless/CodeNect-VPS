@@ -39,19 +39,22 @@ NodeFor::NodeFor(
 
 void NodeFor::create_str_code(void)
 {
+	int inc = m_cur_increment;
+	int si = m_cur_start_index;
+	int se = m_cur_end_index;
+
 	const char* cmp_op = Utils::cmp_to_op_str(m_cmp);
-	const char* sign = (m_increment > 0) ? "+" : "-";
+	const char* sign = (inc > 0) ? "+" : "-";
 	std::string str_inc;
 
-	if (m_increment == 1)
+	if (inc == 1)
 		str_inc = fmt::format("{:s}++", m_iterator_name);
-	else if (m_increment == -1)
+	else if (inc == -1)
 		str_inc = fmt::format("{:s}--", m_iterator_name);
 	else
-		str_inc = fmt::format("{:s} {:s} {:d}", m_iterator_name, sign, m_increment);
-
+		str_inc = fmt::format("{:s} {:s} {:d}", m_iterator_name, sign, inc);
 
 	m_code = fmt::format("for (int {:s} = {:d}; {:s} {:s} {:d}; {:s})",
-		m_iterator_name, m_start_index, m_iterator_name, cmp_op, m_end_index, str_inc);
+		m_iterator_name, si, m_iterator_name, cmp_op, se, str_inc);
 }
 }

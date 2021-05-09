@@ -22,6 +22,7 @@ void open_url(const char* url);
 bool bool_from_string(const char* str);
 void string_to_name(std::string& str);
 const char* cmp_to_op_str(NODE_CMP&);
+bool validate_for(int si, int ei, int inc, NODE_CMP cmp);
 }
 
 #endif //_UTILS_HPP

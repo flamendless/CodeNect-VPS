@@ -18,9 +18,9 @@ struct NodeFor : public NodeLoop
 	int m_increment = 0;
 	NODE_CMP m_cmp = NODE_CMP::EMPTY;
 
-	NodeValue* m_val_start_index = nullptr;
-	NodeValue* m_val_end_index = nullptr;
-	NodeValue* m_val_increment = nullptr;
+	int m_cur_start_index = 0;
+	int m_cur_end_index = 0;
+	int m_cur_increment = 0;
 
 	explicit NodeFor(
 		NODE_CMP cmp,

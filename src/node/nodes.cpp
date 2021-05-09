@@ -386,7 +386,6 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 					node_for->m_pos = ImVec2(nm->x, nm->y);
 					node_for->m_desc = nm->m_desc.c_str();
 					node_for->m_out_slots.push_back({slot_out._to_string(), slot_out});
-					node_for->create_str_code();
 					Nodes::v_nodes.push_back(node_for);
 				}
 				break;

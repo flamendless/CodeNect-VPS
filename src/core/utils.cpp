@@ -165,4 +165,133 @@ const char* cmp_to_op_str(NODE_CMP& cmp)
 	}
 	return "";
 }
+
+bool validate_for(int si, int ei, int inc, NODE_CMP cmp)
+{
+	bool is_valid = false;
+
+	if (inc == 0)
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " a 0 increment may result in infinite loop");
+
+	switch (cmp)
+	{
+		case NODE_CMP::EMPTY: break;
+		case NODE_CMP::NEQ:
+		{
+			if (inc > 0)
+			{
+				// for (int i = 0; i != 10; i++) //good
+				// for (int i = 10; i != 0; i++) //inf
+				if (si > ei)
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this will result in infinite loop");
+				else
+					is_valid = true;
+			}
+			else if (inc < 0)
+			{
+				// for (int i = 0; i != 10; i--) //inf
+				// for (int i = 10; i != 0; i--) //good
+				if (si < ei)
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this will result in infinite loop");
+				else
+					is_valid = true;
+			}
+			break;
+		}
+
+		case NODE_CMP::LT:
+		{
+			//for (int i = 0; i < 10; i++) //good
+			//for (int i = 10; i < 0; i++) //not
+			//for (int i = 0; i < 10; i--) //inf
+			//for (int i = 10; i < 0; i--) //not
+			if (inc > 0)
+			{
+				if (si < ei)
+					is_valid = true;
+				else
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this iteration will not be triggered even once");
+			}
+			else if (inc < 0)
+			{
+				if (si < ei)
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this will result in infinite loop");
+				else
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this iteration will not be triggered even once");
+			}
+			break;
+		}
+
+		case NODE_CMP::LTE:
+		{
+			//for (int i = 0; i <= 10; i++) //good
+			//for (int i = 10; i <= 0; i++) //not
+			//for (int i = 0; i <= 10; i--) //inf
+			//for (int i = 10; i <= 0; i--) //not
+			if (inc > 0)
+			{
+				if (si <= ei)
+					is_valid = true;
+				else
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this iteration will not be triggered even once");
+			}
+			else if (inc < 0)
+			{
+				if (si <= ei)
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this will result in infinite loop");
+				else
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this iteration will not be triggered even once");
+			}
+			break;
+		}
+
+		case NODE_CMP::GT:
+		{
+			//for (int i = 0; i > 10; i++) //not
+			//for (int i = 10; i > 0; i++) //inf
+			//for (int i = 0; i > 10; i--) //not
+			//for (int i = 10; i > 0; i--) //good
+			if (inc > 0)
+			{
+				if (si > ei)
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this will result in infinite loop");
+				else
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this iteration will not be triggered even once");
+			}
+			else if (inc < 0)
+			{
+				if (si > ei)
+					is_valid = true;
+				else
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this iteration will not be triggered even once");
+			}
+			break;
+		}
+
+		case NODE_CMP::GTE:
+		{
+			//for (int i = 0; i >= 10; i++) //not
+			//for (int i = 10; i >= 0; i++) //inf
+			//for (int i = 0; i >= 10; i--) //not
+			//for (int i = 10; i >= 0; i--) //good
+			if (inc > 0)
+			{
+				if (si >= ei)
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this will result in infinite loop");
+				else
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this iteration will not be triggered even once");
+			}
+			else if (inc < 0)
+			{
+				if (si >= ei)
+					is_valid = true;
+				else
+					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this iteration will not be triggered even once");
+			}
+			break;
+		}
+	}
+
+	return is_valid;
+}
 }

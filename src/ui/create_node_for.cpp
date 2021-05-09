@@ -3,6 +3,8 @@
 #include "node/node_for.hpp"
 #include "node/nodes.hpp"
 #include "node/node_cmp.hpp"
+#include "core/utils.hpp"
+#include "ui/docs.hpp"
 
 namespace CodeNect
 {
@@ -32,136 +34,10 @@ void CreateNode::create_node_for(void)
 		node->m_increment = temp->increment;
 		node->m_iterator_name = temp->buf_iterator_name;
 		node->m_out_slots.push_back({temp->slot_out._to_string(), temp->slot_out});
-		node->create_str_code();
 		node->set_desc(CreateNode::buf_desc);
 		Nodes::v_nodes.push_back(node);
 		ImNodes::AutoPositionNode(Nodes::v_nodes.back());
 	}
-}
-
-bool validate_cmp(TempLoopData* tmp)
-{
-	bool is_valid = false;
-
-	switch (tmp->cmp)
-	{
-		case NODE_CMP::EMPTY: break;
-		case NODE_CMP::NEQ:
-		{
-			if (tmp->increment > 0)
-			{
-				// for (int i = 0; i != 10; i++) //good
-				// for (int i = 10; i != 0; i++) //inf
-				if (tmp->start_index > tmp->end_index)
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: this will result in infinite loop");
-				else
-					is_valid = true;
-			}
-			else if (tmp->increment < 0)
-			{
-				// for (int i = 0; i != 10; i--) //inf
-				// for (int i = 10; i != 0; i--) //good
-				if (tmp->start_index < tmp->end_index)
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: this will result in infinite loop");
-				else
-					is_valid = true;
-			}
-			break;
-		}
-
-		case NODE_CMP::LT:
-		{
-			//for (int i = 0; i < 10; i++) //good
-			//for (int i = 10; i < 0; i++) //not
-			//for (int i = 0; i < 10; i--) //inf
-			//for (int i = 10; i < 0; i--) //not
-			if (tmp->increment > 0)
-			{
-				if (tmp->start_index < tmp->end_index)
-					is_valid = true;
-				else
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: this iteration will not be triggered even once");
-			}
-			else if (tmp->increment < 0)
-			{
-				if (tmp->start_index < tmp->end_index)
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: this will result in infinite loop");
-				else
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: this iteration will not be triggered even once");
-			}
-			break;
-		}
-
-		case NODE_CMP::LTE:
-		{
-			//for (int i = 0; i <= 10; i++) //good
-			//for (int i = 10; i <= 0; i++) //not
-			//for (int i = 0; i <= 10; i--) //inf
-			//for (int i = 10; i <= 0; i--) //not
-			if (tmp->increment > 0)
-			{
-				if (tmp->start_index <= tmp->end_index)
-					is_valid = true;
-				else
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: this iteration will not be triggered even once");
-			}
-			else if (tmp->increment < 0)
-			{
-				if (tmp->start_index <= tmp->end_index)
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: this will result in infinite loop");
-				else
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: this iteration will not be triggered even once");
-			}
-			break;
-		}
-
-		case NODE_CMP::GT:
-		{
-			//for (int i = 0; i > 10; i++) //not
-			//for (int i = 10; i > 0; i++) //inf
-			//for (int i = 0; i > 10; i--) //not
-			//for (int i = 10; i > 0; i--) //good
-			if (tmp->increment > 0)
-			{
-				if (tmp->start_index > tmp->end_index)
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: this will result in infinite loop");
-				else
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: this iteration will not be triggered even once");
-			}
-			else if (tmp->increment < 0)
-			{
-				if (tmp->start_index > tmp->end_index)
-					is_valid = true;
-				else
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: this iteration will not be triggered even once");
-			}
-			break;
-		}
-
-		case NODE_CMP::GTE:
-		{
-			//for (int i = 0; i >= 10; i++) //not
-			//for (int i = 10; i >= 0; i++) //inf
-			//for (int i = 0; i >= 10; i--) //not
-			//for (int i = 10; i >= 0; i--) //good
-			if (tmp->increment > 0)
-			{
-				if (tmp->start_index >= tmp->end_index)
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: this will result in infinite loop");
-				else
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: this iteration will not be triggered even once");
-			}
-			else if (tmp->increment < 0)
-			{
-				if (tmp->start_index >= tmp->end_index)
-					is_valid = true;
-				else
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: this iteration will not be triggered even once");
-			}
-			break;
-		}
-	}
-	return is_valid;
 }
 
 void CreateNode::draw_for(void)
@@ -214,15 +90,15 @@ void CreateNode::draw_for(void)
 				Not recommended");
 
 	ImGui::Text("Note: you can set the numerical values later from other nodes");
-
-	if (tmp->increment == 0)
+	bool is_valid = Utils::validate_for(tmp->start_index, tmp->end_index, tmp->increment, tmp->cmp);
+	if (!is_valid)
 	{
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: a 0 increment may result in infinite loop");
-		//TODO open in docs
-		return;
+		ImGui::SameLine();
+		if (ImGui::SmallButton(ICON_FA_BOOK))
+			Docs::open_doc_id(DOC_ID::FOR_LOOP);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Open in Docs for more info");
 	}
-
-	bool is_valid = validate_cmp(tmp);
 
 	tmp->valid_loop = (std::strlen(tmp->buf_iterator_name) != 0) && is_valid &&
 		tmp->slot_out != +NODE_SLOT::EMPTY;

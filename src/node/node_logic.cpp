@@ -172,6 +172,7 @@ void process(void)
 	NodeLogic::process_print();
 	NodeLogic::process_prompt();
 	NodeLogic::process_string();
+	NodeLogic::process_for();
 
 	NodeLogic::validate_branches();
 #if TEST
