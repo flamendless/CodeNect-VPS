@@ -22,6 +22,9 @@ struct NodeFor : public NodeLoop
 	int m_cur_end_index = 0;
 	int m_cur_increment = 0;
 
+	int m_cur_it = 0;
+	int m_override_it = 0;
+
 	explicit NodeFor(
 		NODE_CMP cmp,
 		const v_slot_info_t&& in_slots,

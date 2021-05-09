@@ -16,6 +16,7 @@ void process_for(NodeFor* node_for)
 	node_for->m_cur_start_index = node_for->m_start_index;
 	node_for->m_cur_end_index = node_for->m_end_index;
 	node_for->m_cur_increment = node_for->m_increment;
+	node_for->m_cur_it = node_for->m_override_it;
 
 	NodeValue* value = nullptr;
 
@@ -53,6 +54,22 @@ void process_for(NodeFor* node_for)
 			node_for->m_cur_end_index = std::get<int>(value->data);
 		else if (std::strcmp(slot, "INTEGER - increment") == 0)
 			node_for->m_cur_increment = std::get<int>(value->data);
+	}
+
+	//manage iterator output
+	for (const Connection& connection : node_for->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		Node* in_node = static_cast<Node*>(connection.in_node);
+		if (out_node != node_for)
+			continue;
+		const char* slot = connection.out_slot;
+		if (std::strcmp(slot, "INTEGER - iterator") == 0)
+		{
+			NodeVariable* node_var = static_cast<NodeVariable*>(in_node);
+			//TODO FIX, add override to NodeVariable?
+			node_var->m_value.set((int)node_for->m_cur_it);
+		}
 	}
 }
 

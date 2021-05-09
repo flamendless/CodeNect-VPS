@@ -26,6 +26,7 @@
 #include "ui/create_node.hpp"
 #include "ui/zoom.hpp"
 #include "modules/filesystem.hpp"
+#include "modules/simulation.hpp"
 
 namespace CodeNect
 {
@@ -103,7 +104,10 @@ void NodeInterface::draw(void)
 		if (!Project::has_open_proj)
 			NodeInterface::draw_startup();
 		else
+		{
 			NodeInterface::draw_main();
+			NodeInterface::draw_simulation();
+		}
 
 		ImGui::End();
 	}
@@ -166,6 +170,16 @@ void NodeInterface::draw_main(void)
 	{
 		NodeInterface::has_target_node = false;
 		NodeInterface::target_node = nullptr;
+	}
+}
+
+void NodeInterface::draw_simulation(void)
+{
+	if (ImGui::Begin(ICON_FA_PLAY_CIRCLE " Simulation Controls"))
+	{
+		if (ImGui::Button("Iterate"))
+			Simulation::iterate();
+		ImGui::End();
 	}
 }
 

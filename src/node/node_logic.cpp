@@ -27,19 +27,18 @@ void process(void)
 
 	Simulation::determine_node_for_block(Nodes::v_nodes);
 
-	// PLOGD << "start node_for check";
-	// for (Node* &node : Simulation::m_tracker)
-	// 	PLOGD << "\t" << node->m_name;
-	// PLOGD << "end";
-	// exit(1);
-
 	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
 		it != Nodes::v_nodes.end();
 		it++)
 	{
 		Node* node = static_cast<Node*>(*it);
+
+		// if (Simulation::is_in_for(node))
+		// 	continue;
+
 		switch (node->m_kind)
 		{
+			case NODE_KIND::EMPTY: break;
 			case NODE_KIND::VARIABLE:
 			{
 				NodeVariable* node_var = static_cast<NodeVariable*>(node);
