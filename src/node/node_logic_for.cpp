@@ -10,58 +10,49 @@
 
 namespace CodeNect::NodeLogic
 {
-void process_for(void)
+void process_for(NodeFor* node_for)
 {
-	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
-		it != Nodes::v_nodes.end();
-		it++)
+	//reset values
+	node_for->m_cur_start_index = node_for->m_start_index;
+	node_for->m_cur_end_index = node_for->m_end_index;
+	node_for->m_cur_increment = node_for->m_increment;
+
+	NodeValue* value = nullptr;
+
+	//get LHS for values
+	for (const Connection& connection : node_for->m_connections)
 	{
-		NodeFor* node_for = dynamic_cast<NodeFor*>(*it);
-		if (!node_for)
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node == node_for)
 			continue;
 
-		//reset values
-		node_for->m_cur_start_index = node_for->m_start_index;
-		node_for->m_cur_end_index = node_for->m_end_index;
-		node_for->m_cur_increment = node_for->m_increment;
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+		NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
+		NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
+		NodeCast* node_cast = dynamic_cast<NodeCast*>(out_node);
+		NodeSize* node_size = dynamic_cast<NodeSize*>(out_node);
+		NodeArrayAccess* node_array_access = dynamic_cast<NodeArrayAccess*>(out_node);
 
-		NodeValue* value = nullptr;
+		if (node_var)
+			value = &node_var->m_value;
+		else if (node_math)
+			value = node_math->m_current_val;
+		else if (node_op)
+			value = node_op->m_current_val;
+		else if (node_cast)
+			value = node_cast->m_current_val;
+		else if (node_size)
+			value = &node_size->m_val_size;
+		else if (node_array_access)
+			value = node_array_access->m_current_val;
 
-		//get LHS for values
-		for (const Connection& connection : node_for->m_connections)
-		{
-			Node* out_node = static_cast<Node*>(connection.out_node);
-			if (out_node == node_for)
-				continue;
-
-			NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
-			NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
-			NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
-			NodeCast* node_cast = dynamic_cast<NodeCast*>(out_node);
-			NodeSize* node_size = dynamic_cast<NodeSize*>(out_node);
-			NodeArrayAccess* node_array_access = dynamic_cast<NodeArrayAccess*>(out_node);
-
-			if (node_var)
-				value = &node_var->m_value;
-			else if (node_math)
-				value = node_math->m_current_val;
-			else if (node_op)
-				value = node_op->m_current_val;
-			else if (node_cast)
-				value = node_cast->m_current_val;
-			else if (node_size)
-				value = &node_size->m_val_size;
-			else if (node_array_access)
-				value = node_array_access->m_current_val;
-
-			const char* slot = connection.in_slot;
-			if (std::strcmp(slot, "INTEGER - start index") == 0)
-				node_for->m_cur_start_index = std::get<int>(value->data);
-			else if (std::strcmp(slot, "INTEGER - end index") == 0)
-				node_for->m_cur_end_index = std::get<int>(value->data);
-			else if (std::strcmp(slot, "INTEGER - increment") == 0)
-				node_for->m_cur_increment = std::get<int>(value->data);
-		}
+		const char* slot = connection.in_slot;
+		if (std::strcmp(slot, "INTEGER - start index") == 0)
+			node_for->m_cur_start_index = std::get<int>(value->data);
+		else if (std::strcmp(slot, "INTEGER - end index") == 0)
+			node_for->m_cur_end_index = std::get<int>(value->data);
+		else if (std::strcmp(slot, "INTEGER - increment") == 0)
+			node_for->m_cur_increment = std::get<int>(value->data);
 	}
 }
 

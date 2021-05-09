@@ -11,97 +11,88 @@
 
 namespace CodeNect::NodeLogic
 {
-void process_string(void)
+void process_string(NodeString* node_str)
 {
-	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
-		it != Nodes::v_nodes.end();
-		it++)
+	node_str->m_current_str.clear();
+	node_str->m_from_str.clear();
+
+	//get the LHS
+	for (Connection& connection : node_str->m_connections)
 	{
-		NodeString* node_str = dynamic_cast<NodeString*>(*it);
-		if (!node_str)
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node == node_str)
 			continue;
 
-		node_str->m_current_str.clear();
-		node_str->m_from_str.clear();
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+		NodeString* node_str2 = dynamic_cast<NodeString*>(out_node);
+		NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
+		NodeCast* node_cast = dynamic_cast<NodeCast*>(out_node);
+		NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
 
-		//get the LHS
-		for (Connection& connection : node_str->m_connections)
+		if (node_var)
+			node_str->m_from_str = std::get<std::string>(node_var->m_value.data);
+		else if (node_str2)
+			node_str->m_from_str = node_str2->m_current_str;
+		else if (node_op)
 		{
-			Node* out_node = static_cast<Node*>(connection.out_node);
-			if (out_node == node_str)
-				continue;
-
-			NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
-			NodeString* node_str2 = dynamic_cast<NodeString*>(out_node);
-			NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(out_node);
-			NodeCast* node_cast = dynamic_cast<NodeCast*>(out_node);
-			NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
-
-			if (node_var)
-				node_str->m_from_str = std::get<std::string>(node_var->m_value.data);
-			else if (node_str2)
-				node_str->m_from_str = node_str2->m_current_str;
-			else if (node_op)
-			{
-				if (node_op->m_current_val)
-					node_str->m_from_str = std::get<std::string>(node_op->m_current_val->data);
-			}
-			else if (node_prompt)
-			{
-				node_str->m_from_str = node_prompt->m_str;
-				NodeColors::set_connection_color(connection, COLOR_TYPE::RUNTIME);
-			}
-			else if (node_cast)
-			{
-				node_str->m_from_str = std::get<std::string>(node_cast->m_current_val->data);
-				NodeColors::set_connection_color(connection, COLOR_TYPE::RUNTIME);
-			}
+			if (node_op->m_current_val)
+				node_str->m_from_str = std::get<std::string>(node_op->m_current_val->data);
 		}
-
-		//perform string method
-		switch (node_str->m_string)
+		else if (node_prompt)
 		{
-			case NODE_STRING::EMPTY: break;
-			case NODE_STRING::TLC:
+			node_str->m_from_str = node_prompt->m_str;
+			NodeColors::set_connection_color(connection, COLOR_TYPE::RUNTIME);
+		}
+		else if (node_cast)
+		{
+			node_str->m_from_str = std::get<std::string>(node_cast->m_current_val->data);
+			NodeColors::set_connection_color(connection, COLOR_TYPE::RUNTIME);
+		}
+	}
+
+	//perform string method
+	switch (node_str->m_string)
+	{
+		case NODE_STRING::EMPTY: break;
+		case NODE_STRING::TLC:
+		{
+			std::string tmp =  node_str->m_from_str;
+			std::transform(tmp.begin(), tmp.end(), tmp.begin(),
+				[](unsigned char c) { return std::tolower(c); });
+			node_str->m_current_str = std::move(tmp);
+			break;
+		}
+		case NODE_STRING::TUC:
+		{
+			std::string tmp =  node_str->m_from_str;
+			std::transform(tmp.begin(), tmp.end(), tmp.begin(),
+				[](unsigned char c) { return std::toupper(c); });
+			node_str->m_current_str = std::move(tmp);
+			break;
+		}
+		case NODE_STRING::REVERSE:
+		{
+			std::string tmp =  node_str->m_from_str;
+			std::reverse(tmp.begin(), tmp.end());
+			node_str->m_current_str = std::move(tmp);
+			break;
+		}
+		case NODE_STRING::TOARRAY:
+		{
+			std::string tmp =  node_str->m_from_str;
+			std::string arr = "[";
+			for (int i = 0; i < tmp.length(); i++)
 			{
-				std::string tmp =  node_str->m_from_str;
-				std::transform(tmp.begin(), tmp.end(), tmp.begin(),
-					[](unsigned char c) { return std::tolower(c); });
-				node_str->m_current_str = std::move(tmp);
-				break;
+				char c = tmp[i];
+				arr.append(fmt::format("'{:c}'", c));
+				if (i < tmp.length() - 1)
+					arr.append(", ");
+				if (i != 0 && i % 6 == 0)
+					arr.append("\n");
 			}
-			case NODE_STRING::TUC:
-			{
-				std::string tmp =  node_str->m_from_str;
-				std::transform(tmp.begin(), tmp.end(), tmp.begin(),
-					[](unsigned char c) { return std::toupper(c); });
-				node_str->m_current_str = std::move(tmp);
-				break;
-			}
-			case NODE_STRING::REVERSE:
-			{
-				std::string tmp =  node_str->m_from_str;
-				std::reverse(tmp.begin(), tmp.end());
-				node_str->m_current_str = std::move(tmp);
-				break;
-			}
-			case NODE_STRING::TOARRAY:
-			{
-				std::string tmp =  node_str->m_from_str;
-				std::string arr = "[";
-				for (int i = 0; i < tmp.length(); i++)
-				{
-					char c = tmp[i];
-					arr.append(fmt::format("'{:c}'", c));
-					if (i < tmp.length() - 1)
-						arr.append(", ");
-					if (i != 0 && i % 6 == 0)
-						arr.append("\n");
-				}
-				arr.append("]");
-				node_str->m_current_str = std::move(arr);
-				break;
-			}
+			arr.append("]");
+			node_str->m_current_str = std::move(arr);
+			break;
 		}
 	}
 }

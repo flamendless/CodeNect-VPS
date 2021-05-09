@@ -24,6 +24,7 @@ add_executable(CodeNect
 	src/modules/filesystem.cpp
 	src/modules/input.cpp
 	src/modules/node_to_code.cpp
+	src/modules/simulation.cpp
 	src/modules/transpiler.cpp
 	src/node/connection.cpp
 
@@ -57,6 +58,7 @@ add_executable(CodeNect
 	src/node/node_logic_op.cpp
 	src/node/node_logic_print.cpp
 	src/node/node_logic_prompt.cpp
+	src/node/node_logic_process_branch.cpp
 	src/node/node_logic_size.cpp
 	src/node/node_logic_string.cpp
 	src/node/node_logic_var.cpp

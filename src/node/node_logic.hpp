@@ -3,36 +3,47 @@
 
 #include "node/connection.hpp"
 #include "node/node.hpp"
-#include "node/node_math.hpp"
+#include "node/node_var.hpp"
+#include "node/node_op.hpp"
+#include "node/node_cast.hpp"
+#include "node/node_cmp.hpp"
+#include "node/node_print.hpp"
+#include "node/node_prompt.hpp"
+#include "node/node_array_access.hpp"
 #include "node/node_array.hpp"
+#include "node/node_math.hpp"
 #include "node/node_branch.hpp"
+#include "node/node_size.hpp"
+#include "node/node_string.hpp"
 #include "ui/alert.hpp"
 #include "ui/docs.hpp"
+#include "modules/simulation.hpp"
 
 namespace CodeNect::NodeLogic
 {
 void process(void);
-void process_var(void);
-void process_op(void);
-void process_cast(void);
-void process_cmp(void);
-void process_branch(void);
-void process_print(void);
-void process_prompt(void);
-void process_math(void);
+void process_var(NodeVariable*);
+void process_op(NodeOperation*);
+void process_cast(NodeCast*);
+void process_cmp(NodeComparison*);
+void process_branch(NodeBranch*);
+void process_print(NodePrint*);
+void process_prompt(NodePrompt*);
+void process_math(NodeMath*);
 double calculate_math(NodeMath* node_math, std::function<double(double, double)> fn);
-void process_array(void);
+void process_array(NodeArray*);
 bool index_within_array_bounds(NodeArray*, const int);
-void process_array_access(void);
-void process_size(void);
-void process_string(void);
-void process_for(void);
+void process_array_access(NodeArrayAccess*);
+void process_size(NodeSize*);
+void process_string(NodeString*);
+void process_for(NodeFor*);
 
 bool validate_node_print(Node* in_node, Node* out_node);
 bool validate_node_array(Node* in_node, Node* out_node);
 bool validate_node_string(Node* in_node, Node* out_node);
 bool validate_node_for(Node* in_node, Node* out_node);
 
+//NodeBranch
 struct BranchInfo
 {
 	NodeBranch* node_branch = nullptr;
