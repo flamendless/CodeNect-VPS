@@ -31,10 +31,10 @@ while (i != 5)
   * An array is used as a container for multiple values, the values are called *elements*
   * An array element is accessed using an *index* which is an integer
   * Printing in C can only print directly basic data types like:
-    * boolean - using the *%d* specifier e.g. *printf("%d", true);
-    * char - using the *%c* specifier e.g. *printf("%c", 'a');
-    * integer - using the *%d* specifier e.g. *printf("%d", 32);
-    * float - using the *%lf* specifier e.g. *printf("%lf", 32.32f);
-    * double - using the *%llf* specifier e.g. *printf("%llf", 323.323232323);
-    * string - using the *%s* specifier e.g. *printf("%s", "Hello");
+    * boolean - using the *%d* specifier e.g. *printf("%d", true)*
+    * char - using the *%c* specifier e.g. *printf("%c", 'a')*
+    * integer - using the *%d* specifier e.g. *printf("%d", 32)*
+    * float - using the *%lf* specifier e.g. *printf("%lf", 32.32f)*
+    * double - using the *%llf* specifier e.g. *printf("%llf", 323.323232323)*
+    * string - using the *%s* specifier e.g. *printf("%s", "Hello")*
 )===="

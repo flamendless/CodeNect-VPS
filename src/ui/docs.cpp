@@ -13,7 +13,9 @@ ImGuiWindowFlags Docs::flags =
 	ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
 	ImGuiWindowFlags_AlwaysAutoResize;
 bool Docs::is_open = false;
+bool Docs::is_doc_open = false;
 const char* Docs::title = ICON_FA_BOOK " DOCS";
+Doc Docs::current_doc;
 
 std::string doc_branch_conflict =
 #include "markdown/doc_branch_conflict.md"
@@ -45,42 +47,26 @@ std::string doc_ref_array =
 std::string doc_iterator =
 #include "markdown/doc_iterator.md"
 ;
+std::string doc_for_loops =
+#include "markdown/doc_for_loops.md"
+;
 
-std::vector<const char*> Docs::v_title = {
-	//for transpiler/node_logic warnings/errors
-	"Branch Conflict", "Array Out of Bounds", "Variable Size", "Need Inputs/Lack of Inputs",
-	"Comparison Requirements", "Mathematical Function Requirements", "Operation Requirements",
-
-	//for connection warning/errors
-	"Printing Array", "Referencing an Array", "Iterator"
+std::map<std::string, Doc> m_docs = {
+	{"BRANCH_CONFLICT", {"Branch Conflict", std::move(doc_branch_conflict)}},
+	{"AOOB", {"Array Out Of Bounds", std::move(doc_aoob)}},
+	{"VAR_SIZE", {"Variable Size", std::move(doc_var_size)}},
+	{"NEED_INPUTS", {"Need Inputs/Lack of Inputs", std::move(doc_need_inputs)}},
+	{"CMP_REQ", {"Comparison Requirements", std::move(doc_cmp_req)}},
+	{"MATH_REQ", {"Mathematical Function Requirements", std::move(doc_math_req)}},
+	{"OP_REQ", {"Operation Requirements", std::move(doc_op_req)}},
+	{"FOR_LOOP", {"For Loops", std::move(doc_for_loops)}},
+	{"ARRAY_TO_PRINT", {"Printing Array", std::move(doc_printing_array)}},
+	{"CANT_REF_ARRAY", {"Referencing an Array", std::move(doc_ref_array)}},
+	{"IT_MUST_BE_VAR", {"Iterator", std::move(doc_iterator)}},
 };
-
-//TODO fill up
-std::vector<std::string> Docs::v_doc_id = {
-	std::move(doc_branch_conflict),
-	std::move(doc_aoob),
-	std::move(doc_var_size),
-	std::move(doc_need_inputs),
-	std::move(doc_cmp_req),
-	std::move(doc_math_req),
-	std::move(doc_op_req),
-	std::move(doc_printing_array),
-	std::move(doc_ref_array),
-	std::move(doc_iterator),
-};
-std::string opened_doc_title;
-std::string opened_doc_str;
-bool is_doc_open = false;
 
 int Docs::init(void)
 {
-	if (Docs::v_title.size() != Docs::v_doc_id.size())
-	{
-		PLOGE << "v_title size = " << v_title.size();
-		PLOGE << "v_doc_id size = " << v_doc_id.size();
-		return RES_FAIL;
-	}
-
 	return RES_SUCCESS;
 }
 
@@ -99,12 +85,11 @@ void Docs::open(void)
 	PLOGD << "Opened Docs window";
 }
 
-void Docs::open_doc_id(DOC_ID& doc_id)
+void Docs::open_doc_id(DOC_ID doc_id)
 {
-	is_doc_open = true;
 	Docs::is_open = true;
-	opened_doc_title = std::string(v_title[doc_id._to_index()]);
-	opened_doc_str = v_doc_id[doc_id._to_index()];
+	Docs::is_doc_open = true;
+	Docs::current_doc = m_docs[doc_id._to_string()];
 	PLOGD << "Opened Docs in " << doc_id._to_string();
 }
 
@@ -122,23 +107,25 @@ void Docs::draw(void)
 
 	if (ImGui::Begin("Docs", &Docs::is_open, Docs::flags))
 	{
-		if (is_doc_open)
+		if (Docs::is_doc_open)
 			Docs::draw_doc();
 		else
 		{
 			Utils::center_text(Docs::title, true);
 			ImGui::Separator();
-			for (int i = 0; i < v_doc_id.size(); i++)
+
+			for (std::pair<std::string, Doc> e : m_docs)
 			{
-				ImGui::PushID(i);
+				Doc& doc = e.second;
+				ImGui::PushID(e.first.c_str());
 				if (ImGui::SmallButton(ICON_FA_BOOK_OPEN " open"))
 				{
-					is_doc_open = true;
-					opened_doc_title = std::string(v_title[i]);
-					opened_doc_str = v_doc_id[i];
+					Docs::is_open = true;
+					Docs::is_doc_open = true;
+					Docs::current_doc = doc;
 				}
 				ImGui::SameLine();
-				ImGui::Text("%s", v_title[i]);
+				ImGui::Text("%s", doc.m_title);
 				ImGui::PopID();
 			}
 
@@ -151,10 +138,8 @@ void Docs::draw(void)
 
 	if (ImGui::IsKeyPressedMap(ImGuiKey_Escape))
 	{
-		opened_doc_title.clear();
-		opened_doc_str.clear();
-		if (is_doc_open)
-			is_doc_open = false;
+		if (Docs::is_doc_open)
+			Docs::is_doc_open = false;
 		else
 			Docs::is_open = false;
 	}
@@ -162,15 +147,11 @@ void Docs::draw(void)
 
 void Docs::draw_doc(void)
 {
-	Utils::center_text(opened_doc_title.c_str(), true);
+	Utils::center_text(Docs::current_doc.m_title, true);
 	ImGui::Separator();
-	Markdown::draw(opened_doc_str);
+	Markdown::draw(Docs::current_doc.m_content);
 	ImGui::Separator();
 	if (ImGui::Button(ICON_FA_ARROW_LEFT " Back"))
-	{
-		is_doc_open = false;
-		opened_doc_title.clear();
-		opened_doc_str.clear();
-	}
+		Docs::is_doc_open = false;
 }
 }
