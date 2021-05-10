@@ -250,6 +250,7 @@ int Project::save(void)
 					ini.SetValue(section, "value", node_prompt->m_orig_str.c_str());
 					ini.SetValue(section, "is_override", is_override);
 					ini.SetValue(section, "is_append_newline", is_append_newline);
+					ini.SetValue(section, "fake_input", std::get<std::string>(node_prompt->m_fake_input.data).c_str());
 				}
 				break;
 			}
@@ -310,6 +311,7 @@ int Project::save(void)
 					ini.SetValue(section, "increment", std::to_string(node_for->m_increment).c_str());
 					ini.SetValue(section, "iterator_name", node_for->m_iterator_name.c_str());
 					ini.SetValue(section, "loop_cmp", node_for->m_cmp._to_string());
+					ini.SetValue(section, "slot_in", node_for->m_in_slots[3].title);
 					ini.SetValue(section, "slot_out", node_for->m_out_slots[1].title);
 				}
 				break;
@@ -491,6 +493,7 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 		nm->m_orig_str = ini.GetValue(section, "value", "");
 		nm->m_override = ini.GetValue(section, "is_override", "false");
 		nm->m_append_newline = ini.GetValue(section, "is_append_newline", "false");
+		nm->m_fake_input = ini.GetValue(section, "fake_input", "");
 	}
 
 	if (std::strcmp(action, "PRINT") == 0)
@@ -530,6 +533,7 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 		nm->m_increment = ini.GetValue(section, "increment", "0");
 		nm->m_iterator_name = ini.GetValue(section, "iterator_name", "i");
 		nm->m_loop_cmp = ini.GetValue(section, "loop_cmp", "EMPTY");
+		nm->m_loop_in = ini.GetValue(section, "slot_in", "EMPTY");
 		nm->m_loop_out = ini.GetValue(section, "slot_out", "EMPTY");
 	}
 

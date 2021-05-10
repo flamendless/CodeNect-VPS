@@ -11,9 +11,6 @@ namespace CodeNect::NodeRenderer
 {
 void draw_node(Node* node)
 {
-#if DEBUG_MODE
-	ImGui::Text("(%s)", node->m_name);
-#endif
 	switch(node->m_kind)
 	{
 		case NODE_KIND::EMPTY: break;
@@ -263,11 +260,13 @@ void draw_node_prompt(NodePrompt* node_prompt)
 		ImGui::TableNextColumn();
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Action:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Prompt:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Fake Input:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
 
 		ImGui::TableNextColumn();
 		ImGui::Text("%s", node_prompt->m_action._to_string());
 		ImGui::Text("%s", node_prompt->m_str.c_str());
+		ImGui::Text("%s", node_prompt->m_fake_input.get_value_str_ex().c_str());
 		ImGui::Text("%s", node_prompt->m_desc);
 		ImGui::EndTable();
 	}
@@ -483,25 +482,49 @@ void draw_node_string(NodeString* node_str)
 
 void draw_node_for(NodeFor* node_for)
 {
-	if (ImGui::BeginTable("TableNode##NodeFor", 2, ImGuiTableFlags_SizingFixedFit))
-	{
-		ImGui::TableNextRow();
-		ImGui::TableNextColumn();
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Iterator:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Start Index:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "End Index:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Increment:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Comparison:");
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+	static bool full_view = false;
+	ImGui::Checkbox("Full Description", &full_view);
 
-		ImGui::TableNextColumn();
-		ImGui::Text("%s", node_for->m_iterator_name.c_str());
-		ImGui::Text("%d", node_for->m_cur_start_index);
-		ImGui::Text("%d", node_for->m_cur_end_index);
-		ImGui::Text("%d", node_for->m_cur_increment);
-		ImGui::Text("%s", NodeComparison::m_cmp_str[node_for->m_cmp._to_string()]);
-		ImGui::Text("%s", node_for->m_desc);
-		ImGui::EndTable();
+	if (full_view)
+	{
+		if (ImGui::BeginTable("TableNode##NodeFor", 2, ImGuiTableFlags_SizingFixedFit))
+		{
+			ImGui::TableNextRow();
+			ImGui::TableNextColumn();
+			ImGui::TextColored(Config::NodeInterface_c::label_color, "Iterator:");
+			ImGui::TextColored(Config::NodeInterface_c::label_color, "Iterator Value:");
+			ImGui::TextColored(Config::NodeInterface_c::label_color, "Start Index:");
+			ImGui::TextColored(Config::NodeInterface_c::label_color, "End Index:");
+			ImGui::TextColored(Config::NodeInterface_c::label_color, "Increment:");
+			ImGui::TextColored(Config::NodeInterface_c::label_color, "Comparison:");
+			ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+
+			ImGui::TableNextColumn();
+			ImGui::Text("%s", node_for->m_iterator_name.c_str());
+			ImGui::Text("%d", node_for->m_override_it);
+			ImGui::Text("%d", node_for->m_cur_start_index);
+			ImGui::Text("%d", node_for->m_cur_end_index);
+			ImGui::Text("%d", node_for->m_cur_increment);
+			ImGui::Text("%s", NodeComparison::m_cmp_str[node_for->m_cmp._to_string()]);
+			ImGui::Text("%s", node_for->m_desc);
+			ImGui::EndTable();
+		}
+	}
+	else
+	{
+		if (ImGui::BeginTable("TableNode##NodeFor", 2, ImGuiTableFlags_SizingFixedFit))
+		{
+			ImGui::TableNextRow();
+			ImGui::TableNextColumn();
+			ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+			ImGui::TextColored(Config::NodeInterface_c::label_color, "Code:");
+
+			ImGui::TableNextColumn();
+			ImGui::Text("%s", node_for->m_desc);
+			node_for->create_str_code();
+			ImGui::Text("%s", node_for->m_code.c_str());
+			ImGui::EndTable();
+		}
 	}
 
 	bool is_valid = Utils::validate_for(node_for->m_cur_start_index,
@@ -513,14 +536,6 @@ void draw_node_for(NodeFor* node_for)
 			Docs::open_doc_id(DOC_ID::FOR_LOOP);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Open in Docs for more info");
-	}
-
-	static bool show_code = false;
-	ImGui::Checkbox("Show Code", &show_code);
-	if (show_code)
-	{
-		node_for->create_str_code();
-		ImGui::Text("  %s", node_for->m_code.c_str());
 	}
 }
 

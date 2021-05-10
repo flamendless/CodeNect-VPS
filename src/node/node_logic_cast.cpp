@@ -7,6 +7,7 @@
 #include "node/node_math.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_size.hpp"
+#include "node/node_prompt.hpp"
 #include "node/node_colors.hpp"
 
 namespace CodeNect::NodeLogic
@@ -33,6 +34,7 @@ void process_cast(NodeCast* node_cast)
 		NodeMath* out_node_math = dynamic_cast<NodeMath*>(out_node);
 		NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
 		NodeSize* out_node_size = dynamic_cast<NodeSize*>(out_node);
+		NodePrompt* out_node_prompt = dynamic_cast<NodePrompt*>(out_node);
 
 		if (out_node_var)
 			from_val = &out_node_var->m_value;
@@ -44,6 +46,8 @@ void process_cast(NodeCast* node_cast)
 			from_val = out_node_arr_access->m_current_val;
 		else if (out_node_size)
 			from_val = &out_node_size->m_val_size;
+		else if (out_node_prompt)
+			from_val = &out_node_prompt->m_fake_input;
 
 		conn = &connection;
 	}

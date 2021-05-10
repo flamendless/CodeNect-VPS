@@ -56,6 +56,9 @@ struct TempActionData
 	bool is_append_newline = false;
 	bool is_append = false;
 
+	char buf_fake_input[BUF_SIZE] = "";
+	std::string fake_input = "";
+
 	NODE_SLOT slot_in = NODE_SLOT::EMPTY;
 	NODE_SLOT slot_out = NODE_SLOT::EMPTY;
 
@@ -113,7 +116,8 @@ struct TempLoopData
 	NODE_CMP cmp = NODE_CMP::EMPTY;
 	std::string str_cmp = "EMPTY";
 
-	//output
+	//slots
+	NODE_SLOT slot_in = NODE_SLOT::EMPTY;
 	NODE_SLOT slot_out = NODE_SLOT::EMPTY;
 
 	bool valid_loop = false;

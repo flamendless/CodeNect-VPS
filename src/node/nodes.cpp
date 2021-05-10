@@ -274,6 +274,7 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 						node_prompt->m_desc = nm->m_desc.c_str();
 						node_prompt->m_override = Utils::bool_from_string(nm->m_override.c_str());
 						node_prompt->m_append_newline = Utils::bool_from_string(nm->m_append_newline.c_str());
+						node_prompt->m_fake_input.set((std::string)nm->m_fake_input);
 						Nodes::v_nodes.push_back(node_prompt);
 						break;
 					}
@@ -370,6 +371,7 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 			{
 				NODE_LOOP loop = NODE_LOOP::_from_string(nm->m_loop.c_str());
 				NODE_CMP cmp = NODE_CMP::_from_string(nm->m_loop_cmp.c_str());
+				NODE_SLOT slot_in = NODE_SLOT::_from_string(nm->m_loop_in.c_str());
 				NODE_SLOT slot_out = NODE_SLOT::_from_string(nm->m_loop_out.c_str());
 				v_slot_info_t&& in = {};
 				v_slot_info_t&& out = {};
@@ -385,6 +387,7 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 					node_for->m_name = nm->m_name.c_str();
 					node_for->m_pos = ImVec2(nm->x, nm->y);
 					node_for->m_desc = nm->m_desc.c_str();
+					node_for->m_in_slots.push_back({slot_in._to_string(), slot_in});
 					node_for->m_out_slots.push_back({slot_out._to_string(), slot_out});
 					Nodes::v_nodes.push_back(node_for);
 				}

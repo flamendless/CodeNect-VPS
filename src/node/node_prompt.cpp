@@ -19,6 +19,7 @@ NodePrompt::NodePrompt(
 	m_orig_str = str;
 	m_in_slots = in_slots;
 	m_out_slots = out_slots;
+	m_fake_input.set((std::string)"");
 
 	PPK_ASSERT(NodeAction::m_action != +NODE_ACTION::EMPTY, "NODE_ACTION must not be EMPTY");
 	PLOGD << "Created NodeAction: " << m_name << ", " << Node::m_kind._to_string();

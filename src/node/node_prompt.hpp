@@ -13,6 +13,7 @@ struct NodePrompt : public NodeAction
 	std::string m_str;
 	bool m_override = false;
 	bool m_append_newline = false;
+	NodeValue m_fake_input;
 
 	explicit NodePrompt(
 		std::string str,
