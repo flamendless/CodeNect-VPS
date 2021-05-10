@@ -12,7 +12,7 @@ namespace CodeNect
 const char* SimulationControl::title = ICON_FA_PLAY_CIRCLE " Simulation Controls";
 ImGuiWindowFlags SimulationControl::flags =
 	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
-	ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoScrollWithMouse;
+	ImGuiWindowFlags_NoScrollWithMouse;
 
 bool SimulationControl::is_open = true;
 ImVec2 SimulationControl::pos;
@@ -45,7 +45,7 @@ void SimulationControl::draw(void)
 	if (!SimulationControl::is_open)
 		return;
 
-	ImGui::SetNextWindowPos(SimulationControl::pos, ImGuiCond_Once, ImVec2(1, 1));
+	ImGui::SetNextWindowPos(SimulationControl::pos, ImGuiCond_FirstUseEver, ImVec2(1, 1));
 
 	if (ImGui::Begin(SimulationControl::title, &SimulationControl::is_open, SimulationControl::flags))
 	{

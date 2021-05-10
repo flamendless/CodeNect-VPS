@@ -14,6 +14,7 @@ void Simulation::iterate(int dir)
 {
 	for (ForState& state : Simulation::m_v_stack)
 	{
+		bool should_iterate = true;
 		for (Node* &node : state.m_nodes)
 		{
 			NodeFor* node_for = dynamic_cast<NodeFor*>(node);
@@ -24,12 +25,15 @@ void Simulation::iterate(int dir)
 				if (state.m_node_for == node_for)
 				{
 					if (!state.m_node_for->m_has_reached_end)
-						return;
+						should_iterate = false;
 					else
 						state.m_node_for->m_has_reached_end = false;
 				}
 			}
 		}
+
+		if (!should_iterate)
+			continue;
 
 		NodeFor* node_for = state.m_node_for;
 		int temp = node_for->m_override_it + (dir * node_for->m_cur_increment);
