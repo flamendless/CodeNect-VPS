@@ -48,6 +48,9 @@ void process_for(NodeFor* node_for)
 		else if (node_array_access)
 			value = node_array_access->m_current_val;
 
+		if (!value)
+			continue;
+
 		const char* slot = connection.in_slot;
 		if (std::strcmp(slot, "INTEGER - start index") == 0)
 			node_for->m_cur_start_index = std::get<int>(value->data);

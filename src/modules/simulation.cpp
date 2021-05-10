@@ -14,8 +14,75 @@ void Simulation::iterate(int dir)
 {
 	for (ForState& state : Simulation::m_v_stack)
 	{
+		for (Node* &node : state.m_nodes)
+		{
+			NodeFor* node_for = dynamic_cast<NodeFor*>(node);
+			if (!node_for)
+				continue;
+			for (ForState& state : Simulation::m_v_stack)
+			{
+				if (state.m_node_for == node_for)
+				{
+					if (!state.m_node_for->m_has_reached_end)
+						return;
+					else
+						state.m_node_for->m_has_reached_end = false;
+				}
+			}
+		}
+
 		NodeFor* node_for = state.m_node_for;
-		node_for->m_override_it += dir;
+		int temp = node_for->m_override_it + (dir * node_for->m_cur_increment);
+		bool is_over = false;
+		bool is_under = false;
+		int last;
+
+		switch (node_for->m_cmp)
+		{
+			case NODE_CMP::EMPTY: break;
+			case NODE_CMP::AND: break;
+			case NODE_CMP::OR: break;
+			case NODE_CMP::EQ: break;
+			case NODE_CMP::NEQ: break;
+			case NODE_CMP::LT:
+			{
+				is_over = !(temp < node_for->m_cur_end_index);
+				is_under = !(temp >= node_for->m_cur_start_index);
+				last = node_for->m_cur_end_index - 1;
+				break;
+			}
+			case NODE_CMP::GT:
+			{
+				is_over = !(temp > node_for->m_cur_end_index);
+				is_under = !(temp <= node_for->m_cur_start_index);
+				last = node_for->m_cur_start_index + 1;
+				break;
+			}
+			case NODE_CMP::LTE:
+			{
+				is_over = !(temp <= node_for->m_cur_end_index);
+				is_under = !(temp > node_for->m_cur_start_index);
+				last = node_for->m_cur_end_index;
+				break;
+			}
+			case NODE_CMP::GTE:
+			{
+				is_over = !(temp >= node_for->m_cur_end_index);
+				is_under = !(temp < node_for->m_cur_start_index);
+				last = node_for->m_cur_start_index;
+				break;
+			}
+		}
+
+		if (is_over)
+		{
+			node_for->m_override_it = node_for->m_cur_start_index;
+			node_for->m_has_reached_end = true;
+		}
+		else if (is_under)
+			node_for->m_override_it = last;
+		else
+			node_for->m_override_it = temp;
 	}
 }
 

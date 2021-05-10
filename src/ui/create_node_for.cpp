@@ -21,6 +21,7 @@ void CreateNode::create_node_for(void)
 		node_for->m_iterator_name = temp->buf_iterator_name;
 		node_for->m_cmp = temp->cmp;
 		node_for->m_desc = CreateNode::buf_desc;
+		node_for->m_in_slots[3] = {temp->slot_in._to_string(), temp->slot_in};
 		node_for->m_out_slots[1] = {temp->slot_out._to_string(), temp->slot_out};
 		PLOGD << "Edited NodeFor: " << node_for->m_name;
 	}
@@ -33,6 +34,7 @@ void CreateNode::create_node_for(void)
 		node->m_end_index = temp->end_index;
 		node->m_increment = temp->increment;
 		node->m_iterator_name = temp->buf_iterator_name;
+		node->m_in_slots.push_back({temp->slot_in._to_string(), temp->slot_in});
 		node->m_out_slots.push_back({temp->slot_out._to_string(), temp->slot_out});
 		node->set_desc(CreateNode::buf_desc);
 		Nodes::v_nodes.push_back(node);
@@ -54,9 +56,10 @@ void CreateNode::draw_for(void)
 		for (NODE_CMP cmp : NODE_CMP::_values())
 		{
 			if (cmp == +NODE_CMP::EMPTY ||
-				cmp == +NODE_CMP::EQ ||
 				cmp == +NODE_CMP::AND ||
-				cmp == +NODE_CMP::OR)
+				cmp == +NODE_CMP::OR ||
+				cmp == +NODE_CMP::EQ ||
+				cmp == +NODE_CMP::NEQ)
 				continue;
 			ImGui::PushID(cmp);
 			const char* txt = NodeComparison::m_cmp_str[cmp._to_string()];
@@ -70,7 +73,22 @@ void CreateNode::draw_for(void)
 		ImGui::EndCombo();
 	}
 
-	if (ImGui::BeginCombo("Out type", tmp->slot_out._to_string()))
+	if (ImGui::BeginCombo("Slot In type", tmp->slot_in._to_string()))
+	{
+		for (NODE_SLOT slot : NODE_SLOT::_values())
+		{
+			if (slot == +NODE_SLOT::EMPTY)
+				continue;
+			ImGui::PushID(slot);
+			const char* txt = slot._to_string();
+			if (ImGui::Selectable(txt, tmp->slot_in._to_string() == txt))
+				tmp->slot_in = slot;
+			ImGui::PopID();
+		}
+		ImGui::EndCombo();
+	}
+
+	if (ImGui::BeginCombo("Slot Out type", tmp->slot_out._to_string()))
 	{
 		for (NODE_SLOT slot : NODE_SLOT::_values())
 		{
@@ -101,7 +119,8 @@ void CreateNode::draw_for(void)
 	}
 
 	tmp->valid_loop = (std::strlen(tmp->buf_iterator_name) != 0) && is_valid &&
-		tmp->slot_out != +NODE_SLOT::EMPTY;
+		tmp->slot_out != +NODE_SLOT::EMPTY &&
+		tmp->slot_in != +NODE_SLOT::EMPTY;
 	CreateNode::can_create = tmp->valid_loop;
 }
 }

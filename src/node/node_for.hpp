@@ -24,6 +24,7 @@ struct NodeFor : public NodeLoop
 
 	int m_cur_it = 0;
 	int m_override_it = 0;
+	bool m_has_reached_end = false;
 
 	explicit NodeFor(
 		NODE_CMP cmp,

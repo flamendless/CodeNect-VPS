@@ -176,29 +176,8 @@ bool validate_for(int si, int ei, int inc, NODE_CMP cmp)
 	switch (cmp)
 	{
 		case NODE_CMP::EMPTY: break;
-		case NODE_CMP::NEQ:
-		{
-			if (inc > 0)
-			{
-				// for (int i = 0; i != 10; i++) //good
-				// for (int i = 10; i != 0; i++) //inf
-				if (si > ei)
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this will result in infinite loop");
-				else
-					is_valid = true;
-			}
-			else if (inc < 0)
-			{
-				// for (int i = 0; i != 10; i--) //inf
-				// for (int i = 10; i != 0; i--) //good
-				if (si < ei)
-					ImGui::TextColored(ImVec4(1, 1, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE " this will result in infinite loop");
-				else
-					is_valid = true;
-			}
-			break;
-		}
-
+		case NODE_CMP::EQ: break;
+		case NODE_CMP::NEQ: break;
 		case NODE_CMP::LT:
 		{
 			//for (int i = 0; i < 10; i++) //good
