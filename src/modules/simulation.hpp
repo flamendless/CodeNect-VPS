@@ -4,6 +4,7 @@
 #include <vector>
 #include "node/node.hpp"
 #include "node/node_for.hpp"
+#include "core/timer.hpp"
 
 namespace CodeNect
 {
@@ -17,13 +18,16 @@ struct Simulation
 {
 	static std::vector<ForState> m_v_stack;
 	static std::vector<Node*> m_v_tracker;
+	static bool is_playing;
+	static Timer* timer;
 
 	Simulation() = delete;
 	static void iterate(int dir);
 	static void reset(void);
+	static void play(float max_timer, bool automatic);
 
 	static bool is_in_for(Node*);
-	static void simulate(Node*);
+	static void update(float dt);
 	static std::vector<Node*> get_node_for_block(Node*);
 	static void determine_node_for_block(std::vector<Node*>&);
 };

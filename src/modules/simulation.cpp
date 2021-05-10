@@ -9,6 +9,8 @@ namespace CodeNect
 {
 std::vector<ForState> Simulation::m_v_stack;
 std::vector<Node*> Simulation::m_v_tracker;
+bool Simulation::is_playing = false;
+Timer* Simulation::timer = nullptr;
 
 void Simulation::iterate(int dir)
 {
@@ -92,6 +94,7 @@ void Simulation::iterate(int dir)
 
 void Simulation::reset(void)
 {
+	Simulation::is_playing = false;
 	for (ForState& state : Simulation::m_v_stack)
 	{
 		NodeFor* node_for = state.m_node_for;
@@ -105,8 +108,43 @@ bool Simulation::is_in_for(Node* node)
 		!= Simulation::m_v_tracker.end();
 }
 
-void Simulation::simulate(Node* node)
+void Simulation::update(float dt)
 {
+	if (!Simulation::is_playing)
+		return;
+
+	Simulation::timer->m_current_sec += dt;
+	if (Simulation::timer->m_current_sec > Simulation::timer->m_max_sec)
+	{
+		Simulation::iterate(1);
+		Simulation::timer->m_current_sec = 0;
+		if (!Simulation::timer->m_repeat)
+		{
+			Simulation::is_playing = false;
+			return;
+		}
+	}
+}
+
+void Simulation::play(float max_timer, bool repeat)
+{
+	if (Simulation::is_playing)
+	{
+		Simulation::is_playing = false;
+		return;
+	}
+
+	if (Simulation::timer)
+	{
+		delete Simulation::timer;
+		Simulation::timer = nullptr;
+	}
+
+	Simulation::timer = new Timer();
+	timer->m_current_sec = 0.0f;
+	timer->m_max_sec = max_timer;
+	timer->m_repeat = repeat;
+	Simulation::is_playing = true;
 }
 
 std::vector<Node*> Simulation::get_node_for_block(Node* node)

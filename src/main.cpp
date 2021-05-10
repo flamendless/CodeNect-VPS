@@ -18,6 +18,7 @@
 #include "ui/inspector.hpp"
 #include "ui/terminal.hpp"
 #include "ui/simulation_control.hpp"
+#include "modules/simulation.hpp"
 #include "ui/zoom.hpp"
 #include "modules/transpiler.hpp"
 
@@ -106,6 +107,7 @@ int main(int argv, char** args)
 		//update
 		sidebar_handler.update(dt);
 		CodeNect::NodeInterface::update(dt);
+		CodeNect::Simulation::update(dt);
 
 		app.render_start();
 
