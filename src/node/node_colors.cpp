@@ -33,6 +33,7 @@ std::map<std::string, ImVec4> NodeColors::m_kind
 	{"DS", NodeColors::Lookup::BLUE},
 	{"GET", NodeColors::Lookup::BLUE},
 	{"STRING", NodeColors::Lookup::VIOLET},
+	{"LOOP", NodeColors::Lookup::GREEN},
 };
 
 void NodeColors::set_connection_color(Connection& connection, COLOR_TYPE color)

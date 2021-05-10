@@ -16,6 +16,10 @@ namespace CodeNect::NodeLogic
 void process_var(NodeVariable* node_var)
 {
 	//set to original value
+	int temp;
+	if (node_var->m_value.m_slot == +NODE_SLOT::INTEGER)
+		temp = std::get<int>(node_var->m_value.data);
+
 	node_var->m_value = node_var->m_value_orig;
 
 	//go through each connection
@@ -35,6 +39,7 @@ void process_var(NodeVariable* node_var)
 		NodeString* out_node_str = dynamic_cast<NodeString*>(out_node);
 		NodePrint* out_node_print = dynamic_cast<NodePrint*>(out_node);
 		NodePrompt* out_node_prompt = dynamic_cast<NodePrompt*>(out_node);
+		NodeFor* out_node_for = dynamic_cast<NodeFor*>(out_node);
 
 		if (out_node_var)
 		{
@@ -59,6 +64,12 @@ void process_var(NodeVariable* node_var)
 			node_var->m_value.set((std::string)out_node_print->m_str);
 		else if (out_node_prompt)
 			node_var->m_value.set((std::string)out_node_prompt->m_str);
+		else if (out_node_for)
+		{
+			const char* slot_in = connection.in_slot;
+			if (std::strcmp(slot_in, "INTEGER - iterator"))
+				node_var->m_value.set((int)temp);
+		}
 	}
 }
 }

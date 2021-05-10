@@ -31,11 +31,11 @@ struct NodeInterface
 	static void draw(void);
 	static void draw_startup(void);
 	static void draw_main(void);
-	static void draw_simulation(void);
 	static void draw_nodes(void);
 	static void draw_nodes_context_menu(void);
 	static void draw_context_menu(ImNodes::CanvasState& canvas);
 	static void jump_to_pos(Node* node);
+	static void highlight_node(Node* node);
 };
 }
 

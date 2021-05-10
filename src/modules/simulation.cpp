@@ -7,16 +7,24 @@
 
 namespace CodeNect
 {
-bool is_paused;
 std::vector<ForState> Simulation::m_v_stack;
 std::vector<Node*> Simulation::m_v_tracker;
 
-void Simulation::iterate(void)
+void Simulation::iterate(int dir)
 {
 	for (ForState& state : Simulation::m_v_stack)
 	{
 		NodeFor* node_for = state.m_node_for;
-		node_for->m_override_it++;
+		node_for->m_override_it += dir;
+	}
+}
+
+void Simulation::reset(void)
+{
+	for (ForState& state : Simulation::m_v_stack)
+	{
+		NodeFor* node_for = state.m_node_for;
+		node_for->m_override_it = node_for->m_cur_start_index;
 	}
 }
 

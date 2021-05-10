@@ -94,6 +94,7 @@ add_executable(CodeNect
 	src/ui/sidebar.cpp
 	src/ui/sidebar_handler.cpp
 	src/ui/sidebar_indicator.cpp
+	src/ui/simulation_control.cpp
 	src/ui/terminal.cpp
 	src/ui/zoom.cpp
 

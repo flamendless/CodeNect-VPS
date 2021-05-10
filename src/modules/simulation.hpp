@@ -15,12 +15,12 @@ struct ForState
 
 struct Simulation
 {
-	static bool is_paused;
 	static std::vector<ForState> m_v_stack;
 	static std::vector<Node*> m_v_tracker;
 
 	Simulation() = delete;
-	static void iterate(void);
+	static void iterate(int dir);
+	static void reset(void);
 
 	static bool is_in_for(Node*);
 	static void simulate(Node*);

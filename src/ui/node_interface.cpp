@@ -40,7 +40,8 @@ ImGuiWindowFlags NodeInterface::flags =
 	ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoMove |
 	ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar |
 	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoSavedSettings |
-	ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar;
+	ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar |
+	ImGuiWindowFlags_AlwaysAutoResize;
 ImVec2 NodeInterface::center_pos;
 
 std::vector<const char*> NodeInterface::v_str = {
@@ -104,10 +105,7 @@ void NodeInterface::draw(void)
 		if (!Project::has_open_proj)
 			NodeInterface::draw_startup();
 		else
-		{
 			NodeInterface::draw_main();
-			NodeInterface::draw_simulation();
-		}
 
 		ImGui::End();
 	}
@@ -170,16 +168,6 @@ void NodeInterface::draw_main(void)
 	{
 		NodeInterface::has_target_node = false;
 		NodeInterface::target_node = nullptr;
-	}
-}
-
-void NodeInterface::draw_simulation(void)
-{
-	if (ImGui::Begin(ICON_FA_PLAY_CIRCLE " Simulation Controls"))
-	{
-		if (ImGui::Button("Iterate"))
-			Simulation::iterate();
-		ImGui::End();
 	}
 }
 
@@ -468,9 +456,13 @@ void NodeInterface::jump_to_pos(Node* node)
 {
 	NodeInterface::target_node = node;
 	NodeInterface::has_target_node = true;
-	NodeInterface::is_highlighting = true;
 	NodeInterface::has_jumped = false;
+	NodeInterface::highlight_node(node);
+}
 
+void NodeInterface::highlight_node(Node* node)
+{
+	NodeInterface::is_highlighting = true;
 	const ImVec4& node_color = NodeColors::m_kind[node->m_kind._to_string()];
 	NodeInterface::color_highlight.x = (int)(node_color.x * 255);
 	NodeInterface::color_highlight.y = (int)(node_color.y * 255);

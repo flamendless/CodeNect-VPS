@@ -7,6 +7,7 @@
 #include "node/node_cast.hpp"
 #include "node/node_size.hpp"
 #include "node/node_array_access.hpp"
+#include "node/node_colors.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -57,7 +58,8 @@ void process_for(NodeFor* node_for)
 	}
 
 	//manage iterator output
-	for (const Connection& connection : node_for->m_connections)
+	bool has_it = false;
+	for (Connection& connection : node_for->m_connections)
 	{
 		Node* out_node = static_cast<Node*>(connection.out_node);
 		Node* in_node = static_cast<Node*>(connection.in_node);
@@ -66,9 +68,12 @@ void process_for(NodeFor* node_for)
 		const char* slot = connection.out_slot;
 		if (std::strcmp(slot, "INTEGER - iterator") == 0)
 		{
+			if (has_it)
+				NodeColors::set_connection_color(connection, COLOR_TYPE::FAIL);
+
 			NodeVariable* node_var = static_cast<NodeVariable*>(in_node);
-			//TODO FIX, add override to NodeVariable?
 			node_var->m_value.set((int)node_for->m_cur_it);
+			has_it = true;
 		}
 	}
 }

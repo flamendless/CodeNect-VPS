@@ -58,7 +58,7 @@ Help::tuple_colors_t Help::v_node_colors_items
 	help_tc("Yellow", "node is of kind 'Operation'", NodeColors::Lookup::YELLOW),
 	help_tc("Light Blue", "node is of kind 'Cast'", NodeColors::Lookup::LIGHT_BLUE),
 	help_tc("Pink", "node is of kind 'Comparison'", NodeColors::Lookup::PINK),
-	help_tc("Green", "node is of kind 'Branch'", NodeColors::Lookup::GREEN),
+	help_tc("Green", "node is of kind 'Branch'/'Loop'", NodeColors::Lookup::GREEN),
 	help_tc("Orange", "node is of kind 'Action'", NodeColors::Lookup::ORANGE),
 	help_tc("Violet", "node is of kind 'Math'", NodeColors::Lookup::VIOLET),
 };

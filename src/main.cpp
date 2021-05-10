@@ -17,6 +17,7 @@
 #include "ui/help.hpp"
 #include "ui/inspector.hpp"
 #include "ui/terminal.hpp"
+#include "ui/simulation_control.hpp"
 #include "ui/zoom.hpp"
 #include "modules/transpiler.hpp"
 
@@ -51,6 +52,10 @@ int main(int argv, char** args)
 	//Zoom
 	if (CodeNect::Zoom::init() != RES_SUCCESS) return -1;
 	CodeNect::Zoom::register_commands();
+
+	//SimulationControl
+	if (CodeNect::SimulationControl::init() != RES_SUCCESS) return -1;
+	CodeNect::SimulationControl::register_commands();
 
 	//Sidebar
 	CodeNect::Sidebar sidebar;
@@ -118,6 +123,7 @@ int main(int argv, char** args)
 		CodeNect::Inspector::draw();
 		CodeNect::Zoom::draw();
 		CodeNect::Terminal::draw();
+		CodeNect::SimulationControl::draw();
 		CodeNect::Docs::draw();
 
 		app.render_end();
