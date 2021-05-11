@@ -7,7 +7,9 @@ namespace CodeNect::Templates
 {
 inline static const char* incl_tcc = "#include <tcclib.h>\n"
 	"//for assert for checking array out of bounds\n"
-	"#include <assert.h>\n";
+	"#include <assert.h>\n"
+	"//for using tolower, toupper\n"
+	"#include <ctype.h>\n";
 inline static const char* incl_stdio = "//for using input and output functions like printf and getline\n"
 	"#include <stdio.h>\n";
 inline static const char* incl_stdlib = "//for assert for checking array out of bounds\n"
@@ -17,9 +19,7 @@ inline static const char* incl_stdlib = "//for assert for checking array out of 
 inline static const char* incl_math = "//for using math functions like sin, cos, tan, pow, and more\n"
 	"#include <math.h>\n";
 inline static const char* incl_string = "//for using strcmp and other string-related functions\n"
-	"#include <string.h>\n"
-	"//for using tolower, toupper\n"
-	"#include <ctype.h>\n";
+	"#include <string.h>\n";
 inline static const char* incl_bool = "//C doesn't have native bool, so we implement our own\n"
 	"#define bool int\n"
 	"#define true 1\n"

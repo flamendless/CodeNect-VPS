@@ -554,7 +554,6 @@ std::string ntc_op(NodeOperation* node_op, bool val_only, std::string& pre)
 			{
 				std::string str_cast = NodeToCode::ntc_cast(out_node_cast, true, pre);
 				v_elements.push_back(Transpiler::recent_temp);
-				string_concat = true;
 			}
 			else
 			{
