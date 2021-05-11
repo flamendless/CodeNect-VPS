@@ -24,7 +24,7 @@ struct Simulation
 	Simulation() = delete;
 	static void iterate(int dir);
 	static void reset(void);
-	static void play(float max_timer, bool automatic);
+	static void play(float max_timer);
 
 	static bool is_in_for(Node*);
 	static void update(float dt);

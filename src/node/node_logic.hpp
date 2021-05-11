@@ -22,6 +22,7 @@
 namespace CodeNect::NodeLogic
 {
 void process(void);
+void process_node(Node*);
 void process_var(NodeVariable*);
 void process_op(NodeOperation*);
 void process_cast(NodeCast*);

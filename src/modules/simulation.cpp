@@ -102,12 +102,6 @@ void Simulation::reset(void)
 	}
 }
 
-bool Simulation::is_in_for(Node* node)
-{
-	return std::find(Simulation::m_v_tracker.begin(), Simulation::m_v_tracker.end(), node)
-		!= Simulation::m_v_tracker.end();
-}
-
 void Simulation::update(float dt)
 {
 	if (!Simulation::is_playing)
@@ -118,15 +112,10 @@ void Simulation::update(float dt)
 	{
 		Simulation::iterate(1);
 		Simulation::timer->m_current_sec = 0;
-		if (!Simulation::timer->m_repeat)
-		{
-			Simulation::is_playing = false;
-			return;
-		}
 	}
 }
 
-void Simulation::play(float max_timer, bool repeat)
+void Simulation::play(float max_timer)
 {
 	if (Simulation::is_playing)
 	{
@@ -143,8 +132,13 @@ void Simulation::play(float max_timer, bool repeat)
 	Simulation::timer = new Timer();
 	timer->m_current_sec = 0.0f;
 	timer->m_max_sec = max_timer;
-	timer->m_repeat = repeat;
 	Simulation::is_playing = true;
+}
+
+bool Simulation::is_in_for(Node* node)
+{
+	return std::find(Simulation::m_v_tracker.begin(), Simulation::m_v_tracker.end(), node)
+		!= Simulation::m_v_tracker.end();
 }
 
 std::vector<Node*> Simulation::get_node_for_block(Node* node)
@@ -157,14 +151,17 @@ std::vector<Node*> Simulation::get_node_for_block(Node* node)
 			continue;
 		v.push_back(in_node);
 		std::vector<Node*> v2 = Simulation::get_node_for_block(in_node);
+		v2.push_back(in_node);
 		for (Node* &node : v2)
 		{
-			bool found = std::find(v.begin(), v.end(), node) != v.end();
+			std::vector<Node*>& tracker = Simulation::m_v_tracker;
+			bool found = std::find(tracker.begin(), tracker.end(), node) != tracker.end();
 			if (!found)
-			{
-				v2.push_back(node);
 				Simulation::m_v_tracker.push_back(node);
-			}
+
+			bool found2 = std::find(v.begin(), v.end(), node) != v.end();
+			if (!found2)
+				v.push_back(node);
 		}
 	}
 	return v;
@@ -196,6 +193,11 @@ void Simulation::determine_node_for_block(std::vector<Node*>& v_nodes)
 	// 	for (Node* &node : state.m_nodes)
 	// 		PLOGD << "\t" << node->m_name;
 	// }
+	// PLOGD << "end";
+    //
+	// PLOGD << "m_tracker";
+	// for (Node* &node : Simulation::m_v_tracker)
+	// 	PLOGD << "\t" << node->m_name;
 	// PLOGD << "end";
 	// exit(1);
 }

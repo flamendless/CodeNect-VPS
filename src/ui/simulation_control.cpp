@@ -56,11 +56,10 @@ void SimulationControl::draw(void)
 		ImGui::SameLine();
 
 		static float max_timer = 1.0f;
-		static bool repeat = false;
 		const char* icon = Simulation::is_playing ? ICON_FA_PAUSE : ICON_FA_PLAY;
 
 		if (ImGui::Button(icon))
-			Simulation::play(max_timer, repeat);
+			Simulation::play(max_timer);
 		if (ImGui::IsItemHovered())
 		{
 			if (Simulation::is_playing)
@@ -81,8 +80,6 @@ void SimulationControl::draw(void)
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Step iteration by 1");
 
-		ImGui::Checkbox("Loop automatically", &repeat);
-		Utils::help_marker("Automatically play iteration after it reach the end", true);
 		ImGui::SliderFloat("Per second", &max_timer, 0.1f, 5.0f);
 		Utils::help_marker("How many seconds before going to next iteration", true);
 
