@@ -6,6 +6,7 @@
 #include "plog/Log.h"
 #include "ppk_assert.h"
 #include "modules/filesystem.hpp"
+#include "modules/transpiler.hpp"
 #include "core/app.hpp"
 #include "core/defines.hpp"
 #include "core/utils.hpp"
@@ -26,7 +27,7 @@
 #include "node/node_string.hpp"
 #include "node/node_loop.hpp"
 #include "node/node_for.hpp"
-#include "modules/transpiler.hpp"
+#include "node/node_set.hpp"
 
 namespace CodeNect
 {
@@ -225,6 +226,7 @@ int Project::save(void)
 			{
 				NodePrint* node_print = dynamic_cast<NodePrint*>(node);
 				NodePrompt* node_prompt = dynamic_cast<NodePrompt*>(node);
+				NodeSet* node_set = dynamic_cast<NodeSet*>(node);
 
 				if (node_print)
 				{
@@ -251,6 +253,12 @@ int Project::save(void)
 					ini.SetValue(section, "is_override", is_override);
 					ini.SetValue(section, "is_append_newline", is_append_newline);
 					ini.SetValue(section, "fake_input", std::get<std::string>(node_prompt->m_fake_input.data).c_str());
+				}
+				else if (node_set)
+				{
+					ini.SetValue(section, "action", node_set->m_action._to_string());
+					ini.SetValue(section, "target_var_name", node_set->m_node_var->m_name);
+					ini.SetValue(section, "set_value", node_set->m_node_val.get_value_str_ex().c_str());
 				}
 				break;
 			}
@@ -503,6 +511,13 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 		nm->m_override = ini.GetValue(section, "is_override", "false");
 		nm->m_append = ini.GetValue(section, "is_append", "false");
 		nm->m_append_newline = ini.GetValue(section, "is_append_newline", "false");
+	}
+
+	if (std::strcmp(action, "SET") == 0)
+	{
+		nm->m_action = action;
+		nm->m_target_var_name = ini.GetValue(section, "target_var_name");
+		nm->m_set_value = ini.GetValue(section, "set_value");
 	}
 
 	if (std::strcmp(get, "ARRAY_ACCESS") == 0)

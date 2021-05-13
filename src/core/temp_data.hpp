@@ -3,6 +3,7 @@
 
 #include "node/node.hpp"
 #include "core/defines.hpp"
+#include "node/node_var.hpp"
 
 namespace CodeNect
 {
@@ -55,9 +56,17 @@ struct TempActionData
 	bool is_override = false;
 	bool is_append_newline = false;
 	bool is_append = false;
-
 	char buf_fake_input[BUF_SIZE] = "";
 	std::string fake_input = "";
+
+	//set
+	NodeVariable* node_var;
+	NodeValue node_val;
+	NODE_SLOT slot_val = NODE_SLOT::EMPTY;
+	char buf_string[BUF_SIZE * 2] = "";
+	int temp_int = 0;
+	float temp_float = 0;
+	double temp_double = 0;
 
 	NODE_SLOT slot_in = NODE_SLOT::EMPTY;
 	NODE_SLOT slot_out = NODE_SLOT::EMPTY;

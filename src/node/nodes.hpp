@@ -29,7 +29,7 @@ struct Nodes
 	static Node* find_connected_by_value(Node* node, NodeValue* val);
 	static unsigned int count_node_dep(Node* node);
 	static void build_slots(NodeMeta& meta, v_slot_info_t& in, v_slot_info_t& out);
-	static void build_from_meta(const std::vector<NodeMeta*> &v_node_meta);
+	static void build_from_meta(const std::vector<NodeMeta*> &v_node_meta, bool is_deferred = false);
 	static void build_from_meta(const std::vector<ConnectionMeta*> &v_connection_meta);
 	static unsigned int count_connections(void);
 	static const char* get_title(Node* node);

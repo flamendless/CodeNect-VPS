@@ -18,6 +18,7 @@
 #include "node/node_string.hpp"
 #include "node/node_loop.hpp"
 #include "node/node_for.hpp"
+#include "node/node_set.hpp"
 
 namespace CodeNect
 {
@@ -157,9 +158,11 @@ void Nodes::build_slots(NodeMeta& meta, v_slot_info_t& in, v_slot_info_t& out)
 		out.push_back({output.c_str(), NODE_SLOT::_from_string(output.c_str())});
 }
 
-void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
+void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta, bool is_deferred)
 {
 	PLOGI << "Building nodes...";
+	std::vector<NodeMeta*> v_deferred;
+
 	for (NodeMeta* nm : v_node_meta)
 	{
 		NODE_KIND kind = NODE_KIND::_from_string(nm->m_kind.c_str());
@@ -278,9 +281,36 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 						Nodes::v_nodes.push_back(node_prompt);
 						break;
 					}
+					case NODE_ACTION::SET:
+					{
+						if (!is_deferred)
+						{
+							v_deferred.push_back(nm);
+							continue;
+						}
+						NodeVariable* node_var = static_cast<NodeVariable*>(Nodes::find_by_name(nm->m_target_var_name.c_str()));
+						NodeValue val;
+						switch (node_var->m_value_orig.m_slot)
+						{
+							case NODE_SLOT::EMPTY: break;
+							case NODE_SLOT::BOOL: val.to_bool(nm->m_set_value.c_str()); break;
+							case NODE_SLOT::INTEGER: val.to_int(nm->m_set_value.c_str()); break;
+							case NODE_SLOT::FLOAT: val.to_float(nm->m_set_value.c_str()); break;
+							case NODE_SLOT::DOUBLE: val.to_double(nm->m_set_value.c_str()); break;
+							case NODE_SLOT::STRING: val.set(nm->m_set_value); break;
+						}
+
+						NodeSet* node_set = new NodeSet(node_var, val, std::move(in), std::move(out));
+						node_set->m_name = nm->m_name.c_str();
+						node_set->m_pos = ImVec2(nm->x, nm->y);
+						node_set->m_desc = nm->m_desc.c_str();
+						Nodes::v_nodes.push_back(node_set);
+						break;
+					}
 				}
 				break;
 			}
+
 			case NODE_KIND::MATH:
 			{
 				v_slot_info_t&& in = {};
@@ -405,6 +435,9 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta)
 
 		Nodes::reset_ids();
 	}
+
+	if (!is_deferred && v_deferred.size() > 0)
+		Nodes::build_from_meta(v_deferred, true);
 	PLOGI << "Built nodes successfully";
 }
 

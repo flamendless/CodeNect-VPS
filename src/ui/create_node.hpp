@@ -67,6 +67,7 @@ struct CreateNode
 	static void create_node_size(void);
 	static void create_node_string(void);
 	static void create_node_for(void);
+	static void create_node_set(void);
 
 	static void draw(void);
 	static void draw_desc(void);
@@ -74,11 +75,11 @@ struct CreateNode
 
 	//NodeVariable
 	static void draw_var(void);
-	static void draw_opt_bool(void);
-	static void draw_opt_int(void);
-	static void draw_opt_float(void);
-	static void draw_opt_double(void);
-	static void draw_opt_string(void);
+	static void draw_opt_bool(NodeValue*);
+	static void draw_opt_int(NodeValue*, int&);
+	static void draw_opt_float(NodeValue*, float&);
+	static void draw_opt_double(NodeValue*, double&);
+	static void draw_opt_string(NodeValue*, char[BUF_SIZE * 2]);
 
 	//NodeOperation
 	static void draw_op(void);
@@ -91,11 +92,9 @@ struct CreateNode
 	static void draw_cmp(void);
 
 	//NodeAction
-	//NodePrint
 	static void draw_print(void);
-
-	//NodePrompt
 	static void draw_prompt(void);
+	static void draw_set(void);
 
 	//NodeMath
 	static void draw_math(void);
@@ -106,9 +105,7 @@ struct CreateNode
 	static void draw_array_elements(void);
 
 	//NodeGet
-	//NodeArrayAccess
 	static void draw_array_access(void);
-	//NodeSize
 	static void draw_size(void);
 
 	//Loop

@@ -105,64 +105,51 @@ void CreateNode::draw_var(void)
 	switch (var->slot)
 	{
 		case NODE_SLOT::EMPTY: break;
-		case NODE_SLOT::BOOL: CreateNode::draw_opt_bool(); break;
-		case NODE_SLOT::INTEGER: CreateNode::draw_opt_int(); break;
-		case NODE_SLOT::FLOAT: CreateNode::draw_opt_float(); break;
-		case NODE_SLOT::DOUBLE: CreateNode::draw_opt_double(); break;
-		case NODE_SLOT::STRING: CreateNode::draw_opt_string(); break;
+		case NODE_SLOT::BOOL: CreateNode::draw_opt_bool(&var->value); break;
+		case NODE_SLOT::INTEGER: CreateNode::draw_opt_int(&var->value, var->temp_int); break;
+		case NODE_SLOT::FLOAT: CreateNode::draw_opt_float(&var->value, var->temp_float); break;
+		case NODE_SLOT::DOUBLE: CreateNode::draw_opt_double(&var->value, var->temp_double); break;
+		case NODE_SLOT::STRING: CreateNode::draw_opt_string(&var->value, var->buf_string); break;
 	}
 
 	// finalize
 	CreateNode::can_create = var->valid_name && var->valid_value;
 }
 
-void CreateNode::draw_opt_bool(void)
+void CreateNode::draw_opt_bool(NodeValue* val)
 {
-	TempVarData* var = std::get<TempVarData*>(data);
-
 	ImGui::Text("Boolean value:");
-
-	if (ImGui::RadioButton("true", std::get<bool>(var->value.data) == true))
-		var->value.set(true);
-
+	if (ImGui::RadioButton("true", std::get<bool>(val->data) == true))
+		val->set(true);
 	ImGui::SameLine();
-
-	if (ImGui::RadioButton("false", std::get<bool>(var->value.data) == false))
-		var->value.set(false);
+	if (ImGui::RadioButton("false", std::get<bool>(val->data) == false))
+		val->set(false);
 }
 
-void CreateNode::draw_opt_int(void)
+void CreateNode::draw_opt_int(NodeValue* val, int& temp_int)
 {
-	TempVarData* var = std::get<TempVarData*>(data);
-
-	if (ImGui::InputInt("Integer value", &var->temp_int))
-		var->value.set(var->temp_int);
+	if (ImGui::InputInt("Integer value", &temp_int))
+		val->set(temp_int);
 }
 
-void CreateNode::draw_opt_float(void)
+void CreateNode::draw_opt_float(NodeValue* val, float& temp_float)
 {
-	TempVarData* var = std::get<TempVarData*>(data);
-
-	if (ImGui::InputFloat("Float value", &var->temp_float))
-		var->value.set(var->temp_float);
+	if (ImGui::InputFloat("Float value", &temp_float))
+		val->set(temp_float);
 }
 
-void CreateNode::draw_opt_double(void)
+void CreateNode::draw_opt_double(NodeValue* val, double& temp_double)
 {
-	TempVarData* var = std::get<TempVarData*>(data);
-
-	if (ImGui::InputDouble("Double value", &var->temp_double))
-		var->value.set(var->temp_double);
+	if (ImGui::InputDouble("Double value", &temp_double))
+		val->set(temp_double);
 }
 
-void CreateNode::draw_opt_string(void)
+void CreateNode::draw_opt_string(NodeValue* val, char buf_string[BUF_SIZE * 2])
 {
-	TempVarData* var = std::get<TempVarData*>(data);
-
-	if (ImGui::InputText("String value", var->buf_string, IM_ARRAYSIZE(var->buf_string)))
+	if (ImGui::InputText("String value", buf_string, BUF_SIZE * 2))
 	{
-		std::string str = std::string(var->buf_string);
-		var->value.set(str);
+		std::string str = std::string(buf_string);
+		val->set(str);
 	}
 }
 }

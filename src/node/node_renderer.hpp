@@ -20,6 +20,7 @@
 #include "node/node_string.hpp"
 #include "node/node_loop.hpp"
 #include "node/node_for.hpp"
+#include "node/node_set.hpp"
 
 namespace CodeNect::NodeRenderer
 {
@@ -33,6 +34,7 @@ void draw_node_cmp(NodeComparison*);
 void draw_node_branch(NodeBranch*);
 void draw_node_print(NodePrint*);
 void draw_node_prompt(NodePrompt*);
+void draw_node_set(NodeSet*);
 void draw_node_array_access(NodeArrayAccess*);
 void draw_node_math(NodeMath*);
 void draw_node_array(NodeArray*);

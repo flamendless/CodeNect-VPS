@@ -15,6 +15,7 @@
 #include "node/node_branch.hpp"
 #include "node/node_size.hpp"
 #include "node/node_string.hpp"
+#include "node/node_set.hpp"
 #include "ui/alert.hpp"
 #include "ui/docs.hpp"
 #include "modules/simulation.hpp"
@@ -38,6 +39,7 @@ void process_array_access(NodeArrayAccess*);
 void process_size(NodeSize*);
 void process_string(NodeString*);
 void process_for(NodeFor*);
+void process_set(NodeSet*);
 
 bool check_cyclic(Node* in_node, Node* out_node);
 bool validate_node_print(Node* in_node, Node* out_node);

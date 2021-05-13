@@ -17,6 +17,7 @@
 #include "node/node_string.hpp"
 #include "node/node_loop.hpp"
 #include "node/node_for.hpp"
+#include "node/node_set.hpp"
 #include "ui/alert.hpp"
 
 namespace CodeNect
@@ -222,6 +223,14 @@ void CreateNode::edit(Node* node)
 					temp->is_override = node_prompt->m_override;
 					break;
 				}
+				case NODE_ACTION::SET:
+				{
+					NodeSet* node_set = static_cast<NodeSet*>(node);
+					temp->node_var = node_set->m_node_var;
+					temp->node_val.copy(node_set->m_node_val);
+					temp->slot_val = node_set->m_node_val.m_slot;
+					break;
+				}
 			}
 
 			temp->slot_in = NODE_SLOT::_from_string(node_action->m_in_slots[0].title);
@@ -390,6 +399,7 @@ void CreateNode::draw(void)
 					case NODE_ACTION::EMPTY: break;
 					case NODE_ACTION::PRINT: CreateNode::draw_print(); break;
 					case NODE_ACTION::PROMPT: CreateNode::draw_prompt(); break;
+					case NODE_ACTION::SET: CreateNode::draw_set(); break;
 				}
 				break;
 			}
@@ -467,6 +477,7 @@ void CreateNode::draw_buttons(void)
 						case NODE_ACTION::EMPTY: break;
 						case NODE_ACTION::PRINT: CreateNode::create_node_print(); break;
 						case NODE_ACTION::PROMPT: CreateNode::create_node_prompt(); break;
+						case NODE_ACTION::SET: CreateNode::create_node_set(); break;
 					}
 					break;
 				}

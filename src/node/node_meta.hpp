@@ -28,13 +28,15 @@ struct NodeMeta
 	std::string m_cmp_str;
 	std::string m_cmp;
 
-	//NodePrint/NodePrompt
+	//NodePrint/NodePrompt/NodeSet
 	std::string m_action;
 	std::string m_orig_str;
 	std::string m_override;
 	std::string m_append;
 	std::string m_append_newline;
 	std::string m_fake_input;
+	std::string m_target_var_name;
+	std::string m_set_value;
 
 	//NodeMath
 	std::string m_math;

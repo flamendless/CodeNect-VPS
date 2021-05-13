@@ -55,6 +55,11 @@ void draw_node(Node* node)
 					NodeRenderer::draw_node_prompt(static_cast<NodePrompt*>(node));
 					break;
 				}
+				case NODE_ACTION::SET:
+				{
+					NodeRenderer::draw_node_set(static_cast<NodeSet*>(node));
+					break;
+				}
 			}
 			break;
 		}
@@ -233,12 +238,10 @@ void draw_node_print(NodePrint* node_print)
 	{
 		ImGui::TableNextRow();
 		ImGui::TableNextColumn();
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Action:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Output:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
 
 		ImGui::TableNextColumn();
-		ImGui::Text("%s", node_print->m_action._to_string());
 		ImGui::Text("%s", node_print->m_str.c_str());
 		ImGui::Text("%s", node_print->m_desc);
 		ImGui::EndTable();
@@ -258,13 +261,11 @@ void draw_node_prompt(NodePrompt* node_prompt)
 	{
 		ImGui::TableNextRow();
 		ImGui::TableNextColumn();
-		ImGui::TextColored(Config::NodeInterface_c::label_color, "Action:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Prompt:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Fake Input:");
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
 
 		ImGui::TableNextColumn();
-		ImGui::Text("%s", node_prompt->m_action._to_string());
 		ImGui::Text("%s", node_prompt->m_str.c_str());
 		ImGui::Text("%s", node_prompt->m_fake_input.get_value_str_ex().c_str());
 		ImGui::Text("%s", node_prompt->m_desc);
@@ -275,6 +276,24 @@ void draw_node_prompt(NodePrompt* node_prompt)
 	Utils::help_marker("Should the prompt message be overriden by the input slot", true);
 	ImGui::Checkbox("Append New Line", &node_prompt->m_append_newline);
 	Utils::help_marker("Should the output string be appended with newline/nextline", true);
+}
+
+void draw_node_set(NodeSet* node_set)
+{
+	if (ImGui::BeginTable("TableNode##NodeSet", 2, ImGuiTableFlags_SizingFixedFit))
+	{
+		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Set Variable:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Set Value:");
+		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
+
+		ImGui::TableNextColumn();
+		ImGui::Text("%s", node_set->m_node_var->m_name);
+		ImGui::Text("%s", node_set->m_node_val.get_value_str_ex().c_str());
+		ImGui::Text("%s", node_set->m_desc);
+		ImGui::EndTable();
+	}
 }
 
 void draw_node_math(NodeMath* node_math)

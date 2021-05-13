@@ -24,26 +24,26 @@ void process(void)
 			NodeColors::set_connection_color(connection, COLOR_TYPE::DEFAULT);
 	}
 
-	// Simulation::determine_node_for_block(Nodes::v_nodes);
-	// std::vector<Node*> v_deferred;
-    //
-	// for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
-	// 	it != Nodes::v_nodes.end();
-	// 	it++)
-	// {
-	// 	Node* node = static_cast<Node*>(*it);
-	// 	if (Simulation::is_in_for(node))
-	// 	{
-	// 		v_deferred.push_back(node);
-	// 		continue;
-	// 	}
-	// 	NodeLogic::process_node(node);
-	// }
-    //
-	// for (Node* &node : v_deferred)
-	// 	NodeLogic::process_node(node);
-    //
-	// NodeLogic::validate_branches();
+	Simulation::determine_node_for_block(Nodes::v_nodes);
+	std::vector<Node*> v_deferred;
+
+	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
+		it != Nodes::v_nodes.end();
+		it++)
+	{
+		Node* node = static_cast<Node*>(*it);
+		if (Simulation::is_in_for(node))
+		{
+			v_deferred.push_back(node);
+			continue;
+		}
+		NodeLogic::process_node(node);
+	}
+
+	for (Node* &node : v_deferred)
+		NodeLogic::process_node(node);
+
+	NodeLogic::validate_branches();
 }
 
 void process_node(Node* node)
@@ -139,6 +139,12 @@ void process_node(Node* node)
 				{
 					NodePrompt* node_prompt = static_cast<NodePrompt*>(node);
 					NodeLogic::process_prompt(node_prompt);
+					break;
+				}
+				case NODE_ACTION::SET:
+				{
+					NodeSet* node_set = static_cast<NodeSet*>(node);
+					NodeLogic::process_set(node_set);
 					break;
 				}
 			}
