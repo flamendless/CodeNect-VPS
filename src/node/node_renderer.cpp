@@ -556,6 +556,13 @@ void draw_connections(Node& node)
 		can_add &= NodeLogic::validate_node_string(in_node, out_node);
 		can_add &= NodeLogic::validate_node_for(in_node, out_node);
 
+		bool has_cycle = NodeLogic::check_cyclic(in_node, out_node);
+		if (has_cycle)
+		{
+			can_add = false;
+			Alert::open_for_docs(std::move("Cyclic nodes are not allowed"), DOC_ID::CYCLIC);
+		}
+
 		if (can_add)
 		{
 			in_node->new_connection(new_connection);

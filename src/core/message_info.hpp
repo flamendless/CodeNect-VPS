@@ -14,7 +14,7 @@ BETTER_ENUM(DOC_ID, int, EMPTY = 1,
 		FOR_LOOP,
 
 		//for connection warning/errors
-		ARRAY_TO_PRINT, CANT_REF_ARRAY, IT_MUST_BE_VAR
+		ARRAY_TO_PRINT, CANT_REF_ARRAY, IT_MUST_BE_VAR, CYCLIC
 	)
 
 struct MessageInfo

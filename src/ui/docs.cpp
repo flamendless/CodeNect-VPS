@@ -50,6 +50,9 @@ std::string doc_iterator =
 std::string doc_for_loops =
 #include "markdown/doc_for_loops.md"
 ;
+std::string doc_cyclic =
+#include "markdown/doc_cyclic.md"
+;
 
 std::map<std::string, Doc> m_docs = {
 	{"BRANCH_CONFLICT", {"Branch Conflict", std::move(doc_branch_conflict)}},
@@ -63,6 +66,7 @@ std::map<std::string, Doc> m_docs = {
 	{"ARRAY_TO_PRINT", {"Printing Array", std::move(doc_printing_array)}},
 	{"CANT_REF_ARRAY", {"Referencing an Array", std::move(doc_ref_array)}},
 	{"IT_MUST_BE_VAR", {"Iterator", std::move(doc_iterator)}},
+	{"CYCLIC", {"Cyclic Nodes", std::move(doc_cyclic)}},
 };
 
 int Docs::init(void)

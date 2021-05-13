@@ -39,6 +39,7 @@ void process_size(NodeSize*);
 void process_string(NodeString*);
 void process_for(NodeFor*);
 
+bool check_cyclic(Node* in_node, Node* out_node);
 bool validate_node_print(Node* in_node, Node* out_node);
 bool validate_node_array(Node* in_node, Node* out_node);
 bool validate_node_string(Node* in_node, Node* out_node);
