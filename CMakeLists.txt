@@ -26,6 +26,7 @@ add_executable(CodeNect
 	src/modules/node_to_code.cpp
 	src/modules/simulation.cpp
 	src/modules/transpiler.cpp
+	src/modules/transpiler_code.cpp
 	src/node/connection.cpp
 
 	src/node/node.cpp

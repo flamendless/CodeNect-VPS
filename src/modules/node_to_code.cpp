@@ -1068,7 +1068,7 @@ std::string ntc_set(NodeSet* node_set)
 
 std::string ntc_branch(NodeBranch* node_branch, bool is_in_else)
 {
-	PLOGD << "ntc_branch: " << node_branch->m_name;
+	PLOGD << "ntc_branch: " << node_branch->m_name << ", " << is_in_else;
 	std::string str = "";
 	std::string pre = "";
 	std::string rhs = "";

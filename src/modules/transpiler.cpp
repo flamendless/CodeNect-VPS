@@ -477,44 +477,12 @@ void Transpiler::transpile_decls_array(std::vector<Node*>& v, std::string& outpu
 
 Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output, State* current_state)
 {
-	if (current_state)
-	{
-		PLOGW << "in branch: " << current_state->node_branch;
-		PLOGW << "in for: " << current_state->node_for;
-	}
-
 	for (std::vector<Node*>::iterator it = v.begin();
 		it != v.end();
 		it++)
 	{
 		Node* node = *it;
-
-		//check if current node_var is iterator var
-		if (current_state && current_state->node_for)
-		{
-			NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
-			if (node_var)
-			{
-				for (const Connection& connection : node_var->m_connections)
-				{
-					Node* out_node = static_cast<Node*>(connection.out_node);
-					if (out_node == current_state->node_for)
-					{
-						const char* slot = connection.out_slot;
-						if (std::strcmp(slot, "INTEGER - iterator") == 0)
-						{
-							PLOGD << "Node is iterator variable. Skipping...";
-							Transpiler::m_declared.insert({node->m_name, true});
-							++Transpiler::n_transpiled;
-							continue;
-						}
-					}
-				}
-			}
-		}
-
 		bool found = Transpiler::m_declared.find(node->m_name) != Transpiler::m_declared.end();
-		PLOGD << "transpiling: " << node->m_name << ", found = " << found;
 		if (found)
 		{
 			if (current_state && current_state->node_branch && current_state->is_in_else)
@@ -643,8 +611,7 @@ Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output, State* c
 				output.append(NodeToCode::indent()).append("{").append("\n");
 				Transpiler::level++;
 				output.append("\n");
-				if (!current_state->is_in_else)
-					return node_branch;
+				return node_branch;
 				break;
 			}
 
@@ -678,7 +645,6 @@ Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output, State* c
 				}
 			}
 		}
-		PLOGD << "transpiled: " << node->m_name;
 	}
 	return nullptr;
 }
@@ -686,9 +652,10 @@ Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output, State* c
 std::vector<std::vector<Node*>> Transpiler::get_v_sequence(State* state)
 {
 	//get the independent sequence/chain of nodes
+	std::vector<Node*>& v_entry = state->v_rest;
 	std::vector<std::vector<Node*>> v_out;
-	for (std::vector<Node*>::iterator it = state->v_rest.begin();
-		it != state->v_rest.end();
+	for (std::vector<Node*>::iterator it = v_entry.begin();
+		it != v_entry.end();
 		it++)
 	{
 		Node* node = *it;
@@ -702,7 +669,7 @@ std::vector<std::vector<Node*>> Transpiler::get_v_sequence(State* state)
 	std::vector<std::vector<Node*>> v_final;
 	for (std::vector<Node*>& v : v_out)
 	{
-		bool cb_found = false;
+		bool branch_found = false;
 		std::vector<Node*> v_temp;
 		for (std::vector<Node*>::iterator it = v.begin();
 			it != v.end();
@@ -710,19 +677,18 @@ std::vector<std::vector<Node*>> Transpiler::get_v_sequence(State* state)
 		{
 			Node* node = static_cast<Node*>(*it);
 			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
-			NodeFor* node_for = dynamic_cast<NodeFor*>(node);
-			if (node_branch || node_for)
+			if (node_branch)
 			{
-				cb_found = true;
+				branch_found = true;
 				std::vector<Node*> v_new;
-				v_new.push_back(node);
+				v_new.push_back(node_branch);
 				v_final.push_back(v_new);
 			}
 			else
 				v_temp.push_back(node);
 		}
 
-		if (cb_found)
+		if (branch_found)
 			v_final.push_back(v_temp);
 		else
 			v_final.push_back(v);
@@ -739,13 +705,11 @@ std::vector<Node*> Transpiler::get_sequence(Node* start_node, State* current_sta
 		//in_node is the next node to check for sequence
 		Node* in_node = static_cast<Node*>(connection.in_node);
 		NodeBranch* node_branch = dynamic_cast<NodeBranch*>(in_node);
-		NodeFor* node_for = dynamic_cast<NodeFor*>(in_node);
-		if (node_branch || node_for)
+		if (node_branch)
 		{
-			//we basically want to stop a sequence once we reach a NodeBranch/NodeFor
-			PLOGD << "found " << in_node->m_kind._to_string() << " , name = " <<
-				in_node->m_name << ". Stopping";
-			v_last.push_back(in_node);
+			//we basically want to stop a sequence once we reach a NodeBranch
+			PLOGD << "found NodeBranch " << node_branch->m_name << ". Stopping";
+			v_last.push_back(node_branch);
 			continue;
 		}
 
@@ -800,16 +764,17 @@ std::vector<Node*> Transpiler::get_rest(State* current_state)
 		for (Node* &node : v)
 		{
 			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
-			NodeFor* node_for = dynamic_cast<NodeFor*>(node);
-			if (node_branch && !current_state->node_branch)
-				continue;
-			else if (node_for && !current_state->node_for)
-				continue;
+			if (node_branch)
+			{
+				if (!current_state->node_branch)
+					continue;
+			}
 
-			if (current_state->node_branch && node_branch)
-				continue;
-			else if (current_state->node_for && node_for)
-				continue;
+			if (current_state->node_branch)
+			{
+				if (node_branch)
+					continue;
+			}
 
 			for (const Connection& connection : node->m_connections)
 			{
@@ -845,275 +810,6 @@ void Transpiler::arrange_v(std::vector<Node*>& v)
 	}
 	for (Node* &node : temp_v)
 		v.push_back(node);
-}
-
-void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
-{
-	Transpiler::n_transpiled = 0;
-	Transpiler::v_declarations.clear();
-	Transpiler::m_temp_names.clear();
-	Transpiler::m_declared.clear();
-	Transpiler::m_array_init.clear();
-
-	std::string str_incl = "";
-	std::string str_structs = "";
-	std::string str_entry = "";
-	std::string str_decls = "";
-	std::string str_next = "";
-	std::string str_closing = "";
-	std::string str_free = "";
-
-	Transpiler::m_temp_names.clear();
-	Transpiler::set_pre_entry(str_incl, str_structs, is_tcc);
-
-	//entry point
-	str_entry.append("int main()").append("\n");
-	str_entry.append("{").append("\n");
-
-	//store
-	std::vector<Node*> v_decls;
-	std::vector<Node*> v_decls_array;
-
-	//find all nodes that do NOT have any LHS, this means that they are for declarations
-	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
-		it != Nodes::v_nodes.end();
-		it++)
-	{
-		Node* node = *it;
-		if (Nodes::check_if_no_lhs(node))
-		{
-			if (!Transpiler::is_valid_decls(node))
-			{
-				NodeArray* node_array = dynamic_cast<NodeArray*>(node);
-				if (!node_array)
-				{
-					Transpiler::add_message(std::move("Node is not a valid declaration because it needs an inputs"),
-							OUTPUT_TYPE::WARNING, node, DOC_ID::NEED_INPUTS);
-				}
-			}
-			else
-				v_decls.push_back(node);
-		}
-
-		//check if inputs are satisfied
-		NodeOperation* node_op = dynamic_cast<NodeOperation*>(node);
-		if (node_op)
-		{
-			const int count = Nodes::count_node_dep(node_op);
-			if (count < 2)
-				Transpiler::add_message(std::move("NodeOperation must have at least 2 inputs"),
-						OUTPUT_TYPE::WARNING, node_op, DOC_ID::OP_REQ);
-		}
-
-		//exception: still define all arrays
-		NodeArray* node_array = dynamic_cast<NodeArray*>(node);
-		if (node_array)
-			v_decls_array.push_back(node);
-	}
-
-	//begin transpiling
-	int pass = 1;
-	Transpiler::level++;
-
-	PLOGD << "Transpiling decls... size = " << v_decls.size();
-	Transpiler::transpile_decls(v_decls, str_decls);
-	PLOGD << "Transpiled decls";
-
-	PLOGD << "Transpiling decls array... size = " << v_decls_array.size();
-	Transpiler::transpile_decls_array(v_decls_array, str_decls);
-	PLOGD << "Transpiled decls array";
-
-	//repeat
-	std::vector<State> v_states;
-	State prev_state;
-	prev_state.v_rest = v_decls;
-	prev_state.v_rest.insert(prev_state.v_rest.end(), v_decls_array.begin(), v_decls_array.end());
-
-	while (1)
-	{
-		PLOGD << "PASS #" << pass;
-		if (prev_state.node_for)
-			PLOGD << "On For " << prev_state.node_for->m_name;
-		else if (prev_state.node_branch)
-		{
-			if (!prev_state.is_in_else)
-				PLOGD << "On Branch-if: " << prev_state.node_branch->m_name;
-			else
-				PLOGD << "On Branch-else: " << prev_state.node_branch->m_name;
-		}
-
-		State current_state = prev_state;
-
-		//ENTRY
-		PLOGD << "start entry";
-		PLOGD << "{";
-		for (Node* &node : current_state.v_rest)
-			PLOGD << "\t" << node->m_name;
-		PLOGD << "}";
-		PLOGD << "end entry";
-
-		//SEQUENCE
-		current_state.v_seq = Transpiler::get_v_sequence(&current_state);
-		for (std::vector<Node*>& v : current_state.v_seq)
-			Transpiler::arrange_v(v);
-
-		PLOGD << "start seq";
-		for (std::vector<Node*>& v : current_state.v_seq)
-		{
-			PLOGD << "{";
-			for (Node* &node : v)
-				PLOGD << "\t" << node->m_name;
-			PLOGD << "}";
-		}
-		PLOGD << "end seq";
-
-		//REST
-		current_state.v_rest = Transpiler::get_rest(&current_state);
-		Transpiler::arrange_v(current_state.v_rest);
-
-		PLOGD << "start rest";
-		PLOGD << "{";
-		for (Node* &node : current_state.v_rest)
-			PLOGD << "\t" << node->m_name;
-		PLOGD << "}";
-		PLOGD << "end rest";
-
-		//handle changing branch/for
-		if (current_state.v_seq.size() == 0 && current_state.v_rest.size() == 0)
-		{
-			if (current_state.node_branch)
-			{
-				PLOGD << "Leaving Branch: " << current_state.node_branch->m_name;
-				if (current_state.node_branch->m_has_else && !current_state.is_in_else)
-				{
-					PLOGD << "Going to else-statement...";
-					prev_state.v_rest.push_back(current_state.node_branch);
-					prev_state.is_in_else = true;
-				}
-				else
-				{
-					PLOGD << "ending branch: " << current_state.node_branch->m_name;
-					prev_state = v_states.back();
-					v_states.pop_back();
-				}
-				Transpiler::level--;
-				str_next.append(NodeToCode::indent()).append("}").append("\n");
-				continue;
-			}
-			else if (current_state.node_for)
-			{
-				PLOGD << "ending for: " << current_state.node_for->m_name;
-				prev_state = v_states.back();
-				v_states.pop_back();
-				Transpiler::level--;
-				str_next.append(NodeToCode::indent()).append("}").append("\n");
-				continue;
-			}
-			else
-				break;
-		}
-
-		PLOGD << "Transpiling sequence...";
-		//handle when we enter a branch
-		bool should_branch_out = false;
-		State cb_state;
-		for (std::vector<Node*>& v : current_state.v_seq)
-		{
-			if (!should_branch_out)
-			{
-				Node* node = Transpiler::transpile(v, str_next, &current_state);
-				if (!node)
-					continue;
-				NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
-				NodeFor* node_for = dynamic_cast<NodeFor*>(node);
-				if (!node_branch && !node_for)
-					continue;
-
-				PLOGD << "switching to state: " << node->m_name;
-				should_branch_out = true;
-				std::vector<Node*> v_new_rest;
-				v_new_rest.push_back(node);
-
-				//set next state
-				if (node_branch)
-					cb_state.node_branch = node_branch;
-				else if (node_for)
-					cb_state.node_for = node_for;
-				cb_state.v_rest = v_new_rest;
-
-				//store to stack
-				v_states.push_back(current_state);
-			}
-			else
-			{
-				if (v.size() == 0)
-					continue;
-				PLOGD << "storing to stack the rest...";
-				State state;
-				state.v_rest = prev_state.v_rest;
-				v_states.push_back(state);
-				PLOGD << "stored to stack the rest";
-			}
-		}
-
-		if (should_branch_out)
-		{
-			//set for the branch
-			prev_state = cb_state;
-			continue;
-		}
-
-		PLOGD << "Transpiled sequence";
-		PLOGD << "Transpiling rest...";
-		Transpiler::transpile(current_state.v_rest, str_next);
-		PLOGD << "Transpiled rest";
-
-		//set for the next loop
-		prev_state = current_state;
-		++pass;
-	}
-	PLOGD << "Total passes: " << pass;
-
-	if (is_tcc)
-	{
-		std::string str_transpiled_nodes = fmt::format("Transpiled Nodes: {:d}/{:d}",
-				Transpiler::n_transpiled, Nodes::v_nodes.size());
-		std::string str_pass = fmt::format("Total Passes: {:d}", pass);
-		Transpiler::add_message(std::move(str_transpiled_nodes));
-		Transpiler::add_message(std::move(str_pass));
-	}
-
-	//get structs to be freed
-	for (std::pair<const std::string, std::string>& e : Transpiler::m_array_init)
-	{
-		std::string str = fmt::format("  {:s}(&{:s});", e.second, e.first);
-		str_free.append(str).append("\n");
-	}
-	Transpiler::level--;
-
-	//closing
-	str_closing.append("  printf(\"PRESS ENTER TO EXIT\\n\");").append("\n");
-	str_closing.append("  getchar();").append("\n");
-	str_closing.append("  return 0;").append("\n");
-	str_closing.append("}");
-
-	out.append(fmt::format("//Project: {:s}\n", Project::meta.title))
-		.append(fmt::format("//Author: {:s}\n", Project::meta.author))
-		.append("//C code generated by CodeNect\n\n")
-		.append(Templates::s_incl_section)
-		.append(str_incl)
-		.append(Templates::e_incl_section)
-
-		.append(Templates::s_structs_section)
-		.append(str_structs).append("\n")
-		.append(Templates::s_structs_section)
-
-		.append(str_entry)
-		.append(str_decls).append("\n")
-		.append(str_next).append("\n")
-		.append(str_free).append("\n")
-		.append(str_closing);
-	Transpiler::m_temp_names.clear();
 }
 
 int Transpiler::compile(void)
