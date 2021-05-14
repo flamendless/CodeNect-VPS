@@ -23,6 +23,8 @@
 #include "node/node_op.hpp"
 #include "node/node_array_access.hpp"
 #include "node/node_branch.hpp"
+#include "node/node_loop.hpp"
+#include "node/node_for.hpp"
 #include "core/project.hpp"
 #include "core/utils.hpp"
 #include "modules/debugger.hpp"
@@ -475,11 +477,42 @@ void Transpiler::transpile_decls_array(std::vector<Node*>& v, std::string& outpu
 
 Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output, State* current_state)
 {
+	if (current_state)
+	{
+		PLOGW << "in branch: " << current_state->node_branch;
+		PLOGW << "in for: " << current_state->node_for;
+	}
+
 	for (std::vector<Node*>::iterator it = v.begin();
 		it != v.end();
 		it++)
 	{
 		Node* node = *it;
+
+		//check if current node_var is iterator var
+		if (current_state && current_state->node_for)
+		{
+			NodeVariable* node_var = dynamic_cast<NodeVariable*>(node);
+			if (node_var)
+			{
+				for (const Connection& connection : node_var->m_connections)
+				{
+					Node* out_node = static_cast<Node*>(connection.out_node);
+					if (out_node == current_state->node_for)
+					{
+						const char* slot = connection.out_slot;
+						if (std::strcmp(slot, "INTEGER - iterator") == 0)
+						{
+							PLOGD << "Node is iterator variable. Skipping...";
+							Transpiler::m_declared.insert({node->m_name, true});
+							++Transpiler::n_transpiled;
+							continue;
+						}
+					}
+				}
+			}
+		}
+
 		bool found = Transpiler::m_declared.find(node->m_name) != Transpiler::m_declared.end();
 		PLOGD << "transpiling: " << node->m_name << ", found = " << found;
 		if (found)
@@ -561,6 +594,14 @@ Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output, State* c
 						output.append("\n");
 						break;
 					}
+					case NODE_ACTION::SET:
+					{
+						NodeSet* node_set = static_cast<NodeSet*>(node);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::ntc_set(node_set));
+						output.append("\n");
+						break;
+					}
 				}
 				break;
 			}
@@ -615,6 +656,27 @@ Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output, State* c
 				output.append("\n");
 				break;
 			}
+
+			case NODE_KIND::LOOP:
+			{
+				NodeLoop* node_loop = static_cast<NodeLoop*>(node);
+				switch (node_loop->m_loop)
+				{
+					case NODE_LOOP::EMPTY: break;
+					case NODE_LOOP::FOR:
+					{
+						NodeFor* node_for = static_cast<NodeFor*>(node);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::ntc_for(node_for));
+						output.append(NodeToCode::indent()).append("{").append("\n");
+						output.append("\n");
+						Transpiler::level++;
+						output.append("\n");
+						return node_for;
+					}
+					case NODE_LOOP::WHILE: break;
+				}
+			}
 		}
 		PLOGD << "transpiled: " << node->m_name;
 	}
@@ -640,7 +702,7 @@ std::vector<std::vector<Node*>> Transpiler::get_v_sequence(State* state)
 	std::vector<std::vector<Node*>> v_final;
 	for (std::vector<Node*>& v : v_out)
 	{
-		bool branch_found = false;
+		bool cb_found = false;
 		std::vector<Node*> v_temp;
 		for (std::vector<Node*>::iterator it = v.begin();
 			it != v.end();
@@ -648,18 +710,19 @@ std::vector<std::vector<Node*>> Transpiler::get_v_sequence(State* state)
 		{
 			Node* node = static_cast<Node*>(*it);
 			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
-			if (node_branch)
+			NodeFor* node_for = dynamic_cast<NodeFor*>(node);
+			if (node_branch || node_for)
 			{
-				branch_found = true;
+				cb_found = true;
 				std::vector<Node*> v_new;
-				v_new.push_back(node_branch);
+				v_new.push_back(node);
 				v_final.push_back(v_new);
 			}
 			else
 				v_temp.push_back(node);
 		}
 
-		if (branch_found)
+		if (cb_found)
 			v_final.push_back(v_temp);
 		else
 			v_final.push_back(v);
@@ -676,11 +739,13 @@ std::vector<Node*> Transpiler::get_sequence(Node* start_node, State* current_sta
 		//in_node is the next node to check for sequence
 		Node* in_node = static_cast<Node*>(connection.in_node);
 		NodeBranch* node_branch = dynamic_cast<NodeBranch*>(in_node);
-		if (node_branch)
+		NodeFor* node_for = dynamic_cast<NodeFor*>(in_node);
+		if (node_branch || node_for)
 		{
-			//we basically want to stop a sequence once we reach a NodeBranch
-			PLOGD << "found NodeBranch " << node_branch->m_name << ". Stopping";
-			v_last.push_back(node_branch);
+			//we basically want to stop a sequence once we reach a NodeBranch/NodeFor
+			PLOGD << "found " << in_node->m_kind._to_string() << " , name = " <<
+				in_node->m_name << ". Stopping";
+			v_last.push_back(in_node);
 			continue;
 		}
 
@@ -735,17 +800,16 @@ std::vector<Node*> Transpiler::get_rest(State* current_state)
 		for (Node* &node : v)
 		{
 			NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
-			if (node_branch)
-			{
-				if (!current_state->node_branch)
-					continue;
-			}
+			NodeFor* node_for = dynamic_cast<NodeFor*>(node);
+			if (node_branch && !current_state->node_branch)
+				continue;
+			else if (node_for && !current_state->node_for)
+				continue;
 
-			if (current_state->node_branch)
-			{
-				if (node_branch)
-					continue;
-			}
+			if (current_state->node_branch && node_branch)
+				continue;
+			else if (current_state->node_for && node_for)
+				continue;
 
 			for (const Connection& connection : node->m_connections)
 			{
@@ -868,7 +932,9 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	while (1)
 	{
 		PLOGD << "PASS #" << pass;
-		if (prev_state.node_branch)
+		if (prev_state.node_for)
+			PLOGD << "On For " << prev_state.node_for->m_name;
+		else if (prev_state.node_branch)
 		{
 			if (!prev_state.is_in_else)
 				PLOGD << "On Branch-if: " << prev_state.node_branch->m_name;
@@ -912,13 +978,12 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		PLOGD << "}";
 		PLOGD << "end rest";
 
-		//handle changing branch
+		//handle changing branch/for
 		if (current_state.v_seq.size() == 0 && current_state.v_rest.size() == 0)
 		{
 			if (current_state.node_branch)
 			{
 				PLOGD << "Leaving Branch: " << current_state.node_branch->m_name;
-
 				if (current_state.node_branch->m_has_else && !current_state.is_in_else)
 				{
 					PLOGD << "Going to else-statement...";
@@ -931,7 +996,15 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 					prev_state = v_states.back();
 					v_states.pop_back();
 				}
-
+				Transpiler::level--;
+				str_next.append(NodeToCode::indent()).append("}").append("\n");
+				continue;
+			}
+			else if (current_state.node_for)
+			{
+				PLOGD << "ending for: " << current_state.node_for->m_name;
+				prev_state = v_states.back();
+				v_states.pop_back();
 				Transpiler::level--;
 				str_next.append(NodeToCode::indent()).append("}").append("\n");
 				continue;
@@ -943,7 +1016,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		PLOGD << "Transpiling sequence...";
 		//handle when we enter a branch
 		bool should_branch_out = false;
-		State branch_state;
+		State cb_state;
 		for (std::vector<Node*>& v : current_state.v_seq)
 		{
 			if (!should_branch_out)
@@ -952,17 +1025,21 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 				if (!node)
 					continue;
 				NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
-				if (!node_branch)
+				NodeFor* node_for = dynamic_cast<NodeFor*>(node);
+				if (!node_branch && !node_for)
 					continue;
 
-				PLOGD << "switching to branch state: " << node_branch->m_name;
+				PLOGD << "switching to state: " << node->m_name;
 				should_branch_out = true;
 				std::vector<Node*> v_new_rest;
-				v_new_rest.push_back(node_branch);
+				v_new_rest.push_back(node);
 
 				//set next state
-				branch_state.node_branch = node_branch;
-				branch_state.v_rest = v_new_rest;
+				if (node_branch)
+					cb_state.node_branch = node_branch;
+				else if (node_for)
+					cb_state.node_for = node_for;
+				cb_state.v_rest = v_new_rest;
 
 				//store to stack
 				v_states.push_back(current_state);
@@ -982,7 +1059,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		if (should_branch_out)
 		{
 			//set for the branch
-			prev_state = branch_state;
+			prev_state = cb_state;
 			continue;
 		}
 

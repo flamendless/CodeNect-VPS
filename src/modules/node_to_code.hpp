@@ -13,6 +13,8 @@
 #include "node/node_array_access.hpp"
 #include "node/node_branch.hpp"
 #include "node/node_string.hpp"
+#include "node/node_set.hpp"
+#include "node/node_for.hpp"
 
 namespace CodeNect::NodeToCode
 {
@@ -29,12 +31,14 @@ std::string ntc_array(NodeArray*);
 std::string ntc_array_decls(NodeArray*);
 std::string ntc_print(NodePrint*, bool = false);
 std::string ntc_prompt(NodePrompt*);
+std::string ntc_set(NodeSet*);
 std::string ntc_op(NodeOperation*, bool, std::string&);
 std::string ntc_math(NodeMath*, bool, std::string&);
 std::string ntc_cmp(NodeComparison*, bool, std::string&);
 std::string ntc_size(NodeSize*, bool, std::string&);
 std::string ntc_array_access(NodeArrayAccess*, bool, std::string&);
 std::string ntc_branch(NodeBranch*, bool);
+std::string ntc_for(NodeFor*);
 std::string ntc_string(NodeString*, bool, std::string&);
 }
 

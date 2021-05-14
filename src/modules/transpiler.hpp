@@ -9,6 +9,7 @@
 #include "core/defines.hpp"
 #include "node/node.hpp"
 #include "node/node_branch.hpp"
+#include "node/node_for.hpp"
 #include "core/message_info.hpp"
 
 namespace CodeNect
@@ -16,6 +17,7 @@ namespace CodeNect
 struct State
 {
 	NodeBranch* node_branch = nullptr;
+	NodeFor* node_for = nullptr;
 	bool is_in_else = false;
 	std::vector<std::vector<Node*>> v_seq;
 	std::vector<Node*> v_rest;

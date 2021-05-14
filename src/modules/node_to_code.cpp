@@ -4,6 +4,7 @@
 #include "modules/transpiler.hpp"
 #include "node/nodes.hpp"
 #include "modules/debugger.hpp"
+#include "core/utils.hpp"
 
 namespace CodeNect::NodeToCode
 {
@@ -1029,6 +1030,42 @@ std::string ntc_prompt(NodePrompt* node_prompt)
 	return str;
 }
 
+std::string ntc_set(NodeSet* node_set)
+{
+	PLOGD << "ntc_set: " << node_set->m_name;
+	std::string str = "";
+	std::string pre = "";
+	std::string ref_name = node_set->m_node_var->m_name;
+	std::string value = "";
+
+	for (const Connection& connection : node_set->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node == node_set)
+			continue;
+
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+		NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
+		NodeCast* node_cast = dynamic_cast<NodeCast*>(out_node);
+		NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
+
+		if (node_var)
+			value = node_var->m_name;
+		else if (node_op)
+			value = NodeToCode::ntc_op(node_op, true, pre);
+		else if (node_cast)
+			value = NodeToCode::ntc_cast(node_cast, true, pre);
+		else if (node_math)
+			value = NodeToCode::ntc_math(node_math, true, pre);
+	}
+
+	str.append(indent())
+		.append(fmt::format("{:s} = {:s};", ref_name, value))
+		.append("\n");
+
+	return str;
+}
+
 std::string ntc_branch(NodeBranch* node_branch, bool is_in_else)
 {
 	PLOGD << "ntc_branch: " << node_branch->m_name;
@@ -1059,15 +1096,71 @@ std::string ntc_branch(NodeBranch* node_branch, bool is_in_else)
 	else
 		str_statement = "else";
 
-	//opening brace and closing brace for code block is handled by Transpiler
 	str.append(indent()).append(str_statement).append("\n");
-		// .append(indent()).append("{").append("\n");
-	// Transpiler::level++;
 
-	// str.append(indent()).append("//code block").append("\n");
-    //
-	// Transpiler::level--;
-	// str.append(indent()).append("}").append("\n");
+	return str;
+}
+
+std::string ntc_for(NodeFor* node_for)
+{
+	PLOGD << "ntc_for: " << node_for->m_name;
+	std::string str = "";
+	std::string pre = "";
+	std::string str_si = std::to_string(node_for->m_start_index);
+	std::string str_ei = std::to_string(node_for->m_end_index);
+	std::string str_it = node_for->m_iterator_name;
+	const char* cmp_op = Utils::cmp_to_op_str(node_for->m_cmp);
+	int inc = node_for->m_cur_increment;
+	const char* sign = (inc > 0) ? "+" : "-";
+	std::string str_inc;
+	if (inc == 1)
+		str_inc = fmt::format("{:s}++", str_it);
+	else if (inc == -1)
+		str_inc = fmt::format("{:s}--", str_it);
+	else
+		str_inc = fmt::format("{:s} {:s} {:d}", str_it, sign, inc);
+
+	//get the LHS
+	for (const Connection& connection : node_for->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node == node_for)
+			continue;
+
+		std::string ref_name;
+		NodeVariable* node_var = dynamic_cast<NodeVariable*>(out_node);
+		NodeMath* node_math = dynamic_cast<NodeMath*>(out_node);
+		NodeOperation* node_op = dynamic_cast<NodeOperation*>(out_node);
+		NodeCast* node_cast = dynamic_cast<NodeCast*>(out_node);
+		NodeSize* node_size = dynamic_cast<NodeSize*>(out_node);
+		NodeArrayAccess* node_array_access = dynamic_cast<NodeArrayAccess*>(out_node);
+
+		if (node_var)
+			ref_name = node_var->m_name;
+		else if (node_math)
+			ref_name = NodeToCode::ntc_math(node_math, true, pre);
+		else if (node_op)
+			ref_name = NodeToCode::ntc_op(node_op, true, pre);
+		else if (node_cast)
+			ref_name = NodeToCode::ntc_cast(node_cast, true, pre);
+		else if (node_size)
+			ref_name = NodeToCode::ntc_size(node_size, true, pre);
+		else if (node_array_access)
+			ref_name = NodeToCode::ntc_array_access(node_array_access, true, pre);
+
+		const char* slot = connection.in_slot;
+		if (std::strcmp(slot, "INTEGER - start index") == 0)
+			str_si = ref_name;
+		else if (std::strcmp(slot, "INTEGER - end index") == 0)
+			str_ei = ref_name;
+		else if (std::strcmp(slot, "INTEGER - increment") == 0)
+			str_inc = ref_name;
+	}
+
+	std::string str_for = fmt::format("for (int {:s} = {:s}; {:s} {:s} {:s}; {:s})",
+			str_it, str_si, str_it, cmp_op, str_ei, str_inc);
+
+	str.append(indent()).append(str_for).append("\n");
 
 	return str;
 }
