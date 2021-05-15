@@ -5,6 +5,7 @@
 #include "node/node_cmp.hpp"
 #include "node/node_branch.hpp"
 #include "node/node_colors.hpp"
+#include "modules/debugger.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -13,6 +14,7 @@ void process_branch(NodeBranch* node_branch)
 	node_branch->m_has_else = false;
 
 	//store the results
+	bool has_if = false;
 	bool res = false;
 	std::vector<Connection*> v_c_true;
 	std::vector<Connection*> v_c_false;
@@ -28,6 +30,7 @@ void process_branch(NodeBranch* node_branch)
 			const char* slot = connection.out_slot;
 			if (std::strcmp(slot, "TRUE") == 0)
 			{
+				has_if = true;
 				v_c_true.push_back(&connection);
 				continue;
 			}
@@ -39,6 +42,12 @@ void process_branch(NodeBranch* node_branch)
 				continue;
 			}
 		}
+	}
+
+	if (!has_if)
+	{
+		Debugger::add_message(std::move("Branch must have an output for 'TRUE'"),
+				OUTPUT_TYPE::ERROR, node_branch, DOC_ID::BRANCH_REQ);
 	}
 
 	//check if there's a node_cmp or node_var with (bool) lhs

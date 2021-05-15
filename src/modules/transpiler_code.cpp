@@ -63,13 +63,15 @@ void get_v_decls(std::vector<Node*>& v_decls, std::vector<Node*>& v_decls_array)
 
 void print_state(State& state)
 {
-	PLOGD << "state: " << &state;
+	PLOGW << "Current state: " << &state;
+	PLOGW << "is_in_else: " << state.is_in_else;
 	if (state.node_branch)
 	{
+		PLOGW << "Has else: " << state.node_branch->m_has_else;
 		if (state.is_in_else)
-			PLOGD << "On Branch-else: " << state.node_branch->m_name;
+			PLOGW << "On Branch-else: " << state.node_branch->m_name;
 		else
-			PLOGD << "On Branch-if: " << state.node_branch->m_name;
+			PLOGW << "On Branch-if: " << state.node_branch->m_name;
 	}
 }
 
@@ -101,40 +103,92 @@ void print_vec(std::vector<std::vector<Node*>>& v, std::string str)
 	}
 }
 
-bool check_change_block(State& cur_state, State& new_state, std::vector<State>& v_states)
+void state_stack_push(State& state)
+{
+	PLOGW << "---PUSHED---";
+	if (state.node_branch)
+		PLOGW << state.node_branch->m_name;
+	PLOGW << "rest:";
+	for (Node* &node : state.v_rest)
+		PLOGW << "\t" << node->m_name;
+	PLOGW << "is_in_else: " << state.is_in_else;
+	PLOGW << "------------";
+	Transpiler::v_states.push_back(state);
+}
+
+State state_stack_pop()
+{
+	State state = Transpiler::v_states.back();
+	Transpiler::v_states.pop_back();
+	PLOGW << "---POPPED---";
+	if (state.node_branch)
+		PLOGW << state.node_branch->m_name;
+	PLOGW << "rest:";
+	for (Node* &node : state.v_rest)
+		PLOGW << "\t" << node->m_name;
+	PLOGW << "is_in_else: " << state.is_in_else;
+	PLOGW << "------------";
+	return state;
+}
+
+bool check_change_block(State& cur_state, State& new_state)
 {
 	if (!new_state.node_branch)
 		return false;
 	PLOGD << "Checking Branch Else: " << new_state.node_branch->m_name;
-	if (new_state.node_branch->m_has_else && !new_state.is_in_else)
+	//switch to else
+	if (new_state.node_branch->m_has_else)
 	{
-		PLOGD << "Going to else-statement...";
-		cur_state.v_rest.push_back(new_state.node_branch);
-		cur_state.is_in_else = true;
+		bool found = std::find(Transpiler::v_finished_branches.begin(), Transpiler::v_finished_branches.end(), new_state.node_branch)
+			!= Transpiler::v_finished_branches.end();
+		if (!found)
+		{
+			cur_state = new_state;
+			cur_state.v_rest.clear();
+			cur_state.v_rest.push_back(new_state.node_branch);
+			cur_state.is_in_else = true;
+			PLOGD << "Going to Branch Else";
+			return true;
+		}
 	}
-	else
-	{
-		PLOGD << "ending branch: " << new_state.node_branch->m_name;
-		cur_state = v_states.back();
-		v_states.pop_back();
-	}
+
+	//if no else or else is done
+	cur_state = state_stack_pop();
 	return true;
 }
 
-State switch_to_branch(NodeBranch* node_branch, State& new_state, std::vector<State>& v_states)
+bool switch_to_branch(NodeBranch* node_branch, State& cur_state, State& new_state)
 {
-	v_states.push_back(new_state);
-	State branch_state;
-	branch_state.node_branch = node_branch;
-	branch_state.v_rest.push_back(node_branch);
+	if (new_state.node_branch && new_state.is_in_else)
+	{
+		if (new_state.node_branch == node_branch)
+		{
+			Transpiler::v_finished_branches.push_back(node_branch);
+			return false;
+		}
+	}
 
-	return branch_state;
+	if (!new_state.node_branch ||
+		(new_state.node_branch && new_state.node_branch != node_branch))
+	{
+		//we are going/nesting to a new branch
+		state_stack_push(new_state);
+
+		//set the state for the next iteration
+		State next_state;
+		next_state.v_rest.push_back(node_branch);
+		next_state.node_branch = node_branch;
+		cur_state = next_state;
+	}
+
+	return true;
 }
 
 int transpile_loop(State& start_state, std::string& str_next)
 {
 	int pass = 1;
-	std::vector<State> v_states;
+	Transpiler::v_states.clear();
+	Transpiler::v_finished_branches.clear();
 	State cur_state = start_state;
 	bool is_loop = true;
 
@@ -161,7 +215,7 @@ int transpile_loop(State& start_state, std::string& str_next)
 		//handle changing branch
 		if (new_state.v_seq.size() == 0 && new_state.v_rest.size() == 0)
 		{
-			if (check_change_block(cur_state, new_state, v_states))
+			if (check_change_block(cur_state, new_state))
 			{
 				Transpiler::level--;
 				str_next.append(NodeToCode::indent()).append("}").append("\n");
@@ -174,7 +228,6 @@ int transpile_loop(State& start_state, std::string& str_next)
 		PLOGD << "Transpiling sequence...";
 		//handle when we enter a branch
 		bool should_branch_out = false;
-		State branch_state;
 		for (std::vector<Node*>& v : new_state.v_seq)
 		{
 			if (!should_branch_out)
@@ -185,32 +238,22 @@ int transpile_loop(State& start_state, std::string& str_next)
 				NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
 				if (!node_branch)
 					continue;
-
-				if (!new_state.node_branch ||
-					(new_state.node_branch && new_state.node_branch != node_branch))
-				{
-					branch_state = switch_to_branch(node_branch, new_state, v_states);
-					should_branch_out = true;
-				}
+				should_branch_out = switch_to_branch(node_branch, cur_state, new_state);
 			}
 			else
 			{
 				if (v.size() == 0)
 					continue;
-				PLOGD << "storing to stack the rest...";
-				State state;
-				state.v_rest = cur_state.v_rest;
-				state.is_in_else = cur_state.is_in_else;
-				v_states.push_back(state);
+				// PLOGD << "storing to stack the rest...";
+				// State state;
+				// state.v_rest = cur_state.v_rest;
+				// state.is_in_else = cur_state.is_in_else;
+				// v_states.push_back(state);
 			}
 		}
 
 		if (should_branch_out)
-		{
-			// set for the branch
-			cur_state = branch_state;
 			continue;
-		}
 
 		PLOGD << "Transpiled sequence";
 		PLOGD << "Transpiling rest...";
@@ -309,5 +352,186 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 		.append(str_free).append("\n")
 		.append(str_closing);
 	Transpiler::m_temp_names.clear();
+}
+
+Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output, State* current_state)
+{
+	for (std::vector<Node*>::iterator it = v.begin();
+		it != v.end();
+		it++)
+	{
+		Node* node = *it;
+		bool found = Transpiler::m_declared.find(node->m_name) != Transpiler::m_declared.end();
+		if (found)
+		{
+			if (current_state && current_state->node_branch && current_state->is_in_else)
+			{
+				NodeBranch* node_branch = dynamic_cast<NodeBranch*>(node);
+				if (!node_branch)
+					continue;
+			}
+			else
+			{
+				NodeArray* node_array = dynamic_cast<NodeArray*>(node);
+				if (!node_array)
+				{
+					PLOGW << node->m_name << " is declared already. Skipping.";
+					continue;
+				}
+			}
+		}
+		else
+		{
+			Transpiler::m_declared.insert({node->m_name, true});
+			++Transpiler::n_transpiled;
+		}
+
+		switch (node->m_kind)
+		{
+			case NODE_KIND::EMPTY: break;
+			case NODE_KIND::VARIABLE:
+			{
+				NodeVariable* node_var = static_cast<NodeVariable*>(node);
+				output.append(NodeToCode::comment(node));
+				output.append(NodeToCode::ntc_var(node_var));
+				output.append("\n");
+				break;
+			}
+
+			case NODE_KIND::DS:
+			{
+				NodeDS* node_ds = static_cast<NodeDS*>(node);
+				switch (node_ds->m_ds)
+				{
+					case NODE_DS::EMPTY: break;
+					case NODE_DS::ARRAY:
+					{
+						NodeArray* node_array = static_cast<NodeArray*>(node);
+						bool found = Transpiler::m_array_init.find(node_array->m_name) != Transpiler::m_array_init.end();
+						if (found)
+							continue;
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::ntc_array(node_array));
+						output.append("\n");
+						break;
+					}
+				}
+				break;
+			}
+
+			case NODE_KIND::ACTION:
+			{
+				NodeAction* node_action = static_cast<NodeAction*>(node);
+				switch (node_action->m_action)
+				{
+					case NODE_ACTION::EMPTY: break;
+					case NODE_ACTION::PRINT:
+					{
+						NodePrint* node_print = static_cast<NodePrint*>(node);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::ntc_print(node_print));
+						output.append("\n");
+						break;
+					}
+					case NODE_ACTION::PROMPT:
+					{
+						NodePrompt* node_prompt = static_cast<NodePrompt*>(node);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::ntc_prompt(node_prompt));
+						output.append("\n");
+						break;
+					}
+					case NODE_ACTION::SET:
+					{
+						NodeSet* node_set = static_cast<NodeSet*>(node);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::ntc_set(node_set));
+						output.append("\n");
+						break;
+					}
+				}
+				break;
+			}
+
+			case NODE_KIND::CAST: break;
+			case NODE_KIND::OPERATION: break;
+			case NODE_KIND::COMPARISON: break;
+			case NODE_KIND::GET:
+			{
+				NodeGet* node_get = static_cast<NodeGet*>(node);
+				switch (node_get->m_get)
+				{
+					case NODE_GET::EMPTY: break;
+					case NODE_GET::SIZE:
+					{
+						NodeSize* node_size = static_cast<NodeSize*>(node_get);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::ntc_size(node_size, false, output));
+						output.append("\n");
+						break;
+					}
+					case NODE_GET::ARRAY_ACCESS:
+					{
+						NodeArrayAccess* node_array_access = static_cast<NodeArrayAccess*>(node_get);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::ntc_array_access(node_array_access, false, output));
+						output.append("\n");
+						break;
+					}
+				}
+				break;
+			}
+
+			case NODE_KIND::BRANCH:
+			{
+				bool found = std::find(Transpiler::v_finished_branches.begin(), Transpiler::v_finished_branches.end(), current_state->node_branch)
+					!= Transpiler::v_finished_branches.end();
+				bool is_else = false;
+
+				if (current_state->is_in_else && !found)
+					is_else = true;
+
+				NodeBranch* node_branch = static_cast<NodeBranch*>(node);
+				output.append(NodeToCode::comment(node));
+				output.append(NodeToCode::ntc_branch(node_branch, is_else));
+				output.append(NodeToCode::indent()).append("{").append("\n");
+				Transpiler::level++;
+				output.append("\n");
+				return node_branch;
+				break;
+			}
+
+			case NODE_KIND::STRING:
+			{
+				NodeString* node_str = static_cast<NodeString*>(node);
+				output.append(NodeToCode::comment(node));
+				output.append(NodeToCode::ntc_string(node_str, false, output));
+				output.append("\n");
+				break;
+			}
+
+			case NODE_KIND::LOOP:
+			{
+				NodeLoop* node_loop = static_cast<NodeLoop*>(node);
+				switch (node_loop->m_loop)
+				{
+					case NODE_LOOP::EMPTY: break;
+					case NODE_LOOP::FOR:
+					{
+						NodeFor* node_for = static_cast<NodeFor*>(node);
+						output.append(NodeToCode::comment(node));
+						output.append(NodeToCode::ntc_for(node_for));
+						output.append(NodeToCode::indent()).append("{").append("\n");
+						output.append("\n");
+						Transpiler::level++;
+						output.append("\n");
+						return node_for;
+					}
+					case NODE_LOOP::WHILE: break;
+				}
+			}
+		}
+	}
+	return nullptr;
 }
 }

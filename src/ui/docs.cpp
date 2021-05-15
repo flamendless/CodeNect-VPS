@@ -38,6 +38,9 @@ std::string doc_math_req =
 std::string doc_op_req =
 #include "markdown/doc_op_req.md"
 ;
+std::string doc_branch_req =
+#include "markdown/doc_branch_req.md"
+;
 std::string doc_printing_array =
 #include "markdown/doc_printing_array.md"
 ;
@@ -62,6 +65,7 @@ std::map<std::string, Doc> m_docs = {
 	{"CMP_REQ", {"Comparison Requirements", std::move(doc_cmp_req)}},
 	{"MATH_REQ", {"Mathematical Function Requirements", std::move(doc_math_req)}},
 	{"OP_REQ", {"Operation Requirements", std::move(doc_op_req)}},
+	{"BRANCH_REQ", {"Branch Requirement", std::move(doc_branch_req)}},
 	{"FOR_LOOP", {"For Loops", std::move(doc_for_loops)}},
 	{"ARRAY_TO_PRINT", {"Printing Array", std::move(doc_printing_array)}},
 	{"CANT_REF_ARRAY", {"Referencing an Array", std::move(doc_ref_array)}},

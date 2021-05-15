@@ -38,6 +38,8 @@ struct Transpiler
 	static bool has_compiled;
 	static std::string recent_temp;
 	static int n_transpiled;
+	static std::vector<State> v_states;
+	static std::vector<NodeBranch*> v_finished_branches;
 
 	Transpiler() = delete;
 	static int init(void);
