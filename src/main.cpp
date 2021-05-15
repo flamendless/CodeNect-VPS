@@ -86,7 +86,7 @@ int main(int argv, char** args)
 
 	//test
 #if DEBUG_MODE
-	CodeNect::Project::open("test_branches.cn");
+	CodeNect::Project::open("test_for_loops.cn");
 #endif
 
 	if (argv > 1)
