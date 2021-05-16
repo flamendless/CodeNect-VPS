@@ -28,6 +28,7 @@
 #include "node/node_loop.hpp"
 #include "node/node_for.hpp"
 #include "node/node_set.hpp"
+#include "ui/node_interface.hpp"
 
 namespace CodeNect
 {
@@ -426,6 +427,7 @@ int Project::parse(void)
 
 	Project::meta.offset.x = std::stoi(ini.GetValue("meta", "offsetx", "0"));
 	Project::meta.offset.y = std::stoi(ini.GetValue("meta", "offsety", "0"));
+	NodeInterface::flag_init_setup = false;
 
 	CSimpleIniA::TNamesDepend sections;
 	ini.GetAllSections(sections);
