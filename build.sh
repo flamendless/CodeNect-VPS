@@ -15,6 +15,7 @@ function rebuild()
 function compile()
 {
 	cmake --build ${dir_build} --target install
+	ctags -R src
 }
 
 function run()

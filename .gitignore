@@ -8,3 +8,4 @@ build.ninja
 bin/
 test.c
 test
+tags
