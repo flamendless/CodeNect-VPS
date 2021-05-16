@@ -132,6 +132,16 @@ void Nodes::delete_node(std::vector<Node*>::iterator& it)
 	Node* node = *it;
 	Nodes::m_ids.erase(node->m_name);
 
+	//delete for NodeSet
+	for (Node* &node2 : Nodes::v_nodes)
+	{
+		NodeSet* node_set = dynamic_cast<NodeSet*>(node2);
+		if (!node_set)
+			continue;
+		if (node_set->m_node_var == node)
+			node_set->m_node_var = nullptr;
+	}
+
 	delete *it;
 	it = Nodes::v_nodes.erase(it);
 }

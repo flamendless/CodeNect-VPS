@@ -5,6 +5,7 @@
 #include "node/node_op.hpp"
 #include "node/node_cast.hpp"
 #include "node/node_math.hpp"
+#include "modules/debugger.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -36,6 +37,9 @@ void process_set(NodeSet* node_set)
 	}
 
 	//set the rhs
-	node_set->m_node_var->m_value.copy(node_set->m_node_val);
+	if (node_set->m_node_var)
+		node_set->m_node_var->m_value.copy(node_set->m_node_val);
+	else
+		Debugger::add_message(std::move("Missing target variable. Perhaps was deleted?"), OUTPUT_TYPE::ERROR);
 }
 }

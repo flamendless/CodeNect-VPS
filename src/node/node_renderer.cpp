@@ -289,7 +289,10 @@ void draw_node_set(NodeSet* node_set)
 		ImGui::TextColored(Config::NodeInterface_c::label_color, "Desc:");
 
 		ImGui::TableNextColumn();
-		ImGui::Text("%s", node_set->m_node_var->m_name);
+		if (node_set->m_node_var)
+			ImGui::Text("%s", node_set->m_node_var->m_name);
+		else
+			ImGui::Text("(deleted?)");
 		ImGui::Text("%s", node_set->m_node_val.get_value_str_ex().c_str());
 		ImGui::Text("%s", node_set->m_desc);
 		ImGui::EndTable();
