@@ -161,6 +161,7 @@ bool Transpiler::is_valid_decls(Node* node)
 		case NODE_KIND::VARIABLE: valid = true; break;
 		// case NODE_KIND::DS: valid = true; break;
 		case NODE_KIND::ACTION: valid = true; break;
+		case NODE_KIND::LOOP: valid = true; break;
 	}
 
 	return valid;

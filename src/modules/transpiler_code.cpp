@@ -25,7 +25,7 @@ namespace CodeNect
 std::vector<NodeVariable*> v_iterators;
 std::string* str_so_far;
 
-void get_v_decls(std::vector<Node*>& v_decls, std::vector<Node*>& v_decls_array)
+void get_v_decls(std::vector<Node*>& v_decls, std::vector<Node*>& v_decls_array, std::vector<Node*>& v_deferred)
 {
 	for (std::vector<Node*>::iterator it = Nodes::v_nodes.begin();
 		it != Nodes::v_nodes.end();
@@ -44,7 +44,13 @@ void get_v_decls(std::vector<Node*>& v_decls, std::vector<Node*>& v_decls_array)
 				}
 			}
 			else
-				v_decls.push_back(node);
+			{
+				NodeFor* node_for = dynamic_cast<NodeFor*>(node);
+				if (node_for)
+					v_deferred.push_back(node);
+				else
+					v_decls.push_back(node);
+			}
 		}
 
 		//check if inputs are satisfied
@@ -161,11 +167,14 @@ void get_iterator_nodes(void)
 			{
 				const char* slot = connection.out_slot;
 				if (std::strcmp(slot, "INTEGER - iterator") == 0)
-					v_iterators.push_back(node_var);
+				{
+					if (std::strcmp(out_node_for->m_iterator_name.c_str(), in_node->m_name) == 0)
+						v_iterators.push_back(node_var);
+				}
 			}
 		}
 	}
-	PLOGW << "iterators";
+	PLOGW << "iterator variables:";
 	for (NodeVariable* &node : v_iterators)
 		PLOGW << "\t" << node->m_name;
 }
@@ -377,7 +386,8 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	//find all nodes that do NOT have any LHS, this means that they are for declarations
 	std::vector<Node*> v_decls;
 	std::vector<Node*> v_decls_array;
-	get_v_decls(v_decls, v_decls_array);
+	std::vector<Node*> v_deferred;
+	get_v_decls(v_decls, v_decls_array, v_deferred);
 
 	//begin transpiling
 	Transpiler::level++;
@@ -393,6 +403,7 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	State start_state;
 	start_state.v_rest = v_decls;
 	start_state.v_rest.insert(start_state.v_rest.end(), v_decls_array.begin(), v_decls_array.end());
+	start_state.v_rest.insert(start_state.v_rest.end(), v_deferred.begin(), v_deferred.end());
 	int passes = transpile_loop(start_state, str_next);
 	PLOGD << "Total passes: " << passes;
 
@@ -445,7 +456,6 @@ Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output, State* n
 		it++)
 	{
 		Node* node = *it;
-		//check if iterator
 		bool is_it = std::find(v_iterators.begin(), v_iterators.end(), node) != v_iterators.end();
 		if (is_it)
 			continue;
@@ -617,6 +627,7 @@ Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output, State* n
 					}
 					case NODE_LOOP::WHILE: break;
 				}
+				break;
 			}
 		}
 	}

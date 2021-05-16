@@ -225,6 +225,7 @@ std::string ntc_var(NodeVariable* node_var)
 			NodeSize* out_node_size = dynamic_cast<NodeSize*>(out_node);
 			NodeArrayAccess* out_node_arr_access = dynamic_cast<NodeArrayAccess*>(out_node);
 			NodeString* out_node_str = dynamic_cast<NodeString*>(out_node);
+			NodeFor* out_node_for = dynamic_cast<NodeFor*>(out_node);
 
 			if (out_node_var)
 				val = out_node_var->m_name;
@@ -252,6 +253,8 @@ std::string ntc_var(NodeVariable* node_var)
 				else
 					val = NodeToCode::ntc_string(out_node_str, true, str);
 			}
+			else if (out_node_for)
+				val = out_node_for->m_iterator_name;
 		}
 	}
 
