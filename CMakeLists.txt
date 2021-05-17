@@ -195,11 +195,6 @@ else ()
 	target_link_directories(CodeNect PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/includes/tcc)
 	target_link_libraries(CodeNect tcc)
 	target_link_libraries(CodeNect dl)
-	add_custom_target(
-		${CMAKE_COMMAND} -E copy_if_different
-		${CMAKE_BINARY_DIR}/compile_commands.json
-		${CMAKE_CURRENT_LIST_DIR}
-	)
 endif ()
 
 target_link_libraries(CodeNect

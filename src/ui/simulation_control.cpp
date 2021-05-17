@@ -14,7 +14,7 @@ ImGuiWindowFlags SimulationControl::flags =
 	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar |
 	ImGuiWindowFlags_NoScrollWithMouse;
 
-bool SimulationControl::is_open = true;
+bool SimulationControl::is_open = false;
 ImVec2 SimulationControl::pos;
 
 int SimulationControl::init(void)

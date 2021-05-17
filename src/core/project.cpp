@@ -29,6 +29,8 @@
 #include "node/node_for.hpp"
 #include "node/node_set.hpp"
 #include "ui/node_interface.hpp"
+#include "ui/simulation_control.hpp"
+#include "ui/zoom.hpp"
 
 namespace CodeNect
 {
@@ -110,6 +112,8 @@ int Project::open(void)
 			return RES_FAIL;
 
 		Project::has_open_proj = true;
+		SimulationControl::is_open = true;
+		Zoom::is_open = true;
 
 		return RES_SUCCESS;
 	}
@@ -126,6 +130,8 @@ int Project::open(const char* filename)
 		return RES_FAIL;
 
 	Project::has_open_proj = true;
+	SimulationControl::is_open = true;
+	Zoom::is_open = true;
 
 	return RES_FAIL;
 }
@@ -625,6 +631,8 @@ void Project::close(void)
 	Project::connections_count = 0;
 	Nodes::v_nodes.clear();
 	Transpiler::clear();
+	SimulationControl::is_open = false;
+	Zoom::is_open = false;
 
 	PLOGV << "Project closed";
 }

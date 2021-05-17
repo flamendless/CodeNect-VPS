@@ -12,7 +12,7 @@ ImGuiWindowFlags Zoom::flags =
 	ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
 	ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
 	ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_AlwaysAutoResize;
-bool Zoom::is_open = true;
+bool Zoom::is_open = false;
 ImVec2 Zoom::pos;
 ImVec2 Zoom::size;
 float Zoom::zoom_factor = 1.0f;

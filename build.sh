@@ -16,6 +16,7 @@ function compile()
 {
 	cmake --build ${dir_build} --target install
 	ctags -R src
+	cp ${dir_build}/compile_commands.json .
 }
 
 function run()
