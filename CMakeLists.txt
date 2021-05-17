@@ -196,10 +196,10 @@ else ()
 	target_link_libraries(CodeNect tcc)
 	target_link_libraries(CodeNect dl)
 	add_custom_target(
-   		 ${CMAKE_COMMAND} -E copy_if_different
+   		${CMAKE_COMMAND} -E copy_if_different
         		${CMAKE_BINARY_DIR}/compile_commands.json
         		${CMAKE_CURRENT_LIST_DIR}
-    		)
+    	)
 endif ()
 
 target_link_libraries(CodeNect
@@ -210,6 +210,12 @@ target_link_libraries(CodeNect
 install(TARGETS CodeNect DESTINATION .)
 install(FILES config.ini DESTINATION .)
 install(DIRECTORY assets DESTINATION .)
+install(FILES
+		lib/glfw3.dll
+		lib/libgcc_s_seh-1.dll
+		lib/libstdc++-6.dll
+		lib/libwinpthread-1.dll
+	DESTINATION .)
 
 add_custom_target(
     copy-compile-commands ALL
