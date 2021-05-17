@@ -196,10 +196,10 @@ else ()
 	target_link_libraries(CodeNect tcc)
 	target_link_libraries(CodeNect dl)
 	add_custom_target(
-   		${CMAKE_COMMAND} -E copy_if_different
-        		${CMAKE_BINARY_DIR}/compile_commands.json
-        		${CMAKE_CURRENT_LIST_DIR}
-    	)
+		${CMAKE_COMMAND} -E copy_if_different
+		${CMAKE_BINARY_DIR}/compile_commands.json
+		${CMAKE_CURRENT_LIST_DIR}
+	)
 endif ()
 
 target_link_libraries(CodeNect
@@ -218,5 +218,5 @@ install(FILES
 	DESTINATION .)
 
 add_custom_target(
-    copy-compile-commands ALL
+	copy-compile-commands ALL
 )
