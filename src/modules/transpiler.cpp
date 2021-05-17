@@ -29,6 +29,10 @@
 #include "core/utils.hpp"
 #include "modules/debugger.hpp"
 
+#ifdef OS_WIN
+#include <windows.h>
+#endif
+
 namespace CodeNect
 {
 TCCState* Transpiler::tcc_state = nullptr;
@@ -443,6 +447,10 @@ int Transpiler::run(void)
 	Transpiler::add_message(std::move("Saving code..."));
 	std::string filename = fmt::format(".__cn_bin_{:s}", Project::meta.title);
 
+#if OS_WIN
+	filename.append(".exe");
+#endif
+
 	if (!Transpiler::has_ran)
 	{
 		tcc_output_file(Transpiler::tcc_state, filename.c_str());
@@ -451,19 +459,19 @@ int Transpiler::run(void)
 	}
 
 #if OS_LINUX
-	std::string cmd = fmt::format("$TERMINAL -e \"./{:s}\"", filename);
-	FILE* p = popen(cmd.c_str(), "r");
+	std::string cmd_linux = fmt::format("$TERMINAL -e \"./{:s}\"", filename);
+	FILE* p = popen(cmd_linux.c_str(), "r");
 	if (p == NULL)
 	{
 		Transpiler::add_message(std::move("Failed to launch program"), OUTPUT_TYPE::ERR);
 		return RES_FAIL;
 	}
 	pclose(p);
-	Transpiler::add_message(std::move("Finished running the program"));
 #elif OS_WIN
-	//TODO
+	ShellExecute(NULL, "open", filename.c_str(), NULL, NULL, SW_SHOWDEFAULT);
 #endif
 
+	Transpiler::add_message(std::move("Finished running the program"));
 	return RES_SUCCESS;
 }
 

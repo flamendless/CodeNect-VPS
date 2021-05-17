@@ -1,6 +1,9 @@
 #include "core/utils.hpp"
 
 #include <algorithm>
+#ifdef OS_WIN
+#include <windows.h>
+#endif
 
 namespace CodeNect::Utils
 {
@@ -109,9 +112,10 @@ void open_url(const char* url)
 {
 	std::string str_url = url;
 #ifdef OS_LINUX
-	std::string cmd = "xdg-open " + str_url;
-	system(cmd.c_str());
+	std::string cmd_linux = "xdg-open " + str_url;
+	system(cmd_linux.c_str());
 #elif OS_WIN
+	ShellExecute(NULL, "open", str_url.c_str(), NULL, NULL, SW_SHOWDEFAULT);
 #endif
 }
 

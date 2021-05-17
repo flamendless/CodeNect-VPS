@@ -1,5 +1,6 @@
 #include "ui/about.hpp"
 
+#include "fmt/format.h"
 #include "imgui_internal.h"
 #include "plog/Log.h"
 #include "core/utils.hpp"
@@ -51,7 +52,13 @@ void About::draw()
 		Utils::center_text(ICON_FA_PROJECT_DIAGRAM " CodeNect: Visual Programming", true);
 		Utils::center_text("Software for Learning", true);
 		Utils::center_text("Fundamentals of Programming", true);
-		Utils::center_text(Config::version, true);
+		static std::string version = fmt::format("Version {:s}", Config::version);
+		Utils::center_text(version.c_str(), true);
+#if OS_LINUX
+		Utils::center_text("Linux Release", true);
+#elif OS_WIN
+		Utils::center_text("Windows x64 Release", true);
+#endif
 		ImGui::Separator();
 
 		ImGui::Text("%s Thesis by:", ICON_FA_BOOK);
