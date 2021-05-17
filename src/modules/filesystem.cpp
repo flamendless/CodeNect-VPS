@@ -13,9 +13,12 @@
 #include "stb_image.h"
 #include "core/defines.hpp"
 
+#define GL_CLAMP_TO_EDGE 0x812F
+
 namespace CodeNect::Filesystem
 {
-std::string current_path = std::filesystem::current_path();
+std::filesystem::path cur_path = std::filesystem::current_path();
+std::string current_path = cur_path.string();
 
 bool open_project_file(std::string& project_filepath)
 {

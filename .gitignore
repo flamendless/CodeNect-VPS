@@ -1,11 +1,14 @@
-.xmake
 compile_commands.json
+release/
 build/
+bin/
+build_win/
+bin_win/
 .cache/
 .ninja_deps
 .ninja_log
 build.ninja
-bin/
 test.c
 test
 tags
+*~

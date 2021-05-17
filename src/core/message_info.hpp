@@ -3,7 +3,7 @@
 
 #include <string>
 #include "node/node.hpp"
-#include "enums.h"
+#include "enum.h"
 
 namespace CodeNect
 {

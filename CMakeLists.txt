@@ -3,7 +3,14 @@ cmake_minimum_required(VERSION 3.7)
 project(CodeNect LANGUAGES C CXX)
 set(CMAKE_MODULE_PATH "cmake")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wall -Wextra -pedantic")
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wall -Wextra -pedantic")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wall -Wextra -pedantic")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wall -pedantic")
+endif()
 
 set(OpenGL_GL_PREFERENCE LEGACY)
 find_package(OpenGL REQUIRED)
@@ -172,6 +179,8 @@ target_compile_definitions(CodeNect PRIVATE "$<$<CONFIG:Debug>:DEBUG_MODE=1>")
 if (WIN32)
 	target_compile_definitions(CodeNect PRIVATE OS_WIN=1)
 	target_sources(CodeNect PRIVATE includes/nfd/nfd_win.cpp)
+	target_link_directories(CodeNect PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/includes/tcc)
+	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtcc.a)
 else ()
 	target_compile_definitions(CodeNect PRIVATE OS_LINUX=1)
 
@@ -186,6 +195,11 @@ else ()
 	target_link_directories(CodeNect PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/includes/tcc)
 	target_link_libraries(CodeNect tcc)
 	target_link_libraries(CodeNect dl)
+	add_custom_target(
+   		 ${CMAKE_COMMAND} -E copy_if_different
+        		${CMAKE_BINARY_DIR}/compile_commands.json
+        		${CMAKE_CURRENT_LIST_DIR}
+    		)
 endif ()
 
 target_link_libraries(CodeNect
@@ -199,7 +213,4 @@ install(DIRECTORY assets DESTINATION .)
 
 add_custom_target(
     copy-compile-commands ALL
-    ${CMAKE_COMMAND} -E copy_if_different
-        ${CMAKE_BINARY_DIR}/compile_commands.json
-        ${CMAKE_CURRENT_LIST_DIR}
-    )
+)

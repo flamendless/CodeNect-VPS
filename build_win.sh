@@ -1,6 +1,6 @@
 app_name=CodeNect
-dir_build=build_win
-dir_install=bin_win
+dir_build=build_win_msys
+dir_install=bin_win_msys
 
 function debug()
 {
@@ -9,7 +9,7 @@ function debug()
 
 function rebuild()
 {
-	cmake -G "MinGW Makefile" -B${dir_build} -H. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=$PWD/${dir_install}
+	cmake -G Ninja -B${dir_build} -H. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=$PWD/${dir_install}
 }
 
 function compile()
