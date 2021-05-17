@@ -284,7 +284,7 @@ std::string ntc_size(NodeSize* node_size, bool val_only, std::string& pre)
 			else
 			{
 				std::string err = fmt::format("ERROR: node {:s} can't get size of variable that is not of type 'STRING'", node_size->m_name);
-				Transpiler::add_message(std::move(err), OUTPUT_TYPE::ERROR, node_size, DOC_ID::VAR_SIZE);
+				Transpiler::add_message(std::move(err), OUTPUT_TYPE::ERR, node_size, DOC_ID::VAR_SIZE);
 				return "";
 			}
 		}
@@ -396,7 +396,7 @@ std::string ntc_math(NodeMath* node_math, bool val_only, std::string& pre)
 		{
 			std::string err = fmt::format("ERROR at node {:s}: using {:s} must have 2 inputs",
 				node_math->m_name, math._to_string());
-			Transpiler::add_message(std::move(err), OUTPUT_TYPE::ERROR, node_math, DOC_ID::MATH_REQ);
+			Transpiler::add_message(std::move(err), OUTPUT_TYPE::ERR, node_math, DOC_ID::MATH_REQ);
 			return str;
 		}
 

@@ -137,7 +137,7 @@ void Project::save_cmd(void)
 	Project::connections_count = Nodes::count_connections();
 
 	if (res == RES_FAIL)
-		Alert::open(ALERT_TYPE::ERROR, "Failed to save project");
+		Alert::open(ALERT_TYPE::ERR, "Failed to save project");
 	else
 		Alert::open(ALERT_TYPE::SUCCESS, "Successfully saved project");
 }
@@ -634,7 +634,7 @@ bool Project::has_unsaved_changes(void)
 	if (Project::nodes_count != Nodes::v_nodes.size() ||
 		Project::connections_count != Nodes::count_connections())
 	{
-		Alert::open(ALERT_TYPE::ERROR, "There are unsaved changes. Are you sure you want to quit?");
+		Alert::open(ALERT_TYPE::ERR, "There are unsaved changes. Are you sure you want to quit?");
 		Alert::has_cb = true;
 		Alert::fn_custom_draw = []()
 		{

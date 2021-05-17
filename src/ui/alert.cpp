@@ -76,7 +76,7 @@ void Alert::draw(void)
 		switch (type)
 		{
 			case ALERT_TYPE::SUCCESS: ImGui::Text("%s SUCCESS!", ICON_FA_CHECK); break;
-			case ALERT_TYPE::ERROR: ImGui::Text("%s ERROR!", ICON_FA_BUG); break;
+			case ALERT_TYPE::ERR: ImGui::Text("%s ERROR!", ICON_FA_BUG); break;
 			case ALERT_TYPE::WARNING: ImGui::Text("%s WARNING!", ICON_FA_EXCLAMATION_CIRCLE); break;
 		}
 

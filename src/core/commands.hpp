@@ -14,7 +14,7 @@ struct Command
 	const char* m_icon;
 	bool m_close_command_palette = false;
 
-	enum { NONE, VOID, INT } m_tag = NONE;
+	enum class TAG { NONE, _VOID, _INT } m_tag = TAG::NONE;
 	union
 	{
 		void (*m_fn_void)(void);
@@ -28,22 +28,22 @@ struct Command
 	void set_fn(void (*fn)(void))
 	{
 		m_fn_void = fn;
-		m_tag = VOID;
+		m_tag = TAG::_VOID;
 	}
 
 	void set_fn(int (*fn)(void))
 	{
 		m_fn_int = fn;
-		m_tag = INT;
+		m_tag = TAG::_INT;
 	}
 
 	void run() const
 	{
 		switch(m_tag)
 		{
-			case Command::NONE: break;
-			case Command::VOID: m_fn_void(); break;
-			case Command::INT: m_fn_int(); break;
+			case Command::TAG::NONE: break;
+			case Command::TAG::_VOID: m_fn_void(); break;
+			case Command::TAG::_INT: m_fn_int(); break;
 		}
 	}
 };

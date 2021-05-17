@@ -60,7 +60,7 @@ void NewProject::draw(void)
 				if (res == RES_FAIL)
 				{
 					PLOGW << "Creation of new project failed";
-					Alert::open(ALERT_TYPE::ERROR, "Failed to create new project");
+					Alert::open(ALERT_TYPE::ERR, "Failed to create new project");
 				}
 				else
 				{

@@ -24,7 +24,7 @@ void PopupProject::draw(void)
 			if (Project::open() == RES_SUCCESS)
 				m_is_open = false;
 			else
-				Alert::open(ALERT_TYPE::ERROR, "Failed to open/read the project file");
+				Alert::open(ALERT_TYPE::ERR, "Failed to open/read the project file");
 		}
 
 		if (ImGui::MenuItem("Save Project", NULL, false, Project::has_open_proj))
@@ -32,7 +32,7 @@ void PopupProject::draw(void)
 			int res = Project::save();
 
 			if (res == RES_FAIL)
-				Alert::open(ALERT_TYPE::ERROR, "Failed to save project");
+				Alert::open(ALERT_TYPE::ERR, "Failed to save project");
 			else
 				Alert::open(ALERT_TYPE::SUCCESS, "Successfully saved project");
 

@@ -300,7 +300,7 @@ void Settings::draw_buttons(void)
 		if (res == RES_SUCCESS)
 			Alert::open(ALERT_TYPE::SUCCESS, "Configurations saved! Please restart to see the changes.");
 		else
-			Alert::open(ALERT_TYPE::ERROR, "We encountered an error! Sorry about that.");
+			Alert::open(ALERT_TYPE::ERR, "We encountered an error! Sorry about that.");
 
 		style_data.changed = false;
 		cp_data.changed = false;
@@ -319,7 +319,7 @@ void Settings::draw_buttons(void)
 		if (res == RES_SUCCESS)
 			Alert::open(ALERT_TYPE::SUCCESS, "Configurations restored to defaults! Please restart to see the changes.");
 		else
-			Alert::open(ALERT_TYPE::ERROR, "We encountered an error! Sorry about that.");
+			Alert::open(ALERT_TYPE::ERR, "We encountered an error! Sorry about that.");
 
 		Settings::reset_values();
 		style_data.changed = false;

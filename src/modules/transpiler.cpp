@@ -389,7 +389,7 @@ int Transpiler::compile(void)
 {
 	if (!Project::has_open_proj)
 	{
-		Alert::open(ALERT_TYPE::ERROR, "no project is open");
+		Alert::open(ALERT_TYPE::ERR, "no project is open");
 		return RES_FAIL;
 	}
 
@@ -409,7 +409,7 @@ int Transpiler::compile(void)
 
 	if (tcc_compile_string(Transpiler::tcc_state, Transpiler::runnable_code.c_str()) == -1)
 	{
-		Transpiler::add_message(std::move("Could not compile program. Make sure you clear first?"), OUTPUT_TYPE::ERROR);
+		Transpiler::add_message(std::move("Could not compile program. Make sure you clear first?"), OUTPUT_TYPE::ERR);
 		Terminal::editor.SetText(Transpiler::runnable_code);
 		return RES_FAIL;
 	}
@@ -427,13 +427,13 @@ int Transpiler::run(void)
 {
 	if (!Project::has_open_proj)
 	{
-		Alert::open(ALERT_TYPE::ERROR, "no project is open");
+		Alert::open(ALERT_TYPE::ERR, "no project is open");
 		return RES_FAIL;
 	}
 
 	if (!Transpiler::has_compiled)
 	{
-		Alert::open(ALERT_TYPE::ERROR, "must compile first");
+		Alert::open(ALERT_TYPE::ERR, "must compile first");
 		return RES_FAIL;
 	}
 
@@ -455,7 +455,7 @@ int Transpiler::run(void)
 	FILE* p = popen(cmd.c_str(), "r");
 	if (p == NULL)
 	{
-		Transpiler::add_message(std::move("Failed to launch program"), OUTPUT_TYPE::ERROR);
+		Transpiler::add_message(std::move("Failed to launch program"), OUTPUT_TYPE::ERR);
 		return RES_FAIL;
 	}
 	pclose(p);
@@ -491,7 +491,7 @@ void Transpiler::save_file(void)
 	if (res)
 		Alert::open(ALERT_TYPE::SUCCESS, "File saved to " + out_filepath + "." + ext);
 	else
-		Alert::open(ALERT_TYPE::ERROR, "File cannot be saved to " + out_filepath + "." + ext);
+		Alert::open(ALERT_TYPE::ERR, "File cannot be saved to " + out_filepath + "." + ext);
 }
 
 void Transpiler::shutdown(void)

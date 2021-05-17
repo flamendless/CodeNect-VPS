@@ -128,7 +128,7 @@ void Terminal::draw_message_info(std::vector<MessageInfo>& v)
 				ImGui::TextColored(NodeColors::Lookup::GREEN, "%s", msg.m_msg.c_str());
 				break;
 			}
-			case OUTPUT_TYPE::ERROR:
+			case OUTPUT_TYPE::ERR:
 			{
 				ImGui::TextColored(NodeColors::Lookup::RED, ICON_FA_TIMES_CIRCLE " %s", msg.m_msg.c_str());
 				break;

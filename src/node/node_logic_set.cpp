@@ -40,6 +40,6 @@ void process_set(NodeSet* node_set)
 	if (node_set->m_node_var)
 		node_set->m_node_var->m_value.copy(node_set->m_node_val);
 	else
-		Debugger::add_message(std::move("Missing target variable. Perhaps was deleted?"), OUTPUT_TYPE::ERROR);
+		Debugger::add_message(std::move("Missing target variable. Perhaps was deleted?"), OUTPUT_TYPE::ERR);
 }
 }

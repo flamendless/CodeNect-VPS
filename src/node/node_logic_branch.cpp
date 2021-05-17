@@ -47,7 +47,7 @@ void process_branch(NodeBranch* node_branch)
 	if (!has_if)
 	{
 		Debugger::add_message(std::move("Branch must have an output for 'TRUE'"),
-				OUTPUT_TYPE::ERROR, node_branch, DOC_ID::BRANCH_REQ);
+				OUTPUT_TYPE::ERR, node_branch, DOC_ID::BRANCH_REQ);
 	}
 
 	//check if there's a node_cmp or node_var with (bool) lhs

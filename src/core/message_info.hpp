@@ -7,7 +7,7 @@
 
 namespace CodeNect
 {
-enum class OUTPUT_TYPE { NORMAL = 1, SUCCESS, ERROR, WARNING, PROMPT };
+enum class OUTPUT_TYPE { NORMAL = 1, SUCCESS, ERR, WARNING, PROMPT };
 BETTER_ENUM(DOC_ID, int, EMPTY = 1,
 		//for transpiler/node_logic warnings/errors
 		BRANCH_CONFLICT, AOOB, VAR_SIZE, NEED_INPUTS, CMP_REQ, MATH_REQ, OP_REQ,
