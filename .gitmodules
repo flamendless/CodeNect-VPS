@@ -25,3 +25,6 @@
 [submodule "includes/imgui_markdown"]
 	path = includes/imgui_markdown
 	url = https://github.com/juliettef/imgui_markdown
+[submodule "includes/subprocess"]
+	path = includes/subprocess
+	url = https://github.com/sheredom/subprocess.h

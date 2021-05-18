@@ -7,6 +7,7 @@
 #include "ppk_assert.h"
 #include "IconsFontAwesome5.h"
 #include "fmt/format.h"
+#include "subprocess.h"
 #include "core/defines.hpp"
 #include "core/commands.hpp"
 #include "node/nodes.hpp"
@@ -31,6 +32,7 @@
 
 #ifdef OS_WIN
 #include <windows.h>
+#include <fileapi.h>
 #endif
 
 namespace CodeNect
@@ -445,10 +447,19 @@ int Transpiler::run(void)
 	PLOGI << "Running code...";
 	Transpiler::add_message(std::move("Running code..."));
 	Transpiler::add_message(std::move("Saving code..."));
-	std::string filename = fmt::format(".__cn_bin_{:s}", Project::meta.title);
+	std::string filename;
 
-#if OS_WIN
-	filename.append(".exe");
+#if OS_LINUX
+	filename = fmt::format(".__cn_bin_{:s}", Project::meta.title);
+#elif OS_WIN
+	filename = fmt::format(".__cn_bin_{:s}.exe", Project::meta.title);
+	bool hide_result = SetFileAttributes(std::wstring(filename), FILE_ATTRIBUTE_HIDDEN);
+	if (!hide_result)
+		PLOGW << "Can't hide filename";
+#endif
+
+#if DEBUG_MODE
+	PLOGI << "Filename: " << filename;
 #endif
 
 	if (!Transpiler::has_ran)

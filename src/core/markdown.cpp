@@ -37,7 +37,7 @@ void md_link_cb(ImGui::MarkdownLinkCallbackData data)
 void md_tooltip_cb(ImGui::MarkdownTooltipCallbackData data)
 {
 	std::string url(data.linkData.link, data.linkData.linkLength);
-	ImGui::SetTooltip("Open '%s' in your browser", url.c_str());
+	ImGui::SetTooltip("Open URL in your browser");
 }
 
 void draw(const std::string& str_md)
