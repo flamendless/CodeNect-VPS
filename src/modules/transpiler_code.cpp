@@ -666,7 +666,6 @@ Node* Transpiler::transpile(std::vector<Node*>& v, std::string& output, State* n
 						output.append("\n");
 						return node_for;
 					}
-					case NODE_LOOP::WHILE: break;
 				}
 				break;
 			}
