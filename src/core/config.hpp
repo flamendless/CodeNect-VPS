@@ -11,6 +11,7 @@ namespace CodeNect
 {
 struct Config
 {
+	static bool fullscreen;
 	static int win_width;
 	static int win_height;
 	static int vsync;
@@ -71,6 +72,7 @@ struct Config
 	static void init_command_palette(void);
 	static void init_node_interface(void);
 	static void init_inspector(void);
+	static void update_fullscreen(void);
 	static void update_style(StyleData& style_data);
 	static void update_command_palette(CommandPaletteData& cp_data);
 	static void update_sidebar(SidebarData& sb_data);

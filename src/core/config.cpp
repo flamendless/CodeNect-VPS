@@ -1,11 +1,14 @@
 #include "config.hpp"
 
 #include <utility>
+#include <GLFW/glfw3.h>
 #include "plog/Log.h"
+#include "core/utils.hpp"
 
 namespace CodeNect
 {
 //General
+bool Config::fullscreen = false;
 int Config::win_width;
 int Config::win_height;
 int Config::vsync;
@@ -75,6 +78,7 @@ int Config::init(void)
 	PLOGI << "\tVersion" << Config::version;
 	PLOGI << "\tWindow width: " << Config::win_width;
 	PLOGI << "\tWindow height: " << Config::win_height;
+	PLOGI << "\tFullscreen: " << Config::fullscreen;
 
 	return RES_SUCCESS;
 }
@@ -137,6 +141,8 @@ void Config::set_style(int idx)
 
 void Config::init_general(void)
 {
+	const char* fullscreen = ini.GetValue("general", "fullscreen", "false");
+	Config::fullscreen = Utils::bool_from_string(fullscreen);
 	Config::version = ini.GetValue("general", "version", "???");
 	Config::win_width = std::stoi(ini.GetValue("general", "width", "1280"));
 	Config::win_height = std::stoi(ini.GetValue("general", "height", "720"));
@@ -254,6 +260,12 @@ void Config::init_inspector(void)
 
 	Config::Inspector_c::padding = ImVec2(pad_x, pad_y);
 	Config::Inspector_c::size = ImVec2(width, height);
+}
+
+void Config::update_fullscreen(void)
+{
+	const char* str = (Config::fullscreen) ? "true" : "false";
+	ini.SetValue("general", "fullscreen", str);
 }
 
 void Config::update_style(StyleData& style_data)

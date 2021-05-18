@@ -89,6 +89,13 @@ int App::init_app(void)
 
 void App::init_window(void)
 {
+	if (CodeNect::Config::fullscreen)
+	{
+		PLOGI << "Using monitor's fullscreen resolution...";
+		const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		Config::win_width = mode->width;
+		Config::win_height = mode->height;
+	}
 	App::window = glfwCreateWindow(CodeNect::Config::win_width, CodeNect::Config::win_height,
 		"CodeNect", NULL, NULL);
 

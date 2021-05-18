@@ -20,6 +20,7 @@ struct Settings
 	static void close(void);
 	static void reset_values(void);
 	static void draw(void);
+	static void draw_window(void);
 	static void draw_buttons(void);
 	static void draw_theme_select(void);
 	static void draw_font_select(void);

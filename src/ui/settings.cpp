@@ -114,6 +114,8 @@ void Settings::draw(void)
 		ImGui::Separator();
 
 		Utils::center_text(ICON_FA_HOME " General", true);
+		Settings::draw_window();
+		ImGui::Separator();
 		Settings::draw_theme_select();
 		Settings::draw_font_select();
 		ImGui::Separator();
@@ -140,6 +142,16 @@ void Settings::draw(void)
 		Settings::is_open = false;
 }
 
+void Settings::draw_window(void)
+{
+	Utils::center_text(ICON_FA_WINDOW_MAXIMIZE " Window", true);
+	if (ImGui::Checkbox("Fullscreen", &Config::fullscreen))
+	{
+		Config::update_fullscreen();
+		Alert::open(ALERT_TYPE::SUCCESS, std::move("Please save and then restart software to see effect"));
+	}
+}
+
 void Settings::draw_theme_select(void)
 {
 	if (ImGui::BeginCombo(ICON_FA_PALETTE " Theme", style_data.style._to_string()))
@@ -147,12 +159,9 @@ void Settings::draw_theme_select(void)
 		for (STYLE style : STYLE::_values())
 		{
 			const char* txt = style._to_string();
-
 			if (style == +STYLE::EMPTY)
 				continue;
-
 			ImGui::PushID(style);
-
 			if (ImGui::Selectable(txt, style_data.style._to_string() == txt))
 			{
 				style_data.style = style;
@@ -160,10 +169,8 @@ void Settings::draw_theme_select(void)
 				style_data.changed = true;
 				Config::set_style(style._to_index());
 			}
-
 			ImGui::PopID();
 		}
-
 		ImGui::EndCombo();
 	}
 }
