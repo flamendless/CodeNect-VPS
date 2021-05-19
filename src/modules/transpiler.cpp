@@ -482,19 +482,44 @@ int Transpiler::run_cmd(std::string& filename)
 
 #ifdef OS_LINUX
 	bool res = false;
-	std::string cmd_linux = fmt::format("{:s} --hold -e \"script -q -c './{:s}' {:s}\"",
+	std::string cmd_linux = fmt::format("{:s} -e \"script -q -c './{:s}' {:s}\"",
 			Config::terminal, filename, out_filename);
-	std::string str_out = Utils::get_stdout_from_cmd(cmd_linux, res);
+	Utils::get_stdout_from_cmd(cmd_linux, res);
 	if (!res)
 	{
 		Transpiler::add_message(std::move("Failed to launch program"), OUTPUT_TYPE::ERR);
 		return RES_FAIL;
 	}
 	else
-		Transpiler::add_message(std::move(str_out), OUTPUT_TYPE::SUCCESS);
+	{
+		std::vector<std::string> v_lines = Filesystem::parse_stdout(out_filename);
+		if (v_lines.size() == 0)
+		{
+			Transpiler::add_message(std::move("Can't open output file"), OUTPUT_TYPE::ERR);
+			return RES_FAIL;
+		}
+
+		//remove:
+		//1st line - script start
+		//2nd to last line - prompt
+		//last line - script end
+		v_lines.erase(v_lines.begin());
+		v_lines.erase(v_lines.end() - 3, v_lines.end());
+
+		Transpiler::add_message(std::move("Total lines: " + std::to_string(v_lines.size())), OUTPUT_TYPE::STDOUT);
+		Transpiler::add_message(std::move("-----OUTPUT-----"), OUTPUT_TYPE::STDOUT);
+		for (unsigned long i = 0; i < v_lines.size(); i++)
+		{
+			std::string& str = v_lines[i];
+			Transpiler::add_message(str, OUTPUT_TYPE::STDOUT);
+		}
+		Transpiler::add_message(std::move("----------------"), OUTPUT_TYPE::STDOUT);
+	}
+
 #elif OS_WIN
 	ShellExecute(NULL, "open", filename.c_str(), NULL, NULL, SW_SHOWDEFAULT);
 #endif
+
 	return RES_SUCCESS;
 }
 

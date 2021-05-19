@@ -138,7 +138,7 @@ void Terminal::draw_message_info(std::vector<MessageInfo>& v)
 				ImGui::TextColored(NodeColors::Lookup::YELLOW, ICON_FA_EXCLAMATION_TRIANGLE " %s", msg.m_msg.c_str());
 				break;
 			}
-			case OUTPUT_TYPE::PROMPT:
+			case OUTPUT_TYPE::STDOUT:
 			{
 				ImGui::TextColored(NodeColors::Lookup::ORANGE, "%s", msg.m_msg.c_str());
 				break;

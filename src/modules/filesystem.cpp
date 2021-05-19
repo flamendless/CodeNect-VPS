@@ -18,8 +18,8 @@
 namespace CodeNect::Filesystem
 {
 std::filesystem::path Paths::out_dir = ".out_cn";
-std::filesystem::path cur_path = std::filesystem::current_path();
-std::string current_path = cur_path.string();
+std::filesystem::path Paths::cur_path = std::filesystem::current_path();
+std::string current_path = Paths::cur_path.string();
 
 bool open_project_file(std::string& project_filepath)
 {
@@ -134,9 +134,8 @@ unsigned char* load_texture_from_file(const char* filename, GLFWimage& image)
 
 void create_project_temp_dir(void)
 {
-	std::filesystem::path od = Paths::out_dir;
-	std::filesystem::path cp = cur_path;
-	cp.append(od.c_str());
+	std::filesystem::path cp = Paths::cur_path;
+	cp.append(Paths::out_dir.c_str());
 	bool exists = std::filesystem::exists(cp);
 	if (!exists)
 	{
@@ -172,4 +171,25 @@ void hide_filename(std::string& filename)
 	}
 }
 #endif
+
+std::vector<std::string> parse_stdout(std::string& filename)
+{
+	PLOGI << "opening file: " << filename;
+	std::vector<std::string> v;
+	std::ifstream file_in(filename.c_str());
+	if (!file_in)
+	{
+		PLOGE << "Can not open file: " << filename;
+		return v;
+	}
+
+	std::string str;
+	while (std::getline(file_in, str))
+	{
+		if (str.size() > 0)
+			v.push_back(str);
+	}
+	file_in.close();
+	return v;
+}
 }
