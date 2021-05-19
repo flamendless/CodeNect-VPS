@@ -76,6 +76,7 @@ void NewProject::draw(void)
 		if (!can_create)
 			ImGui::PopStyleVar(1);
 
+		ImGui::SameLine();
 		if (ImGui::Button(ICON_FA_TIMES " Cancel"))
 		{
 			m_is_open = false;

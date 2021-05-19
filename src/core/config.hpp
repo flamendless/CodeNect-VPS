@@ -30,7 +30,7 @@ struct Config
 		static int fade_in;
 		static int fade_out;
 		static ImVec2 pos;
-		static ImVec2 size;
+		static int width;
 		static ImVec2 max_img_size;
 		static ImVec2 padding;
 		static ImVec2 item_spacing;

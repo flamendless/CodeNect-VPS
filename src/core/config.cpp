@@ -29,7 +29,7 @@ const char* Config::version;
 //Sidebar_c
 int Config::Sidebar_c::fade_in;
 int Config::Sidebar_c::fade_out;
-ImVec2 Config::Sidebar_c::size;
+int Config::Sidebar_c::width;
 ImVec2 Config::Sidebar_c::max_img_size;
 ImVec2 Config::Sidebar_c::pos;
 ImVec2 Config::Sidebar_c::padding;
@@ -199,7 +199,6 @@ void Config::init_sidebar(void)
 	const int x = std::stoi(ini.GetValue("sidebar", "pos_x", "-1"));
 	const int y = std::stoi(ini.GetValue("sidebar", "pos_y", "-1"));
 	const int w = std::stoi(ini.GetValue("sidebar", "width", "-1"));
-	const int h = std::stoi(ini.GetValue("sidebar", "height", "-1"));
 	const int px = std::stoi(ini.GetValue("sidebar", "pad_x", "-1"));
 	const int py = std::stoi(ini.GetValue("sidebar", "pad_y", "-1"));
 	const int isx = std::stoi(ini.GetValue("sidebar", "item_spacing_x", "-1"));
@@ -210,7 +209,7 @@ void Config::init_sidebar(void)
 	Config::Sidebar_c::fade_in = fade_in;
 	Config::Sidebar_c::fade_out = fade_out;
 	Config::Sidebar_c::pos = ImVec2(x, y);
-	Config::Sidebar_c::size = ImVec2(w, h);
+	Config::Sidebar_c::width = w;
 	Config::Sidebar_c::max_img_size = ImVec2(max_img_width, max_img_height);
 	Config::Sidebar_c::padding = ImVec2(px, py);
 	Config::Sidebar_c::item_spacing = ImVec2(isx, isy);
