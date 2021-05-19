@@ -8,6 +8,7 @@
 namespace CodeNect
 {
 //General
+const char* Config::terminal;
 bool Config::fullscreen = false;
 int Config::win_width;
 int Config::win_height;
@@ -141,6 +142,7 @@ void Config::set_style(int idx)
 
 void Config::init_general(void)
 {
+	Config::terminal = ini.GetValue("general", "terminal", "$TERMINAL");
 	const char* fullscreen = ini.GetValue("general", "fullscreen", "false");
 	Config::fullscreen = Utils::bool_from_string(fullscreen);
 	Config::version = ini.GetValue("general", "version", "???");

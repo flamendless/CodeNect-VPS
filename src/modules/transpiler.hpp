@@ -60,6 +60,7 @@ struct Transpiler
 	static std::vector<Node*> get_rest(State*);
 	static int compile(void);
 	static int run(void);
+	static int run_cmd(std::string&);
 	static void clear(void);
 	static void save_file(void);
 	static void shutdown(void);

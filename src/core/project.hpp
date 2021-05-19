@@ -15,6 +15,8 @@ struct ProjectMeta
 {
 	std::string title;
 	std::string filepath;
+	std::string file_bin;
+	std::string file_stdout;
 	std::string author;
 	std::string creation_dt;
 	ImVec2 offset;

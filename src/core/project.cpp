@@ -129,6 +129,17 @@ int Project::open(const char* filename)
 	if (Project::parse() == RES_FAIL)
 		return RES_FAIL;
 
+	std::string str_title = Project::meta.title;
+	std::transform(str_title.begin(), str_title.end(), str_title.begin(),
+		[](char ch){ return ch == ' ' ? '_' : ch; });
+#ifdef OS_LINUX
+	Project::meta.file_bin = fmt::format(".__cn_bin_{:s}", str_title);
+	Project::meta.file_stdout = fmt::format(".__stdout_{:s}", str_title);
+#elif OS_WIN
+	Project::meta.file_bin = fmt::format("__cn_bin_{:s}.exe", str_title);
+	Project::meta.file_stdout = fmt::format("__stdout_{:s}", str_title);
+#endif
+
 	Project::has_open_proj = true;
 	SimulationControl::is_open = true;
 	Zoom::is_open = true;
@@ -625,6 +636,8 @@ void Project::close(void)
 
 	Project::meta.filepath.clear();
 	Project::meta.title.clear();
+	Project::meta.file_bin.clear();
+	Project::meta.file_stdout.clear();
 	Project::meta.author.clear();
 	Project::meta.creation_dt.clear();
 	Project::nodes_count = 0;

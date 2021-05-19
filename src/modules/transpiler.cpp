@@ -27,7 +27,9 @@
 #include "node/node_for.hpp"
 #include "core/project.hpp"
 #include "core/utils.hpp"
+#include "core/config.hpp"
 #include "modules/debugger.hpp"
+#include "modules/filesystem.hpp"
 
 #ifdef OS_LINUX
 #include "subprocess.h"
@@ -412,7 +414,7 @@ int Transpiler::compile(void)
 	Transpiler::runnable_code.clear();
 
 	Transpiler::build_runnable_code(Transpiler::runnable_code, true);
-	// Transpiler::build_runnable_code(Transpiler::output_code, false);
+	Transpiler::build_runnable_code(Transpiler::output_code, false);
 
 	PLOGD << Transpiler::runnable_code;
 
@@ -450,49 +452,49 @@ int Transpiler::run(void)
 	PLOGI << "Running code...";
 	Transpiler::add_message(std::move("Running code..."));
 	Transpiler::add_message(std::move("Saving code..."));
-	std::string str_title = Project::meta.title;
-	std::transform(str_title.begin(), str_title.end(), str_title.begin(),
-		[](char ch){ return ch == ' ' ? '_' : ch; });
-	std::string filename;
 
-#ifdef OS_LINUX
-	filename = fmt::format(".__cn_bin_{:s}", str_title);
-#elif OS_WIN
-	filename = fmt::format("__cn_bin_{:s}.exe", str_title);
-#endif
-	PLOGI << "Saved Filename of Executable: " << filename;
+	std::filesystem::path od = Filesystem::Paths::out_dir;
+	od.append(Project::meta.file_bin);
+	std::string filename = od.string();
 
 	if (!Transpiler::has_ran)
 	{
 		tcc_output_file(Transpiler::tcc_state, filename.c_str());
 		Transpiler::add_message(std::move("Launching program"));
 		Transpiler::has_ran = true;
-
 #ifdef OS_WIN
-		int attr = GetFileAttributes(filename.c_str());
-		if ((attr & FILE_ATTRIBUTE_HIDDEN) == 0)
-		{
-			bool hide_result = SetFileAttributes(filename.c_str(), FILE_ATTRIBUTE_HIDDEN);
-			if (!hide_result)
-				PLOGW << "Can't hide filename";
-		}
+		Filesystem::hide_filename(filename);
 #endif
 	}
 
+	if (Transpiler::run_cmd(filename) == RES_FAIL)
+		return RES_FAIL;
+
+	Transpiler::add_message(std::move("Finished running the program"));
+	return RES_SUCCESS;
+}
+
+int Transpiler::run_cmd(std::string& filename)
+{
+	std::filesystem::path od = Filesystem::Paths::out_dir;
+	od.append(Project::meta.file_stdout);
+	std::string out_filename = od.string();
+
 #ifdef OS_LINUX
-	std::string cmd_linux = fmt::format("$TERMINAL -e \"./{:s}\"", filename);
-	FILE* p = popen(cmd_linux.c_str(), "r");
-	if (p == NULL)
+	bool res = false;
+	std::string cmd_linux = fmt::format("{:s} --hold -e \"script -q -c './{:s}' {:s}\"",
+			Config::terminal, filename, out_filename);
+	std::string str_out = Utils::get_stdout_from_cmd(cmd_linux, res);
+	if (!res)
 	{
 		Transpiler::add_message(std::move("Failed to launch program"), OUTPUT_TYPE::ERR);
 		return RES_FAIL;
 	}
-	pclose(p);
+	else
+		Transpiler::add_message(std::move(str_out), OUTPUT_TYPE::SUCCESS);
 #elif OS_WIN
 	ShellExecute(NULL, "open", filename.c_str(), NULL, NULL, SW_SHOWDEFAULT);
 #endif
-
-	Transpiler::add_message(std::move("Finished running the program"));
 	return RES_SUCCESS;
 }
 

@@ -12,7 +12,7 @@ void Popup::begin_draw(void)
 		m_pos.y = ImGui::GetIO().DisplaySize.y * 0.5f;
 	}
 	else
-		m_pos.x = m_pos.x + Config::Sidebar_c::size.x;
+		m_pos.x = m_pos.x + Config::Sidebar_c::width;
 
 	ImGui::SetNextWindowPos(m_pos);
 }

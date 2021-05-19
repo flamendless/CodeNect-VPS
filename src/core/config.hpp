@@ -11,6 +11,7 @@ namespace CodeNect
 {
 struct Config
 {
+	static const char* terminal;
 	static bool fullscreen;
 	static int win_width;
 	static int win_height;

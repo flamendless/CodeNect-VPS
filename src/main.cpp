@@ -32,6 +32,7 @@ int main(int argv, char** args)
 	if (app.init_app() != RES_SUCCESS) return -1;
 
 	CodeNect::Font::init();
+	CodeNect::Filesystem::create_project_temp_dir();
 
 	//Command Palette
 	if (CodeNect::CommandPalette::init() != RES_SUCCESS) return -1;

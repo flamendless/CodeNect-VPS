@@ -1,6 +1,7 @@
 #include "core/utils.hpp"
 
 #include <algorithm>
+#include "core/defines.hpp"
 #ifdef OS_WIN
 #include <windows.h>
 #endif
@@ -276,5 +277,30 @@ bool validate_for(int si, int ei, int inc, NODE_CMP cmp)
 	}
 
 	return is_valid;
+}
+
+std::string get_stdout_from_cmd(std::string& cmd, bool& res)
+{
+	PLOGI << "Command: " << cmd;
+	std::string data;
+	FILE* file_stream;
+	const int max_buffer = BUF_SIZE * 2;
+	char buffer[max_buffer];
+	cmd.append(" 2>&1");
+	file_stream = popen(cmd.c_str(), "r");
+	if (file_stream)
+	{
+		while (!feof(file_stream))
+		{
+			if (fgets(buffer, max_buffer, file_stream) != NULL)
+				data.append(buffer);
+		}
+		pclose(file_stream);
+		res = true;
+	}
+	else
+		res = false;
+
+	return data;
 }
 }
