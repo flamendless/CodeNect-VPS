@@ -4,6 +4,7 @@
 #include "plog/Log.h"
 #include "core/defines.hpp"
 #include "core/commands.hpp"
+#include "core/config.hpp"
 
 namespace CodeNect
 {
@@ -108,7 +109,7 @@ void Docs::draw(void)
 
 	ImVec2 center_pos(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
 	ImGui::SetNextWindowPos(center_pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
-	ImGui::SetNextWindowSize(ImVec2(640, 480));
+	ImGui::SetNextWindowSize(ImVec2(Config::win_width * 0.5, Config::win_height * 0.75));
 
 	if (!ImGui::IsPopupOpen("AlertPopup"))
 		ImGui::SetNextWindowFocus();

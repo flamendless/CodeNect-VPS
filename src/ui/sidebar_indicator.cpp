@@ -39,7 +39,8 @@ void SidebarIndicator::unset_style(void)
 void SidebarIndicator::draw(void)
 {
 	SidebarIndicator::set_style();
-	ImGui::SetNextWindowPos(Config::Sidebar_c::pos, ImGuiCond_Always, ImVec2(0.0f, 0.5f));
+	ImVec2 center_pos(Config::Sidebar_c::pos.x, ImGui::GetIO().DisplaySize.y * 0.5);
+	ImGui::SetNextWindowPos(center_pos, ImGuiCond_Always, ImVec2(0.0f, 0.5f));
 	ImGui::SetNextWindowSize(Config::Sidebar_c::indicator_size, ImGuiCond_Always);
 	ImGui::Begin("SidebarIndicator", &m_is_open, m_flags);
 		m_btn.draw();

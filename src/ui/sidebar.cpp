@@ -242,7 +242,8 @@ void Sidebar::draw_sidebar(void)
 	const ImVec2& max_size = Config::Sidebar_c::max_img_size;
 
 	Sidebar::set_style();
-	ImGui::SetNextWindowPos(Config::Sidebar_c::pos, ImGuiCond_Always, ImVec2(0.0f, 0.5f));
+	ImVec2 center_pos(Config::Sidebar_c::pos.x, ImGui::GetIO().DisplaySize.y * 0.5);
+	ImGui::SetNextWindowPos(center_pos, ImGuiCond_Always, ImVec2(0.0f, 0.5f));
 	ImGui::SetNextWindowSize(Config::Sidebar_c::size);
 	ImGui::Begin("Sidebar", &m_is_open, m_flags);
 		popup_project.m_pos = ImGui::GetCursorPos();
