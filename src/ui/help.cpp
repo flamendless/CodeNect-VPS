@@ -73,7 +73,7 @@ std::string Help::str_md_libs =
 
 std::string Help::str_md_support =
 	ICON_FA_ENVELOPE "  "
-	u8R"([E-Mail](mailto:flamendless8@gmail.com?subject=CodeNect%20Support&body=))"
+	u8R"([E-Mail](mailto:flamendless8@gmail.com?subject=CodeNect%20Support&body=(Please%20attach%20the%20log.txt%20found%20in%20the%20same%20directory%20where%20CodeNect.exe%20is%20found)))"
 	"\n"
 	ICON_FA_GITHUB "  "
 	u8R"([CodeNect Repository](https://github.com/flamendless/CodeNect-VPS))";
