@@ -7,7 +7,6 @@
 #include "ppk_assert.h"
 #include "IconsFontAwesome5.h"
 #include "fmt/format.h"
-#include "subprocess.h"
 #include "core/defines.hpp"
 #include "core/commands.hpp"
 #include "node/nodes.hpp"
@@ -30,7 +29,9 @@
 #include "core/utils.hpp"
 #include "modules/debugger.hpp"
 
-#ifdef OS_WIN
+#ifdef OS_LINUX
+#include "subprocess.h"
+#elif OS_WIN
 #include <windows.h>
 #include <fileapi.h>
 #endif
@@ -449,29 +450,36 @@ int Transpiler::run(void)
 	PLOGI << "Running code...";
 	Transpiler::add_message(std::move("Running code..."));
 	Transpiler::add_message(std::move("Saving code..."));
+	std::string str_title = Project::meta.title;
+	std::transform(str_title.begin(), str_title.end(), str_title.begin(),
+		[](char ch){ return ch == ' ' ? '_' : ch; });
 	std::string filename;
 
-#if OS_LINUX
-	filename = fmt::format(".__cn_bin_{:s}", Project::meta.title);
+#ifdef OS_LINUX
+	filename = fmt::format(".__cn_bin_{:s}", str_title);
 #elif OS_WIN
-	filename = fmt::format(".__cn_bin_{:s}.exe", Project::meta.title);
-	bool hide_result = SetFileAttributes(std::wstring(filename), FILE_ATTRIBUTE_HIDDEN);
-	if (!hide_result)
-		PLOGW << "Can't hide filename";
+	filename = fmt::format("__cn_bin_{:s}.exe", str_title);
 #endif
-
-#if DEBUG_MODE
-	PLOGI << "Filename: " << filename;
-#endif
+	PLOGI << "Saved Filename of Executable: " << filename;
 
 	if (!Transpiler::has_ran)
 	{
 		tcc_output_file(Transpiler::tcc_state, filename.c_str());
 		Transpiler::add_message(std::move("Launching program"));
 		Transpiler::has_ran = true;
+
+#ifdef OS_WIN
+		int attr = GetFileAttributes(filename.c_str());
+		if ((attr & FILE_ATTRIBUTE_HIDDEN) == 0)
+		{
+			bool hide_result = SetFileAttributes(filename.c_str(), FILE_ATTRIBUTE_HIDDEN);
+			if (!hide_result)
+				PLOGW << "Can't hide filename";
+		}
+#endif
 	}
 
-#if OS_LINUX
+#ifdef OS_LINUX
 	std::string cmd_linux = fmt::format("$TERMINAL -e \"./{:s}\"", filename);
 	FILE* p = popen(cmd_linux.c_str(), "r");
 	if (p == NULL)
