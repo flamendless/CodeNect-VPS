@@ -27,6 +27,7 @@ add_executable(CodeNect
 	src/core/project.cpp
 	src/core/utils.cpp
 	src/core/validator.cpp
+	src/modules/assessments.cpp
 	src/modules/debugger.cpp
 	src/modules/filesystem.cpp
 	src/modules/input.cpp
@@ -79,6 +80,7 @@ add_executable(CodeNect
 
 	src/ui/about.cpp
 	src/ui/alert.cpp
+	src/ui/assessments.cpp
 	src/ui/button.cpp
 	src/ui/command_palette.cpp
 	src/ui/create_node_array.cpp

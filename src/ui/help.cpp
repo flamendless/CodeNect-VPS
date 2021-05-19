@@ -39,6 +39,7 @@ Help::tuple_t Help::v_key_items
 	help_t(ICON_FA_TERMINAL " Ctrl + Shift + p", "open/close the command palette", "hold the 'ctrl' and 'shift' key then press 'p'"),
 	help_t(ICON_FA_CODE " Ctrl + Shift + t", "open/close the terminal", "hold the 'ctrl' and 'shift' key then press 't'"),
 	help_t(ICON_FA_SEARCH " Ctrl + Shift + i", "open/close the inspector", "hold the 'ctrl' and 'shift' key then press 'i'"),
+	help_t(ICON_FA_CLIPBOARD_CHECK " Ctrl + Shift + a", "open/close the assessments", "hold the 'ctrl' and 'shift' key then press 'a'"),
 	help_t(ICON_FA_KEYBOARD " Escape Key", "close active window", "press the 'Esc' key in the keyboard"),
 	help_t(ICON_FA_KEYBOARD " C (terminal)", "shortcut key for 'compile'", "press the 'c' key in the keyboard when terminal is open"),
 	help_t(ICON_FA_KEYBOARD " R (terminal)", "shortcut key for 'run'", "press the 'r' key in the keyboard when terminal is open"),

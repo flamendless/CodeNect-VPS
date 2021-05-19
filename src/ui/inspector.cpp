@@ -33,7 +33,7 @@ int Inspector::init(void)
 	const int y = (float)Config::win_height/2;
 
 	Inspector::pos = ImVec2(x, y);
-	Inspector::size = Config::Inspector_c::size;
+	Inspector::size = ImVec2(Config::win_width * 0.30, Config::win_height - 16);
 	Input::register_key_event(Inspector::keypress);
 
 	return RES_SUCCESS;
@@ -72,7 +72,7 @@ void Inspector::draw(void)
 
 	ImGui::SetNextWindowPos(Inspector::pos, ImGuiCond_Always, ImVec2(1, 0.5));
 	ImGui::SetNextWindowSize(Inspector::size);
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, Config::Inspector_c::padding);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(4, 4));
 
 	if (ImGui::Begin("Inspector", &Inspector::is_open, Inspector::flags))
 	{

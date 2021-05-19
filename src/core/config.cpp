@@ -51,10 +51,6 @@ ImVec4 Config::NodeInterface_c::color_light = ImVec4(1, 0, 0, 1);
 ImVec4 Config::NodeInterface_c::title_color = Config::NodeInterface_c::color_dark;
 ImVec4 Config::NodeInterface_c::label_color = Config::NodeInterface_c::color_dark;
 
-//Inspector
-ImVec2 Config::Inspector_c::padding;
-ImVec2 Config::Inspector_c::size;
-
 int Config::init(void)
 {
 	ini.SetUnicode();
@@ -73,7 +69,6 @@ int Config::init(void)
 	Config::init_sidebar();
 	Config::init_command_palette();
 	Config::init_node_interface();
-	Config::init_inspector();
 
 	PLOGI << "Config loaded:";
 	PLOGI << "\tVersion" << Config::version;
@@ -166,35 +161,18 @@ void Config::init_sidebar(void)
 	vec_filenames& images_filenames = Config::Sidebar_c::images_filenames;
 	vec_filenames& images_filenames_hover = Config::Sidebar_c::images_filenames_hover;
 
-	const pair_key_filename project = std::make_pair("project", ini.GetValue("sidebar_images", "project", "project"));
-	const pair_key_filename run = std::make_pair("run", ini.GetValue("sidebar_images", "run", "run"));
-	const pair_key_filename inspector = std::make_pair("inspector", ini.GetValue("sidebar_images", "inspector", "inspector"));
-	const pair_key_filename docs = std::make_pair("docs", ini.GetValue("sidebar_images", "docs", "docs"));
-	const pair_key_filename settings = std::make_pair("settings", ini.GetValue("sidebar_images", "settings", "settings"));
-	const pair_key_filename about = std::make_pair("about", ini.GetValue("sidebar_images", "about", "about"));
-	const pair_key_filename help = std::make_pair("help", ini.GetValue("sidebar_images", "help", "help"));
-	images_filenames.push_back(project);
-	images_filenames.push_back(run);
-	images_filenames.push_back(inspector);
-	images_filenames.push_back(docs);
-	images_filenames.push_back(settings);
-	images_filenames.push_back(about);
-	images_filenames.push_back(help);
-
-	const pair_key_filename project_hover = std::make_pair("project_hover", ini.GetValue("sidebar_images", "project_hover", "project_hover"));
-	const pair_key_filename run_hover = std::make_pair("run_hover", ini.GetValue("sidebar_images", "run_hover", "run_hover"));
-	const pair_key_filename inspector_hover = std::make_pair("inspector_hover", ini.GetValue("sidebar_images", "inspector_hover", "inspector_hover"));
-	const pair_key_filename docs_hover = std::make_pair("docs_hover", ini.GetValue("sidebar_images", "docs_hover", "docs_hover"));
-	const pair_key_filename settings_hover = std::make_pair("settings_hover", ini.GetValue("sidebar_images", "settings_hover", "settings_hover"));
-	const pair_key_filename about_hover = std::make_pair("about_hover", ini.GetValue("sidebar_images", "about_hover", "about_hover"));
-	const pair_key_filename help_hover = std::make_pair("help_hover", ini.GetValue("sidebar_images", "help_hover", "help_hover"));
-	images_filenames_hover.push_back(project_hover);
-	images_filenames_hover.push_back(run_hover);
-	images_filenames_hover.push_back(inspector_hover);
-	images_filenames_hover.push_back(docs_hover);
-	images_filenames_hover.push_back(settings_hover);
-	images_filenames_hover.push_back(about_hover);
-	images_filenames_hover.push_back(help_hover);
+	std::vector<std::string> v_images = {
+		"project", "run", "inspector", "docs", "assessment", "settings", "about", "help"
+	};
+	for (std::string& str : v_images)
+	{
+		std::string str_h = str;
+		str_h.append("_hover");
+		const pair_key_filename p = std::make_pair(str, ini.GetValue("sidebar_images", str.c_str(), str.c_str()));
+		const pair_key_filename p_hover = std::make_pair(str_h, ini.GetValue("sidebar_images", str_h.c_str(), str_h.c_str()));
+		images_filenames.push_back(p);
+		images_filenames_hover.push_back(p_hover);
+	}
 
 	const int fade_in = std::stoi(ini.GetValue("sidebar_handler", "fade_in", "-1"));
 	const int fade_out = std::stoi(ini.GetValue("sidebar_handler", "fade_out", "-1"));
@@ -250,17 +228,6 @@ void Config::init_node_interface(void)
 	Config::NodeInterface_c::item_inner_spacing = ImVec2(iis_x, iis_y);
 	Config::NodeInterface_c::label_color = ImVec4(lc_r, lc_g, lc_b, 1);
 	Config::NodeInterface_c::title_color = ImVec4(tc_r, tc_g, tc_b, 1);
-}
-
-void Config::init_inspector(void)
-{
-	const int pad_x = std::stoi(ini.GetValue("inspector", "pad_x"));
-	const int pad_y = std::stoi(ini.GetValue("inspector", "pad_y"));
-	const int width = std::stoi(ini.GetValue("inspector", "width"));
-	const int height = std::stoi(ini.GetValue("inspector", "height"));
-
-	Config::Inspector_c::padding = ImVec2(pad_x, pad_y);
-	Config::Inspector_c::size = ImVec2(width, height);
 }
 
 void Config::update_fullscreen(void)

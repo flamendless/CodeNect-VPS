@@ -13,6 +13,7 @@
 #include "ui/about.hpp"
 #include "ui/help.hpp"
 #include "ui/docs.hpp"
+#include "ui/assessments.hpp"
 
 namespace CodeNect
 {
@@ -20,6 +21,7 @@ Button* btn_project;
 Button* btn_run;
 Button* btn_inspector;
 Button* btn_docs;
+Button* btn_assessment;
 Button* btn_settings;
 Button* btn_about;
 Button* btn_help;
@@ -41,6 +43,10 @@ int Sidebar::init(void)
 	btn_docs = m_ui_buttons["docs"];
 	btn_docs->m_has_tooltip = true;
 	btn_docs->m_tooltip = "Docs";
+
+	btn_assessment = m_ui_buttons["assessment"];
+	btn_assessment->m_has_tooltip = true;
+	btn_assessment->m_tooltip = "Assessments";
 
 	btn_settings = m_ui_buttons["settings"];
 	btn_settings->m_has_tooltip = true;
@@ -84,7 +90,7 @@ int Sidebar::load_images(void)
 		//load hover
 		CodeNect::Image* image_hover = new CodeNect::Image();
 		const std::pair<const std::string, const std::string>& p2 = images_filenames_hover[i];
-		const std::string& key_hover = p2.first;
+		// const std::string& key_hover = p2.first;
 		const std::string& filename_hover = p2.second;
 		const int res_hover = CodeNect::Filesystem::load_texture_from_file(filename_hover.c_str(), *image_hover);
 
@@ -95,7 +101,6 @@ int Sidebar::load_images(void)
 		}
 
 		Sidebar::check_image_size(*image_hover);
-		PLOGV << "Loaded successfully: " << key_hover;
 
 		//create ui button
 		CodeNect::Button* btn = new CodeNect::Button(image, image_hover, true);
@@ -106,7 +111,6 @@ int Sidebar::load_images(void)
 	}
 
 	PLOGI << "Loaded sidebar images successfully";
-
 	return RES_SUCCESS;
 }
 
@@ -161,6 +165,7 @@ void Sidebar::manage_popups(void)
 		btn_run->m_hoverable = false;
 		btn_inspector->m_hoverable = true;
 		btn_docs->m_hoverable = false;
+		btn_assessment->m_hoverable = false;
 		btn_settings->m_hoverable = false;
 		btn_about->m_hoverable = false;
 		btn_help->m_hoverable = false;
@@ -175,12 +180,24 @@ void Sidebar::manage_popups(void)
 		btn_about->m_hoverable = false;
 		btn_help->m_hoverable = false;
 	}
+	else if (AssessmentsUI::is_open)
+	{
+		btn_project->m_hoverable = false;
+		btn_run->m_hoverable = false;
+		btn_inspector->m_hoverable = false;
+		btn_docs->m_hoverable = false;
+		btn_assessment->m_hoverable = true;
+		btn_settings->m_hoverable = true;
+		btn_about->m_hoverable = false;
+		btn_help->m_hoverable = false;
+	}
 	else if (Settings::is_open)
 	{
 		btn_project->m_hoverable = false;
 		btn_run->m_hoverable = false;
 		btn_inspector->m_hoverable = false;
 		btn_docs->m_hoverable = false;
+		btn_assessment->m_hoverable = false;
 		btn_settings->m_hoverable = true;
 		btn_about->m_hoverable = false;
 		btn_help->m_hoverable = false;
@@ -191,6 +208,7 @@ void Sidebar::manage_popups(void)
 		btn_run->m_hoverable = false;
 		btn_inspector->m_hoverable = false;
 		btn_docs->m_hoverable = false;
+		btn_assessment->m_hoverable = false;
 		btn_settings->m_hoverable = false;
 		btn_about->m_hoverable = true;
 		btn_help->m_hoverable = false;
@@ -201,6 +219,7 @@ void Sidebar::manage_popups(void)
 		btn_run->m_hoverable = false;
 		btn_inspector->m_hoverable = false;
 		btn_docs->m_hoverable = false;
+		btn_assessment->m_hoverable = false;
 		btn_settings->m_hoverable = false;
 		btn_about->m_hoverable = false;
 		btn_help->m_hoverable = true;
@@ -232,6 +251,7 @@ void Sidebar::draw(void)
 		btn_run->m_is_open ||
 		btn_inspector->m_is_open ||
 		btn_docs->m_is_open ||
+		btn_assessment->m_is_open ||
 		btn_settings->m_is_open ||
 		btn_about->m_is_open ||
 		btn_help->m_is_open;
@@ -260,6 +280,10 @@ void Sidebar::draw_sidebar(void)
 		btn_docs->draw();
 		if (!m_has_opened && btn_docs->m_is_clicked)
 			Docs::is_open = true;
+
+		btn_assessment->draw();
+		if (!m_has_opened && btn_assessment->m_is_clicked)
+			AssessmentsUI::is_open = true;
 
 		static const int btn_after = 3;
 		const int isy = CodeNect::Config::Sidebar_c::item_spacing.y;
@@ -296,9 +320,7 @@ void Sidebar::draw_sidebar(void)
 void Sidebar::shutdown()
 {
 	PLOGI << "Clearing sidebar buttons...";
-
 	m_ui_buttons.clear();
-
 	PLOGI << "Cleared sidebar buttons successfully";
 }
 }

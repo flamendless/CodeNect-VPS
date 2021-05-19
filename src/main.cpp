@@ -21,6 +21,7 @@
 #include "modules/simulation.hpp"
 #include "ui/zoom.hpp"
 #include "modules/transpiler.hpp"
+#include "ui/assessments.hpp"
 
 int main(int argv, char** args)
 {
@@ -50,6 +51,10 @@ int main(int argv, char** args)
 	//Inspector
 	if (CodeNect::Inspector::init() != RES_SUCCESS) return -1;
 	CodeNect::Inspector::register_commands();
+
+	//Assessments
+	if (CodeNect::AssessmentsUI::init() != RES_SUCCESS) return -1;
+	CodeNect::AssessmentsUI::register_commands();
 
 	//Zoom
 	if (CodeNect::Zoom::init() != RES_SUCCESS) return -1;
@@ -124,6 +129,7 @@ int main(int argv, char** args)
 		CodeNect::CommandPalette::draw();
 		CodeNect::Alert::draw();
 		CodeNect::Inspector::draw();
+		CodeNect::AssessmentsUI::draw();
 		CodeNect::Zoom::draw();
 		CodeNect::Terminal::draw();
 		CodeNect::SimulationControl::draw();

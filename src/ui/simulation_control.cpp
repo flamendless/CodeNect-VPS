@@ -19,8 +19,8 @@ ImVec2 SimulationControl::pos;
 
 int SimulationControl::init(void)
 {
-	const int x = Config::win_width - 8;
-	const int y = (float)Config::win_height/2;
+	const int x = Config::win_width * 0.5;
+	const int y = (float)Config::win_height - 8;
 	SimulationControl::pos.x = x;
 	SimulationControl::pos.y = y;
 
@@ -45,7 +45,7 @@ void SimulationControl::draw(void)
 	if (!SimulationControl::is_open)
 		return;
 
-	ImGui::SetNextWindowPos(SimulationControl::pos, ImGuiCond_FirstUseEver, ImVec2(1, 1));
+	ImGui::SetNextWindowPos(SimulationControl::pos, ImGuiCond_Once, ImVec2(0.5, 1));
 
 	if (ImGui::Begin(SimulationControl::title, &SimulationControl::is_open, SimulationControl::flags))
 	{
