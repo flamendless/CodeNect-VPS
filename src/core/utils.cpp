@@ -1,6 +1,7 @@
 #include "core/utils.hpp"
 
 #include <algorithm>
+#include "fmt/format.h"
 #include "core/defines.hpp"
 #ifdef OS_WIN
 #include <windows.h>
@@ -339,5 +340,14 @@ std::string save_string(std::string str)
 	}
 
 	return str;
+}
+
+void print_hex(std::string& str)
+{
+	const char* s = str.c_str();
+	PLOGD << "string: " << s;
+	while (*s)
+		printf("%02x", (unsigned int) *s++);
+	printf("\n");
 }
 }

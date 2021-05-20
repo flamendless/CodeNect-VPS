@@ -5,10 +5,8 @@ u8R"====(## INSTRUCTION
   4. *Loop* using a *For* loop using the *starting* and *ending* numbers
   5. *Add* the *sum variable* with the *iteration* count
   6. After the loop, *print* the sum
-## EXAMPLE OUTPUT
+## EXPECTED OUTPUT
 Enter starting number: 5
 Enter ending number: 10
 Summation: 45
-## NOTE
-The output must *EXACTLY* match the example output.
 )===="

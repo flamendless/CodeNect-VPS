@@ -11,13 +11,11 @@ u8R"====(## INSTRUCTION
   10. *Print* the *difference*
   11. *Print* the *product*
   12. *Print* the *quotient*
-## EXAMPLE OUTPUT
+## EXPECTED OUTPUT
 Please enter the first number: 26
 Please enter the second number: 2
 Sum of the two numbers is: 28
 Difference of the two numbers is: 24
 Product of the two numbers is: 52
 Quotient of the two numbers is: 13
-## NOTE
-The output must *EXACTLY* match the example output.
 )===="

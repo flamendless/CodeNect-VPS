@@ -288,10 +288,9 @@ void Terminal::draw_assessment(void)
 	for (AssessmentResult& res : Assessments::v_results)
 	{
 		ImGui::TextColored(col, "Score: %d/%d", res.score, (int)res.assessment.v_expected.size());
-		ImGui::TextColored(col, "Submitted: %d", (int)res.assessment.v_submission.size());
-		ImGui::TextColored(col, "Expected: %d", (int)res.assessment.v_expected.size());
 		if (res.v_lines_diff.size() != 0)
 		{
+			ImGui::SameLine();
 			if (ImGui::SmallButton("See differences"))
 				DiffViewer::open(res);
 		}

@@ -72,7 +72,7 @@ void Inspector::draw(void)
 
 	ImGui::SetNextWindowPos(Inspector::pos, ImGuiCond_Always, ImVec2(1, 0.5));
 	ImGui::SetNextWindowSize(Inspector::size);
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(4, 4));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(16, 16));
 
 	if (ImGui::Begin("Inspector", &Inspector::is_open, Inspector::flags))
 	{

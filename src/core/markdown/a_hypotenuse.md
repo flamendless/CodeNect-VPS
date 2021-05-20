@@ -8,10 +8,8 @@ u8R"====(## INSTRUCTION
   7. *Add* the squared value of *a* and *b*
   8. Get *Square Root* of the previous step
   9. *Print* the result
-## EXAMPLE OUTPUT
+## EXPECTED OUTPUT
 Enter the value of a: 3
 Enter the value of b: 4
 Hypotenuse is: 5
-## NOTE
-The output must *EXACTLY* match the example output.
 )===="

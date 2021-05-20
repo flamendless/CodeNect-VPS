@@ -4,6 +4,7 @@
 #include "IconsFontAwesome5.h"
 #include "core/defines.hpp"
 #include "core/config.hpp"
+#include "core/utils.hpp"
 
 namespace CodeNect
 {
@@ -41,6 +42,49 @@ void DiffViewer::draw(void)
 
 	if (ImGui::Begin(ICON_FA_TASKS " Diff Viewer", &DiffViewer::is_open, DiffViewer::flags))
 	{
+		Utils::center_text(DiffViewer::cur_result.assessment.title, true);
+		if (ImGui::BeginTable("TableDiff", 4, ImGuiTableFlags_SizingFixedFit |
+					ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders))
+		{
+			ImGui::TableSetupColumn("Status");
+			ImGui::TableSetupColumn("Line #");
+			ImGui::TableSetupColumn("Submitted");
+			ImGui::TableSetupColumn("Expected");
+			ImGui::TableHeadersRow();
+
+			ImVec4 color = ImVec4(0, 1, 0, 1);
+			int ln = 1;
+			for (unsigned long i = 0; i < DiffViewer::cur_result.assessment.v_expected.size(); i++)
+			{
+				ImGui::TableNextRow();
+				bool in_conflict = std::find(DiffViewer::cur_result.v_lines_diff.begin(),
+						DiffViewer::cur_result.v_lines_diff.end(), (int)i) !=
+						DiffViewer::cur_result.v_lines_diff.end();
+
+				if (in_conflict)
+					color = ImVec4(0.75f, 0, 0, 1);
+
+				std::string str_submitted = "";
+				if (i < DiffViewer::cur_result.assessment.v_submission.size())
+					str_submitted = DiffViewer::cur_result.assessment.v_submission[i];
+				std::string str_expected = DiffViewer::cur_result.assessment.v_expected[i];
+
+				ImGui::TableNextColumn();
+				ImGui::TextColored(color, "%s", (in_conflict ? ICON_FA_TIMES : ICON_FA_CHECK));
+
+				ImGui::TableNextColumn();
+				ImGui::TextColored(color, "%d", ln);
+
+				ImGui::TableNextColumn();
+				ImGui::TextColored(color, "%s", str_submitted.c_str());
+
+				ImGui::TableNextColumn();
+				ImGui::TextColored(color, "%s", str_expected.c_str());
+				++ln;
+			}
+
+			ImGui::EndTable();
+		}
 		ImGui::End();
 	}
 

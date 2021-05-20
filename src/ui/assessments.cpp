@@ -59,7 +59,7 @@ void AssessmentsUI::draw(void)
 
 	ImGui::SetNextWindowPos(AssessmentsUI::pos, ImGuiCond_Always, ImVec2(1, 0.5));
 	ImGui::SetNextWindowSize(AssessmentsUI::size);
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(4, 4));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(16, 16));
 
 	if (ImGui::Begin("AssessmentsUI", &AssessmentsUI::is_open, AssessmentsUI::flags))
 	{

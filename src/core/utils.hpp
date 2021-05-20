@@ -26,6 +26,7 @@ bool validate_for(int si, int ei, int inc, NODE_CMP cmp);
 std::string get_stdout_from_cmd(std::string&, bool&);
 void sanitize_string(std::string&);
 std::string save_string(std::string);
+void print_hex(std::string&);
 }
 
 #endif //_UTILS_HPP
