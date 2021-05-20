@@ -9,7 +9,7 @@ function debug()
 
 function rebuild()
 {
-	cmake -G Ninja -B${dir_build} -H. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=$PWD/${dir_install}
+	cmake -G Ninja -B${dir_build} -H. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/${dir_install}
 }
 
 function compile()
