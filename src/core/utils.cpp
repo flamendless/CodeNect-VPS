@@ -303,4 +303,41 @@ std::string get_stdout_from_cmd(std::string& cmd, bool& res)
 
 	return data;
 }
+
+void sanitize_string(std::string& str)
+{
+	if (str.compare("\\s") == 0)
+	{
+		str = " ";
+		return;
+	}
+
+	if (str.length() < 2)
+		return;
+	int i = str.length() - 2;
+	int j = str.length() - 1;
+	std::string last = str.substr(i, j);
+	if (last.compare("\\s") == 0)
+	{
+		std::string new_str = str.substr(0, i);
+		new_str.append(" ");
+		str = std::move(new_str);
+	}
+}
+
+std::string save_string(std::string str)
+{
+	if (str.length() == 0)
+		return str;
+
+	char last = str[str.length() - 1];
+	if (last == ' ')
+	{
+		std::string new_str = str.substr(0, str.length() - 1);
+		new_str.append("\\s");
+		return new_str;
+	}
+
+	return str;
+}
 }

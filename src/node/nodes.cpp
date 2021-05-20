@@ -192,7 +192,12 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta, bool is_d
 					case NODE_SLOT::INTEGER: val.to_int(nm->m_value.c_str()); break;
 					case NODE_SLOT::FLOAT: val.to_float(nm->m_value.c_str()); break;
 					case NODE_SLOT::DOUBLE: val.to_double(nm->m_value.c_str()); break;
-					case NODE_SLOT::STRING: val.set(nm->m_value); break;
+					case NODE_SLOT::STRING:
+					{
+						Utils::sanitize_string(nm->m_value);
+						val.set(nm->m_value);
+						break;
+					}
 				}
 
 				v_slot_info_t&& in = {};

@@ -183,10 +183,8 @@ int Project::save(void)
 	for (CSimpleIniA::Entry& section : sections)
 	{
 		std::string str_section = section.pItem;
-
 		if (std::string(str_section).find("meta") == 0)
 			continue;
-
 		ini.Delete(section.pItem, nullptr);
 	}
 
@@ -219,7 +217,7 @@ int Project::save(void)
 			{
 				NodeVariable* node_var = static_cast<NodeVariable*>(node);
 				const char* value_slot = node_var->m_value_orig.m_slot._to_string();
-				std::string str_value = node_var->m_value_orig.get_value_str();
+				std::string str_value = Utils::save_string(node_var->m_value_orig.get_value_str());
 				ini.SetValue(section, "value_slot", value_slot);
 				ini.SetValue(section, "value", str_value.c_str());
 				break;
@@ -254,8 +252,9 @@ int Project::save(void)
 					if (node_print->m_override) is_override = "true";
 					if (node_print->m_append_newline) is_append_newline = "true";
 					if (node_print->m_append) is_append = "true";
+					std::string str_value = Utils::save_string(node_print->m_orig_str);
 					ini.SetValue(section, "action", node_print->m_action._to_string());
-					ini.SetValue(section, "value", node_print->m_orig_str.c_str());
+					ini.SetValue(section, "value", str_value.c_str());
 					ini.SetValue(section, "is_append", is_append);
 					ini.SetValue(section, "is_override", is_override);
 					ini.SetValue(section, "is_append_newline", is_append_newline);
@@ -266,11 +265,13 @@ int Project::save(void)
 					const char* is_append_newline = "false";
 					if (node_prompt->m_override) is_override = "true";
 					if (node_prompt->m_append_newline) is_append_newline = "true";
+					std::string str_value = Utils::save_string(node_prompt->m_orig_str);
+					std::string str_fake_input = Utils::save_string(std::get<std::string>(node_prompt->m_fake_input.data));
 					ini.SetValue(section, "action", node_prompt->m_action._to_string());
-					ini.SetValue(section, "value", node_prompt->m_orig_str.c_str());
+					ini.SetValue(section, "value", str_value.c_str());
 					ini.SetValue(section, "is_override", is_override);
 					ini.SetValue(section, "is_append_newline", is_append_newline);
-					ini.SetValue(section, "fake_input", std::get<std::string>(node_prompt->m_fake_input.data).c_str());
+					ini.SetValue(section, "fake_input", str_fake_input.c_str());
 				}
 				else if (node_set)
 				{
@@ -521,6 +522,7 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 		nm->m_override = ini.GetValue(section, "is_override", "false");
 		nm->m_append_newline = ini.GetValue(section, "is_append_newline", "false");
 		nm->m_fake_input = ini.GetValue(section, "fake_input", "");
+		Utils::sanitize_string(nm->m_orig_str);
 	}
 
 	if (std::strcmp(action, "PRINT") == 0)
@@ -530,6 +532,7 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 		nm->m_override = ini.GetValue(section, "is_override", "false");
 		nm->m_append = ini.GetValue(section, "is_append", "false");
 		nm->m_append_newline = ini.GetValue(section, "is_append_newline", "false");
+		Utils::sanitize_string(nm->m_orig_str);
 	}
 
 	if (std::strcmp(action, "SET") == 0)
