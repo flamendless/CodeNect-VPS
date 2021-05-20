@@ -50,9 +50,13 @@ void Project::register_commands(void)
 	cmd_new_project->set_fn(Project::init_new);
 	cmd_new_project->m_close_command_palette = true;
 
+#ifndef OS_WIN
+	//BUG: for unknown reasons, using this via command palette results into
+	//ImGui::Text widgets always losing focus. Totally no idea why this happens
 	Command* cmd_open_project = new Command("Open Project", "open a project from file", ICON_FA_FOLDER_OPEN);
 	cmd_open_project->set_fn(Project::open);
 	cmd_open_project->m_close_command_palette = true;
+#endif
 
 	Command* cmd_save_project = new Command("Save Project", "save project file", ICON_FA_SAVE);
 	cmd_save_project->set_fn(Project::save_cmd);

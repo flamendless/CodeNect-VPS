@@ -116,7 +116,8 @@ int Transpiler::init(void)
 	tcc_add_library_path(Transpiler::tcc_state, "tcc");
 	tcc_add_include_path(Transpiler::tcc_state, "tcc");
 	tcc_set_error_func(Transpiler::tcc_state, stderr, Transpiler::handle_error);
-	tcc_set_output_type(Transpiler::tcc_state, TCC_OUTPUT_EXE);
+	// tcc_set_output_type(Transpiler::tcc_state, TCC_OUTPUT_EXE);
+	tcc_set_output_type(Transpiler::tcc_state, TCC_OUTPUT_MEMORY);
 
 	return RES_SUCCESS;
 }
@@ -424,6 +425,13 @@ int Transpiler::compile(void)
 		return RES_FAIL;
 	}
 
+	//TEST
+	if (tcc_relocate(Transpiler::tcc_state, TCC_RELOCATE_AUTO) < 0)
+	{
+		PLOGE << "Could not relocate";
+		return RES_FAIL;
+	}
+
 	Terminal::editor.SetText(Transpiler::output_code);
 	PLOGI << "Compiled code successfully";
 	Transpiler::add_message(std::move("Compiled code successfully"));
@@ -457,7 +465,7 @@ int Transpiler::run(void)
 
 	if (!Transpiler::has_ran)
 	{
-		tcc_output_file(Transpiler::tcc_state, filename.c_str());
+		// tcc_output_file(Transpiler::tcc_state, filename.c_str());
 		Transpiler::add_message(std::move("Launching program..."));
 		Transpiler::has_ran = true;
 #ifdef OS_WIN
@@ -465,8 +473,11 @@ int Transpiler::run(void)
 #endif
 	}
 
-	if (Transpiler::run_cmd(filename) == RES_FAIL)
-		return RES_FAIL;
+	int(*func)(void);
+	func = (int(*)(void))tcc_get_symbol(Transpiler::tcc_state, "main");
+	func();
+	// if (Transpiler::run_cmd(filename) == RES_FAIL)
+	// 	return RES_FAIL;
 
 	Transpiler::add_message(std::move("Finished running the program"));
 	return RES_SUCCESS;
