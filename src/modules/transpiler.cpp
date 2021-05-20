@@ -453,7 +453,6 @@ int Transpiler::run(void)
 	Terminal::is_open = true;
 	PLOGI << "Running code...";
 	Transpiler::add_message(std::move("Running code..."));
-	Transpiler::add_message(std::move("Saving code..."));
 
 	std::filesystem::path od = Filesystem::Paths::out_dir;
 	od.append(Project::meta.file_bin);
@@ -462,7 +461,7 @@ int Transpiler::run(void)
 	if (!Transpiler::has_ran)
 	{
 		tcc_output_file(Transpiler::tcc_state, filename.c_str());
-		Transpiler::add_message(std::move("Launching program"));
+		Transpiler::add_message(std::move("Launching program..."));
 		Transpiler::has_ran = true;
 #ifdef OS_WIN
 		Filesystem::hide_filename(filename);
@@ -511,10 +510,7 @@ int Transpiler::run_cmd(std::string& filename)
 		Transpiler::add_message(std::move("Total lines: " + std::to_string(v_lines.size())), OUTPUT_TYPE::STDOUT);
 		Transpiler::add_message(std::move("-----OUTPUT-----"), OUTPUT_TYPE::STDOUT);
 		for (unsigned long i = 0; i < v_lines.size(); i++)
-		{
-			std::string& str = v_lines[i];
-			Transpiler::add_message(str, OUTPUT_TYPE::STDOUT);
-		}
+			Transpiler::add_message(v_lines[i], OUTPUT_TYPE::STDOUT);
 		Transpiler::add_message(std::move("----------------"), OUTPUT_TYPE::STDOUT);
 	}
 
