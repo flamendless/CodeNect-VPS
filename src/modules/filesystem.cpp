@@ -13,6 +13,11 @@
 #include "stb_image.h"
 #include "core/defines.hpp"
 
+#ifdef OS_WIN
+#include <windows.h>
+#include <fileapi.h>
+#endif
+
 #define GL_CLAMP_TO_EDGE 0x812F
 
 namespace CodeNect::Filesystem
@@ -160,7 +165,7 @@ void create_project_temp_dir(void)
 }
 
 #ifdef OS_WIN
-void hide_filename(std::string& filename)
+void hide_filename(std::string filename)
 {
 	int attr = GetFileAttributes(filename.c_str());
 	if ((attr & FILE_ATTRIBUTE_HIDDEN) == 0)

@@ -34,9 +34,6 @@
 
 #ifdef OS_LINUX
 #include "subprocess.h"
-#elif OS_WIN
-#include <windows.h>
-#include <fileapi.h>
 #endif
 
 namespace CodeNect
