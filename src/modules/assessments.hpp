@@ -17,9 +17,6 @@ struct Assessment
 
 struct AssessmentResult
 {
-	enum class RES_ID { OKAY = 0, LNM, };
-
-	RES_ID id = RES_ID::OKAY;
 	Assessment assessment;
 	int score = 0;
 	std::vector<int> v_lines_diff;

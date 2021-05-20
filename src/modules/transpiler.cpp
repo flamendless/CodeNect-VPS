@@ -30,6 +30,7 @@
 #include "core/config.hpp"
 #include "modules/debugger.hpp"
 #include "modules/filesystem.hpp"
+#include "modules/assessments.hpp"
 
 #ifdef OS_LINUX
 #include "subprocess.h"
@@ -535,6 +536,7 @@ void Transpiler::clear(void)
 	Transpiler::v_lines.clear();
 	Transpiler::has_ran = false;
 	Transpiler::has_compiled = false;
+	Assessments::v_results.clear();
 	tcc_delete(Transpiler::tcc_state);
 	Transpiler::init();
 }

@@ -1,6 +1,7 @@
 #include "ui/diff_viewer.hpp"
 
 #include "imgui_internal.h"
+#include "IconsFontAwesome5.h"
 #include "core/defines.hpp"
 #include "core/config.hpp"
 
@@ -35,7 +36,10 @@ void DiffViewer::draw(void)
 	if (!DiffViewer::is_open)
 		return;
 
-	if (ImGui::Begin("Diff Viewer", &DiffViewer::is_open, DiffViewer::flags))
+	ImGui::SetNextWindowPos(DiffViewer::pos, ImGuiCond_Once, ImVec2(0.5, 0.5));
+	ImGui::SetNextWindowSize(DiffViewer::size, ImGuiCond_Once);
+
+	if (ImGui::Begin(ICON_FA_TASKS " Diff Viewer", &DiffViewer::is_open, DiffViewer::flags))
 	{
 		ImGui::End();
 	}

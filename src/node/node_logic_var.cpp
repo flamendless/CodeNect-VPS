@@ -65,7 +65,7 @@ void process_var(NodeVariable* node_var)
 		else if (out_node_print)
 			node_var->m_value.set((std::string)out_node_print->m_str);
 		else if (out_node_prompt)
-			node_var->m_value.set((std::string)out_node_prompt->m_str);
+			node_var->m_value.set((std::string)out_node_prompt->m_fake_input.get_value_str());
 		else if (out_node_for)
 		{
 			const char* slot_in = connection.in_slot;

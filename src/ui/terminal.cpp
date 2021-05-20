@@ -287,25 +287,13 @@ void Terminal::draw_assessment(void)
 	ImGui::TextColored(col, "-----Assessment Result-----");
 	for (AssessmentResult& res : Assessments::v_results)
 	{
-		switch (res.id)
+		ImGui::TextColored(col, "Score: %d/%d", res.score, (int)res.assessment.v_expected.size());
+		ImGui::TextColored(col, "Submitted: %d", (int)res.assessment.v_submission.size());
+		ImGui::TextColored(col, "Expected: %d", (int)res.assessment.v_expected.size());
+		if (res.v_lines_diff.size() != 0)
 		{
-			case AssessmentResult::RES_ID::OKAY:
-			{
-				ImGui::TextColored(col, "Score: %d/%d", res.score, (int)res.assessment.v_expected.size());
-				if (res.v_lines_diff.size() != 0)
-				{
-					if (ImGui::SmallButton("See differences"))
-						DiffViewer::open(res);
-				}
-				break;
-			}
-			case AssessmentResult::RES_ID::LNM:
-			{
-				ImGui::TextColored(col, "Number of lines does not match");
-				ImGui::TextColored(col, "Submitted: %d", (int)res.assessment.v_submission.size());
-				ImGui::TextColored(col, "Expected: %d", (int)res.assessment.v_expected.size());
-				break;
-			}
+			if (ImGui::SmallButton("See differences"))
+				DiffViewer::open(res);
 		}
 	}
 	ImGui::TextColored(col, "---------------------------");

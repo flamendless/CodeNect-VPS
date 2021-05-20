@@ -25,8 +25,7 @@ std::string md_summation =
 std::vector<Assessment> Assessments::v_list = {
 	{"Ask User for Name", std::move(md_ask_user_name),
 		{
-			"What is your name?",
-			"Enter name: Brandon",
+			"What is your name? Brandon",
 			"Hello there, Brandon!",
 		}
 	},
@@ -70,14 +69,6 @@ void Assessments::submit(std::vector<std::string>& v_lines)
 	Assessments::current_assessment.v_submission = v_lines;
 	int score = Assessments::get_score(Assessments::current_assessment.v_submission,
 			Assessments::current_assessment.v_expected, res.v_lines_diff);
-	if (score == -1)
-	{
-		res.id = AssessmentResult::RES_ID::LNM;
-		res.assessment = Assessments::current_assessment;
-		Assessments::v_results.push_back(res);
-		return;
-	}
-
 	res.score = score;
 	Assessments::v_results.push_back(res);
 }
@@ -87,8 +78,6 @@ int Assessments::get_score(std::vector<std::string>& v_submitted,
 		std::vector<int>& v_lines_diff)
 {
 	int score = 0;
-	if (v_submitted.size() != v_expected.size())
-		return -1;
 
 	for (unsigned long i = 0; i < v_submitted.size(); i++)
 	{
