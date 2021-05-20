@@ -224,10 +224,10 @@ void Terminal::draw_output(void)
 					OUTPUT_TYPE::ERR, nullptr, DOC_ID::HOW_TO_SUBMIT_ASSESSMENT);
 		else
 		{
-			if (Transpiler::v_lines.size() == 0)
+			if (Transpiler::v_printed.size() == 0)
 				Alert::open(ALERT_TYPE::ERR, std::move("You have not ran yet the program"));
 			else
-				Assessments::submit(Transpiler::v_lines);
+				Assessments::submit(Transpiler::v_printed);
 		}
 	}
 	if (!Assessments::has_assessment)

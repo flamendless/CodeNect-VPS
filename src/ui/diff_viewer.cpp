@@ -52,22 +52,31 @@ void DiffViewer::draw(void)
 			ImGui::TableSetupColumn("Expected");
 			ImGui::TableHeadersRow();
 
+			int size = 0;
+			if (DiffViewer::cur_result.assessment.v_expected.size() >
+				DiffViewer::cur_result.assessment.v_submission.size())
+				size = DiffViewer::cur_result.assessment.v_expected.size();
+			else
+				size = DiffViewer::cur_result.assessment.v_submission.size();
+
 			ImVec4 color = ImVec4(0, 1, 0, 1);
 			int ln = 1;
-			for (unsigned long i = 0; i < DiffViewer::cur_result.assessment.v_expected.size(); i++)
+			for (int i = 0; i < size; i++)
 			{
 				ImGui::TableNextRow();
 				bool in_conflict = std::find(DiffViewer::cur_result.v_lines_diff.begin(),
-						DiffViewer::cur_result.v_lines_diff.end(), (int)i) !=
+						DiffViewer::cur_result.v_lines_diff.end(), i) !=
 						DiffViewer::cur_result.v_lines_diff.end();
 
 				if (in_conflict)
 					color = ImVec4(0.75f, 0, 0, 1);
 
 				std::string str_submitted = "";
-				if (i < DiffViewer::cur_result.assessment.v_submission.size())
+				std::string str_expected = "";
+				if (i < (int)DiffViewer::cur_result.assessment.v_submission.size())
 					str_submitted = DiffViewer::cur_result.assessment.v_submission[i];
-				std::string str_expected = DiffViewer::cur_result.assessment.v_expected[i];
+				if (i < (int)DiffViewer::cur_result.assessment.v_expected.size())
+					str_expected = DiffViewer::cur_result.assessment.v_expected[i];
 
 				ImGui::TableNextColumn();
 				ImGui::TextColored(color, "%s", (in_conflict ? ICON_FA_TIMES : ICON_FA_CHECK));

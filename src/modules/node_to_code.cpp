@@ -952,7 +952,7 @@ std::string ntc_print(NodePrint* node_print, bool val_only)
 		str = value;
 	else
 	{
-		std::string print = fmt::format("printf(\"{:s}{:s}\", {:s});", spec, newline, value);
+		std::string print = fmt::format("cn_printf(\"{:s}{:s}\", {:s});", spec, newline, value);
 		str.append(indent()).append(print).append("\n");
 	}
 

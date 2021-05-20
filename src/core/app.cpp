@@ -7,7 +7,7 @@
 #include "plog/Init.h"
 #include "plog/Log.h"
 
-#if DEBUG_MODE
+#ifndef OS_WIN
 #include "plog/Formatters/TxtFormatter.h"
 #include "plog/Appenders/ColorConsoleAppender.h"
 #else
@@ -57,7 +57,7 @@ void App::quit_app()
 
 void App::init(void)
 {
-#if DEBUG_MODE
+#ifndef OS_WIN
 	static plog::ColorConsoleAppender<plog::TxtFormatter> console_appender;
 	plog::init(plog::verbose, &console_appender);
 #else

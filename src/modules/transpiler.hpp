@@ -40,7 +40,8 @@ struct Transpiler
 	static int n_transpiled;
 	static std::vector<State> v_states;
 	static std::vector<NodeBranch*> v_finished_branches;
-	static std::vector<std::string> v_lines;
+	// static std::vector<std::string> v_lines;
+	static std::vector<std::string> v_printed;
 
 	Transpiler() = delete;
 	static int init(void);
@@ -61,7 +62,7 @@ struct Transpiler
 	static std::vector<Node*> get_rest(State*);
 	static int compile(void);
 	static int run(void);
-	static int run_cmd(std::string&);
+	// static int run_cmd(std::string&);
 	static void clear(void);
 	static void save_file(void);
 	static void shutdown(void);

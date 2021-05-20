@@ -1,6 +1,7 @@
 #include "modules/transpiler.hpp"
 #include "modules/node_to_code.hpp"
 
+#include <algorithm>
 #include <stdio.h>
 #include <functional>
 #include "plog/Log.h"
@@ -53,13 +54,35 @@ std::string Transpiler::recent_temp = "";
 int Transpiler::n_transpiled = 0;
 std::vector<State> Transpiler::v_states;
 std::vector<NodeBranch*> Transpiler::v_finished_branches;
-std::vector<std::string> Transpiler::v_lines;
+// std::vector<std::string> Transpiler::v_lines;
+std::vector<std::string> Transpiler::v_printed;
 
 bool has_warning_added = false;
 std::array<std::string, 2> ignored_warnings = {
 	"warning: assignment discards qualifiers from pointer target type",
 	"warning: assignment from incompatible pointer type",
 };
+
+void cn_printf(const char* fmt, ...)
+{
+	char buffer[256];
+	va_list args;
+    va_start(args, fmt);
+	vsprintf(buffer, fmt, args);
+	printf("%s", buffer);
+	Transpiler::v_printed.push_back(std::string(buffer));
+}
+
+char* cn_fgets(char* str, int num, FILE* s)
+{
+	char* ret = fgets(str, num, s);
+	char buffer[256];
+	std::strcpy(buffer, str);
+	// buffer[std::strlen(buffer) - 1] = '\0';
+	//TODO fix this, append to previous printf
+	Transpiler::v_printed.push_back(std::string(buffer));
+	return ret;
+}
 
 void Transpiler::handle_error(void* opaque, const char* msg)
 {
@@ -425,11 +448,22 @@ int Transpiler::compile(void)
 		return RES_FAIL;
 	}
 
-	//TEST
+	tcc_add_symbol(Transpiler::tcc_state, "cn_printf", (void*)cn_printf);
+	tcc_add_symbol(Transpiler::tcc_state, "cn_fgets", (void*)cn_fgets);
 	if (tcc_relocate(Transpiler::tcc_state, TCC_RELOCATE_AUTO) < 0)
 	{
 		PLOGE << "Could not relocate";
 		return RES_FAIL;
+	}
+
+	//replace occurences of cn_printf with printf
+	size_t index = 0;
+	std::string needle = "cn_printf";
+	std::string new_str = "printf";
+	while ((index = Transpiler::output_code.find(needle, index)) != std::string::npos)
+	{
+		Transpiler::output_code.replace(index, needle.length(), new_str);
+		index += new_str.length();
 	}
 
 	Terminal::editor.SetText(Transpiler::output_code);
@@ -475,7 +509,15 @@ int Transpiler::run(void)
 
 	int(*func)(void);
 	func = (int(*)(void))tcc_get_symbol(Transpiler::tcc_state, "main");
+	if (!func)
+	{
+		PLOGE << "unable to get program's entry point";
+		return RES_FAIL;
+	}
+
 	func();
+	PLOGD << "size: " << Transpiler::v_printed.size();
+
 	// if (Transpiler::run_cmd(filename) == RES_FAIL)
 	// 	return RES_FAIL;
 
@@ -483,61 +525,62 @@ int Transpiler::run(void)
 	return RES_SUCCESS;
 }
 
-int Transpiler::run_cmd(std::string& filename)
-{
-	std::filesystem::path od = Filesystem::Paths::out_dir;
-	od.append(Project::meta.file_stdout);
-	std::string out_filename = od.string();
-
-#ifdef OS_LINUX
-	bool res = false;
-	std::string cmd_linux = fmt::format("{:s} -e \"script -q -c './{:s}' {:s}\"",
-			Config::terminal, filename, out_filename);
-	Utils::get_stdout_from_cmd(cmd_linux, res);
-	if (!res)
-	{
-		Transpiler::add_message(std::move("Failed to launch program"), OUTPUT_TYPE::ERR);
-		return RES_FAIL;
-	}
-	else
-	{
-		Transpiler::v_lines = Filesystem::parse_stdout(out_filename);
-		if (v_lines.size() == 0)
-		{
-			Transpiler::add_message(std::move("Can't open output file"), OUTPUT_TYPE::ERR);
-			return RES_FAIL;
-		}
-
-		//remove:
-		//1st line - script start
-		//2nd to last line - prompt
-		//last line - script end
-		v_lines.erase(v_lines.begin());
-		v_lines.erase(v_lines.end() - 3, v_lines.end());
-
-		Transpiler::add_message(std::move("Total lines: " + std::to_string(v_lines.size())), OUTPUT_TYPE::STDOUT);
-		Transpiler::add_message(std::move("-----OUTPUT-----"), OUTPUT_TYPE::STDOUT);
-		for (unsigned long i = 0; i < v_lines.size(); i++)
-			Transpiler::add_message(v_lines[i], OUTPUT_TYPE::STDOUT);
-		Transpiler::add_message(std::move("----------------"), OUTPUT_TYPE::STDOUT);
-	}
-
-#elif OS_WIN
-	ShellExecute(NULL, "open", filename.c_str(), NULL, NULL, SW_SHOWDEFAULT);
-#endif
-
-	return RES_SUCCESS;
-}
+// int Transpiler::run_cmd(std::string& filename)
+// {
+// 	std::filesystem::path od = Filesystem::Paths::out_dir;
+// 	od.append(Project::meta.file_stdout);
+// 	std::string out_filename = od.string();
+//
+// #ifdef OS_LINUX
+// 	bool res = false;
+// 	std::string cmd_linux = fmt::format("{:s} -e \"script -q -c './{:s}' {:s}\"",
+// 			Config::terminal, filename, out_filename);
+// 	Utils::get_stdout_from_cmd(cmd_linux, res);
+// 	if (!res)
+// 	{
+// 		Transpiler::add_message(std::move("Failed to launch program"), OUTPUT_TYPE::ERR);
+// 		return RES_FAIL;
+// 	}
+// 	else
+// 	{
+// 		Transpiler::v_lines = Filesystem::parse_stdout(out_filename);
+// 		if (v_lines.size() == 0)
+// 		{
+// 			Transpiler::add_message(std::move("Can't open output file"), OUTPUT_TYPE::ERR);
+// 			return RES_FAIL;
+// 		}
+//
+// 		//remove:
+// 		//1st line - script start
+// 		//2nd to last line - prompt
+// 		//last line - script end
+// 		v_lines.erase(v_lines.begin());
+// 		v_lines.erase(v_lines.end() - 3, v_lines.end());
+//
+// 		Transpiler::add_message(std::move("Total lines: " + std::to_string(v_lines.size())), OUTPUT_TYPE::STDOUT);
+// 		Transpiler::add_message(std::move("-----OUTPUT-----"), OUTPUT_TYPE::STDOUT);
+// 		for (unsigned long i = 0; i < v_lines.size(); i++)
+// 			Transpiler::add_message(v_lines[i], OUTPUT_TYPE::STDOUT);
+// 		Transpiler::add_message(std::move("----------------"), OUTPUT_TYPE::STDOUT);
+// 	}
+//
+// #elif OS_WIN
+// 	ShellExecute(NULL, "open", filename.c_str(), NULL, NULL, SW_SHOWDEFAULT);
+// #endif
+//
+// 	return RES_SUCCESS;
+// }
 
 void Transpiler::clear(void)
 {
 	has_warning_added = false;
+	Transpiler::v_printed.clear();
 	Transpiler::v_output.clear();
 	Transpiler::v_declarations.clear();
 	Transpiler::m_temp_names.clear();
 	Transpiler::m_declared.clear();
 	Transpiler::m_array_init.clear();
-	Transpiler::v_lines.clear();
+	// Transpiler::v_lines.clear();
 	Transpiler::has_ran = false;
 	Transpiler::has_compiled = false;
 	Assessments::v_results.clear();

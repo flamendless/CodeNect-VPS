@@ -95,7 +95,7 @@ int main(int argv, char** args)
 	ImGuiIO* imgui_io = &ImGui::GetIO();
 
 	//test
-#if DEBUG_MODE
+#ifdef OS_LINUX
 	CodeNect::Project::open("test_name.cn");
 #endif
 
