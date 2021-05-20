@@ -56,6 +56,7 @@ void Project::register_commands(void)
 	Command* cmd_open_project = new Command("Open Project", "open a project from file", ICON_FA_FOLDER_OPEN);
 	cmd_open_project->set_fn(Project::open);
 	cmd_open_project->m_close_command_palette = true;
+	Commands::register_cmd(*cmd_open_project);
 #endif
 
 	Command* cmd_save_project = new Command("Save Project", "save project file", ICON_FA_SAVE);
@@ -67,7 +68,6 @@ void Project::register_commands(void)
 	cmd_close_project->m_close_command_palette = true;
 
 	Commands::register_cmd(*cmd_new_project);
-	Commands::register_cmd(*cmd_open_project);
 	Commands::register_cmd(*cmd_save_project);
 	Commands::register_cmd(*cmd_close_project);
 }
