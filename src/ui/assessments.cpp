@@ -91,7 +91,6 @@ void AssessmentsUI::draw(void)
 		}
 		ImGui::End();
 	}
-
 	ImGui::PopStyleVar(1);
 
 	if (ImGui::IsKeyPressedMap(ImGuiKey_Escape))

@@ -26,6 +26,7 @@ struct Terminal
 	static bool keypress(int key, int scancode, int mods);
 	static void draw(void);
 	static void draw_message_info(std::vector<MessageInfo>& v);
+	static void draw_assessment(void);
 	static void draw_output(void);
 	static void draw_code(void);
 };

@@ -14,6 +14,10 @@
 #include "ui/node_interface.hpp"
 #include "ui/create_node.hpp"
 #include "ui/docs.hpp"
+#include "ui/alert.hpp"
+#include "modules/assessments.hpp"
+#include "ui/assessments.hpp"
+#include "ui/diff_viewer.hpp"
 
 #if DEBUG_MODE
 #include <fstream>
@@ -209,8 +213,27 @@ void Terminal::draw_output(void)
 		}
 	}
 #endif
-	ImGui::Separator();
 
+	ImGui::SameLine();
+	if (!Assessments::has_assessment)
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+	if (ImGui::SmallButton("Submit Assessment"))
+	{
+		if (!Assessments::has_assessment)
+			Transpiler::add_message(std::move("You are not taking any assessment right now"),
+					OUTPUT_TYPE::ERR, nullptr, DOC_ID::HOW_TO_SUBMIT_ASSESSMENT);
+		else
+		{
+			if (Transpiler::v_lines.size() == 0)
+				Alert::open(ALERT_TYPE::ERR, std::move("You have not ran yet the program"));
+			else
+				Assessments::submit(Transpiler::v_lines);
+		}
+	}
+	if (!Assessments::has_assessment)
+		ImGui::PopStyleVar(1);
+
+	ImGui::Separator();
 	if (Debugger::v_msg_info.size() != 0)
 	{
 		ImGui::TextColored(NodeColors::Lookup::YELLOW, ICON_FA_EXCLAMATION_TRIANGLE " %s", "There are warnings with your node structure");
@@ -220,6 +243,7 @@ void Terminal::draw_output(void)
 	}
 
 	Terminal::draw_message_info(Transpiler::v_output);
+	Terminal::draw_assessment();
 }
 
 void Terminal::draw_code(void)
@@ -252,5 +276,38 @@ void Terminal::draw_code(void)
 
 	ImGui::Separator();
 	Terminal::editor.Render("TextEditor");
+}
+
+void Terminal::draw_assessment(void)
+{
+	if (Assessments::v_results.size() == 0)
+		return;
+
+	static ImVec4 col(1, 1, 0, 1);
+	ImGui::TextColored(col, "-----Assessment Result-----");
+	for (AssessmentResult& res : Assessments::v_results)
+	{
+		switch (res.id)
+		{
+			case AssessmentResult::RES_ID::OKAY:
+			{
+				ImGui::TextColored(col, "Score: %d/%d", res.score, (int)res.assessment.v_expected.size());
+				if (res.v_lines_diff.size() != 0)
+				{
+					if (ImGui::SmallButton("See differences"))
+						DiffViewer::open(res);
+				}
+				break;
+			}
+			case AssessmentResult::RES_ID::LNM:
+			{
+				ImGui::TextColored(col, "Number of lines does not match");
+				ImGui::TextColored(col, "Submitted: %d", (int)res.assessment.v_submission.size());
+				ImGui::TextColored(col, "Expected: %d", (int)res.assessment.v_expected.size());
+				break;
+			}
+		}
+	}
+	ImGui::TextColored(col, "---------------------------");
 }
 }

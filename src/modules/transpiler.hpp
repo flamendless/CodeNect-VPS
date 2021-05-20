@@ -40,6 +40,7 @@ struct Transpiler
 	static int n_transpiled;
 	static std::vector<State> v_states;
 	static std::vector<NodeBranch*> v_finished_branches;
+	static std::vector<std::string> v_lines;
 
 	Transpiler() = delete;
 	static int init(void);

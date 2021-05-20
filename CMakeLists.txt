@@ -98,6 +98,7 @@ add_executable(CodeNect
 	src/ui/create_node_size.cpp
 	src/ui/create_node_string.cpp
 	src/ui/create_node_var.cpp
+	src/ui/diff_viewer.cpp
 	src/ui/docs.cpp
 	src/ui/help.cpp
 	src/ui/inspector.cpp

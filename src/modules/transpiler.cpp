@@ -55,6 +55,7 @@ std::string Transpiler::recent_temp = "";
 int Transpiler::n_transpiled = 0;
 std::vector<State> Transpiler::v_states;
 std::vector<NodeBranch*> Transpiler::v_finished_branches;
+std::vector<std::string> Transpiler::v_lines;
 
 bool has_warning_added = false;
 std::array<std::string, 2> ignored_warnings = {
@@ -492,7 +493,7 @@ int Transpiler::run_cmd(std::string& filename)
 	}
 	else
 	{
-		std::vector<std::string> v_lines = Filesystem::parse_stdout(out_filename);
+		Transpiler::v_lines = Filesystem::parse_stdout(out_filename);
 		if (v_lines.size() == 0)
 		{
 			Transpiler::add_message(std::move("Can't open output file"), OUTPUT_TYPE::ERR);
@@ -531,6 +532,7 @@ void Transpiler::clear(void)
 	Transpiler::m_temp_names.clear();
 	Transpiler::m_declared.clear();
 	Transpiler::m_array_init.clear();
+	Transpiler::v_lines.clear();
 	Transpiler::has_ran = false;
 	Transpiler::has_compiled = false;
 	tcc_delete(Transpiler::tcc_state);
