@@ -24,7 +24,7 @@ unsigned char* load_texture_from_file(const char* filename, GLFWimage& image);
 std::vector<std::string> parse_stdout(std::string&);
 
 #ifdef OS_WIN
-void hide_filename(std::string&);
+void hide_filename(std::string);
 #endif
 }
 
