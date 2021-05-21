@@ -139,7 +139,7 @@ int Transpiler::init(void)
 	}
 
 #ifdef OS_LINUX
-	tcc_set_lib_path(Transpiler::tcc_state, "./");
+	tcc_set_lib_path(Transpiler::tcc_state, "./lib");
 #endif
 	tcc_add_library_path(Transpiler::tcc_state, "./tcc");
 	tcc_add_include_path(Transpiler::tcc_state, "./tcc");

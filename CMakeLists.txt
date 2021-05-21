@@ -185,11 +185,11 @@ if (WIN32)
 	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/windows/libtcc1-64.a)
 	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtcc.dll)
 	install(FILES
-			lib/windows/libtcc1-64.a
-		DESTINATION ./lib)
-	install(FILES
 			lib/libtcc.dll
 		DESTINATION .)
+	install(FILES
+			lib/windows/libtcc1-64.a
+		DESTINATION ./lib)
 else ()
 	target_compile_definitions(CodeNect PRIVATE OS_LINUX=1)
 
@@ -204,6 +204,9 @@ else ()
 	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/linux/libtcc.a)
 	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/linux/libtcc1.a)
 	target_link_libraries(CodeNect dl)
+	install(FILES
+			lib/linux/libtcc.a
+		DESTINATION .)
 	install(FILES
 			lib/linux/libtcc.a
 			lib/linux/libtcc1.a
