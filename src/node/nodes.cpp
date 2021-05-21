@@ -54,6 +54,8 @@ const char* Nodes::get_id(const char* kind)
 		id = orig + "_" + std::to_string(i);
 		i++;
 	}
+	if (id.length() == 0)
+		id = orig;
 	Nodes::m_ids.insert({id, true});
 	std::string* ret = new std::string(id);
 	return ret->c_str();

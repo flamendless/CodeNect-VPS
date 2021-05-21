@@ -90,6 +90,7 @@ int Project::on_create_new(const char* filename, const char* title, const char* 
 		return RES_FAIL;
 
 	Nodes::v_nodes.clear();
+	Nodes::m_ids.clear();
 	Project::open(file.c_str());
 
 	return RES_SUCCESS;
@@ -136,13 +137,13 @@ int Project::open(const char* filename)
 	std::string str_title = Project::meta.title;
 	std::transform(str_title.begin(), str_title.end(), str_title.begin(),
 		[](char ch){ return ch == ' ' ? '_' : ch; });
-#ifdef OS_LINUX
-	Project::meta.file_bin = fmt::format(".__cn_bin_{:s}", str_title);
-	Project::meta.file_stdout = fmt::format(".__stdout_{:s}", str_title);
-#elif OS_WIN
-	Project::meta.file_bin = fmt::format("__cn_bin_{:s}.exe", str_title);
-	Project::meta.file_stdout = fmt::format("__stdout_{:s}", str_title);
-#endif
+// #ifdef OS_LINUX
+// 	Project::meta.file_bin = fmt::format(".__cn_bin_{:s}", str_title);
+// 	Project::meta.file_stdout = fmt::format(".__stdout_{:s}", str_title);
+// #elif OS_WIN
+// 	Project::meta.file_bin = fmt::format("__cn_bin_{:s}.exe", str_title);
+// 	Project::meta.file_stdout = fmt::format("__stdout_{:s}", str_title);
+// #endif
 
 	Project::has_open_proj = true;
 	SimulationControl::is_open = true;
@@ -650,6 +651,7 @@ void Project::close(void)
 	Project::nodes_count = 0;
 	Project::connections_count = 0;
 	Nodes::v_nodes.clear();
+	Nodes::m_ids.clear();
 	Transpiler::clear();
 	SimulationControl::is_open = false;
 	Zoom::is_open = false;

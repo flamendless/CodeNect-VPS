@@ -441,7 +441,8 @@ int Transpiler::compile(void)
 	Transpiler::build_runnable_code(Transpiler::runnable_code, true);
 	Transpiler::build_runnable_code(Transpiler::output_code, false);
 
-	PLOGD << Transpiler::runnable_code;
+	PLOGD << "Runnable code:\n" << Transpiler::runnable_code;
+	PLOGD << "Output code:\n" << Transpiler::output_code;
 
 	if (tcc_compile_string(Transpiler::tcc_state, Transpiler::runnable_code.c_str()) == -1)
 	{

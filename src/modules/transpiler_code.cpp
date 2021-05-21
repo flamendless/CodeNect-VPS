@@ -407,6 +407,8 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	Transpiler::m_temp_names.clear();
 	Transpiler::m_declared.clear();
 	Transpiler::m_array_init.clear();
+	Transpiler::m_temp_names.clear();
+	Transpiler::v_finished_branches.clear();
 
 	std::string str_incl = "";
 	std::string str_structs = "";
@@ -416,7 +418,6 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	std::string str_closing = "";
 	std::string str_free = "";
 
-	Transpiler::m_temp_names.clear();
 	Transpiler::set_pre_entry(str_incl, str_structs, is_tcc);
 
 	//entry point
