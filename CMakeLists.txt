@@ -182,8 +182,8 @@ target_compile_definitions(CodeNect PRIVATE "$<$<CONFIG:Debug>:DEBUG_MODE=1>")
 if (WIN32)
 	target_compile_definitions(CodeNect PRIVATE OS_WIN=1)
 	target_sources(CodeNect PRIVATE includes/nfd/nfd_win.cpp)
-	target_link_directories(CodeNect PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/includes/tcc)
 	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtcc.a)
+	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtcc1.a)
 else ()
 	target_compile_definitions(CodeNect PRIVATE OS_LINUX=1)
 
@@ -195,8 +195,8 @@ else ()
 	target_link_directories(CodeNect PRIVATE ${GTK3_LIBRARY_DIRS})
 	target_sources(CodeNect PRIVATE includes/nfd/nfd_gtk.c)
 	target_include_directories(CodeNect PRIVATE ${GTK3_INCLUDE_DIRS})
-	target_link_directories(CodeNect PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/includes/tcc)
-	target_link_libraries(CodeNect tcc)
+	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtcc.a)
+	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtcc1.a)
 	target_link_libraries(CodeNect dl)
 endif ()
 
@@ -213,7 +213,8 @@ install(FILES
 		lib/libgcc_s_seh-1.dll
 		lib/libstdc++-6.dll
 		lib/libwinpthread-1.dll
-		# lib/libtcc.dll
+		lib/libtcc.a
+		lib/libtcc1.a
 	DESTINATION .)
 install(DIRECTORY lib/tcc DESTINATION .)
 
