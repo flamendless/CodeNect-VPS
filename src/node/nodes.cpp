@@ -550,18 +550,24 @@ Node* Nodes::find_connected_by_value(Node* node, NodeValue* target_val)
 	return nullptr;
 }
 
-void Nodes::build_from_meta(const std::vector<ConnectionMeta*> &v_connection_meta,
+void Nodes::build_from_meta(const std::vector<ConnectionMeta*>& v_connection_meta,
 		const std::vector<NodeMeta*>& v_node_meta)
 {
 	PLOGI << "Building connections...";
+	std::vector<std::string> v_finished;
 	for (NodeMeta* nm : v_node_meta)
 	{
 		for (std::string& str : nm->m_connections)
 		{
+			bool found = std::find(v_finished.begin(), v_finished.end(), str) != v_finished.end();
+			if (found)
+				continue;
+
 			ConnectionMeta* cm = nullptr;
 			for (ConnectionMeta* cm2 : v_connection_meta)
 			{
-				if (str.compare(cm2->m_name) == 0)
+				std::string str2 = "connection_" + str;
+				if (str2.compare(cm2->m_name) == 0)
 				{
 					cm = cm2;
 					break;
@@ -582,6 +588,7 @@ void Nodes::build_from_meta(const std::vector<ConnectionMeta*> &v_connection_met
 
 				in_node->new_connection(connection);
 				out_node->new_connection(connection);
+				v_finished.push_back(str);
 			}
 		}
 	}

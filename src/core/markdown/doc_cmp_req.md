@@ -1,9 +1,5 @@
 u8R"====(## EXPLANATION
-*Comparison requirements* error is a subset of *Need Inputs/Lack of Inputs*
-error.  This is specific to using *Comparison Node* but without providing any
-inputs, or lack of inputs at all. Comparison, by its very definition, needs at
-least two values to compare in order to give a result whether the comparison
-operator results in *true* or *false*.
+*Comparison requirements* error is a subset of *Need Inputs/Lack of Inputs* error. This is specific to using *Comparison Node* but without providing any inputs, or lack of inputs at all. Comparison, by its very definition, needs at least two values to compare in order to give a result whether the comparison operator results in *true* or *false*.
 ## SAMPLE CODE
 Here is an *wrong* C code;
 int a = 100;

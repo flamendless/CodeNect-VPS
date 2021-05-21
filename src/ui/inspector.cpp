@@ -15,6 +15,7 @@
 #include "ui/node_interface.hpp"
 #include "ui/create_node.hpp"
 #include "modules/input.hpp"
+#include "ui/docs.hpp"
 
 namespace CodeNect
 {
@@ -85,6 +86,41 @@ void Inspector::draw(void)
 		Inspector::draw_all();
 		Inspector::draw_variables();
 		Inspector::draw_ds();
+		ImGui::Separator();
+
+		if (ImGui::CollapsingHeader(ICON_FA_SORT " ARRANGE NODES"))
+		{
+			if (ImGui::SmallButton("What is this?##doc_arrange"))
+				Docs::open_doc_id(DOC_ID::ABOUT_ARRANGE);
+			for (unsigned long int i = 0; i < Nodes::v_nodes.size(); i++)
+			{
+				int index = i;
+				ImGui::PushID(i);
+				if (ImGui::Button(ICON_FA_SORT_UP))
+				{
+					index = (i == 0) ? (Nodes::v_nodes.size() - 1) : (index - 1);
+					Node* temp = Nodes::v_nodes[i];
+					Node* upper = Nodes::v_nodes[index];
+					Nodes::v_nodes[i] = upper;
+					Nodes::v_nodes[index] = temp;
+				}
+
+				ImGui::SameLine();
+				if (ImGui::Button(ICON_FA_SORT_DOWN))
+				{
+					index = (i == Nodes::v_nodes.size() - 1) ? 0 : (index + 1);
+					Node* temp = Nodes::v_nodes[i];
+					Node* lower = Nodes::v_nodes[index];
+					Nodes::v_nodes[i] = lower;
+					Nodes::v_nodes[index] = temp;
+				}
+				ImGui::PopID();
+
+				ImGui::SameLine();
+				ImGui::Text("%s", Nodes::v_nodes[i]->m_name);
+			}
+		}
+
 		ImGui::End();
 	}
 

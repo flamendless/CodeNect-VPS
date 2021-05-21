@@ -1,9 +1,5 @@
 u8R"====(## EXPLANATION
-It can be confusing as to why we can not connect an *Array Node* with a *Print
-Node* even though they have the same data type. The reason for this is that
-*Array Node* can contain multiple elements of that data type. The way to deal
-with this is to *iterate* through the array and print each element manually.
-This can be done either using *for-loop* or *while-loop* statements.
+It can be confusing as to why we can not connect an *Array Node* with a *Print Node* even though they have the same data type. The reason for this is that *Array Node* can contain multiple elements of that data type. The way to deal with this is to *iterate* through the array and print each element manually. This can be done either using *for-loop* or *while-loop* statements.
 ## SAMPLE CODE
 Here is a *wrong* C code example:
 int array[5] = { 1, 2, 3, 4, 5 };

@@ -60,6 +60,9 @@ std::string doc_cyclic =
 std::string doc_how_to_submit_assessment =
 #include "markdown/doc_how_to_submit_assessment.md"
 ;
+std::string doc_about_arrange =
+#include "markdown/doc_about_arrange.md"
+;
 
 std::map<std::string, Doc> m_docs = {
 	{"BRANCH_CONFLICT", {"Branch Conflict", std::move(doc_branch_conflict)}},
@@ -76,6 +79,7 @@ std::map<std::string, Doc> m_docs = {
 	{"IT_MUST_BE_VAR", {"Iterator", std::move(doc_iterator)}},
 	{"CYCLIC", {"Cyclic Nodes", std::move(doc_cyclic)}},
 	{"HOW_TO_SUBMIT_ASSESSMENT", {"How to Submit for Assessment", std::move(doc_how_to_submit_assessment)}},
+	{"ABOUT_ARRANGE", {"About Arranging Nodes Order", std::move(doc_about_arrange)}},
 };
 
 int Docs::init(void)

@@ -1,7 +1,5 @@
 u8R"====(## EXPLANATION
-A *For Loop* is a programming statement that all programming languages have.
-A *For Loop* statement is executed multiple times, each execution is called
-*iteration*, depending on its constructs. A *For Loop* has the following parts:
+A *For Loop* is a programming statement that all programming languages have. A *For Loop* statement is executed multiple times, each execution is called *iteration*, depending on its constructs. A *For Loop* has the following parts:
   * *iterator* - this is set to be starting value
   * *conditon* - this is checked after each iteration to determine if the loop
   	should continue

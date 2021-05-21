@@ -1,12 +1,5 @@
 u8R"====(## EXPLANATION
-*Variable size error* is a special error implemented by CodeNect. This occurs
-during transpilation stage when a *Variable Node* that is *not* of type *string*
-is connected to a *Size Node* In programming languages, the size of a variable
-depends on the data type of the variable but they are measured in bytes which
-is not beginner-friendly (though understanding this fundamental concept is
-important!). *Variable Node* of type *string* however, can be connected to
-a *Size Node* because usually, programmers want to determine at runtime the
-length of a string. A length of a string is its number of characters.
+*Variable size error* is a special error implemented by CodeNect. This occurs during transpilation stage when a *Variable Node* that is *not* of type *string* is connected to a *Size Node* In programming languages, the size of a variable depends on the data type of the variable but they are measured in bytes which is not beginner-friendly (though understanding this fundamental concept is important!). *Variable Node* of type *string* however, can be connected to a *Size Node* because usually, programmers want to determine at runtime the length of a string. A length of a string is its number of characters.
 ## SAMPLE CODE
 Here is a *pseudo-code* example:
 ***

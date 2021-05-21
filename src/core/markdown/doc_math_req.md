@@ -1,9 +1,5 @@
 u8R"====(## EXPLANATION
-A *Mathematical function requirements* error is a subset of the *Need
-inputs/Lack of inputs* error specific to the usage of *Math Node*.  This occurs
-when there is a *Math Node* that has no or is lacking a required number of
-inputs. This warning and error occurs because most Mathematical functions
-require values from inputs in order for it to calculate.
+A *Mathematical function requirements* error is a subset of the *Need inputs/Lack of inputs* error specific to the usage of *Math Node*. This occurs when there is a *Math Node* that has no or is lacking a required number of inputs. This warning and error occurs because most Mathematical functions require values from inputs in order for it to calculate.
 ## SAMPLE CODE
 Here is an *wrong* C code;
 float a = math.sin(); //sine needs an input
