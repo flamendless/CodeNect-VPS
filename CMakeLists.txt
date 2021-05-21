@@ -182,8 +182,14 @@ target_compile_definitions(CodeNect PRIVATE "$<$<CONFIG:Debug>:DEBUG_MODE=1>")
 if (WIN32)
 	target_compile_definitions(CodeNect PRIVATE OS_WIN=1)
 	target_sources(CodeNect PRIVATE includes/nfd/nfd_win.cpp)
-	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtcc.a)
-	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtcc1.a)
+	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/windows/libtcc1-64.a)
+	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtcc.dll)
+	install(FILES
+			lib/windows/libtcc1-64.a
+		DESTINATION ./lib)
+	install(FILES
+			lib/libtcc.dll
+		DESTINATION .)
 else ()
 	target_compile_definitions(CodeNect PRIVATE OS_LINUX=1)
 
@@ -201,7 +207,7 @@ else ()
 	install(FILES
 			lib/linux/libtcc.a
 			lib/linux/libtcc1.a
-		DESTINATION .)
+		DESTINATION ./lib)
 endif ()
 
 target_link_libraries(CodeNect

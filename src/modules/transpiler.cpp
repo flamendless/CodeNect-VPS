@@ -138,7 +138,9 @@ int Transpiler::init(void)
 		return RES_FAIL;
 	}
 
+#ifdef OS_LINUX
 	tcc_set_lib_path(Transpiler::tcc_state, "./");
+#endif
 	tcc_add_library_path(Transpiler::tcc_state, "./tcc");
 	tcc_add_include_path(Transpiler::tcc_state, "./tcc");
 	tcc_set_error_func(Transpiler::tcc_state, stderr, Transpiler::handle_error);
