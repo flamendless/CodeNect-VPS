@@ -516,7 +516,6 @@ int Transpiler::run(void)
 	}
 
 	func();
-	PLOGD << "size: " << Transpiler::v_printed.size();
 
 	// if (Transpiler::run_cmd(filename) == RES_FAIL)
 	// 	return RES_FAIL;

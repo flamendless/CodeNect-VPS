@@ -346,8 +346,10 @@ void print_hex(std::string& str)
 {
 	const char* s = str.c_str();
 	PLOGD << "string: " << s;
+	std::stringstream ss;
 	while (*s)
-		printf("%02x", (unsigned int) *s++);
-	printf("\n");
+		ss << std::hex << (unsigned int)*s++;
+	ss << "\n";
+	PLOGD << "hex: " << ss.str();
 }
 }

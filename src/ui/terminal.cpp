@@ -19,11 +19,6 @@
 #include "ui/assessments.hpp"
 #include "ui/diff_viewer.hpp"
 
-#if DEBUG_MODE
-#include <fstream>
-#include <fmt/chrono.h>
-#endif
-
 namespace CodeNect
 {
 ImGuiWindowFlags Terminal::flags =

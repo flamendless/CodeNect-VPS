@@ -5,13 +5,26 @@
 
 namespace CodeNect::Templates
 {
-inline static const char* incl_tcc = "#include <tcclib.h>\n"
+#ifdef OS_LINUX
+inline static const char* incl_tcc =
+	"#include <tcclib.h>\n"
 	"//for assert for checking array out of bounds\n"
 	"#include <assert.h>\n"
 	"//for using tolower, toupper\n"
 	"#include <ctype.h>\n"
 	"extern void cn_printf(const char*, ...);\n"
 	"extern char* cn_fgets(char*, int, FILE*);\n";
+#elif OS_WIN
+inline static const char* incl_tcc =
+	"#include <stdio.h>\n"
+	"#include <stdlib.h>\n"
+	"#include <math.h>\n"
+	"#include <string.h>\n"
+	"#include <assert.h>\n"
+	"#include <ctype.h>\n"
+	"extern void cn_printf(const char*, ...);\n"
+	"extern char* cn_fgets(char*, int, FILE*);\n";
+#endif
 inline static const char* incl_stdio = "//for using input and output functions like printf and getline\n"
 	"#include <stdio.h>\n";
 inline static const char* incl_stdlib = "//for assert for checking array out of bounds\n"

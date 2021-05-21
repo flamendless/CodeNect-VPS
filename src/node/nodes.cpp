@@ -170,7 +170,7 @@ void Nodes::build_slots(NodeMeta& meta, v_slot_info_t& in, v_slot_info_t& out)
 		out.push_back({output.c_str(), NODE_SLOT::_from_string(output.c_str())});
 }
 
-void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta, bool is_deferred)
+void Nodes::build_from_meta(const std::vector<NodeMeta*>& v_node_meta, bool is_deferred)
 {
 	PLOGI << "Building nodes...";
 	std::vector<NodeMeta*> v_deferred;
@@ -449,7 +449,6 @@ void Nodes::build_from_meta(const std::vector<NodeMeta*> &v_node_meta, bool is_d
 #endif
 			}
 		}
-
 		Nodes::reset_ids();
 	}
 
@@ -551,24 +550,39 @@ Node* Nodes::find_connected_by_value(Node* node, NodeValue* target_val)
 	return nullptr;
 }
 
-void Nodes::build_from_meta(const std::vector<ConnectionMeta*> &v_connection_meta)
+void Nodes::build_from_meta(const std::vector<ConnectionMeta*> &v_connection_meta,
+		const std::vector<NodeMeta*>& v_node_meta)
 {
 	PLOGI << "Building connections...";
-	for (ConnectionMeta* cm : v_connection_meta)
+	for (NodeMeta* nm : v_node_meta)
 	{
-		Node* in_node = Nodes::find_by_name(cm->m_in_name.c_str());
-		Node* out_node = Nodes::find_by_name(cm->m_out_name.c_str());
-
-		if (in_node && out_node)
+		for (std::string& str : nm->m_connections)
 		{
-			Connection connection;
-			connection.in_node = in_node;
-			connection.in_slot = cm->m_in_slot.c_str();
-			connection.out_node = out_node;
-			connection.out_slot = cm->m_out_slot.c_str();
+			ConnectionMeta* cm = nullptr;
+			for (ConnectionMeta* cm2 : v_connection_meta)
+			{
+				if (str.compare(cm2->m_name) == 0)
+				{
+					cm = cm2;
+					break;
+				}
+			}
+			if (!cm)
+				continue;
+			Node* in_node = Nodes::find_by_name(cm->m_in_name.c_str());
+			Node* out_node = Nodes::find_by_name(cm->m_out_name.c_str());
 
-			in_node->new_connection(connection);
-			out_node->new_connection(connection);
+			if (in_node && out_node)
+			{
+				Connection connection;
+				connection.in_node = in_node;
+				connection.in_slot = cm->m_in_slot.c_str();
+				connection.out_node = out_node;
+				connection.out_slot = cm->m_out_slot.c_str();
+
+				in_node->new_connection(connection);
+				out_node->new_connection(connection);
+			}
 		}
 	}
 	PLOGI << "Built connections successfully";

@@ -213,7 +213,7 @@ install(FILES
 		lib/libgcc_s_seh-1.dll
 		lib/libstdc++-6.dll
 		lib/libwinpthread-1.dll
-		lib/libtcc.dll
+		# lib/libtcc.dll
 	DESTINATION .)
 install(DIRECTORY lib/tcc DESTINATION .)
 

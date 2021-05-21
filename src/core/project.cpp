@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include "plog/Log.h"
 #include "ppk_assert.h"
+#include "fmt/format.h"
 #include "modules/filesystem.hpp"
 #include "modules/transpiler.hpp"
 #include "core/app.hpp"
@@ -362,6 +363,17 @@ int Project::save(void)
 		Project::save_slots(ini, section, node->m_in_slots, PROJ_INPUT_SLOT_PREFIX);
 		Project::save_slots(ini, section, node->m_out_slots, PROJ_OUTPUT_SLOT_PREFIX);
 
+		for (int i = 0; i < node->m_connections.size(); i++)
+		{
+			const Connection& connection = node->m_connections[i];
+			Node* in_node = static_cast<Node*>(connection.in_node);
+			Node* out_node = static_cast<Node*>(connection.out_node);
+			std::string val = fmt::format("{:s}_{:s}",
+					in_node->m_name, out_node->m_name);
+			std::string str = fmt::format("connection_{:d}", i);
+			ini.SetValue(section, str.c_str(), val.c_str());
+		}
+
 		//save connections
 		Project::save_connections(ini, node->m_connections);
 
@@ -468,7 +480,7 @@ int Project::parse(void)
 	}
 
 	Nodes::build_from_meta(v_node_meta);
-	Nodes::build_from_meta(v_connection_meta);
+	Nodes::build_from_meta(v_connection_meta, v_node_meta);
 
 	//cleanup
 	for (NodeMeta* &nm : v_node_meta)
@@ -606,6 +618,12 @@ void Project::parse_nodes(CSimpleIniA& ini, std::vector<NodeMeta*>& v_node_meta,
 			const char* element = ini.GetValue(section, key.pItem);
 			nm->m_array_elements.push_back(element);
 		}
+
+		if (str_key.find("connection_", 0) == 0)
+		{
+			const char* element = ini.GetValue(section, key.pItem);
+			nm->m_connections.push_back(element);
+		}
 	}
 
 	v_node_meta.push_back(nm);
@@ -621,6 +639,7 @@ void Project::parse_connections(CSimpleIniA& ini, std::vector<ConnectionMeta*>& 
 	const char* out_slot = ini.GetValue(section, "out_slot");
 
 	ConnectionMeta* cm = new ConnectionMeta();
+	cm->m_name = section;
 	cm->m_in_name = in_name;
 	cm->m_in_slot = in_slot;
 	cm->m_out_name = out_name;
