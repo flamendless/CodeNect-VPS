@@ -33,10 +33,6 @@
 #include "modules/filesystem.hpp"
 #include "modules/assessments.hpp"
 
-#ifdef OS_LINUX
-#include "subprocess.h"
-#endif
-
 namespace CodeNect
 {
 TCCState* Transpiler::tcc_state = nullptr;
@@ -499,18 +495,15 @@ int Transpiler::run(void)
 	PLOGI << "Running code...";
 	Transpiler::add_message(std::move("Running code..."));
 
-	std::filesystem::path od = Filesystem::Paths::out_dir;
-	od.append(Project::meta.file_bin);
-	std::string filename = od.string();
+	// std::filesystem::path od = Filesystem::Paths::out_dir;
+	// od.append(Project::meta.file_bin);
+	// std::string filename = od.string();
 
 	if (!Transpiler::has_ran)
 	{
 		// tcc_output_file(Transpiler::tcc_state, filename.c_str());
 		Transpiler::add_message(std::move("Launching program..."));
 		Transpiler::has_ran = true;
-#ifdef OS_WIN
-		Filesystem::hide_filename(filename);
-#endif
 	}
 
 	int(*func)(void);
@@ -596,7 +589,6 @@ void Transpiler::clear(void)
 
 void Transpiler::save_file(void)
 {
-	//TODO should handle other type of file? like Lua, Java, Python, etc
 	std::string out_filepath = "";
 	const char* ext = "c";
 	bool res = Filesystem::save_to_file(out_filepath, ext, Transpiler::output_code);

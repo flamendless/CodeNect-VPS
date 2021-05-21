@@ -166,8 +166,6 @@ target_include_directories(CodeNect PRIVATE
 	includes/ppk/src
 	# stb
 	includes/stb
-	# subprocess
-	includes/subprocess
 	# tweeny
 	includes/tweeny/include
 	# verbalexpressions

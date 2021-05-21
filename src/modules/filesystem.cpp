@@ -137,45 +137,45 @@ unsigned char* load_texture_from_file(const char* filename, GLFWimage& image)
 	return stbi_load(filename, &image.width, &image.height, 0, STBI_rgb_alpha);
 }
 
-void create_project_temp_dir(void)
-{
-	std::filesystem::path cp = Paths::cur_path;
-	cp.append(Paths::out_dir.c_str());
-	bool exists = std::filesystem::exists(cp);
-	if (!exists)
-	{
-		bool res = std::filesystem::create_directory(cp);
-		if (!res)
-		{
-			PLOGE << "Can't create directory: " << cp.c_str();
-			exit(1);
-		}
-		PLOGI << cp.c_str() << " was created";
-#ifdef OS_WIN
-		Filesystem::hide_filename(cp.string());
-#endif
-	}
-	else
-	{
-		PLOGI << cp.c_str() << " already exists";
-#ifdef OS_WIN
-		Filesystem::hide_filename(cp.string());
-#endif
-	}
-}
-
-#ifdef OS_WIN
-void hide_filename(std::string filename)
-{
-	int attr = GetFileAttributes(filename.c_str());
-	if ((attr & FILE_ATTRIBUTE_HIDDEN) == 0)
-	{
-		bool hide_result = SetFileAttributes(filename.c_str(), FILE_ATTRIBUTE_HIDDEN);
-		if (!hide_result)
-			PLOGW << "Can't hide filename";
-	}
-}
-#endif
+// void create_project_temp_dir(void)
+// {
+// 	std::filesystem::path cp = Paths::cur_path;
+// 	cp.append(Paths::out_dir.c_str());
+// 	bool exists = std::filesystem::exists(cp);
+// 	if (!exists)
+// 	{
+// 		bool res = std::filesystem::create_directory(cp);
+// 		if (!res)
+// 		{
+// 			PLOGE << "Can't create directory: " << cp.c_str();
+// 			exit(1);
+// 		}
+// 		PLOGI << cp.c_str() << " was created";
+// #ifdef OS_WIN
+// 		Filesystem::hide_filename(cp.string());
+// #endif
+// 	}
+// 	else
+// 	{
+// 		PLOGI << cp.c_str() << " already exists";
+// #ifdef OS_WIN
+// 		Filesystem::hide_filename(cp.string());
+// #endif
+// 	}
+// }
+//
+// #ifdef OS_WIN
+// void hide_filename(std::string filename)
+// {
+// 	int attr = GetFileAttributes(filename.c_str());
+// 	if ((attr & FILE_ATTRIBUTE_HIDDEN) == 0)
+// 	{
+// 		bool hide_result = SetFileAttributes(filename.c_str(), FILE_ATTRIBUTE_HIDDEN);
+// 		if (!hide_result)
+// 			PLOGW << "Can't hide filename";
+// 	}
+// }
+// #endif
 
 std::vector<std::string> parse_stdout(std::string& filename)
 {
