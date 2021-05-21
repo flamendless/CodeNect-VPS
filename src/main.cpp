@@ -95,7 +95,7 @@ int main(int argv, char** args)
 	ImGuiIO* imgui_io = &ImGui::GetIO();
 
 	//test
-	// CodeNect::Project::open("test_name.cn");
+	CodeNect::Project::open("../demo/name.cn");
 
 	if (argv > 1)
 	{

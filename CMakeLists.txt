@@ -195,9 +195,13 @@ else ()
 	target_link_directories(CodeNect PRIVATE ${GTK3_LIBRARY_DIRS})
 	target_sources(CodeNect PRIVATE includes/nfd/nfd_gtk.c)
 	target_include_directories(CodeNect PRIVATE ${GTK3_INCLUDE_DIRS})
-	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtcc.a)
-	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtcc1.a)
+	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/linux/libtcc.a)
+	target_link_libraries(CodeNect ${CMAKE_CURRENT_SOURCE_DIR}/lib/linux/libtcc1.a)
 	target_link_libraries(CodeNect dl)
+	install(FILES
+			lib/linux/libtcc.a
+			lib/linux/libtcc1.a
+		DESTINATION .)
 endif ()
 
 target_link_libraries(CodeNect
@@ -213,8 +217,6 @@ install(FILES
 		lib/libgcc_s_seh-1.dll
 		lib/libstdc++-6.dll
 		lib/libwinpthread-1.dll
-		lib/libtcc.a
-		lib/libtcc1.a
 	DESTINATION .)
 install(DIRECTORY lib/tcc DESTINATION .)
 
