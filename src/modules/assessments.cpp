@@ -86,7 +86,6 @@ int Assessments::get_score(std::vector<std::string>& v_submitted,
 	{
 		std::string str_submitted = v_submitted[i];
 		std::string str_expected = v_expected[i];
-		str_expected.append("\r");
 		Utils::print_hex(str_submitted);
 		Utils::print_hex(str_expected);
 		if (str_submitted.compare(str_expected) == 0)

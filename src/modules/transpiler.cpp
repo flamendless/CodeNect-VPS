@@ -70,17 +70,23 @@ void cn_printf(const char* fmt, ...)
     va_start(args, fmt);
 	vsprintf(buffer, fmt, args);
 	printf("%s", buffer);
-	Transpiler::v_printed.push_back(std::string(buffer));
+
+	//sanitize string
+	std::string str_buffer = buffer;
+	str_buffer.erase(str_buffer.find_last_not_of("\n\r\t") + 1);
+	Transpiler::v_printed.push_back(str_buffer);
 }
 
 char* cn_fgets(char* str, int num, FILE* s)
 {
 	char* ret = fgets(str, num, s);
-	char buffer[256];
-	std::strcpy(buffer, str);
-	// buffer[std::strlen(buffer) - 1] = '\0';
-	//TODO fix this, append to previous printf
-	Transpiler::v_printed.push_back(std::string(buffer));
+
+	//sanitize
+	std::string str_buffer = str;
+	str_buffer.erase(str_buffer.find_last_not_of("\n\r\t") + 1);
+	std::string str_prev = Transpiler::v_printed.back();
+	Transpiler::v_printed.pop_back();
+	Transpiler::v_printed.push_back(str_prev + str_buffer);
 	return ret;
 }
 

@@ -42,7 +42,6 @@ Help::tuple_t Help::v_key_items
 	help_t(ICON_FA_CLIPBOARD_CHECK " Ctrl + Shift + a", "open/close the assessments", "hold the 'ctrl' and 'shift' key then press 'a'"),
 	help_t(ICON_FA_KEYBOARD " Escape Key", "close active window", "press the 'Esc' key in the keyboard"),
 	help_t(ICON_FA_KEYBOARD " C (terminal)", "shortcut key for 'compile'", "press the 'c' key in the keyboard when terminal is open"),
-	help_t(ICON_FA_KEYBOARD " R (terminal)", "shortcut key for 'run'", "press the 'r' key in the keyboard when terminal is open"),
 };
 
 Help::tuple_colors_t Help::v_connection_colors_items
