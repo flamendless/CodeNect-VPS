@@ -44,18 +44,18 @@ std::map<const std::string, bool> Nodes::m_ids;
 
 const char* Nodes::get_id(const char* kind)
 {
-	std::string orig = kind;
-	std::string id = "";
 	int i = 0;
+	std::string orig = kind;
+	std::string id = orig + "_" + std::to_string(i);
+
 	while (Nodes::m_ids.find(id) !=
 		Nodes::m_ids.end())
 	{
 		//found
+		++i;
 		id = orig + "_" + std::to_string(i);
-		i++;
 	}
-	if (id.length() == 0)
-		id = orig;
+
 	Nodes::m_ids.insert({id, true});
 	std::string* ret = new std::string(id);
 	return ret->c_str();

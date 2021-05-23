@@ -2,8 +2,8 @@
 title = Name
 author = Brandon
 creation_dt = 21-05-2021 11:58:07
-offsetx = 51.000000
-offsety = 41.000000
+offsetx = -48.000000
+offsety = 131.000000
 
 
 [node_0]
@@ -18,7 +18,7 @@ input_1 = INTEGER
 output_1 = INTEGER
 
 
-[connection_COMPARISON_INTEGER-a-INTEGER]
+[connection_COMPARISON_INTEGER-a_INTEGER]
 in_node_name = COMPARISON
 in_slot = INTEGER
 out_node_name = a
@@ -37,7 +37,7 @@ input_1 = INTEGER
 output_1 = INTEGER
 
 
-[connection_COMPARISON_INTEGER-b-INTEGER]
+[connection_COMPARISON_INTEGER-b_INTEGER]
 in_node_name = COMPARISON
 in_slot = INTEGER
 out_node_name = b
@@ -55,7 +55,7 @@ input_1 = INTEGER
 output_1 = BOOL
 
 
-[connection_BRANCH_BOOL-COMPARISON-BOOL]
+[connection_BRANCH_BOOL-COMPARISON_BOOL]
 in_node_name = BRANCH
 in_slot = BOOL
 out_node_name = COMPARISON
@@ -73,25 +73,25 @@ output_1 = TRUE
 output_2 = FALSE
 
 
-[connection_PRINT_BOOL-BRANCH-TRUE]
-in_node_name = PRINT
+[connection_PRINT_2_BOOL-BRANCH_TRUE]
+in_node_name = PRINT_2
 in_slot = BOOL
 out_node_name = BRANCH
 out_slot = TRUE
 
 
-[connection_PRINT_BOOL-BRANCH-FALSE]
-in_node_name = PRINT
+[connection_PRINT_3_BOOL-BRANCH_FALSE]
+in_node_name = PRINT_3
 in_slot = BOOL
 out_node_name = BRANCH
 out_slot = FALSE
 
 
 [node_4]
-name = PRINT
+name = PRINT_2
 kind = ACTION
-x = 732.966675
-y = 121.500000
+x = 763.500000
+y = 92.500000
 desc = 
 action = PRINT
 value = they are equal!
@@ -103,13 +103,13 @@ output_1 = STRING
 
 
 [node_5]
-name = PRINT
+name = PRINT_3
 kind = ACTION
-x = 726.966675
-y = 352.500000
+x = 763.500000
+y = 302.500000
 desc = 
 action = PRINT
-value = they are not equal!
+value = they are NOT equal
 is_append = false
 is_override = false
 is_append_newline = true

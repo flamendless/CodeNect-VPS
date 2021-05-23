@@ -399,12 +399,9 @@ void Project::save_connections(CSimpleIniA& ini, std::vector<Connection>& v_conn
 		Node* in_node = static_cast<Node*>(connection.in_node);
 		Node* out_node = static_cast<Node*>(connection.out_node);
 
-		std::string cn_in_name = connection.in_slot;
-		std::string cn_out_name = connection.out_slot;
-
-		std::string str_id = fmt::format("{:s}_{:s}-{:s}-{:s}",
-				in_node->m_name, cn_in_name,
-				out_node->m_name, cn_out_name);
+		std::string str_id = fmt::format("{:s}_{:s}-{:s}_{:s}",
+				in_node->m_name, connection.in_slot,
+				out_node->m_name, connection.out_slot);
 		std::string str_section = std::string(PROJ_CONNECTION_PREFIX) + str_id;
 		const char* section = str_section.c_str();
 

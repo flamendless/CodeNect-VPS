@@ -11,11 +11,9 @@ struct Connection
 {
 	void* in_node;
 	const char* in_slot;
-	const char* in_slot_mod;
 
 	void* out_node;
 	const char* out_slot;
-	const char* out_slot_mod;
 
 	//this determines the data flow
 	//used in node_branch
