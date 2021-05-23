@@ -2,8 +2,8 @@
 title = Name
 author = Brandon
 creation_dt = 21-05-2021 11:58:07
-offsetx = 201.000000
-offsety = -92.000000
+offsetx = 145.000000
+offsety = -100.000000
 
 
 [node_0]
@@ -16,21 +16,19 @@ value_slot = STRING
 value = 
 input_1 = STRING
 output_1 = STRING
-connection_0 = first_name_PROMPT
-connection_1 = ADD_0_first_name
-
-
-[connection_first_name_PROMPT]
-in_node_name = first_name
-in_slot = STRING
-out_node_name = PROMPT
-out_slot = STRING
 
 
 [connection_ADD_0_first_name]
 in_node_name = ADD_0
 in_slot = STRING
 out_node_name = first_name
+out_slot = STRING
+
+
+[connection_first_name_PROMPT]
+in_node_name = first_name
+in_slot = STRING
+out_node_name = PROMPT
 out_slot = STRING
 
 
@@ -44,7 +42,6 @@ value_slot = STRING
 value = !
 input_1 = STRING
 output_1 = STRING
-connection_0 = ADD_0_exclamation
 
 
 [connection_ADD_0_exclamation]
@@ -63,9 +60,6 @@ desc =
 op = ADD
 input_1 = STRING
 output_1 = STRING
-connection_0 = res_ADD_0
-connection_1 = ADD_0_first_name
-connection_2 = ADD_0_exclamation
 
 
 [connection_res_ADD_0]
@@ -85,8 +79,6 @@ value_slot = STRING
 value = 
 input_1 = STRING
 output_1 = STRING
-connection_0 = PRINT_0_res
-connection_1 = res_ADD_0
 
 
 [connection_PRINT_0_res]
@@ -109,7 +101,6 @@ is_override = false
 is_append_newline = false
 input_1 = STRING
 output_1 = STRING
-connection_0 = PRINT_0_res
 
 
 [node_5]
@@ -125,4 +116,3 @@ is_append_newline = false
 fake_input = First Name
 input_1 = STRING
 output_1 = STRING
-connection_0 = first_name_PROMPT

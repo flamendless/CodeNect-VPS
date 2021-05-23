@@ -550,46 +550,23 @@ Node* Nodes::find_connected_by_value(Node* node, NodeValue* target_val)
 	return nullptr;
 }
 
-void Nodes::build_from_meta(const std::vector<ConnectionMeta*>& v_connection_meta,
-		const std::vector<NodeMeta*>& v_node_meta)
+void Nodes::build_from_meta(const std::vector<ConnectionMeta*>& v_connection_meta)
 {
 	PLOGI << "Building connections...";
-	std::vector<std::string> v_finished;
-	for (NodeMeta* nm : v_node_meta)
+	for (ConnectionMeta* cm : v_connection_meta)
 	{
-		for (std::string& str : nm->m_connections)
+		Node* in_node = Nodes::find_by_name(cm->m_in_name.c_str());
+		Node* out_node = Nodes::find_by_name(cm->m_out_name.c_str());
+		if (in_node && out_node)
 		{
-			bool found = std::find(v_finished.begin(), v_finished.end(), str) != v_finished.end();
-			if (found)
-				continue;
+			Connection connection;
+			connection.in_node = in_node;
+			connection.in_slot = cm->m_in_slot.c_str();
+			connection.out_node = out_node;
+			connection.out_slot = cm->m_out_slot.c_str();
 
-			ConnectionMeta* cm = nullptr;
-			for (ConnectionMeta* cm2 : v_connection_meta)
-			{
-				std::string str2 = "connection_" + str;
-				if (str2.compare(cm2->m_name) == 0)
-				{
-					cm = cm2;
-					break;
-				}
-			}
-			if (!cm)
-				continue;
-			Node* in_node = Nodes::find_by_name(cm->m_in_name.c_str());
-			Node* out_node = Nodes::find_by_name(cm->m_out_name.c_str());
-
-			if (in_node && out_node)
-			{
-				Connection connection;
-				connection.in_node = in_node;
-				connection.in_slot = cm->m_in_slot.c_str();
-				connection.out_node = out_node;
-				connection.out_slot = cm->m_out_slot.c_str();
-
-				in_node->new_connection(connection);
-				out_node->new_connection(connection);
-				v_finished.push_back(str);
-			}
+			in_node->new_connection(connection);
+			out_node->new_connection(connection);
 		}
 	}
 	PLOGI << "Built connections successfully";

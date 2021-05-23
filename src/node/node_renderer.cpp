@@ -587,6 +587,8 @@ void draw_connections(Node& node)
 
 		if (can_add)
 		{
+			PLOGW << new_connection.in_slot;
+			PLOGW << new_connection.out_slot;
 			in_node->new_connection(new_connection);
 			out_node->new_connection(new_connection);
 		}
