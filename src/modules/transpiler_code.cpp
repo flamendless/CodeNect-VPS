@@ -874,6 +874,21 @@ std::vector<Node*> Transpiler::get_sequence(Node* start_node, State* new_state)
 	return v;
 }
 
+std::vector<Node*> get_lhs_path(Node* node)
+{
+	std::vector<Node*> v;
+	for (const Connection& connection : node->m_connections)
+	{
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (out_node == node)
+			continue;
+		v.push_back(out_node);
+		std::vector<Node*> v_temp = get_lhs_path(out_node);
+		v.insert(v.end(), v_temp.begin(), v_temp.end());
+	}
+	return v;
+}
+
 std::vector<Node*> Transpiler::get_rest(State* new_state)
 {
 	//get the rest to be transpiled using the last node in the sequence/chain
@@ -907,7 +922,31 @@ std::vector<Node*> Transpiler::get_rest(State* new_state)
 			}
 		}
 	}
-	return v_out;
+
+	//process first and reorder
+	int i = 0;
+	std::vector<Node*> v_final;
+	for (Node* &node : v_out)
+	{
+		bool this_node_pushed = false;
+		std::vector<Node*> v_path = get_lhs_path(node);
+		for (Node* &node2 : v_path)
+		{
+			bool found = std::find(v_out.begin() + i, v_out.end(), node2) != v_out.end();
+			if (found)
+			{
+				v_final.push_back(node2);
+				if (!this_node_pushed)
+				{
+					v_final.push_back(node);
+					this_node_pushed = true;
+				}
+			}
+		}
+		++i;
+	}
+
+	return v_final;
 }
 
 void Transpiler::arrange_v(std::vector<Node*>& v)
