@@ -96,7 +96,7 @@ int main(int argv, char** args)
 
 	//test
 #if OS_LINUX
-	CodeNect::Project::open("../demo/branch.cn");
+	// CodeNect::Project::open("../demo/branch.cn");
 #endif
 
 	if (argv > 1)

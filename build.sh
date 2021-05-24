@@ -24,6 +24,11 @@ function run()
 	cd ${dir_install} && ./${app_name}
 }
 
+function package_linux()
+{
+	zip -9r codenect_linux.zip assets build.sh build_win.bat cmake CMakeLists.txt config.ini includes lib LICENSE src
+}
+
 function clean()
 {
 	rm -rf ${dir_build}/*
