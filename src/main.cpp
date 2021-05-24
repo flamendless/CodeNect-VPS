@@ -95,7 +95,9 @@ int main(int argv, char** args)
 	ImGuiIO* imgui_io = &ImGui::GetIO();
 
 	//test
+#if OS_LINUX
 	CodeNect::Project::open("../demo/branch.cn");
+#endif
 
 	if (argv > 1)
 	{
