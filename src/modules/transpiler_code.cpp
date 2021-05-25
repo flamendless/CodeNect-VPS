@@ -942,6 +942,8 @@ std::vector<Node*> Transpiler::get_rest(State* new_state)
 					this_node_pushed = true;
 				}
 			}
+			else
+				v_final.push_back(node);
 		}
 		++i;
 	}
