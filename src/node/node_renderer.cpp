@@ -343,7 +343,17 @@ void draw_node_math(NodeMath* node_math)
 	if (v_vars.size() < 2)
 		return;
 
-	std::string str = std::to_string(std::get<int>(node_math->m_first));
+	std::string str;
+	switch (node_math->m_in_slots[0].kind)
+	{
+		case NODE_SLOT::EMPTY: break;
+		case NODE_SLOT::BOOL: break;
+		case NODE_SLOT::INTEGER: str = std::to_string(std::get<int>(node_math->m_first)); break;
+		case NODE_SLOT::FLOAT: str = std::to_string(std::get<float>(node_math->m_first)); break;
+		case NODE_SLOT::DOUBLE: str = std::to_string(std::get<double>(node_math->m_first)); break;
+		case NODE_SLOT::STRING: break;
+	}
+
 	str.append(" ");
 	str.append(node_math->get_icon());
 	str.append(" ");

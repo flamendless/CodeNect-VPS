@@ -1,0 +1,168 @@
+﻿[meta]
+title = TestString
+author = Brandon
+creation_dt = 27-05-2021 00:19:55
+offsetx = 26.000000
+offsety = -160.000000
+
+
+[node_0]
+name = a
+kind = VARIABLE
+x = 86.000000
+y = 320.000000
+desc = 
+value_slot = STRING
+value = Hello, World!
+input_1 = STRING
+output_1 = STRING
+
+
+[connection_STRING_0_STRING-a_STRING]
+in_node_name = STRING_0
+in_slot = STRING
+out_node_name = a
+out_slot = STRING
+
+
+[connection_STRING_1_STRING-a_STRING]
+in_node_name = STRING_1
+in_slot = STRING
+out_node_name = a
+out_slot = STRING
+
+
+[connection_STRING_2_STRING-a_STRING]
+in_node_name = STRING_2
+in_slot = STRING
+out_node_name = a
+out_slot = STRING
+
+
+[connection_STRING_3_STRING-a_STRING]
+in_node_name = STRING_3
+in_slot = STRING
+out_node_name = a
+out_slot = STRING
+
+
+[node_1]
+name = STRING_0
+kind = STRING
+x = 323.000000
+y = 171.500000
+desc = 
+str = TLC
+input_1 = STRING
+output_1 = STRING
+
+
+[connection_res_tlc_STRING-STRING_0_STRING]
+in_node_name = res_tlc
+in_slot = STRING
+out_node_name = STRING_0
+out_slot = STRING
+
+
+[node_2]
+name = STRING_1
+kind = STRING
+x = 345.000000
+y = 297.500000
+desc = 
+str = TUC
+input_1 = STRING
+output_1 = STRING
+
+
+[connection_res_tuc_STRING-STRING_1_STRING]
+in_node_name = res_tuc
+in_slot = STRING
+out_node_name = STRING_1
+out_slot = STRING
+
+
+[node_3]
+name = STRING_2
+kind = STRING
+x = 345.000000
+y = 428.500000
+desc = 
+str = REVERSE
+input_1 = STRING
+output_1 = STRING
+
+
+[connection_res_reverse_STRING-STRING_2_STRING]
+in_node_name = res_reverse
+in_slot = STRING
+out_node_name = STRING_2
+out_slot = STRING
+
+
+[node_4]
+name = res_tlc
+kind = VARIABLE
+x = 636.000000
+y = 101.000000
+desc = 
+value_slot = STRING
+value = 
+input_1 = STRING
+output_1 = STRING
+
+
+[node_5]
+name = res_tuc
+kind = VARIABLE
+x = 643.000000
+y = 233.000000
+desc = 
+value_slot = STRING
+value = 
+input_1 = STRING
+output_1 = STRING
+
+
+[node_6]
+name = res_reverse
+kind = VARIABLE
+x = 625.000000
+y = 410.000000
+desc = 
+value_slot = STRING
+value = 
+input_1 = STRING
+output_1 = STRING
+
+
+[node_7]
+name = STRING_3
+kind = STRING
+x = 216.000000
+y = 592.500000
+desc = 
+str = TOARRAY
+input_1 = STRING
+output_1 = STRING
+
+
+[connection_res_array_STRING-STRING_3_STRING]
+in_node_name = res_array
+in_slot = STRING
+out_node_name = STRING_3
+out_slot = STRING
+
+
+[node_8]
+name = res_array
+kind = DS
+x = 632.000000
+y = 571.000000
+desc = 
+ds = ARRAY
+array = DYNAMIC
+array_size = 0
+array_slot = STRING
+input_1 = STRING
+output_1 = STRING

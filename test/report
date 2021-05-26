@@ -16,7 +16,7 @@
 [0;37m../test.cpp:49: [1;32mSUCCESS: [0;36mCHECK( Input::v_keyreleases.size() == 1 ) [0mis correct!
   values: CHECK( 1 == 1 )
 
-[0m0.000144 s: Testing Input/Output Module
+[0m0.000326 s: Testing Input/Output Module
 [0m[0;33m===============================================================================
 [0;37m../test.cpp:52:
 [0;33mTEST CASE:  [0mTesting Filesystem Module
@@ -90,7 +90,7 @@
 DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0m  Opening invalid project
 
-[0m0.001902 s: Testing Filesystem Module
+[0m0.003666 s: Testing Filesystem Module
 [0m[0;33m===============================================================================
 [0;37m../test.cpp:87:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
@@ -106,13 +106,13 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   INTEGER
 
 [0;37m../test.cpp:96: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7794ac0 != NULL )
+  values: REQUIRE( 0x0000556d2a334ac0 != NULL )
 
 [0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var_a->m_value.data) == 32 ) [0mis correct!
   values: REQUIRE( 32 == 32 )
 
 [0;37m../test.cpp:99: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7794bc0 != NULL )
+  values: REQUIRE( 0x0000556d2a334bc0 != NULL )
 
 [0;37m../test.cpp:100: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var_b->m_value.data) == 64 ) [0mis correct!
   values: REQUIRE( 64 == 64 )
@@ -125,7 +125,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   Testing Addition Logic
 
 [0;37m../test.cpp:106: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7796340 != NULL )
+  values: REQUIRE( 0x0000556d2a336340 != NULL )
 
 [0;37m../test.cpp:107: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(node_var->m_value.data) == 96 ) [0mis correct!
   values: REQUIRE( 96 == 96 )
@@ -145,13 +145,13 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   INTEGER
 
 [0;37m../test.cpp:96: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77a5120 != NULL )
+  values: REQUIRE( 0x0000556d2a345120 != NULL )
 
 [0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var_a->m_value.data) == 32 ) [0mis correct!
   values: REQUIRE( 32 == 32 )
 
 [0;37m../test.cpp:99: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77a5200 != NULL )
+  values: REQUIRE( 0x0000556d2a345200 != NULL )
 
 [0;37m../test.cpp:100: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var_b->m_value.data) == 64 ) [0mis correct!
   values: REQUIRE( 64 == 64 )
@@ -164,7 +164,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   Testing Subtraction Logic
 
 [0;37m../test.cpp:113: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77a68f0 != NULL )
+  values: REQUIRE( 0x0000556d2a3468f0 != NULL )
 
 [0;37m../test.cpp:114: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(node_var->m_value.data) == -32 ) [0mis correct!
   values: REQUIRE( -32 == -32 )
@@ -184,13 +184,13 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   INTEGER
 
 [0;37m../test.cpp:96: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77b49f0 != NULL )
+  values: REQUIRE( 0x0000556d2a3549f0 != NULL )
 
 [0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var_a->m_value.data) == 32 ) [0mis correct!
   values: REQUIRE( 32 == 32 )
 
 [0;37m../test.cpp:99: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77b4ad0 != NULL )
+  values: REQUIRE( 0x0000556d2a354ad0 != NULL )
 
 [0;37m../test.cpp:100: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var_b->m_value.data) == 64 ) [0mis correct!
   values: REQUIRE( 64 == 64 )
@@ -203,7 +203,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   Testing Multiplication Logic
 
 [0;37m../test.cpp:120: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77b56e0 != NULL )
+  values: REQUIRE( 0x0000556d2a3556e0 != NULL )
 
 [0;37m../test.cpp:121: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(node_var->m_value.data) == 2048 ) [0mis correct!
   values: REQUIRE( 2048 == 2048 )
@@ -223,13 +223,13 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   INTEGER
 
 [0;37m../test.cpp:96: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77c4380 != NULL )
+  values: REQUIRE( 0x0000556d2a364380 != NULL )
 
 [0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var_a->m_value.data) == 32 ) [0mis correct!
   values: REQUIRE( 32 == 32 )
 
 [0;37m../test.cpp:99: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77c4460 != NULL )
+  values: REQUIRE( 0x0000556d2a364460 != NULL )
 
 [0;37m../test.cpp:100: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var_b->m_value.data) == 64 ) [0mis correct!
   values: REQUIRE( 64 == 64 )
@@ -242,7 +242,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   Testing Division Logic
 
 [0;37m../test.cpp:127: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77c5cf0 != NULL )
+  values: REQUIRE( 0x0000556d2a365cf0 != NULL )
 
 [0;37m../test.cpp:128: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(node_var->m_value.data) == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
@@ -262,13 +262,13 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   FLOAT
 
 [0;37m../test.cpp:135: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77d5be0 != NULL )
+  values: REQUIRE( 0x0000556d2a375be0 != NULL )
 
 [0;37m../test.cpp:136: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == 32.0f ) [0mis correct!
   values: REQUIRE( 32.0f == 32.0f )
 
 [0;37m../test.cpp:138: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77d5d00 != NULL )
+  values: REQUIRE( 0x0000556d2a375d00 != NULL )
 
 [0;37m../test.cpp:139: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_b->m_value.data) == 24.0f ) [0mis correct!
   values: REQUIRE( 24.0f == 24.0f )
@@ -281,7 +281,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   Testing Addition Logic
 
 [0;37m../test.cpp:145: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77d3e70 != NULL )
+  values: REQUIRE( 0x0000556d2a373e70 != NULL )
 
 [0;37m../test.cpp:146: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(node_var->m_value.data) == 56.0f ) [0mis correct!
   values: REQUIRE( 56.0f == 56.0f )
@@ -301,13 +301,13 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   FLOAT
 
 [0;37m../test.cpp:135: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77e5580 != NULL )
+  values: REQUIRE( 0x0000556d2a385580 != NULL )
 
 [0;37m../test.cpp:136: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == 32.0f ) [0mis correct!
   values: REQUIRE( 32.0f == 32.0f )
 
 [0;37m../test.cpp:138: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77e56a0 != NULL )
+  values: REQUIRE( 0x0000556d2a3856a0 != NULL )
 
 [0;37m../test.cpp:139: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_b->m_value.data) == 24.0f ) [0mis correct!
   values: REQUIRE( 24.0f == 24.0f )
@@ -320,7 +320,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   Testing Subtraction Logic
 
 [0;37m../test.cpp:152: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77e3910 != NULL )
+  values: REQUIRE( 0x0000556d2a383910 != NULL )
 
 [0;37m../test.cpp:153: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(node_var->m_value.data) == 8.0f ) [0mis correct!
   values: REQUIRE( 8.0f == 8.0f )
@@ -340,13 +340,13 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   FLOAT
 
 [0;37m../test.cpp:135: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77f4ef0 != NULL )
+  values: REQUIRE( 0x0000556d2a394ef0 != NULL )
 
 [0;37m../test.cpp:136: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == 32.0f ) [0mis correct!
   values: REQUIRE( 32.0f == 32.0f )
 
 [0;37m../test.cpp:138: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77f5010 != NULL )
+  values: REQUIRE( 0x0000556d2a395010 != NULL )
 
 [0;37m../test.cpp:139: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_b->m_value.data) == 24.0f ) [0mis correct!
   values: REQUIRE( 24.0f == 24.0f )
@@ -359,7 +359,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   Testing Multiplication Logic
 
 [0;37m../test.cpp:159: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c77f3380 != NULL )
+  values: REQUIRE( 0x0000556d2a393380 != NULL )
 
 [0;37m../test.cpp:160: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(node_var->m_value.data) == (32.0f * 24.0f) ) [0mis correct!
   values: REQUIRE( 768.0f == 768.0f )
@@ -379,13 +379,13 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   FLOAT
 
 [0;37m../test.cpp:135: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7804840 != NULL )
+  values: REQUIRE( 0x0000556d2a3a4840 != NULL )
 
 [0;37m../test.cpp:136: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == 32.0f ) [0mis correct!
   values: REQUIRE( 32.0f == 32.0f )
 
 [0;37m../test.cpp:138: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7804960 != NULL )
+  values: REQUIRE( 0x0000556d2a3a4960 != NULL )
 
 [0;37m../test.cpp:139: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_b->m_value.data) == 24.0f ) [0mis correct!
   values: REQUIRE( 24.0f == 24.0f )
@@ -398,7 +398,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   Testing Division Logic
 
 [0;37m../test.cpp:166: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7803a40 != NULL )
+  values: REQUIRE( 0x0000556d2a3a3a40 != NULL )
 
 [0;37m../test.cpp:167: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(node_var->m_value.data) == (32.0f/24.0f) ) [0mis correct!
   values: REQUIRE( 1.33333f == 1.33333f )
@@ -418,13 +418,13 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   DOUBLE
 
 [0;37m../test.cpp:174: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7812750 != NULL )
+  values: REQUIRE( 0x0000556d2a3b2750 != NULL )
 
 [0;37m../test.cpp:175: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var_a->m_value.data) == 32.0 ) [0mis correct!
   values: REQUIRE( 32.0 == 32.0 )
 
 [0;37m../test.cpp:177: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7812870 != NULL )
+  values: REQUIRE( 0x0000556d2a3b2870 != NULL )
 
 [0;37m../test.cpp:178: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var_b->m_value.data) == 24.0 ) [0mis correct!
   values: REQUIRE( 24.0 == 24.0 )
@@ -437,7 +437,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   Testing Addition Logic
 
 [0;37m../test.cpp:184: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7812e00 != NULL )
+  values: REQUIRE( 0x0000556d2a3b2e00 != NULL )
 
 [0;37m../test.cpp:185: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(node_var->m_value.data) == 56.0 ) [0mis correct!
   values: REQUIRE( 56.0 == 56.0 )
@@ -457,13 +457,13 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   DOUBLE
 
 [0;37m../test.cpp:174: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78220c0 != NULL )
+  values: REQUIRE( 0x0000556d2a3c20c0 != NULL )
 
 [0;37m../test.cpp:175: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var_a->m_value.data) == 32.0 ) [0mis correct!
   values: REQUIRE( 32.0 == 32.0 )
 
 [0;37m../test.cpp:177: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78221e0 != NULL )
+  values: REQUIRE( 0x0000556d2a3c21e0 != NULL )
 
 [0;37m../test.cpp:178: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var_b->m_value.data) == 24.0 ) [0mis correct!
   values: REQUIRE( 24.0 == 24.0 )
@@ -476,7 +476,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   Testing Subtraction Logic
 
 [0;37m../test.cpp:191: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78229b0 != NULL )
+  values: REQUIRE( 0x0000556d2a3c29b0 != NULL )
 
 [0;37m../test.cpp:192: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(node_var->m_value.data) == 8.0 ) [0mis correct!
   values: REQUIRE( 8.0 == 8.0 )
@@ -496,13 +496,13 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   DOUBLE
 
 [0;37m../test.cpp:174: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7831a40 != NULL )
+  values: REQUIRE( 0x0000556d2a3d1a40 != NULL )
 
 [0;37m../test.cpp:175: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var_a->m_value.data) == 32.0 ) [0mis correct!
   values: REQUIRE( 32.0 == 32.0 )
 
 [0;37m../test.cpp:177: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7831b60 != NULL )
+  values: REQUIRE( 0x0000556d2a3d1b60 != NULL )
 
 [0;37m../test.cpp:178: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var_b->m_value.data) == 24.0 ) [0mis correct!
   values: REQUIRE( 24.0 == 24.0 )
@@ -515,7 +515,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   Testing Multiplication Logic
 
 [0;37m../test.cpp:198: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7832450 != NULL )
+  values: REQUIRE( 0x0000556d2a3d2450 != NULL )
 
 [0;37m../test.cpp:199: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(node_var->m_value.data) == (32.0 * 24.0) ) [0mis correct!
   values: REQUIRE( 768.0 == 768.0 )
@@ -535,13 +535,13 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   DOUBLE
 
 [0;37m../test.cpp:174: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78413e0 != NULL )
+  values: REQUIRE( 0x0000556d2a3e13e0 != NULL )
 
 [0;37m../test.cpp:175: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var_a->m_value.data) == 32.0 ) [0mis correct!
   values: REQUIRE( 32.0 == 32.0 )
 
 [0;37m../test.cpp:177: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7841500 != NULL )
+  values: REQUIRE( 0x0000556d2a3e1500 != NULL )
 
 [0;37m../test.cpp:178: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var_b->m_value.data) == 24.0 ) [0mis correct!
   values: REQUIRE( 24.0 == 24.0 )
@@ -554,7 +554,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   Testing Division Logic
 
 [0;37m../test.cpp:205: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7841f10 != NULL )
+  values: REQUIRE( 0x0000556d2a3e1f10 != NULL )
 
 [0;37m../test.cpp:206: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(node_var->m_value.data) == (32.0/24.0) ) [0mis correct!
   values: REQUIRE( 1.3333333333 == 1.3333333333 )
@@ -574,13 +574,13 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   STRING
 
 [0;37m../test.cpp:213: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78523a0 != NULL )
+  values: REQUIRE( 0x0000556d2a3f23a0 != NULL )
 
 [0;37m../test.cpp:214: [1;32mSUCCESS: [0;36mREQUIRE( (std::get<std::string>(var_a->m_value.data).compare("hello, ") == 0) ) [0mis correct!
   values: REQUIRE( true )
 
 [0;37m../test.cpp:216: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78524c0 != NULL )
+  values: REQUIRE( 0x0000556d2a3f24c0 != NULL )
 
 [0;37m../test.cpp:217: [1;32mSUCCESS: [0;36mREQUIRE( (std::get<std::string>(var_b->m_value.data)).compare("world!") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
@@ -593,7 +593,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   Testing Addition Logic
 
 [0;37m../test.cpp:223: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7852740 != NULL )
+  values: REQUIRE( 0x0000556d2a3f2740 != NULL )
 
 [0;37m../test.cpp:224: [1;32mSUCCESS: [0;36mREQUIRE( (std::get<std::string>(node_var->m_value.data)).compare("hello, world!") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
@@ -613,7 +613,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   From INTEGER
 
 [0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c785cb40 != NULL )
+  values: REQUIRE( 0x0000556d2a3fcb40 != NULL )
 
 [0;37m../test.cpp:239: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 8 == 8 )
@@ -626,7 +626,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   To BOOL
 
 [0;37m../test.cpp:245: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c785ce90 != NULL )
+  values: REQUIRE( 0x0000556d2a3fce90 != NULL )
 
 [0;37m../test.cpp:246: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (bool)val ) [0mis correct!
   values: REQUIRE( true == true )
@@ -646,7 +646,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   From INTEGER
 
 [0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c786b110 != NULL )
+  values: REQUIRE( 0x0000556d2a40b110 != NULL )
 
 [0;37m../test.cpp:239: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 8 == 8 )
@@ -659,7 +659,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   To FLOAT
 
 [0;37m../test.cpp:252: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c786b2f0 != NULL )
+  values: REQUIRE( 0x0000556d2a40b2f0 != NULL )
 
 [0;37m../test.cpp:253: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var2->m_value.data) == (float)val ) [0mis correct!
   values: REQUIRE( 8.0f == 8.0f )
@@ -679,7 +679,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   From INTEGER
 
 [0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7879190 != NULL )
+  values: REQUIRE( 0x0000556d2a419190 != NULL )
 
 [0;37m../test.cpp:239: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 8 == 8 )
@@ -692,7 +692,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   To DOUBLE
 
 [0;37m../test.cpp:259: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7879610 != NULL )
+  values: REQUIRE( 0x0000556d2a419610 != NULL )
 
 [0;37m../test.cpp:260: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var2->m_value.data) == (double)val ) [0mis correct!
   values: REQUIRE( 8.0 == 8.0 )
@@ -712,7 +712,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   From INTEGER
 
 [0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7887240 != NULL )
+  values: REQUIRE( 0x0000556d2a427240 != NULL )
 
 [0;37m../test.cpp:239: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 8 == 8 )
@@ -725,7 +725,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   To STRING
 
 [0;37m../test.cpp:266: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7887700 != NULL )
+  values: REQUIRE( 0x0000556d2a427700 != NULL )
 
 [0;37m../test.cpp:267: [1;32mSUCCESS: [0;36mREQUIRE( (std::get<std::string>(var2->m_value.data)).compare(std::to_string(val)) == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
@@ -745,7 +745,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   From FLOAT
 
 [0;37m../test.cpp:275: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7895910 != NULL )
+  values: REQUIRE( 0x0000556d2a435910 != NULL )
 
 [0;37m../test.cpp:276: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 16.0f == 16.0f )
@@ -758,7 +758,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   To INTEGER
 
 [0;37m../test.cpp:282: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7897080 != NULL )
+  values: REQUIRE( 0x0000556d2a437080 != NULL )
 
 [0;37m../test.cpp:283: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var2->m_value.data) == (int)val ) [0mis correct!
   values: REQUIRE( 16 == 16 )
@@ -778,7 +778,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   From FLOAT
 
 [0;37m../test.cpp:275: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78a39b0 != NULL )
+  values: REQUIRE( 0x0000556d2a4439b0 != NULL )
 
 [0;37m../test.cpp:276: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 16.0f == 16.0f )
@@ -791,7 +791,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   To DOUBLE
 
 [0;37m../test.cpp:289: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78a5240 != NULL )
+  values: REQUIRE( 0x0000556d2a445240 != NULL )
 
 [0;37m../test.cpp:290: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var2->m_value.data) == (double)val ) [0mis correct!
   values: REQUIRE( 16.0 == 16.0 )
@@ -811,7 +811,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   From FLOAT
 
 [0;37m../test.cpp:275: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78b1b50 != NULL )
+  values: REQUIRE( 0x0000556d2a451b50 != NULL )
 
 [0;37m../test.cpp:276: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 16.0f == 16.0f )
@@ -824,7 +824,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   To STRING
 
 [0;37m../test.cpp:296: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78b3500 != NULL )
+  values: REQUIRE( 0x0000556d2a453500 != NULL )
 
 [0;37m../test.cpp:297: [1;32mSUCCESS: [0;36mREQUIRE( (std::get<std::string>(var2->m_value.data)).compare(std::to_string(val)) == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
@@ -844,7 +844,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   From DOUBLE
 
 [0;37m../test.cpp:305: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78bfd90 != NULL )
+  values: REQUIRE( 0x0000556d2a45fd90 != NULL )
 
 [0;37m../test.cpp:306: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.0 == 32.0f )
@@ -857,7 +857,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   To INTEGER
 
 [0;37m../test.cpp:312: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78c0330 != NULL )
+  values: REQUIRE( 0x0000556d2a460330 != NULL )
 
 [0;37m../test.cpp:313: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var2->m_value.data) == (int)val ) [0mis correct!
   values: REQUIRE( 32 == 32 )
@@ -877,7 +877,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   From DOUBLE
 
 [0;37m../test.cpp:305: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78cdf10 != NULL )
+  values: REQUIRE( 0x0000556d2a46df10 != NULL )
 
 [0;37m../test.cpp:306: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.0 == 32.0f )
@@ -890,7 +890,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   To FLOAT
 
 [0;37m../test.cpp:319: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78ce5d0 != NULL )
+  values: REQUIRE( 0x0000556d2a46e5d0 != NULL )
 
 [0;37m../test.cpp:320: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var2->m_value.data) == (float)val ) [0mis correct!
   values: REQUIRE( 32.0f == 32.0f )
@@ -910,7 +910,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   From DOUBLE
 
 [0;37m../test.cpp:305: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78dc120 != NULL )
+  values: REQUIRE( 0x0000556d2a47c120 != NULL )
 
 [0;37m../test.cpp:306: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.0 == 32.0f )
@@ -923,7 +923,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   To STRING
 
 [0;37m../test.cpp:326: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78dc900 != NULL )
+  values: REQUIRE( 0x0000556d2a47c900 != NULL )
 
 [0;37m../test.cpp:327: [1;32mSUCCESS: [0;36mREQUIRE( (std::get<std::string>(var2->m_value.data)).compare(std::to_string(val)) == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
@@ -943,7 +943,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   From STRING
 
 [0;37m../test.cpp:335: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78eac40 != NULL )
+  values: REQUIRE( 0x0000556d2a48ac40 != NULL )
 
 [0;37m../test.cpp:336: [1;32mSUCCESS: [0;36mREQUIRE( (std::get<std::string>(var->m_value.data)).compare(val) == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
@@ -956,7 +956,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   To BOOL
 
 [0;37m../test.cpp:342: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78eb270 != NULL )
+  values: REQUIRE( 0x0000556d2a48b270 != NULL )
 
 [0;37m../test.cpp:343: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == false ) [0mis correct!
   values: REQUIRE( false == false )
@@ -976,7 +976,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   From STRING
 
 [0;37m../test.cpp:335: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78f8d90 != NULL )
+  values: REQUIRE( 0x0000556d2a498d90 != NULL )
 
 [0;37m../test.cpp:336: [1;32mSUCCESS: [0;36mREQUIRE( (std::get<std::string>(var->m_value.data)).compare(val) == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
@@ -989,7 +989,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   To INTEGER
 
 [0;37m../test.cpp:349: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c78f94e0 != NULL )
+  values: REQUIRE( 0x0000556d2a4994e0 != NULL )
 
 [0;37m../test.cpp:350: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var2->m_value.data) == std::stoi(val) ) [0mis correct!
   values: REQUIRE( 48 == 48 )
@@ -1009,7 +1009,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   From STRING
 
 [0;37m../test.cpp:335: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7906e80 != NULL )
+  values: REQUIRE( 0x0000556d2a4a6e80 != NULL )
 
 [0;37m../test.cpp:336: [1;32mSUCCESS: [0;36mREQUIRE( (std::get<std::string>(var->m_value.data)).compare(val) == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
@@ -1022,7 +1022,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   To FLOAT
 
 [0;37m../test.cpp:356: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7907840 != NULL )
+  values: REQUIRE( 0x0000556d2a4a7840 != NULL )
 
 [0;37m../test.cpp:357: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var2->m_value.data) == std::stof(val) ) [0mis correct!
   values: REQUIRE( 48.64f == 48.64f )
@@ -1042,7 +1042,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   From STRING
 
 [0;37m../test.cpp:335: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7915050 != NULL )
+  values: REQUIRE( 0x0000556d2a4b5050 != NULL )
 
 [0;37m../test.cpp:336: [1;32mSUCCESS: [0;36mREQUIRE( (std::get<std::string>(var->m_value.data)).compare(val) == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
@@ -1055,7 +1055,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   To DOUBLE
 
 [0;37m../test.cpp:363: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7915b30 != NULL )
+  values: REQUIRE( 0x0000556d2a4b5b30 != NULL )
 
 [0;37m../test.cpp:364: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var2->m_value.data) == std::stod(val) ) [0mis correct!
   values: REQUIRE( 48.64 == 48.64 )
@@ -1075,10 +1075,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   BOOL
 
 [0;37m../test.cpp:380: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79393f0 != NULL )
+  values: REQUIRE( 0x0000556d2a4d93f0 != NULL )
 
 [0;37m../test.cpp:381: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79394d0 != NULL )
+  values: REQUIRE( 0x0000556d2a4d94d0 != NULL )
 
 [0;37m../test.cpp:382: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1094,7 +1094,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   ==
 
 [0;37m../test.cpp:389: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7939930 != NULL )
+  values: REQUIRE( 0x0000556d2a4d9930 != NULL )
 
 [0;37m../test.cpp:390: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
   values: REQUIRE( false == false )
@@ -1114,10 +1114,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   BOOL
 
 [0;37m../test.cpp:380: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7954ba0 != NULL )
+  values: REQUIRE( 0x0000556d2a4f4ba0 != NULL )
 
 [0;37m../test.cpp:381: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7954c80 != NULL )
+  values: REQUIRE( 0x0000556d2a4f4c80 != NULL )
 
 [0;37m../test.cpp:382: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1133,7 +1133,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   !=
 
 [0;37m../test.cpp:395: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79550d0 != NULL )
+  values: REQUIRE( 0x0000556d2a4f50d0 != NULL )
 
 [0;37m../test.cpp:396: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1153,10 +1153,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   BOOL
 
 [0;37m../test.cpp:380: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c796f920 != NULL )
+  values: REQUIRE( 0x0000556d2a50f920 != NULL )
 
 [0;37m../test.cpp:381: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c796fa00 != NULL )
+  values: REQUIRE( 0x0000556d2a50fa00 != NULL )
 
 [0;37m../test.cpp:382: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1172,7 +1172,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   ||
 
 [0;37m../test.cpp:401: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7970050 != NULL )
+  values: REQUIRE( 0x0000556d2a510050 != NULL )
 
 [0;37m../test.cpp:402: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val || val2) ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1192,10 +1192,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   BOOL
 
 [0;37m../test.cpp:380: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c798a6d0 != NULL )
+  values: REQUIRE( 0x0000556d2a52a6d0 != NULL )
 
 [0;37m../test.cpp:381: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c798a7b0 != NULL )
+  values: REQUIRE( 0x0000556d2a52a7b0 != NULL )
 
 [0;37m../test.cpp:382: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1211,7 +1211,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   &&
 
 [0;37m../test.cpp:407: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c798af00 != NULL )
+  values: REQUIRE( 0x0000556d2a52af00 != NULL )
 
 [0;37m../test.cpp:408: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val && val2) ) [0mis correct!
   values: REQUIRE( false == false )
@@ -1231,10 +1231,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   INTEGER
 
 [0;37m../test.cpp:418: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79a5930 != NULL )
+  values: REQUIRE( 0x0000556d2a545930 != NULL )
 
 [0;37m../test.cpp:419: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79a5ed0 != NULL )
+  values: REQUIRE( 0x0000556d2a545ed0 != NULL )
 
 [0;37m../test.cpp:420: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32 == 32 )
@@ -1250,7 +1250,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   ==
 
 [0;37m../test.cpp:427: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79a6270 != NULL )
+  values: REQUIRE( 0x0000556d2a546270 != NULL )
 
 [0;37m../test.cpp:428: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
   values: REQUIRE( false == false )
@@ -1270,10 +1270,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   INTEGER
 
 [0;37m../test.cpp:418: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79c08b0 != NULL )
+  values: REQUIRE( 0x0000556d2a5608b0 != NULL )
 
 [0;37m../test.cpp:419: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79c0e50 != NULL )
+  values: REQUIRE( 0x0000556d2a560e50 != NULL )
 
 [0;37m../test.cpp:420: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32 == 32 )
@@ -1289,7 +1289,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   !=
 
 [0;37m../test.cpp:433: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79c4930 != NULL )
+  values: REQUIRE( 0x0000556d2a564930 != NULL )
 
 [0;37m../test.cpp:434: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1309,10 +1309,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   INTEGER
 
 [0;37m../test.cpp:418: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79db620 != NULL )
+  values: REQUIRE( 0x0000556d2a57b620 != NULL )
 
 [0;37m../test.cpp:419: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79dbb80 != NULL )
+  values: REQUIRE( 0x0000556d2a57bb80 != NULL )
 
 [0;37m../test.cpp:420: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32 == 32 )
@@ -1328,7 +1328,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   <
 
 [0;37m../test.cpp:439: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79dce00 != NULL )
+  values: REQUIRE( 0x0000556d2a57ce00 != NULL )
 
 [0;37m../test.cpp:440: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val < val2) ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1348,10 +1348,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   INTEGER
 
 [0;37m../test.cpp:418: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79f6540 != NULL )
+  values: REQUIRE( 0x0000556d2a596540 != NULL )
 
 [0;37m../test.cpp:419: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79f6ae0 != NULL )
+  values: REQUIRE( 0x0000556d2a596ae0 != NULL )
 
 [0;37m../test.cpp:420: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32 == 32 )
@@ -1367,7 +1367,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   >
 
 [0;37m../test.cpp:445: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c79fa4a0 != NULL )
+  values: REQUIRE( 0x0000556d2a59a4a0 != NULL )
 
 [0;37m../test.cpp:446: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val > val2) ) [0mis correct!
   values: REQUIRE( false == false )
@@ -1387,10 +1387,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   INTEGER
 
 [0;37m../test.cpp:418: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a113f0 != NULL )
+  values: REQUIRE( 0x0000556d2a5b13f0 != NULL )
 
 [0;37m../test.cpp:419: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a11970 != NULL )
+  values: REQUIRE( 0x0000556d2a5b1970 != NULL )
 
 [0;37m../test.cpp:420: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32 == 32 )
@@ -1406,7 +1406,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   <=
 
 [0;37m../test.cpp:451: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a14870 != NULL )
+  values: REQUIRE( 0x0000556d2a5b4870 != NULL )
 
 [0;37m../test.cpp:452: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val <= val2) ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1426,10 +1426,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   INTEGER
 
 [0;37m../test.cpp:418: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a2c380 != NULL )
+  values: REQUIRE( 0x0000556d2a5cc380 != NULL )
 
 [0;37m../test.cpp:419: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a2c860 != NULL )
+  values: REQUIRE( 0x0000556d2a5cc860 != NULL )
 
 [0;37m../test.cpp:420: [1;32mSUCCESS: [0;36mREQUIRE( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32 == 32 )
@@ -1445,7 +1445,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   >=
 
 [0;37m../test.cpp:457: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a30460 != NULL )
+  values: REQUIRE( 0x0000556d2a5d0460 != NULL )
 
 [0;37m../test.cpp:458: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val >= val2) ) [0mis correct!
   values: REQUIRE( false == false )
@@ -1465,10 +1465,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   FLOAT
 
 [0;37m../test.cpp:468: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a48140 != NULL )
+  values: REQUIRE( 0x0000556d2a5e8140 != NULL )
 
 [0;37m../test.cpp:469: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a48260 != NULL )
+  values: REQUIRE( 0x0000556d2a5e8260 != NULL )
 
 [0;37m../test.cpp:470: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.32323f == 32.32323f )
@@ -1484,7 +1484,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   ==
 
 [0;37m../test.cpp:477: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a48dd0 != NULL )
+  values: REQUIRE( 0x0000556d2a5e8dd0 != NULL )
 
 [0;37m../test.cpp:478: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
   values: REQUIRE( false == false )
@@ -1504,10 +1504,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   FLOAT
 
 [0;37m../test.cpp:468: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a63040 != NULL )
+  values: REQUIRE( 0x0000556d2a603040 != NULL )
 
 [0;37m../test.cpp:469: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a63160 != NULL )
+  values: REQUIRE( 0x0000556d2a603160 != NULL )
 
 [0;37m../test.cpp:470: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.32323f == 32.32323f )
@@ -1523,7 +1523,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   !=
 
 [0;37m../test.cpp:483: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a63df0 != NULL )
+  values: REQUIRE( 0x0000556d2a603df0 != NULL )
 
 [0;37m../test.cpp:484: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1543,10 +1543,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   FLOAT
 
 [0;37m../test.cpp:468: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a7de10 != NULL )
+  values: REQUIRE( 0x0000556d2a61de10 != NULL )
 
 [0;37m../test.cpp:469: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a7df30 != NULL )
+  values: REQUIRE( 0x0000556d2a61df30 != NULL )
 
 [0;37m../test.cpp:470: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.32323f == 32.32323f )
@@ -1562,7 +1562,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   <
 
 [0;37m../test.cpp:489: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a7ece0 != NULL )
+  values: REQUIRE( 0x0000556d2a61ece0 != NULL )
 
 [0;37m../test.cpp:490: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val < val2) ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1582,10 +1582,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   FLOAT
 
 [0;37m../test.cpp:468: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a98c40 != NULL )
+  values: REQUIRE( 0x0000556d2a638c40 != NULL )
 
 [0;37m../test.cpp:469: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a98d60 != NULL )
+  values: REQUIRE( 0x0000556d2a638d60 != NULL )
 
 [0;37m../test.cpp:470: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.32323f == 32.32323f )
@@ -1601,7 +1601,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   >
 
 [0;37m../test.cpp:495: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7a99c30 != NULL )
+  values: REQUIRE( 0x0000556d2a639c30 != NULL )
 
 [0;37m../test.cpp:496: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val > val2) ) [0mis correct!
   values: REQUIRE( false == false )
@@ -1621,10 +1621,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   FLOAT
 
 [0;37m../test.cpp:468: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7ab3a00 != NULL )
+  values: REQUIRE( 0x0000556d2a653a00 != NULL )
 
 [0;37m../test.cpp:469: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7ab3b20 != NULL )
+  values: REQUIRE( 0x0000556d2a653b20 != NULL )
 
 [0;37m../test.cpp:470: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.32323f == 32.32323f )
@@ -1640,7 +1640,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   <=
 
 [0;37m../test.cpp:501: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7ab4b10 != NULL )
+  values: REQUIRE( 0x0000556d2a654b10 != NULL )
 
 [0;37m../test.cpp:502: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val <= val2) ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1660,10 +1660,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   FLOAT
 
 [0;37m../test.cpp:468: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7ace7e0 != NULL )
+  values: REQUIRE( 0x0000556d2a66e7e0 != NULL )
 
 [0;37m../test.cpp:469: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7ace900 != NULL )
+  values: REQUIRE( 0x0000556d2a66e900 != NULL )
 
 [0;37m../test.cpp:470: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.32323f == 32.32323f )
@@ -1679,7 +1679,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   >=
 
 [0;37m../test.cpp:507: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7acfa10 != NULL )
+  values: REQUIRE( 0x0000556d2a66fa10 != NULL )
 
 [0;37m../test.cpp:508: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val >= val2) ) [0mis correct!
   values: REQUIRE( false == false )
@@ -1699,10 +1699,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   DOUBLE
 
 [0;37m../test.cpp:518: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7aea950 != NULL )
+  values: REQUIRE( 0x0000556d2a68a950 != NULL )
 
 [0;37m../test.cpp:519: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7aeaa70 != NULL )
+  values: REQUIRE( 0x0000556d2a68aa70 != NULL )
 
 [0;37m../test.cpp:520: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.323232 == 32.323232 )
@@ -1718,7 +1718,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   ==
 
 [0;37m../test.cpp:527: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7aeb630 != NULL )
+  values: REQUIRE( 0x0000556d2a68b630 != NULL )
 
 [0;37m../test.cpp:528: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
   values: REQUIRE( false == false )
@@ -1738,10 +1738,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   DOUBLE
 
 [0;37m../test.cpp:518: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b057f0 != NULL )
+  values: REQUIRE( 0x0000556d2a6a57f0 != NULL )
 
 [0;37m../test.cpp:519: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b05910 != NULL )
+  values: REQUIRE( 0x0000556d2a6a5910 != NULL )
 
 [0;37m../test.cpp:520: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.323232 == 32.323232 )
@@ -1757,7 +1757,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   !=
 
 [0;37m../test.cpp:533: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b065f0 != NULL )
+  values: REQUIRE( 0x0000556d2a6a65f0 != NULL )
 
 [0;37m../test.cpp:534: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1777,10 +1777,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   DOUBLE
 
 [0;37m../test.cpp:518: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b20620 != NULL )
+  values: REQUIRE( 0x0000556d2a6c0620 != NULL )
 
 [0;37m../test.cpp:519: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b20740 != NULL )
+  values: REQUIRE( 0x0000556d2a6c0740 != NULL )
 
 [0;37m../test.cpp:520: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.323232 == 32.323232 )
@@ -1796,7 +1796,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   <
 
 [0;37m../test.cpp:539: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b21540 != NULL )
+  values: REQUIRE( 0x0000556d2a6c1540 != NULL )
 
 [0;37m../test.cpp:540: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val < val2) ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1816,10 +1816,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   DOUBLE
 
 [0;37m../test.cpp:518: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b3b410 != NULL )
+  values: REQUIRE( 0x0000556d2a6db410 != NULL )
 
 [0;37m../test.cpp:519: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b3b530 != NULL )
+  values: REQUIRE( 0x0000556d2a6db530 != NULL )
 
 [0;37m../test.cpp:520: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.323232 == 32.323232 )
@@ -1835,7 +1835,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   >
 
 [0;37m../test.cpp:545: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b3c450 != NULL )
+  values: REQUIRE( 0x0000556d2a6dc450 != NULL )
 
 [0;37m../test.cpp:546: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val > val2) ) [0mis correct!
   values: REQUIRE( false == false )
@@ -1855,10 +1855,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   DOUBLE
 
 [0;37m../test.cpp:518: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b56240 != NULL )
+  values: REQUIRE( 0x0000556d2a6f6240 != NULL )
 
 [0;37m../test.cpp:519: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b56360 != NULL )
+  values: REQUIRE( 0x0000556d2a6f6360 != NULL )
 
 [0;37m../test.cpp:520: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.323232 == 32.323232 )
@@ -1874,7 +1874,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   <=
 
 [0;37m../test.cpp:551: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b575e0 != NULL )
+  values: REQUIRE( 0x0000556d2a6f75e0 != NULL )
 
 [0;37m../test.cpp:552: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val <= val2) ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1894,10 +1894,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   DOUBLE
 
 [0;37m../test.cpp:518: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b71020 != NULL )
+  values: REQUIRE( 0x0000556d2a711020 != NULL )
 
 [0;37m../test.cpp:519: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b71140 != NULL )
+  values: REQUIRE( 0x0000556d2a711140 != NULL )
 
 [0;37m../test.cpp:520: [1;32mSUCCESS: [0;36mREQUIRE( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( 32.323232 == 32.323232 )
@@ -1913,7 +1913,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   >=
 
 [0;37m../test.cpp:557: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b722a0 != NULL )
+  values: REQUIRE( 0x0000556d2a7122a0 != NULL )
 
 [0;37m../test.cpp:558: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val >= val2) ) [0mis correct!
   values: REQUIRE( false == false )
@@ -1933,10 +1933,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   STRING
 
 [0;37m../test.cpp:568: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b8d320 != NULL )
+  values: REQUIRE( 0x0000556d2a72d320 != NULL )
 
 [0;37m../test.cpp:569: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b8d440 != NULL )
+  values: REQUIRE( 0x0000556d2a72d440 != NULL )
 
 [0;37m../test.cpp:570: [1;32mSUCCESS: [0;36mREQUIRE( std::get<std::string>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( abc == abc )
@@ -1952,7 +1952,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   ==
 
 [0;37m../test.cpp:577: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7b8d840 != NULL )
+  values: REQUIRE( 0x0000556d2a72d840 != NULL )
 
 [0;37m../test.cpp:578: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
   values: REQUIRE( false == false )
@@ -1972,10 +1972,10 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   STRING
 
 [0;37m../test.cpp:568: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7ba8190 != NULL )
+  values: REQUIRE( 0x0000556d2a748190 != NULL )
 
 [0;37m../test.cpp:569: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7ba82b0 != NULL )
+  values: REQUIRE( 0x0000556d2a7482b0 != NULL )
 
 [0;37m../test.cpp:570: [1;32mSUCCESS: [0;36mREQUIRE( std::get<std::string>(var_a->m_value.data) == val ) [0mis correct!
   values: REQUIRE( abc == abc )
@@ -1991,7 +1991,7 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   !=
 
 [0;37m../test.cpp:583: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x000055d7c7ba87d0 != NULL )
+  values: REQUIRE( 0x0000556d2a7487d0 != NULL )
 
 [0;37m../test.cpp:584: [1;32mSUCCESS: [0;36mREQUIRE( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
   values: REQUIRE( true == true )
@@ -1999,14 +1999,173 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0;33m===============================================================================
 [0;37m../test.cpp:87:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
+  Testing Math Logic
+
+[0;37m../test.cpp:591: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;37m../test.cpp:596: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a34b1d0 != NULL )
+
+[0;37m../test.cpp:597: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a4577c0 != NULL )
+
+[0;37m../test.cpp:598: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+  values: REQUIRE( 64.0f == 64.0f )
+
+[0;37m../test.cpp:599: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+  values: REQUIRE( 2.0f == 2.0f )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:87:
+[0;33mTEST CASE:  [0mTesting Visual Nodes Module
+  Testing Math Logic
+  ROOT
+
+[0;37m../test.cpp:607: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a33bc80 != NULL )
+
+[0;37m../test.cpp:608: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var2->m_value.data) == res ) [0mis correct!
+  values: REQUIRE( 1.01089f == 1.01089f )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:87:
+[0;33mTEST CASE:  [0mTesting Visual Nodes Module
+  Testing Math Logic
+
+[0;37m../test.cpp:591: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;37m../test.cpp:596: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a672170 != NULL )
+
+[0;37m../test.cpp:597: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a713780 != NULL )
+
+[0;37m../test.cpp:598: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+  values: REQUIRE( 64.0f == 64.0f )
+
+[0;37m../test.cpp:599: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+  values: REQUIRE( 2.0f == 2.0f )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:87:
+[0;33mTEST CASE:  [0mTesting Visual Nodes Module
+  Testing Math Logic
+  POW
+
+[0;37m../test.cpp:616: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a72ed30 != NULL )
+
+[0;37m../test.cpp:617: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var2->m_value.data) == res ) [0mis correct!
+  values: REQUIRE( 4096.0f == 4096.0f )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:87:
+[0;33mTEST CASE:  [0mTesting Visual Nodes Module
+  Testing Math Logic
+
+[0;37m../test.cpp:591: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;37m../test.cpp:596: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a4de9b0 != NULL )
+
+[0;37m../test.cpp:597: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a5d0d60 != NULL )
+
+[0;37m../test.cpp:598: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+  values: REQUIRE( 64.0f == 64.0f )
+
+[0;37m../test.cpp:599: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+  values: REQUIRE( 2.0f == 2.0f )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:87:
+[0;33mTEST CASE:  [0mTesting Visual Nodes Module
+  Testing Math Logic
+  SIN
+
+[0;37m../test.cpp:625: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a4e29b0 != NULL )
+
+[0;37m../test.cpp:626: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var2->m_value.data) == res ) [0mis correct!
+  values: REQUIRE( 0.92003f == 0.92003f )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:87:
+[0;33mTEST CASE:  [0mTesting Visual Nodes Module
+  Testing Math Logic
+
+[0;37m../test.cpp:591: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;37m../test.cpp:596: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a32afe0 != NULL )
+
+[0;37m../test.cpp:597: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a5bc540 != NULL )
+
+[0;37m../test.cpp:598: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+  values: REQUIRE( 64.0f == 64.0f )
+
+[0;37m../test.cpp:599: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+  values: REQUIRE( 2.0f == 2.0f )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:87:
+[0;33mTEST CASE:  [0mTesting Visual Nodes Module
+  Testing Math Logic
+  COS
+
+[0;37m../test.cpp:634: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a5bc640 != NULL )
+
+[0;37m../test.cpp:635: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var2->m_value.data) == res ) [0mis correct!
+  values: REQUIRE( 0.39186f == 0.39186f )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:87:
+[0;33mTEST CASE:  [0mTesting Visual Nodes Module
+  Testing Math Logic
+
+[0;37m../test.cpp:591: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;37m../test.cpp:596: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a51ac60 != NULL )
+
+[0;37m../test.cpp:597: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a51ad60 != NULL )
+
+[0;37m../test.cpp:598: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+  values: REQUIRE( 64.0f == 64.0f )
+
+[0;37m../test.cpp:599: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+  values: REQUIRE( 2.0f == 2.0f )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:87:
+[0;33mTEST CASE:  [0mTesting Visual Nodes Module
+  Testing Math Logic
+  tan
+
+[0;37m../test.cpp:643: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x0000556d2a322d20 != NULL )
+
+[0;37m../test.cpp:644: [1;32mSUCCESS: [0;36mREQUIRE( std::get<float>(var2->m_value.data) == res ) [0mis correct!
+  values: REQUIRE( 2.34786f == 2.34786f )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:87:
+[0;33mTEST CASE:  [0mTesting Visual Nodes Module
 [0;33m
 DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
-[0m  Testing Comparison Logic
-  STRING
-  !=
+[0m  Testing Math Logic
+  tan
 
-[0m0.890029 s: Testing Visual Nodes Module
+[0m0.900362 s: Testing Visual Nodes Module
 [0m[0;33m===============================================================================
 [0;36m[doctest] [0mtest cases:   3 | [0;32m  3 passed[0m | [0m0 failed[0m | [0m0 skipped[0m
-[0;36m[doctest] [0massertions: 350 | [0;32m350 passed[0m | [0m0 failed[0m |
+[0;36m[doctest] [0massertions: 385 | [0;32m385 passed[0m | [0m0 failed[0m |
 [0;36m[doctest] [0mStatus: [0;32mSUCCESS![0m

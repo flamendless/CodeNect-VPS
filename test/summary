@@ -1,29 +1,28 @@
 [0;36m[doctest] [0mdoctest version is "2.4.6"
 [0;36m[doctest] [0mrun with "--help" for options
 [0;33m===============================================================================
-[0;37m../test.cpp:28:
+[0;37m../test.cpp:30:
 [0;33mTEST CASE:  [0mTesting Input/Output Module
 
-[0m0.000034 s: Testing Input/Output Module
+[0m0.000041 s: Testing Input/Output Module
 [0m[0;33m===============================================================================
-[0;37m../test.cpp:51:
+[0;37m../test.cpp:53:
 [0;33mTEST CASE:  [0mTesting Filesystem Module
 [0;33m
 DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0m  Opening invalid project
 
-[0m0.001561 s: Testing Filesystem Module
+[0m0.002006 s: Testing Filesystem Module
 [0m[0;33m===============================================================================
-[0;37m../test.cpp:86:
+[0;37m../test.cpp:88:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
 [0;33m
 DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
-[0m  Testing Cast Logic
-  From STRING
-  To DOUBLE
+[0m  Testing String Logic
+  To Array
 
-[0m0.212148 s: Testing Visual Nodes Module
+[0m0.865967 s: Testing Visual Nodes Module
 [0m[0;33m===============================================================================
 [0;36m[doctest] [0mtest cases:   3 | [0;32m  3 passed[0m | [0m0 failed[0m | [0m0 skipped[0m
-[0;36m[doctest] [0massertions: 182 | [0;32m182 passed[0m | [0m0 failed[0m |
+[0;36m[doctest] [0massertions: 418 | [0;32m418 passed[0m | [0m0 failed[0m |
 [0;36m[doctest] [0mStatus: [0;32mSUCCESS![0m

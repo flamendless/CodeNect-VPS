@@ -72,32 +72,32 @@ void process_math(NodeMath* node_math)
 	}
 
 	//get node_var rhs
-	NodeVariable* res_var = nullptr;
+	// NodeVariable* res_var = nullptr;
 	NodeOperation* res_op = nullptr;
 
-	for (const Connection& connection : node_math->m_connections)
-	{
-		Node* in_node = static_cast<Node*>(connection.in_node);
-		NodeVariable* node_var = dynamic_cast<NodeVariable*>(in_node);
-		NodeOperation* node_op = dynamic_cast<NodeOperation*>(in_node);
-
-		if (node_var)
-			res_var = node_var;
-		else if (node_op)
-			res_op = node_op;
-	}
+	// for (const Connection& connection : node_math->m_connections)
+	// {
+	// 	Node* in_node = static_cast<Node*>(connection.in_node);
+	// 	NodeVariable* node_var = dynamic_cast<NodeVariable*>(in_node);
+	// 	NodeOperation* node_op = dynamic_cast<NodeOperation*>(in_node);
+    //
+	// 	if (node_var)
+	// 		res_var = node_var;
+	// 	else if (node_op)
+	// 		res_op = node_op;
+	// }
 
 	//evaluate
 	node_math->m_has_connections = true;
 	NodeValue* res = new NodeValue();
 
-	if (res_var)
-		res->copy(res_var->m_value);
-	else
-	{
+	// if (res_var)
+	// 	res->copy(res_var->m_value);
+	// else
+	// {
 		NODE_SLOT slot = NODE_SLOT::_from_string(node_math->m_out_slots[0].title);
 		res->copy(slot);
-	}
+	// }
 
 	double result = NodeLogic::calculate_math(node_math, NodeMath::m_functions[node_math->m_math._to_string()]);
 
@@ -112,8 +112,8 @@ void process_math(NodeMath* node_math)
 	}
 
 	node_math->m_current_val = res;
-	if (res_var)
-		res_var->m_value.copy(*res);
+	// if (res_var)
+	// 	res_var->m_value.copy(*res);
 }
 
 double calculate_math(NodeMath* node_math, std::function<double(double a, double b)> fn)

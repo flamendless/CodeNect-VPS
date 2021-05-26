@@ -1,0 +1,229 @@
+﻿[meta]
+title = TestMath
+author = Brandon
+creation_dt = 26-05-2021 23:46:05
+offsetx = -95.000000
+offsety = -72.000000
+
+
+[node_0]
+name = a
+kind = VARIABLE
+x = 125.000000
+y = 254.000000
+desc = 
+value_slot = FLOAT
+value = 64.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_MATH_0_FLOAT-a_FLOAT]
+in_node_name = MATH_0
+in_slot = FLOAT
+out_node_name = a
+out_slot = FLOAT
+
+
+[connection_MATH_1_FLOAT-a_FLOAT]
+in_node_name = MATH_1
+in_slot = FLOAT
+out_node_name = a
+out_slot = FLOAT
+
+
+[connection_MATH_2_FLOAT-a_FLOAT]
+in_node_name = MATH_2
+in_slot = FLOAT
+out_node_name = a
+out_slot = FLOAT
+
+
+[connection_MATH_3_FLOAT-a_FLOAT]
+in_node_name = MATH_3
+in_slot = FLOAT
+out_node_name = a
+out_slot = FLOAT
+
+
+[connection_MATH_4_FLOAT-a_FLOAT]
+in_node_name = MATH_4
+in_slot = FLOAT
+out_node_name = a
+out_slot = FLOAT
+
+
+[node_1]
+name = b
+kind = VARIABLE
+x = 124.000000
+y = 406.000000
+desc = 
+value_slot = FLOAT
+value = 2.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_MATH_0_FLOAT-b_FLOAT]
+in_node_name = MATH_0
+in_slot = FLOAT
+out_node_name = b
+out_slot = FLOAT
+
+
+[connection_MATH_1_FLOAT-b_FLOAT]
+in_node_name = MATH_1
+in_slot = FLOAT
+out_node_name = b
+out_slot = FLOAT
+
+
+[node_2]
+name = MATH_0
+kind = MATH
+x = 432.000000
+y = 143.000000
+desc = 
+math = ROOT
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_root_FLOAT-MATH_0_FLOAT]
+in_node_name = root
+in_slot = FLOAT
+out_node_name = MATH_0
+out_slot = FLOAT
+
+
+[node_3]
+name = MATH_1
+kind = MATH
+x = 430.000000
+y = 279.000000
+desc = 
+math = POW
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_pow_FLOAT-MATH_1_FLOAT]
+in_node_name = pow
+in_slot = FLOAT
+out_node_name = MATH_1
+out_slot = FLOAT
+
+
+[node_4]
+name = MATH_2
+kind = MATH
+x = 435.000000
+y = 421.500000
+desc = 
+math = SIN
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_sin_FLOAT-MATH_2_FLOAT]
+in_node_name = sin
+in_slot = FLOAT
+out_node_name = MATH_2
+out_slot = FLOAT
+
+
+[node_5]
+name = MATH_3
+kind = MATH
+x = 433.000000
+y = 528.500000
+desc = 
+math = COS
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_cos_FLOAT-MATH_3_FLOAT]
+in_node_name = cos
+in_slot = FLOAT
+out_node_name = MATH_3
+out_slot = FLOAT
+
+
+[node_6]
+name = MATH_4
+kind = MATH
+x = 437.000000
+y = 657.500000
+desc = 
+math = TAN
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_tan_FLOAT-MATH_4_FLOAT]
+in_node_name = tan
+in_slot = FLOAT
+out_node_name = MATH_4
+out_slot = FLOAT
+
+
+[node_7]
+name = root
+kind = VARIABLE
+x = 743.000000
+y = 144.000000
+desc = 
+value_slot = FLOAT
+value = 0.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[node_8]
+name = pow
+kind = VARIABLE
+x = 738.000000
+y = 290.000000
+desc = 
+value_slot = FLOAT
+value = 0.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[node_9]
+name = sin
+kind = VARIABLE
+x = 749.000000
+y = 425.000000
+desc = 
+value_slot = FLOAT
+value = 0.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[node_10]
+name = cos
+kind = VARIABLE
+x = 767.000000
+y = 567.000000
+desc = 
+value_slot = FLOAT
+value = 0.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[node_11]
+name = tan
+kind = VARIABLE
+x = 753.000000
+y = 708.000000
+desc = 
+value_slot = FLOAT
+value = 0.000000
+input_1 = FLOAT
+output_1 = FLOAT
