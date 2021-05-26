@@ -1,0 +1,1182 @@
+﻿[meta]
+title = TestComparison
+author = Brandon
+creation_dt = 26-05-2021 23:08:04
+offsetx = 511.000000
+offsety = -2813.000000
+
+
+[node_0]
+name = a_bool
+kind = VARIABLE
+x = 185.000000
+y = 177.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[connection_COMPARISON_0_BOOL-a_bool_BOOL]
+in_node_name = COMPARISON_0
+in_slot = BOOL
+out_node_name = a_bool
+out_slot = BOOL
+
+
+[connection_COMPARISON_1_BOOL-a_bool_BOOL]
+in_node_name = COMPARISON_1
+in_slot = BOOL
+out_node_name = a_bool
+out_slot = BOOL
+
+
+[connection_COMPARISON_2_BOOL-a_bool_BOOL]
+in_node_name = COMPARISON_2
+in_slot = BOOL
+out_node_name = a_bool
+out_slot = BOOL
+
+
+[connection_COMPARISON_3_BOOL-a_bool_BOOL]
+in_node_name = COMPARISON_3
+in_slot = BOOL
+out_node_name = a_bool
+out_slot = BOOL
+
+
+[node_1]
+name = b_bool
+kind = VARIABLE
+x = 171.000000
+y = 314.000000
+desc = 
+value_slot = BOOL
+value = false
+input_1 = BOOL
+output_1 = BOOL
+
+
+[connection_COMPARISON_0_BOOL-b_bool_BOOL]
+in_node_name = COMPARISON_0
+in_slot = BOOL
+out_node_name = b_bool
+out_slot = BOOL
+
+
+[connection_COMPARISON_1_BOOL-b_bool_BOOL]
+in_node_name = COMPARISON_1
+in_slot = BOOL
+out_node_name = b_bool
+out_slot = BOOL
+
+
+[connection_COMPARISON_2_BOOL-b_bool_BOOL]
+in_node_name = COMPARISON_2
+in_slot = BOOL
+out_node_name = b_bool
+out_slot = BOOL
+
+
+[connection_COMPARISON_3_BOOL-b_bool_BOOL]
+in_node_name = COMPARISON_3
+in_slot = BOOL
+out_node_name = b_bool
+out_slot = BOOL
+
+
+[node_2]
+name = eq_int
+kind = VARIABLE
+x = 743.000000
+y = 694.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[connection_eq_int_BOOL-COMPARISON_4_BOOL]
+in_node_name = eq_int
+in_slot = BOOL
+out_node_name = COMPARISON_4
+out_slot = BOOL
+
+
+[node_3]
+name = lt_int
+kind = VARIABLE
+x = 754.000000
+y = 956.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[connection_lt_int_BOOL-COMPARISON_6_BOOL]
+in_node_name = lt_int
+in_slot = BOOL
+out_node_name = COMPARISON_6
+out_slot = BOOL
+
+
+[node_4]
+name = COMPARISON_0
+kind = COMPARISON
+x = 373.000000
+y = 89.000000
+desc = 
+cmp = EQ
+input_1 = BOOL
+output_1 = BOOL
+
+
+[connection_eq_bool_BOOL-COMPARISON_0_BOOL]
+in_node_name = eq_bool
+in_slot = BOOL
+out_node_name = COMPARISON_0
+out_slot = BOOL
+
+
+[node_5]
+name = lte_int
+kind = VARIABLE
+x = 749.000000
+y = 1202.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[connection_lte_int_BOOL-COMPARISON_8_BOOL]
+in_node_name = lte_int
+in_slot = BOOL
+out_node_name = COMPARISON_8
+out_slot = BOOL
+
+
+[node_6]
+name = gt_int
+kind = VARIABLE
+x = 736.500000
+y = 1087.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[connection_gt_int_BOOL-COMPARISON_7_BOOL]
+in_node_name = gt_int
+in_slot = BOOL
+out_node_name = COMPARISON_7
+out_slot = BOOL
+
+
+[node_7]
+name = neq_int
+kind = VARIABLE
+x = 738.500000
+y = 835.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[connection_neq_int_BOOL-COMPARISON_5_BOOL]
+in_node_name = neq_int
+in_slot = BOOL
+out_node_name = COMPARISON_5
+out_slot = BOOL
+
+
+[node_8]
+name = gte_int
+kind = VARIABLE
+x = 758.000000
+y = 1332.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[connection_gte_int_BOOL-COMPARISON_9_BOOL]
+in_node_name = gte_int
+in_slot = BOOL
+out_node_name = COMPARISON_9
+out_slot = BOOL
+
+
+[node_9]
+name = COMPARISON_1
+kind = COMPARISON
+x = 392.000000
+y = 234.000000
+desc = 
+cmp = NEQ
+input_1 = BOOL
+output_1 = BOOL
+
+
+[connection_neq_bool_BOOL-COMPARISON_1_BOOL]
+in_node_name = neq_bool
+in_slot = BOOL
+out_node_name = COMPARISON_1
+out_slot = BOOL
+
+
+[node_10]
+name = COMPARISON_2
+kind = COMPARISON
+x = 389.000000
+y = 392.000000
+desc = 
+cmp = OR
+input_1 = BOOL
+output_1 = BOOL
+
+
+[connection_or_bool_BOOL-COMPARISON_2_BOOL]
+in_node_name = or_bool
+in_slot = BOOL
+out_node_name = COMPARISON_2
+out_slot = BOOL
+
+
+[node_11]
+name = COMPARISON_3
+kind = COMPARISON
+x = 388.000000
+y = 531.000000
+desc = 
+cmp = AND
+input_1 = BOOL
+output_1 = BOOL
+
+
+[connection_and_bool_BOOL-COMPARISON_3_BOOL]
+in_node_name = and_bool
+in_slot = BOOL
+out_node_name = COMPARISON_3
+out_slot = BOOL
+
+
+[node_12]
+name = a_int
+kind = VARIABLE
+x = 36.000000
+y = 864.000000
+desc = 
+value_slot = INTEGER
+value = 32
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[connection_COMPARISON_4_INTEGER-a_int_INTEGER]
+in_node_name = COMPARISON_4
+in_slot = INTEGER
+out_node_name = a_int
+out_slot = INTEGER
+
+
+[connection_COMPARISON_5_INTEGER-a_int_INTEGER]
+in_node_name = COMPARISON_5
+in_slot = INTEGER
+out_node_name = a_int
+out_slot = INTEGER
+
+
+[connection_COMPARISON_6_INTEGER-a_int_INTEGER]
+in_node_name = COMPARISON_6
+in_slot = INTEGER
+out_node_name = a_int
+out_slot = INTEGER
+
+
+[connection_COMPARISON_7_INTEGER-a_int_INTEGER]
+in_node_name = COMPARISON_7
+in_slot = INTEGER
+out_node_name = a_int
+out_slot = INTEGER
+
+
+[connection_COMPARISON_8_INTEGER-a_int_INTEGER]
+in_node_name = COMPARISON_8
+in_slot = INTEGER
+out_node_name = a_int
+out_slot = INTEGER
+
+
+[connection_COMPARISON_9_INTEGER-a_int_INTEGER]
+in_node_name = COMPARISON_9
+in_slot = INTEGER
+out_node_name = a_int
+out_slot = INTEGER
+
+
+[node_13]
+name = eq_bool
+kind = VARIABLE
+x = 646.000000
+y = 51.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_14]
+name = neq_bool
+kind = VARIABLE
+x = 647.000000
+y = 202.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_15]
+name = or_bool
+kind = VARIABLE
+x = 650.000000
+y = 334.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_16]
+name = and_bool
+kind = VARIABLE
+x = 654.000000
+y = 461.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_17]
+name = b_int
+kind = VARIABLE
+x = 32.000000
+y = 1050.000000
+desc = 
+value_slot = INTEGER
+value = 64
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[connection_COMPARISON_4_INTEGER-b_int_INTEGER]
+in_node_name = COMPARISON_4
+in_slot = INTEGER
+out_node_name = b_int
+out_slot = INTEGER
+
+
+[connection_COMPARISON_5_INTEGER-b_int_INTEGER]
+in_node_name = COMPARISON_5
+in_slot = INTEGER
+out_node_name = b_int
+out_slot = INTEGER
+
+
+[connection_COMPARISON_6_INTEGER-b_int_INTEGER]
+in_node_name = COMPARISON_6
+in_slot = INTEGER
+out_node_name = b_int
+out_slot = INTEGER
+
+
+[connection_COMPARISON_7_INTEGER-b_int_INTEGER]
+in_node_name = COMPARISON_7
+in_slot = INTEGER
+out_node_name = b_int
+out_slot = INTEGER
+
+
+[connection_COMPARISON_8_INTEGER-b_int_INTEGER]
+in_node_name = COMPARISON_8
+in_slot = INTEGER
+out_node_name = b_int
+out_slot = INTEGER
+
+
+[connection_COMPARISON_9_INTEGER-b_int_INTEGER]
+in_node_name = COMPARISON_9
+in_slot = INTEGER
+out_node_name = b_int
+out_slot = INTEGER
+
+
+[node_18]
+name = COMPARISON_4
+kind = COMPARISON
+x = 380.500000
+y = 679.000000
+desc = 
+cmp = EQ
+input_1 = INTEGER
+output_1 = BOOL
+
+
+[node_19]
+name = COMPARISON_5
+kind = COMPARISON
+x = 376.500000
+y = 826.000000
+desc = 
+cmp = NEQ
+input_1 = INTEGER
+output_1 = BOOL
+
+
+[node_20]
+name = COMPARISON_6
+kind = COMPARISON
+x = 373.500000
+y = 934.000000
+desc = 
+cmp = LT
+input_1 = INTEGER
+output_1 = BOOL
+
+
+[node_21]
+name = COMPARISON_7
+kind = COMPARISON
+x = 371.500000
+y = 1036.000000
+desc = 
+cmp = GT
+input_1 = INTEGER
+output_1 = BOOL
+
+
+[node_22]
+name = COMPARISON_8
+kind = COMPARISON
+x = 350.500000
+y = 1144.000000
+desc = 
+cmp = LTE
+input_1 = INTEGER
+output_1 = BOOL
+
+
+[node_23]
+name = COMPARISON_9
+kind = COMPARISON
+x = 342.500000
+y = 1265.000000
+desc = 
+cmp = GTE
+input_1 = INTEGER
+output_1 = BOOL
+
+
+[node_24]
+name = a_float
+kind = VARIABLE
+x = -126.000000
+y = 1709.000000
+desc = 
+value_slot = FLOAT
+value = 32.323231
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_COMPARISON_11_FLOAT-a_float_FLOAT]
+in_node_name = COMPARISON_11
+in_slot = FLOAT
+out_node_name = a_float
+out_slot = FLOAT
+
+
+[connection_COMPARISON_12_FLOAT-a_float_FLOAT]
+in_node_name = COMPARISON_12
+in_slot = FLOAT
+out_node_name = a_float
+out_slot = FLOAT
+
+
+[connection_COMPARISON_13_FLOAT-a_float_FLOAT]
+in_node_name = COMPARISON_13
+in_slot = FLOAT
+out_node_name = a_float
+out_slot = FLOAT
+
+
+[connection_COMPARISON_14_FLOAT-a_float_FLOAT]
+in_node_name = COMPARISON_14
+in_slot = FLOAT
+out_node_name = a_float
+out_slot = FLOAT
+
+
+[connection_COMPARISON_15_FLOAT-a_float_FLOAT]
+in_node_name = COMPARISON_15
+in_slot = FLOAT
+out_node_name = a_float
+out_slot = FLOAT
+
+
+[connection_COMPARISON_10_FLOAT-a_float_FLOAT]
+in_node_name = COMPARISON_10
+in_slot = FLOAT
+out_node_name = a_float
+out_slot = FLOAT
+
+
+[node_25]
+name = b_float
+kind = VARIABLE
+x = -107.000000
+y = 1927.000000
+desc = 
+value_slot = FLOAT
+value = 64.646461
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_COMPARISON_11_FLOAT-b_float_FLOAT]
+in_node_name = COMPARISON_11
+in_slot = FLOAT
+out_node_name = b_float
+out_slot = FLOAT
+
+
+[connection_COMPARISON_12_FLOAT-b_float_FLOAT]
+in_node_name = COMPARISON_12
+in_slot = FLOAT
+out_node_name = b_float
+out_slot = FLOAT
+
+
+[connection_COMPARISON_13_FLOAT-b_float_FLOAT]
+in_node_name = COMPARISON_13
+in_slot = FLOAT
+out_node_name = b_float
+out_slot = FLOAT
+
+
+[connection_COMPARISON_14_FLOAT-b_float_FLOAT]
+in_node_name = COMPARISON_14
+in_slot = FLOAT
+out_node_name = b_float
+out_slot = FLOAT
+
+
+[connection_COMPARISON_15_FLOAT-b_float_FLOAT]
+in_node_name = COMPARISON_15
+in_slot = FLOAT
+out_node_name = b_float
+out_slot = FLOAT
+
+
+[connection_COMPARISON_10_FLOAT-b_float_FLOAT]
+in_node_name = COMPARISON_10
+in_slot = FLOAT
+out_node_name = b_float
+out_slot = FLOAT
+
+
+[node_26]
+name = COMPARISON_10
+kind = COMPARISON
+x = 151.500000
+y = 1549.000000
+desc = 
+cmp = EQ
+input_1 = FLOAT
+output_1 = BOOL
+
+
+[connection_eq_float_BOOL-COMPARISON_10_BOOL]
+in_node_name = eq_float
+in_slot = BOOL
+out_node_name = COMPARISON_10
+out_slot = BOOL
+
+
+[node_27]
+name = COMPARISON_11
+kind = COMPARISON
+x = 151.500000
+y = 1675.000000
+desc = 
+cmp = NEQ
+input_1 = FLOAT
+output_1 = BOOL
+
+
+[connection_neq_float_BOOL-COMPARISON_11_BOOL]
+in_node_name = neq_float
+in_slot = BOOL
+out_node_name = COMPARISON_11
+out_slot = BOOL
+
+
+[node_28]
+name = COMPARISON_12
+kind = COMPARISON
+x = 145.500000
+y = 1781.000000
+desc = 
+cmp = LT
+input_1 = FLOAT
+output_1 = BOOL
+
+
+[connection_lt_float_BOOL-COMPARISON_12_BOOL]
+in_node_name = lt_float
+in_slot = BOOL
+out_node_name = COMPARISON_12
+out_slot = BOOL
+
+
+[node_29]
+name = COMPARISON_13
+kind = COMPARISON
+x = 142.500000
+y = 1883.000000
+desc = 
+cmp = GT
+input_1 = FLOAT
+output_1 = BOOL
+
+
+[connection_gt_float_BOOL-COMPARISON_13_BOOL]
+in_node_name = gt_float
+in_slot = BOOL
+out_node_name = COMPARISON_13
+out_slot = BOOL
+
+
+[node_30]
+name = COMPARISON_14
+kind = COMPARISON
+x = 132.500000
+y = 1995.000000
+desc = 
+cmp = LTE
+input_1 = FLOAT
+output_1 = BOOL
+
+
+[connection_lte_float_BOOL-COMPARISON_14_BOOL]
+in_node_name = lte_float
+in_slot = BOOL
+out_node_name = COMPARISON_14
+out_slot = BOOL
+
+
+[node_31]
+name = COMPARISON_15
+kind = COMPARISON
+x = 136.500000
+y = 2097.000000
+desc = 
+cmp = GTE
+input_1 = FLOAT
+output_1 = BOOL
+
+
+[connection_gte_float_BOOL-COMPARISON_15_BOOL]
+in_node_name = gte_float
+in_slot = BOOL
+out_node_name = COMPARISON_15
+out_slot = BOOL
+
+
+[node_32]
+name = eq_float
+kind = VARIABLE
+x = 500.500000
+y = 1495.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_33]
+name = neq_float
+kind = VARIABLE
+x = 499.000000
+y = 1625.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_34]
+name = lt_float
+kind = VARIABLE
+x = 502.000000
+y = 1754.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_35]
+name = gt_float
+kind = VARIABLE
+x = 494.000000
+y = 1902.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_36]
+name = lte_float
+kind = VARIABLE
+x = 484.000000
+y = 2029.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_37]
+name = gte_float
+kind = VARIABLE
+x = 475.000000
+y = 2156.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_38]
+name = a_double
+kind = VARIABLE
+x = -340.000000
+y = 2434.000000
+desc = 
+value_slot = DOUBLE
+value = 32.323232
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[connection_COMPARISON_16_DOUBLE-a_double_DOUBLE]
+in_node_name = COMPARISON_16
+in_slot = DOUBLE
+out_node_name = a_double
+out_slot = DOUBLE
+
+
+[connection_COMPARISON_17_DOUBLE-a_double_DOUBLE]
+in_node_name = COMPARISON_17
+in_slot = DOUBLE
+out_node_name = a_double
+out_slot = DOUBLE
+
+
+[connection_COMPARISON_18_DOUBLE-a_double_DOUBLE]
+in_node_name = COMPARISON_18
+in_slot = DOUBLE
+out_node_name = a_double
+out_slot = DOUBLE
+
+
+[connection_COMPARISON_19_DOUBLE-a_double_DOUBLE]
+in_node_name = COMPARISON_19
+in_slot = DOUBLE
+out_node_name = a_double
+out_slot = DOUBLE
+
+
+[connection_COMPARISON_20_DOUBLE-a_double_DOUBLE]
+in_node_name = COMPARISON_20
+in_slot = DOUBLE
+out_node_name = a_double
+out_slot = DOUBLE
+
+
+[connection_COMPARISON_21_DOUBLE-a_double_DOUBLE]
+in_node_name = COMPARISON_21
+in_slot = DOUBLE
+out_node_name = a_double
+out_slot = DOUBLE
+
+
+[node_39]
+name = b_double
+kind = VARIABLE
+x = -340.000000
+y = 2618.000000
+desc = 
+value_slot = DOUBLE
+value = 64.646464
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[connection_COMPARISON_16_DOUBLE-b_double_DOUBLE]
+in_node_name = COMPARISON_16
+in_slot = DOUBLE
+out_node_name = b_double
+out_slot = DOUBLE
+
+
+[connection_COMPARISON_17_DOUBLE-b_double_DOUBLE]
+in_node_name = COMPARISON_17
+in_slot = DOUBLE
+out_node_name = b_double
+out_slot = DOUBLE
+
+
+[connection_COMPARISON_18_DOUBLE-b_double_DOUBLE]
+in_node_name = COMPARISON_18
+in_slot = DOUBLE
+out_node_name = b_double
+out_slot = DOUBLE
+
+
+[connection_COMPARISON_19_DOUBLE-b_double_DOUBLE]
+in_node_name = COMPARISON_19
+in_slot = DOUBLE
+out_node_name = b_double
+out_slot = DOUBLE
+
+
+[connection_COMPARISON_20_DOUBLE-b_double_DOUBLE]
+in_node_name = COMPARISON_20
+in_slot = DOUBLE
+out_node_name = b_double
+out_slot = DOUBLE
+
+
+[connection_COMPARISON_21_DOUBLE-b_double_DOUBLE]
+in_node_name = COMPARISON_21
+in_slot = DOUBLE
+out_node_name = b_double
+out_slot = DOUBLE
+
+
+[node_40]
+name = COMPARISON_16
+kind = COMPARISON
+x = -57.000000
+y = 2262.000000
+desc = 
+cmp = EQ
+input_1 = DOUBLE
+output_1 = BOOL
+
+
+[connection_eq_double_BOOL-COMPARISON_16_BOOL]
+in_node_name = eq_double
+in_slot = BOOL
+out_node_name = COMPARISON_16
+out_slot = BOOL
+
+
+[node_41]
+name = COMPARISON_17
+kind = COMPARISON
+x = -53.000000
+y = 2404.000000
+desc = 
+cmp = NEQ
+input_1 = DOUBLE
+output_1 = BOOL
+
+
+[connection_neq_double_BOOL-COMPARISON_17_BOOL]
+in_node_name = neq_double
+in_slot = BOOL
+out_node_name = COMPARISON_17
+out_slot = BOOL
+
+
+[node_42]
+name = COMPARISON_18
+kind = COMPARISON
+x = -54.000000
+y = 2496.000000
+desc = 
+cmp = LT
+input_1 = DOUBLE
+output_1 = BOOL
+
+
+[connection_lt_double_BOOL-COMPARISON_18_BOOL]
+in_node_name = lt_double
+in_slot = BOOL
+out_node_name = COMPARISON_18
+out_slot = BOOL
+
+
+[node_43]
+name = COMPARISON_19
+kind = COMPARISON
+x = -48.000000
+y = 2590.000000
+desc = 
+cmp = GT
+input_1 = DOUBLE
+output_1 = BOOL
+
+
+[connection_gt_double_BOOL-COMPARISON_19_BOOL]
+in_node_name = gt_double
+in_slot = BOOL
+out_node_name = COMPARISON_19
+out_slot = BOOL
+
+
+[node_44]
+name = COMPARISON_20
+kind = COMPARISON
+x = -56.000000
+y = 2686.000000
+desc = 
+cmp = LTE
+input_1 = DOUBLE
+output_1 = BOOL
+
+
+[connection_lte_double_BOOL-COMPARISON_20_BOOL]
+in_node_name = lte_double
+in_slot = BOOL
+out_node_name = COMPARISON_20
+out_slot = BOOL
+
+
+[node_45]
+name = COMPARISON_21
+kind = COMPARISON
+x = -44.000000
+y = 2796.000000
+desc = 
+cmp = GTE
+input_1 = DOUBLE
+output_1 = BOOL
+
+
+[connection_gte_double_BOOL-COMPARISON_21_BOOL]
+in_node_name = gte_double
+in_slot = BOOL
+out_node_name = COMPARISON_21
+out_slot = BOOL
+
+
+[node_46]
+name = eq_double
+kind = VARIABLE
+x = 286.000000
+y = 2266.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_47]
+name = neq_double
+kind = VARIABLE
+x = 412.000000
+y = 2366.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_48]
+name = lt_double
+kind = VARIABLE
+x = 318.000000
+y = 2486.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_49]
+name = gt_double
+kind = VARIABLE
+x = 421.000000
+y = 2598.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_50]
+name = gte_double
+kind = VARIABLE
+x = 449.000000
+y = 2844.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_51]
+name = lte_double
+kind = VARIABLE
+x = 321.000000
+y = 2719.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_52]
+name = a_string
+kind = VARIABLE
+x = -307.000000
+y = 3140.000000
+desc = 
+value_slot = STRING
+value = abc
+input_1 = STRING
+output_1 = STRING
+
+
+[connection_COMPARISON_22_STRING-a_string_STRING]
+in_node_name = COMPARISON_22
+in_slot = STRING
+out_node_name = a_string
+out_slot = STRING
+
+
+[connection_COMPARISON_23_STRING-a_string_STRING]
+in_node_name = COMPARISON_23
+in_slot = STRING
+out_node_name = a_string
+out_slot = STRING
+
+
+[node_53]
+name = b_string
+kind = VARIABLE
+x = -302.000000
+y = 3327.000000
+desc = 
+value_slot = STRING
+value = def
+input_1 = STRING
+output_1 = STRING
+
+
+[connection_COMPARISON_22_STRING-b_string_STRING]
+in_node_name = COMPARISON_22
+in_slot = STRING
+out_node_name = b_string
+out_slot = STRING
+
+
+[connection_COMPARISON_23_STRING-b_string_STRING]
+in_node_name = COMPARISON_23
+in_slot = STRING
+out_node_name = b_string
+out_slot = STRING
+
+
+[node_54]
+name = COMPARISON_22
+kind = COMPARISON
+x = -44.000000
+y = 3137.000000
+desc = 
+cmp = EQ
+input_1 = STRING
+output_1 = BOOL
+
+
+[connection_eq_string_BOOL-COMPARISON_22_BOOL]
+in_node_name = eq_string
+in_slot = BOOL
+out_node_name = COMPARISON_22
+out_slot = BOOL
+
+
+[node_55]
+name = COMPARISON_23
+kind = COMPARISON
+x = -32.000000
+y = 3309.000000
+desc = 
+cmp = NEQ
+input_1 = STRING
+output_1 = BOOL
+
+
+[connection_neq_string_BOOL-COMPARISON_23_BOOL]
+in_node_name = neq_string
+in_slot = BOOL
+out_node_name = COMPARISON_23
+out_slot = BOOL
+
+
+[node_56]
+name = eq_string
+kind = VARIABLE
+x = 220.000000
+y = 3092.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_57]
+name = neq_string
+kind = VARIABLE
+x = 250.000000
+y = 3280.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL

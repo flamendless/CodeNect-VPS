@@ -9,6 +9,7 @@
 #include "node/node_print.hpp"
 #include "node/node_prompt.hpp"
 #include "node/node_op.hpp"
+#include "node/node_cmp.hpp"
 
 namespace CodeNect::NodeLogic
 {
@@ -42,6 +43,7 @@ void process_var(NodeVariable* node_var)
 		NodePrompt* out_node_prompt = dynamic_cast<NodePrompt*>(out_node);
 		NodeFor* out_node_for = dynamic_cast<NodeFor*>(out_node);
 		NodeOperation* out_node_op = dynamic_cast<NodeOperation*>(out_node);
+		NodeComparison* out_node_cmp = dynamic_cast<NodeComparison*>(out_node);
 
 		if (out_node_var)
 		{
@@ -77,6 +79,8 @@ void process_var(NodeVariable* node_var)
 			if (out_node_op->m_current_val)
 				node_var->m_value.copy(*out_node_op->m_current_val);
 		}
+		else if (out_node_cmp)
+			node_var->m_value.set(out_node_cmp->current_res);
 	}
 }
 }

@@ -13,6 +13,7 @@
 #include "node/node_def.hpp"
 #include "node/node_var.hpp"
 #include "node/node_op.hpp"
+#include "node/node_cmp.hpp"
 
 using namespace CodeNect;
 
@@ -361,6 +362,226 @@ TEST_CASE("Testing Visual Nodes Module")
 				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("d_double"));
 				REQUIRE(var2 != nullptr);
 				REQUIRE(std::get<double>(var2->m_value.data) == std::stod(val));;
+			}
+		}
+	}
+
+	SUBCASE("Testing Comparison Logic")
+	{
+		REQUIRE(Project::open("../test_cmp.cn") == RES_SUCCESS);
+		NodeLogic::process();
+
+		SUBCASE("BOOL")
+		{
+			const bool val = true;
+			const bool val2 = false;
+			NodeVariable* var_a = dynamic_cast<NodeVariable*>(Nodes::find_by_name("a_bool"));
+			NodeVariable* var_b = dynamic_cast<NodeVariable*>(Nodes::find_by_name("b_bool"));
+			REQUIRE(var_a != nullptr);
+			REQUIRE(var_b != nullptr);
+			REQUIRE(std::get<bool>(var_a->m_value.data) == val);
+			REQUIRE(std::get<bool>(var_b->m_value.data) == val2);
+			NodeLogic::process();
+
+			SUBCASE("==")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("eq_bool"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val == val2));
+			}
+			SUBCASE("!=")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("neq_bool"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val != val2));
+			}
+			SUBCASE("||")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("or_bool"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val || val2));
+			}
+			SUBCASE("&&")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("and_bool"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val && val2));
+			}
+		}
+
+		SUBCASE("INTEGER")
+		{
+			const int val = 32;
+			const int val2 = 64;
+			NodeVariable* var_a = dynamic_cast<NodeVariable*>(Nodes::find_by_name("a_int"));
+			NodeVariable* var_b = dynamic_cast<NodeVariable*>(Nodes::find_by_name("b_int"));
+			REQUIRE(var_a != nullptr);
+			REQUIRE(var_b != nullptr);
+			REQUIRE(std::get<int>(var_a->m_value.data) == val);
+			REQUIRE(std::get<int>(var_b->m_value.data) == val2);
+			NodeLogic::process();
+
+			SUBCASE("==")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("eq_int"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val == val2));
+			}
+			SUBCASE("!=")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("neq_int"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val != val2));
+			}
+			SUBCASE("<")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("lt_int"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val < val2));
+			}
+			SUBCASE(">")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("gt_int"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val > val2));
+			}
+			SUBCASE("<=")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("lte_int"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val <= val2));
+			}
+			SUBCASE(">=")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("gte_int"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val >= val2));
+			}
+		}
+
+		SUBCASE("FLOAT")
+		{
+			const float val = 32.323232f;
+			const float val2 = 64.646464f;
+			NodeVariable* var_a = dynamic_cast<NodeVariable*>(Nodes::find_by_name("a_float"));
+			NodeVariable* var_b = dynamic_cast<NodeVariable*>(Nodes::find_by_name("b_float"));
+			REQUIRE(var_a != nullptr);
+			REQUIRE(var_b != nullptr);
+			REQUIRE(std::get<float>(var_a->m_value.data) == val);
+			REQUIRE(std::get<float>(var_b->m_value.data) == val2);
+			NodeLogic::process();
+
+			SUBCASE("==")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("eq_float"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val == val2));
+			}
+			SUBCASE("!=")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("neq_float"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val != val2));
+			}
+			SUBCASE("<")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("lt_float"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val < val2));
+			}
+			SUBCASE(">")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("gt_float"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val > val2));
+			}
+			SUBCASE("<=")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("lte_float"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val <= val2));
+			}
+			SUBCASE(">=")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("gte_float"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val >= val2));
+			}
+		}
+
+		SUBCASE("DOUBLE")
+		{
+			const double val = 32.323232;
+			const double val2 = 64.646464;
+			NodeVariable* var_a = dynamic_cast<NodeVariable*>(Nodes::find_by_name("a_double"));
+			NodeVariable* var_b = dynamic_cast<NodeVariable*>(Nodes::find_by_name("b_double"));
+			REQUIRE(var_a != nullptr);
+			REQUIRE(var_b != nullptr);
+			REQUIRE(std::get<double>(var_a->m_value.data) == val);
+			REQUIRE(std::get<double>(var_b->m_value.data) == val2);
+			NodeLogic::process();
+
+			SUBCASE("==")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("eq_double"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val == val2));
+			}
+			SUBCASE("!=")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("neq_double"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val != val2));
+			}
+			SUBCASE("<")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("lt_double"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val < val2));
+			}
+			SUBCASE(">")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("gt_double"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val > val2));
+			}
+			SUBCASE("<=")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("lte_double"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val <= val2));
+			}
+			SUBCASE(">=")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("gte_double"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val >= val2));
+			}
+		}
+
+		SUBCASE("STRING")
+		{
+			const std::string val = "abc";
+			const std::string val2 = "def";
+			NodeVariable* var_a = dynamic_cast<NodeVariable*>(Nodes::find_by_name("a_string"));
+			NodeVariable* var_b = dynamic_cast<NodeVariable*>(Nodes::find_by_name("b_string"));
+			REQUIRE(var_a != nullptr);
+			REQUIRE(var_b != nullptr);
+			REQUIRE(std::get<std::string>(var_a->m_value.data) == val);
+			REQUIRE(std::get<std::string>(var_b->m_value.data) == val2);
+			NodeLogic::process();
+
+			SUBCASE("==")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("eq_string"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val == val2));
+			}
+			SUBCASE("!=")
+			{
+				NodeVariable* var2 = dynamic_cast<NodeVariable*>(Nodes::find_by_name("neq_string"));
+				REQUIRE(var2 != nullptr);
+				REQUIRE(std::get<bool>(var2->m_value.data) == (val != val2));
 			}
 		}
 	}

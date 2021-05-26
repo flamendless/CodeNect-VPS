@@ -198,8 +198,8 @@ void process_cmp(NodeComparison* node_cmp)
 		}
 	}
 
-	if (res_var)
-		res_var->m_value.set(res);
+	// if (res_var)
+	// 	res_var->m_value.set(res);
 
 	node_cmp->current_res = res;
 }
