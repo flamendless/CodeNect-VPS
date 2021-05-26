@@ -189,6 +189,15 @@ bool NodeValue::cast_from(NodeValue& from_val)
 				}
 				catch (std::invalid_argument& e) { return false; }
 			}
+			else if (m_slot == +NODE_SLOT::DOUBLE)
+			{
+				try
+				{
+					double i = std::stod(from_v);
+					this->set(i);
+				}
+				catch (std::invalid_argument& e) { return false; }
+			}
 			else if (m_slot == +NODE_SLOT::STRING)
 			{
 				try

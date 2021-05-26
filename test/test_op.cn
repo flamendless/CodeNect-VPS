@@ -1,0 +1,674 @@
+﻿[meta]
+title = TestOp
+author = Brandon
+creation_dt = 26-05-2021 20:16:49
+offsetx = 110.000000
+offsety = -2230.000000
+
+
+[node_0]
+name = a_int
+kind = VARIABLE
+x = 107.000000
+y = 443.000000
+desc = 
+value_slot = INTEGER
+value = 32
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[connection_ADD_0_INTEGER-a_int_INTEGER]
+in_node_name = ADD_0
+in_slot = INTEGER
+out_node_name = a_int
+out_slot = INTEGER
+
+
+[connection_DIV_0_INTEGER-a_int_INTEGER]
+in_node_name = DIV_0
+in_slot = INTEGER
+out_node_name = a_int
+out_slot = INTEGER
+
+
+[connection_MUL_0_INTEGER-a_int_INTEGER]
+in_node_name = MUL_0
+in_slot = INTEGER
+out_node_name = a_int
+out_slot = INTEGER
+
+
+[connection_SUB_0_INTEGER-a_int_INTEGER]
+in_node_name = SUB_0
+in_slot = INTEGER
+out_node_name = a_int
+out_slot = INTEGER
+
+
+[node_1]
+name = b_int
+kind = VARIABLE
+x = 107.000000
+y = 588.000000
+desc = 
+value_slot = INTEGER
+value = 64
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[connection_ADD_0_INTEGER-b_int_INTEGER]
+in_node_name = ADD_0
+in_slot = INTEGER
+out_node_name = b_int
+out_slot = INTEGER
+
+
+[connection_DIV_0_INTEGER-b_int_INTEGER]
+in_node_name = DIV_0
+in_slot = INTEGER
+out_node_name = b_int
+out_slot = INTEGER
+
+
+[connection_MUL_0_INTEGER-b_int_INTEGER]
+in_node_name = MUL_0
+in_slot = INTEGER
+out_node_name = b_int
+out_slot = INTEGER
+
+
+[connection_SUB_0_INTEGER-b_int_INTEGER]
+in_node_name = SUB_0
+in_slot = INTEGER
+out_node_name = b_int
+out_slot = INTEGER
+
+
+[node_2]
+name = res_mul_int
+kind = VARIABLE
+x = 655.000000
+y = 641.000000
+desc = 
+value_slot = INTEGER
+value = 0
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[connection_res_mul_int_INTEGER-MUL_0_INTEGER]
+in_node_name = res_mul_int
+in_slot = INTEGER
+out_node_name = MUL_0
+out_slot = INTEGER
+
+
+[node_3]
+name = res_div_int
+kind = VARIABLE
+x = 666.000000
+y = 815.000000
+desc = 
+value_slot = INTEGER
+value = 0
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[connection_res_div_int_INTEGER-DIV_0_INTEGER]
+in_node_name = res_div_int
+in_slot = INTEGER
+out_node_name = DIV_0
+out_slot = INTEGER
+
+
+[node_4]
+name = a_float
+kind = VARIABLE
+x = 141.000000
+y = 1164.000000
+desc = 
+value_slot = FLOAT
+value = 32.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_ADD_1_FLOAT-a_float_FLOAT]
+in_node_name = ADD_1
+in_slot = FLOAT
+out_node_name = a_float
+out_slot = FLOAT
+
+
+[connection_DIV_1_FLOAT-a_float_FLOAT]
+in_node_name = DIV_1
+in_slot = FLOAT
+out_node_name = a_float
+out_slot = FLOAT
+
+
+[connection_MUL_1_FLOAT-a_float_FLOAT]
+in_node_name = MUL_1
+in_slot = FLOAT
+out_node_name = a_float
+out_slot = FLOAT
+
+
+[connection_SUB_1_FLOAT-a_float_FLOAT]
+in_node_name = SUB_1
+in_slot = FLOAT
+out_node_name = a_float
+out_slot = FLOAT
+
+
+[node_5]
+name = b_float
+kind = VARIABLE
+x = 139.000000
+y = 1373.000000
+desc = 
+value_slot = FLOAT
+value = 24.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_ADD_1_FLOAT-b_float_FLOAT]
+in_node_name = ADD_1
+in_slot = FLOAT
+out_node_name = b_float
+out_slot = FLOAT
+
+
+[connection_DIV_1_FLOAT-b_float_FLOAT]
+in_node_name = DIV_1
+in_slot = FLOAT
+out_node_name = b_float
+out_slot = FLOAT
+
+
+[connection_MUL_1_FLOAT-b_float_FLOAT]
+in_node_name = MUL_1
+in_slot = FLOAT
+out_node_name = b_float
+out_slot = FLOAT
+
+
+[connection_SUB_1_FLOAT-b_float_FLOAT]
+in_node_name = SUB_1
+in_slot = FLOAT
+out_node_name = b_float
+out_slot = FLOAT
+
+
+[node_6]
+name = ADD_1
+kind = OPERATION
+x = 363.000000
+y = 1084.000000
+desc = 
+op = ADD
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_res_add_float_FLOAT-ADD_1_FLOAT]
+in_node_name = res_add_float
+in_slot = FLOAT
+out_node_name = ADD_1
+out_slot = FLOAT
+
+
+[node_7]
+name = SUB_1
+kind = OPERATION
+x = 368.000000
+y = 1239.000000
+desc = 
+op = SUB
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_res_sub_float_FLOAT-SUB_1_FLOAT]
+in_node_name = res_sub_float
+in_slot = FLOAT
+out_node_name = SUB_1
+out_slot = FLOAT
+
+
+[node_8]
+name = MUL_1
+kind = OPERATION
+x = 375.000000
+y = 1396.000000
+desc = 
+op = MUL
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_res_mul_float_FLOAT-MUL_1_FLOAT]
+in_node_name = res_mul_float
+in_slot = FLOAT
+out_node_name = MUL_1
+out_slot = FLOAT
+
+
+[node_9]
+name = DIV_1
+kind = OPERATION
+x = 378.000000
+y = 1556.000000
+desc = 
+op = DIV
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[connection_res_div_float_FLOAT-DIV_1_FLOAT]
+in_node_name = res_div_float
+in_slot = FLOAT
+out_node_name = DIV_1
+out_slot = FLOAT
+
+
+[node_10]
+name = res_add_float
+kind = VARIABLE
+x = 613.000000
+y = 1063.000000
+desc = 
+value_slot = FLOAT
+value = 0.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[node_11]
+name = res_sub_float
+kind = VARIABLE
+x = 614.000000
+y = 1224.000000
+desc = 
+value_slot = FLOAT
+value = 0.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[node_12]
+name = res_mul_float
+kind = VARIABLE
+x = 618.000000
+y = 1390.000000
+desc = 
+value_slot = FLOAT
+value = 0.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[node_13]
+name = a_double
+kind = VARIABLE
+x = 48.000000
+y = 1852.000000
+desc = 
+value_slot = DOUBLE
+value = 32.000000
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[connection_ADD_2_DOUBLE-a_double_DOUBLE]
+in_node_name = ADD_2
+in_slot = DOUBLE
+out_node_name = a_double
+out_slot = DOUBLE
+
+
+[connection_DIV_2_DOUBLE-a_double_DOUBLE]
+in_node_name = DIV_2
+in_slot = DOUBLE
+out_node_name = a_double
+out_slot = DOUBLE
+
+
+[connection_MUL_2_DOUBLE-a_double_DOUBLE]
+in_node_name = MUL_2
+in_slot = DOUBLE
+out_node_name = a_double
+out_slot = DOUBLE
+
+
+[connection_SUB_2_DOUBLE-a_double_DOUBLE]
+in_node_name = SUB_2
+in_slot = DOUBLE
+out_node_name = a_double
+out_slot = DOUBLE
+
+
+[node_14]
+name = b_double
+kind = VARIABLE
+x = 61.000000
+y = 2003.000000
+desc = 
+value_slot = DOUBLE
+value = 24.000000
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[connection_ADD_2_DOUBLE-b_double_DOUBLE]
+in_node_name = ADD_2
+in_slot = DOUBLE
+out_node_name = b_double
+out_slot = DOUBLE
+
+
+[connection_DIV_2_DOUBLE-b_double_DOUBLE]
+in_node_name = DIV_2
+in_slot = DOUBLE
+out_node_name = b_double
+out_slot = DOUBLE
+
+
+[connection_MUL_2_DOUBLE-b_double_DOUBLE]
+in_node_name = MUL_2
+in_slot = DOUBLE
+out_node_name = b_double
+out_slot = DOUBLE
+
+
+[connection_SUB_2_DOUBLE-b_double_DOUBLE]
+in_node_name = SUB_2
+in_slot = DOUBLE
+out_node_name = b_double
+out_slot = DOUBLE
+
+
+[node_15]
+name = ADD_2
+kind = OPERATION
+x = 378.000000
+y = 1781.000000
+desc = 
+op = ADD
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[connection_res_add_double_DOUBLE-ADD_2_DOUBLE]
+in_node_name = res_add_double
+in_slot = DOUBLE
+out_node_name = ADD_2
+out_slot = DOUBLE
+
+
+[node_16]
+name = SUB_2
+kind = OPERATION
+x = 384.000000
+y = 1930.000000
+desc = 
+op = SUB
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[connection_res_sub_double_DOUBLE-SUB_2_DOUBLE]
+in_node_name = res_sub_double
+in_slot = DOUBLE
+out_node_name = SUB_2
+out_slot = DOUBLE
+
+
+[node_17]
+name = MUL_2
+kind = OPERATION
+x = 374.000000
+y = 2113.000000
+desc = 
+op = MUL
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[connection_res_mul_double_DOUBLE-MUL_2_DOUBLE]
+in_node_name = res_mul_double
+in_slot = DOUBLE
+out_node_name = MUL_2
+out_slot = DOUBLE
+
+
+[node_18]
+name = DIV_2
+kind = OPERATION
+x = 382.000000
+y = 2293.000000
+desc = 
+op = DIV
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[connection_res_div_double_DOUBLE-DIV_2_DOUBLE]
+in_node_name = res_div_double
+in_slot = DOUBLE
+out_node_name = DIV_2
+out_slot = DOUBLE
+
+
+[node_19]
+name = res_add_double
+kind = VARIABLE
+x = 664.000000
+y = 1754.000000
+desc = 
+value_slot = DOUBLE
+value = 0.000000
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[node_20]
+name = res_sub_double
+kind = VARIABLE
+x = 664.000000
+y = 1891.000000
+desc = 
+value_slot = DOUBLE
+value = 0.000000
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[node_21]
+name = res_mul_double
+kind = VARIABLE
+x = 656.000000
+y = 2086.000000
+desc = 
+value_slot = DOUBLE
+value = 0.000000
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[node_22]
+name = res_div_double
+kind = VARIABLE
+x = 660.000000
+y = 2273.000000
+desc = 
+value_slot = DOUBLE
+value = 0.000000
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[node_23]
+name = res_div_float
+kind = VARIABLE
+x = 624.000000
+y = 1551.000000
+desc = 
+value_slot = FLOAT
+value = 0.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[node_24]
+name = ADD_0
+kind = OPERATION
+x = 386.000000
+y = 290.000000
+desc = 
+op = ADD
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[connection_res_add_int_INTEGER-ADD_0_INTEGER]
+in_node_name = res_add_int
+in_slot = INTEGER
+out_node_name = ADD_0
+out_slot = INTEGER
+
+
+[node_25]
+name = res_add_int
+kind = VARIABLE
+x = 644.000000
+y = 308.000000
+desc = 
+value_slot = INTEGER
+value = 0
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[node_26]
+name = SUB_0
+kind = OPERATION
+x = 392.000000
+y = 488.000000
+desc = 
+op = SUB
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[connection_res_sub_int_INTEGER-SUB_0_INTEGER]
+in_node_name = res_sub_int
+in_slot = INTEGER
+out_node_name = SUB_0
+out_slot = INTEGER
+
+
+[node_27]
+name = MUL_0
+kind = OPERATION
+x = 394.000000
+y = 666.000000
+desc = 
+op = MUL
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[node_28]
+name = DIV_0
+kind = OPERATION
+x = 386.000000
+y = 843.000000
+desc = 
+op = DIV
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[node_29]
+name = res_sub_int
+kind = VARIABLE
+x = 648.000000
+y = 472.000000
+desc = 
+value_slot = INTEGER
+value = 0
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[node_30]
+name = a_string
+kind = VARIABLE
+x = 53.000000
+y = 2509.000000
+desc = 
+value_slot = STRING
+value = hello,\s
+input_1 = STRING
+output_1 = STRING
+
+
+[connection_ADD_4_STRING-a_string_STRING]
+in_node_name = ADD_4
+in_slot = STRING
+out_node_name = a_string
+out_slot = STRING
+
+
+[node_31]
+name = b_string
+kind = VARIABLE
+x = 64.000000
+y = 2655.000000
+desc = 
+value_slot = STRING
+value = world!
+input_1 = STRING
+output_1 = STRING
+
+
+[connection_ADD_4_STRING-b_string_STRING]
+in_node_name = ADD_4
+in_slot = STRING
+out_node_name = b_string
+out_slot = STRING
+
+
+[node_32]
+name = ADD_4
+kind = OPERATION
+x = 331.000000
+y = 2585.000000
+desc = 
+op = ADD
+input_1 = STRING
+output_1 = STRING
+
+
+[connection_res_add_string_STRING-ADD_4_STRING]
+in_node_name = res_add_string
+in_slot = STRING
+out_node_name = ADD_4
+out_slot = STRING
+
+
+[node_33]
+name = res_add_string
+kind = VARIABLE
+x = 598.000000
+y = 2542.000000
+desc = 
+value_slot = STRING
+value = 
+input_1 = STRING
+output_1 = STRING

@@ -9,6 +9,7 @@ bin_win/
 .ninja_log
 build.ninja
 test.c
-test
 tags
 *~
+test/bin_test/
+test/build_test/

@@ -25,3 +25,9 @@
 [submodule "includes/imgui_markdown"]
 	path = includes/imgui_markdown
 	url = https://github.com/juliettef/imgui_markdown
+[submodule "includes/doctest"]
+	path = includes/doctest
+	url = https://github.com/onqtam/doctest
+[submodule "test/doctest"]
+	path = test/doctest
+	url = https://github.com/onqtam/doctest

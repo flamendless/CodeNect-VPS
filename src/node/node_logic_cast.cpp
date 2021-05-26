@@ -25,9 +25,6 @@ void process_cast(NodeCast* node_cast)
 	//get the lhs
 	for (Connection& connection : node_cast->m_connections)
 	{
-		if (conn)
-			break;
-
 		Node* out_node = static_cast<Node*>(connection.out_node);
 		NodeVariable* out_node_var = dynamic_cast<NodeVariable*>(out_node);
 		NodeOperation* out_node_op = dynamic_cast<NodeOperation*>(out_node);

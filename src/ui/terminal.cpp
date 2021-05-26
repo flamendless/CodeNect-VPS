@@ -1,7 +1,10 @@
 #include "ui/terminal.hpp"
 
+#include <string>
+#include <fstream>
 #include <imgui_internal.h>
 #include "fmt/format.h"
+#include "fmt/chrono.h"
 #include "IconsFontAwesome5.h"
 #include "core/config.hpp"
 #include "core/commands.hpp"

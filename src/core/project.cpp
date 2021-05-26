@@ -35,11 +35,7 @@
 
 namespace CodeNect
 {
-#if DEBUG_MODE
-bool Project::has_open_proj = true;
-#else
 bool Project::has_open_proj = false;
-#endif
 unsigned int Project::nodes_count = 0;
 unsigned int Project::connections_count = 0;
 ProjectMeta Project::meta {};
@@ -124,11 +120,17 @@ int Project::open(void)
 		return RES_SUCCESS;
 	}
 
-	return RES_FAIL;
+	return RES_SUCCESS;
 }
 
 int Project::open(const char* filename)
 {
+	if (!std::filesystem::exists(filename))
+	{
+		PLOGW << "File " << filename << " does not exist";
+		return RES_FAIL;
+	}
+
 	Project::meta.filepath = filename;
 	Nodes::reset();
 
@@ -150,7 +152,7 @@ int Project::open(const char* filename)
 	SimulationControl::is_open = true;
 	Zoom::is_open = true;
 
-	return RES_FAIL;
+	return RES_SUCCESS;
 }
 
 void Project::save_cmd(void)
@@ -442,7 +444,9 @@ int Project::parse(void)
 	}
 
 	Project::meta.title = ini.GetValue("meta", "title", "");
+#ifndef TEST
 	glfwSetWindowTitle(App::window, Project::meta.title.c_str());
+#endif
 	PLOGV << "Project Title: " << Project::meta.title;
 
 	Project::meta.author = ini.GetValue("meta", "author", "");

@@ -586,7 +586,8 @@ void Transpiler::clear(void)
 	Transpiler::has_ran = false;
 	Transpiler::has_compiled = false;
 	Assessments::v_results.clear();
-	tcc_delete(Transpiler::tcc_state);
+	if (Transpiler::tcc_state)
+		tcc_delete(Transpiler::tcc_state);
 	Transpiler::init();
 }
 

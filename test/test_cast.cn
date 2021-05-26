@@ -1,0 +1,558 @@
+﻿[meta]
+title = TestCast
+author = Brandon
+creation_dt = 26-05-2021 21:15:36
+offsetx = 187.000000
+offsety = -1647.000000
+
+
+[node_0]
+name = a_int
+kind = VARIABLE
+x = 38.000000
+y = 247.000000
+desc = 
+value_slot = INTEGER
+value = 8
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[connection_CAST_0_INTEGER-a_int_INTEGER]
+in_node_name = CAST_0
+in_slot = INTEGER
+out_node_name = a_int
+out_slot = INTEGER
+
+
+[connection_CAST_1_INTEGER-a_int_INTEGER]
+in_node_name = CAST_1
+in_slot = INTEGER
+out_node_name = a_int
+out_slot = INTEGER
+
+
+[connection_CAST_2_INTEGER-a_int_INTEGER]
+in_node_name = CAST_2
+in_slot = INTEGER
+out_node_name = a_int
+out_slot = INTEGER
+
+
+[connection_CAST_3_INTEGER-a_int_INTEGER]
+in_node_name = CAST_3
+in_slot = INTEGER
+out_node_name = a_int
+out_slot = INTEGER
+
+
+[node_1]
+name = CAST_0
+kind = CAST
+x = 331.500000
+y = 85.500000
+desc = 
+input_1 = INTEGER
+output_1 = BOOL
+
+
+[connection_a_bool_BOOL-CAST_0_BOOL]
+in_node_name = a_bool
+in_slot = BOOL
+out_node_name = CAST_0
+out_slot = BOOL
+
+
+[node_2]
+name = CAST_4
+kind = CAST
+x = 114.000000
+y = 713.500000
+desc = 
+input_1 = FLOAT
+output_1 = INTEGER
+
+
+[connection_b_int_INTEGER-CAST_4_INTEGER]
+in_node_name = b_int
+in_slot = INTEGER
+out_node_name = CAST_4
+out_slot = INTEGER
+
+
+[connection_CAST_4_FLOAT-b_float_FLOAT]
+in_node_name = CAST_4
+in_slot = FLOAT
+out_node_name = b_float
+out_slot = FLOAT
+
+
+[node_3]
+name = CAST_5
+kind = CAST
+x = 119.500000
+y = 844.500000
+desc = 
+input_1 = FLOAT
+output_1 = DOUBLE
+
+
+[connection_b_double_DOUBLE-CAST_5_DOUBLE]
+in_node_name = b_double
+in_slot = DOUBLE
+out_node_name = CAST_5
+out_slot = DOUBLE
+
+
+[connection_CAST_5_FLOAT-b_float_FLOAT]
+in_node_name = CAST_5
+in_slot = FLOAT
+out_node_name = b_float
+out_slot = FLOAT
+
+
+[node_4]
+name = CAST_6
+kind = CAST
+x = 129.500000
+y = 966.500000
+desc = 
+input_1 = FLOAT
+output_1 = STRING
+
+
+[connection_b_string_STRING-CAST_6_STRING]
+in_node_name = b_string
+in_slot = STRING
+out_node_name = CAST_6
+out_slot = STRING
+
+
+[connection_CAST_6_FLOAT-b_float_FLOAT]
+in_node_name = CAST_6
+in_slot = FLOAT
+out_node_name = b_float
+out_slot = FLOAT
+
+
+[node_5]
+name = b_int
+kind = VARIABLE
+x = 409.000000
+y = 631.000000
+desc = 
+value_slot = INTEGER
+value = 0
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[node_6]
+name = b_double
+kind = VARIABLE
+x = 410.000000
+y = 786.000000
+desc = 
+value_slot = DOUBLE
+value = 0.000000
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[node_7]
+name = b_string
+kind = VARIABLE
+x = 408.000000
+y = 943.000000
+desc = 
+value_slot = STRING
+value = 
+input_1 = STRING
+output_1 = STRING
+
+
+[node_8]
+name = CAST_1
+kind = CAST
+x = 338.000000
+y = 198.500000
+desc = 
+input_1 = INTEGER
+output_1 = FLOAT
+
+
+[connection_a_float_FLOAT-CAST_1_FLOAT]
+in_node_name = a_float
+in_slot = FLOAT
+out_node_name = CAST_1
+out_slot = FLOAT
+
+
+[node_9]
+name = CAST_2
+kind = CAST
+x = 337.500000
+y = 328.500000
+desc = 
+input_1 = INTEGER
+output_1 = DOUBLE
+
+
+[connection_a_double_DOUBLE-CAST_2_DOUBLE]
+in_node_name = a_double
+in_slot = DOUBLE
+out_node_name = CAST_2
+out_slot = DOUBLE
+
+
+[node_10]
+name = CAST_3
+kind = CAST
+x = 352.500000
+y = 466.500000
+desc = 
+input_1 = INTEGER
+output_1 = STRING
+
+
+[connection_a_string_STRING-CAST_3_STRING]
+in_node_name = a_string
+in_slot = STRING
+out_node_name = CAST_3
+out_slot = STRING
+
+
+[node_11]
+name = a_float
+kind = VARIABLE
+x = 585.000000
+y = 172.000000
+desc = 
+value_slot = FLOAT
+value = 0.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[node_12]
+name = a_bool
+kind = VARIABLE
+x = 587.000000
+y = 35.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_13]
+name = a_double
+kind = VARIABLE
+x = 580.000000
+y = 311.000000
+desc = 
+value_slot = DOUBLE
+value = 0.000000
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[node_14]
+name = a_string
+kind = VARIABLE
+x = 584.000000
+y = 442.000000
+desc = 
+value_slot = STRING
+value = 
+input_1 = STRING
+output_1 = STRING
+
+
+[node_15]
+name = b_float
+kind = VARIABLE
+x = -100.000000
+y = 798.000000
+desc = 
+value_slot = FLOAT
+value = 16.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[node_16]
+name = c_double
+kind = VARIABLE
+x = -150.000000
+y = 1247.000000
+desc = 
+value_slot = DOUBLE
+value = 32.000000
+input_1 = DOUBLE
+output_1 = DOUBLE
+
+
+[connection_CAST_10_DOUBLE-c_double_DOUBLE]
+in_node_name = CAST_10
+in_slot = DOUBLE
+out_node_name = c_double
+out_slot = DOUBLE
+
+
+[connection_CAST_11_DOUBLE-c_double_DOUBLE]
+in_node_name = CAST_11
+in_slot = DOUBLE
+out_node_name = c_double
+out_slot = DOUBLE
+
+
+[connection_CAST_12_DOUBLE-c_double_DOUBLE]
+in_node_name = CAST_12
+in_slot = DOUBLE
+out_node_name = c_double
+out_slot = DOUBLE
+
+
+[node_17]
+name = CAST_10
+kind = CAST
+x = 116.500000
+y = 1167.500000
+desc = 
+input_1 = DOUBLE
+output_1 = INTEGER
+
+
+[connection_c_int_INTEGER-CAST_10_INTEGER]
+in_node_name = c_int
+in_slot = INTEGER
+out_node_name = CAST_10
+out_slot = INTEGER
+
+
+[node_18]
+name = CAST_11
+kind = CAST
+x = 111.500000
+y = 1276.500000
+desc = 
+input_1 = DOUBLE
+output_1 = FLOAT
+
+
+[connection_c_float_FLOAT-CAST_11_FLOAT]
+in_node_name = c_float
+in_slot = FLOAT
+out_node_name = CAST_11
+out_slot = FLOAT
+
+
+[node_19]
+name = CAST_12
+kind = CAST
+x = 115.000000
+y = 1392.500000
+desc = 
+input_1 = DOUBLE
+output_1 = STRING
+
+
+[connection_c_string_STRING-CAST_12_STRING]
+in_node_name = c_string
+in_slot = STRING
+out_node_name = CAST_12
+out_slot = STRING
+
+
+[node_20]
+name = c_int
+kind = VARIABLE
+x = 399.000000
+y = 1110.000000
+desc = 
+value_slot = INTEGER
+value = 0
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[node_21]
+name = c_float
+kind = VARIABLE
+x = 411.000000
+y = 1250.000000
+desc = 
+value_slot = FLOAT
+value = 0.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[node_22]
+name = c_string
+kind = VARIABLE
+x = 414.000000
+y = 1397.000000
+desc = 
+value_slot = STRING
+value = 
+input_1 = STRING
+output_1 = STRING
+
+
+[node_23]
+name = d_string
+kind = VARIABLE
+x = -195.000000
+y = 1711.000000
+desc = 
+value_slot = STRING
+value = 48.64
+input_1 = STRING
+output_1 = STRING
+
+
+[connection_CAST_13_STRING-d_string_STRING]
+in_node_name = CAST_13
+in_slot = STRING
+out_node_name = d_string
+out_slot = STRING
+
+
+[connection_CAST_14_STRING-d_string_STRING]
+in_node_name = CAST_14
+in_slot = STRING
+out_node_name = d_string
+out_slot = STRING
+
+
+[connection_CAST_15_STRING-d_string_STRING]
+in_node_name = CAST_15
+in_slot = STRING
+out_node_name = d_string
+out_slot = STRING
+
+
+[connection_CAST_16_STRING-d_string_STRING]
+in_node_name = CAST_16
+in_slot = STRING
+out_node_name = d_string
+out_slot = STRING
+
+
+[node_24]
+name = CAST_13
+kind = CAST
+x = 107.000000
+y = 1571.500000
+desc = 
+input_1 = STRING
+output_1 = BOOL
+
+
+[connection_d_bool_BOOL-CAST_13_BOOL]
+in_node_name = d_bool
+in_slot = BOOL
+out_node_name = CAST_13
+out_slot = BOOL
+
+
+[node_25]
+name = CAST_14
+kind = CAST
+x = 92.500000
+y = 1683.500000
+desc = 
+input_1 = STRING
+output_1 = INTEGER
+
+
+[connection_d_int_INTEGER-CAST_14_INTEGER]
+in_node_name = d_int
+in_slot = INTEGER
+out_node_name = CAST_14
+out_slot = INTEGER
+
+
+[node_26]
+name = CAST_15
+kind = CAST
+x = 93.500000
+y = 1790.500000
+desc = 
+input_1 = STRING
+output_1 = FLOAT
+
+
+[connection_d_float_FLOAT-CAST_15_FLOAT]
+in_node_name = d_float
+in_slot = FLOAT
+out_node_name = CAST_15
+out_slot = FLOAT
+
+
+[node_27]
+name = CAST_16
+kind = CAST
+x = 84.000000
+y = 1926.500000
+desc = 
+input_1 = STRING
+output_1 = DOUBLE
+
+
+[connection_d_double_DOUBLE-CAST_16_DOUBLE]
+in_node_name = d_double
+in_slot = DOUBLE
+out_node_name = CAST_16
+out_slot = DOUBLE
+
+
+[node_28]
+name = d_bool
+kind = VARIABLE
+x = 408.000000
+y = 1542.000000
+desc = 
+value_slot = BOOL
+value = true
+input_1 = BOOL
+output_1 = BOOL
+
+
+[node_29]
+name = d_int
+kind = VARIABLE
+x = 410.000000
+y = 1696.000000
+desc = 
+value_slot = INTEGER
+value = 0
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[node_30]
+name = d_float
+kind = VARIABLE
+x = 413.000000
+y = 1847.000000
+desc = 
+value_slot = FLOAT
+value = 0.000000
+input_1 = FLOAT
+output_1 = FLOAT
+
+
+[node_31]
+name = d_double
+kind = VARIABLE
+x = 423.000000
+y = 2026.000000
+desc = 
+value_slot = DOUBLE
+value = 0.000000
+input_1 = DOUBLE
+output_1 = DOUBLE
