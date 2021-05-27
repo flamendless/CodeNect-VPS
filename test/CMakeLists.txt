@@ -192,6 +192,14 @@ target_link_libraries(CodeNectTest
 	${GLFW3_LIBRARY}
 )
 install(TARGETS CodeNectTest DESTINATION .)
+install(DIRECTORY ../lib/tcc DESTINATION .)
+install(FILES
+		../lib/linux/libtcc.a
+	DESTINATION .)
+install(FILES
+		../lib/linux/libtcc.a
+		../lib/linux/libtcc1.a
+	DESTINATION ./lib)
 
 add_custom_target(
 	copy-compile-commands ALL

@@ -1,0 +1,95 @@
+﻿[meta]
+title = TestFor
+author = Brandon
+creation_dt = 27-05-2021 10:58:35
+offsetx = 0.000000
+offsety = 0.000000
+
+
+[node_0]
+name = FOR_0
+kind = LOOP
+x = 34.500000
+y = 125.000000
+desc = 
+loop = FOR
+start_index = 0
+end_index = 5
+increment = 1
+iterator_name = i
+loop_cmp = LT
+slot_in = INTEGER
+slot_out = INTEGER
+input_1 = INTEGER - start index
+input_2 = INTEGER - end index
+input_3 = INTEGER - increment
+input_4 = INTEGER
+output_1 = INTEGER - iterator
+output_2 = INTEGER
+
+
+[connection_i_INTEGER-FOR_0_INTEGER - iterator]
+in_node_name = i
+in_slot = INTEGER
+out_node_name = FOR_0
+out_slot = INTEGER - iterator
+
+
+[connection_FOR_1_INTEGER-FOR_0_INTEGER]
+in_node_name = FOR_1
+in_slot = INTEGER
+out_node_name = FOR_0
+out_slot = INTEGER
+
+
+[node_1]
+name = i
+kind = VARIABLE
+x = 554.000000
+y = 160.000000
+desc = 
+value_slot = INTEGER
+value = 0
+input_1 = INTEGER
+output_1 = INTEGER
+
+
+[node_2]
+name = FOR_1
+kind = LOOP
+x = 397.500000
+y = 351.000000
+desc = 
+loop = FOR
+start_index = 0
+end_index = 5
+increment = 1
+iterator_name = j
+loop_cmp = LT
+slot_in = INTEGER
+slot_out = INTEGER
+input_1 = INTEGER - start index
+input_2 = INTEGER - end index
+input_3 = INTEGER - increment
+input_4 = INTEGER
+output_1 = INTEGER - iterator
+output_2 = INTEGER
+
+
+[connection_j_INTEGER-FOR_1_INTEGER - iterator]
+in_node_name = j
+in_slot = INTEGER
+out_node_name = FOR_1
+out_slot = INTEGER - iterator
+
+
+[node_3]
+name = j
+kind = VARIABLE
+x = 816.000000
+y = 254.000000
+desc = 
+value_slot = INTEGER
+value = 0
+input_1 = INTEGER
+output_1 = INTEGER

@@ -19,14 +19,14 @@ function run()
 
 function test_detailed()
 {
-	compile
-	cd ${dir_test_install} && ./${test_name} --success -o=../report --duration=true && cat ../report
+	compile && cd ${dir_test_install} && ./${test_name} --success -o=../report --duration=true
+	cat ../report
 }
 
 function test_summary()
 {
-	compile
-	cd ${dir_test_install} && ./${test_name} -o=../summary --duration=true && cat ../summary
+	compile && cd ${dir_test_install} && ./${test_name} -o=../summary --duration=true
+	cat ../summary
 }
 
 if [ $# -eq 0 ]; then

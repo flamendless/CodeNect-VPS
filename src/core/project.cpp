@@ -131,6 +131,14 @@ int Project::open(const char* filename)
 		return RES_FAIL;
 	}
 
+#ifdef TEST
+	if (Project::meta.filepath.compare(filename) == 0)
+	{
+		PLOGW << "Same project. Skipping opening...";
+		return RES_SUCCESS;
+	}
+#endif
+
 	Project::meta.filepath = filename;
 	Nodes::reset();
 

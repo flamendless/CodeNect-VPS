@@ -1,28 +1,48 @@
 [0;36m[doctest] [0mdoctest version is "2.4.6"
 [0;36m[doctest] [0mrun with "--help" for options
 [0;33m===============================================================================
-[0;37m../test.cpp:30:
+[0;37m../test.cpp:35:
 [0;33mTEST CASE:  [0mTesting Input/Output Module
 
-[0m0.000041 s: Testing Input/Output Module
+[0m0.000045 s: Testing Input/Output Module
 [0m[0;33m===============================================================================
-[0;37m../test.cpp:53:
+[0;37m../test.cpp:58:
 [0;33mTEST CASE:  [0mTesting Filesystem Module
 [0;33m
 DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0m  Opening invalid project
 
-[0m0.002006 s: Testing Filesystem Module
+[0m0.001581 s: Testing Filesystem Module
 [0m[0;33m===============================================================================
-[0;37m../test.cpp:88:
+[0;37m../test.cpp:93:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
 [0;33m
 DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0m  Testing String Logic
   To Array
 
-[0m0.865967 s: Testing Visual Nodes Module
+[0m0.061408 s: Testing Visual Nodes Module
 [0m[0;33m===============================================================================
-[0;36m[doctest] [0mtest cases:   3 | [0;32m  3 passed[0m | [0m0 failed[0m | [0m0 skipped[0m
-[0;36m[doctest] [0massertions: 418 | [0;32m418 passed[0m | [0m0 failed[0m |
+[0;37m../test.cpp:726:
+[0;33mTEST CASE:  [0mTesting Transpiler Module
+
+[0m0.012216 s: Testing Transpiler Module
+[0m[0;33m===============================================================================
+[0;37m../test.cpp:744:
+[0;33mTEST CASE:  [0mTesting Debugger Module
+
+[0m0.000231 s: Testing Debugger Module
+[0m[0;33m===============================================================================
+[0;37m../test.cpp:772:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+[0;33m
+DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
+[0m  Testing nested For-Loops
+  outer iteration #4
+  inner iteration #4
+
+[0m0.010060 s: Testing Simulation Module
+[0m[0;33m===============================================================================
+[0;36m[doctest] [0mtest cases:   6 | [0;32m  6 passed[0m | [0m0 failed[0m | [0m0 skipped[0m
+[0;36m[doctest] [0massertions: 550 | [0;32m550 passed[0m | [0m0 failed[0m |
 [0;36m[doctest] [0mStatus: [0;32mSUCCESS![0m

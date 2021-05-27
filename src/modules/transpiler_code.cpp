@@ -467,8 +467,10 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 	Transpiler::level--;
 
 	//closing
+#ifndef TEST
 	str_closing.append("  printf(\"PRESS ENTER TO EXIT\\n\");").append("\n");
 	str_closing.append("  getchar();").append("\n");
+#endif
 	str_closing.append("  return 0;").append("\n");
 	str_closing.append("}");
 
@@ -942,6 +944,8 @@ std::vector<Node*> Transpiler::get_rest(State* new_state)
 					this_node_pushed = true;
 				}
 			}
+			else
+				v_final.push_back(node);
 		}
 		++i;
 	}

@@ -14,7 +14,6 @@ struct Assessment
 	std::vector<std::string> v_submission;
 };
 
-
 struct AssessmentResult
 {
 	Assessment assessment;

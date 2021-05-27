@@ -5,8 +5,12 @@
 #include "core/defines.hpp"
 #include "core/config.hpp"
 #include "core/project.hpp"
+#include "modules/assessments.hpp"
+#include "modules/debugger.hpp"
 #include "modules/filesystem.hpp"
 #include "modules/input.hpp"
+#include "modules/simulation.hpp"
+#include "modules/transpiler.hpp"
 #include "node/connection.hpp"
 #include "node/nodes.hpp"
 #include "node/node_logic.hpp"
@@ -15,9 +19,11 @@
 #include "node/node_op.hpp"
 #include "node/node_cmp.hpp"
 #include "node/node_array.hpp"
+#include "node/node_for.hpp"
 
 using namespace CodeNect;
 
+//set this to true to enable logging
 bool inited = true;
 void init()
 {
@@ -716,4 +722,118 @@ TEST_CASE("Testing Visual Nodes Module")
 			}
 		}
 	}
+}
+
+TEST_CASE("Testing Transpiler Module")
+{
+	CHECK(Transpiler::v_declarations.size() == 0);
+	CHECK(Transpiler::level == 0);
+	CHECK(Transpiler::has_ran == false);
+	CHECK(Transpiler::has_compiled == false);
+	CHECK(Transpiler::n_transpiled == 0);
+	REQUIRE(Project::open("../test_op.cn") == RES_SUCCESS);
+	NodeLogic::process();
+	std::string str_transpiled;
+	Transpiler::init();
+	Transpiler::build_runnable_code(str_transpiled, false);
+	REQUIRE(Transpiler::compile() == RES_SUCCESS);
+	CHECK(Transpiler::level == 0);
+	CHECK(Transpiler::has_compiled == true);
+	CHECK(Transpiler::n_transpiled == 34);
+}
+
+TEST_CASE("Testing Debugger Module")
+{
+	CHECK(Debugger::v_msg_info.size() == 0);
+	REQUIRE(Project::open("../test_op.cn") == RES_SUCCESS);
+	NodeVariable* node_a = dynamic_cast<NodeVariable*>(Nodes::find_by_name("a_float"));
+	NodeOperation* node_op = dynamic_cast<NodeOperation*>(Nodes::find_by_name("ADD_1"));
+	REQUIRE(node_a != nullptr);
+	REQUIRE(node_op != nullptr);
+	bool has_deleted = false;
+	for (const Connection& connection : node_op->m_connections)
+	{
+		Node* in_node = static_cast<Node*>(connection.in_node);
+		Node* out_node = static_cast<Node*>(connection.out_node);
+		if (in_node == node_op && out_node == node_a)
+		{
+			node_a->delete_connection(connection);
+			node_op->delete_connection(connection);
+			has_deleted = true;
+			break;
+		}
+	}
+	CHECK(has_deleted == true);
+	NodeLogic::process();
+	REQUIRE(Debugger::v_msg_info.size() != 0);
+	Debugger::clear();
+	CHECK(Debugger::v_msg_info.size() == 0);
+}
+
+TEST_CASE("Testing Simulation Module")
+{
+	REQUIRE(Project::open("../test_for.cn") == RES_SUCCESS);
+
+	SUBCASE("Testing single For-Loop")
+	{
+		NodeFor* node_for = dynamic_cast<NodeFor*>(Nodes::find_by_name("FOR_1"));
+		REQUIRE(node_for != nullptr);
+
+		for (int i = 0; i < node_for->m_end_index; i += node_for->m_increment)
+		{
+			NodeLogic::process();
+			std::string name = "iteration #" + std::to_string(i);
+			SUBCASE(name.c_str())
+			{
+				REQUIRE(node_for->m_override_it == i);
+				Simulation::iterate(1);
+			}
+		}
+	}
+
+	SUBCASE("Testing nested For-Loops")
+	{
+		NodeFor* node_for_i = dynamic_cast<NodeFor*>(Nodes::find_by_name("FOR_0"));
+		NodeFor* node_for_j = dynamic_cast<NodeFor*>(Nodes::find_by_name("FOR_1"));
+		REQUIRE(node_for_i != nullptr);
+		REQUIRE(node_for_j != nullptr);
+
+		for (int i = 0; i < node_for_i->m_end_index; i += node_for_i->m_increment)
+		{
+			NodeLogic::process();
+			std::string outer = "outer iteration #" + std::to_string(i);
+			SUBCASE(outer.c_str())
+			{
+				for (int j = 0; j < node_for_j->m_end_index; j += node_for_j->m_increment)
+				{
+					NodeLogic::process();
+					std::string inner = "inner iteration #" + std::to_string(j);
+					SUBCASE(inner.c_str())
+					{
+						NodeLogic::process();
+						REQUIRE(node_for_j->m_override_it == j);
+						Simulation::iterate(1);
+					}
+				}
+			}
+		}
+	}
+	Project::close();
+}
+
+TEST_CASE("Testing Assessments Module")
+{
+	REQUIRE(Project::open("../test_assessment.cn") == RES_SUCCESS);
+	CHECK(Assessments::has_assessment == false);
+	CHECK(Assessments::v_results.size() == 0);
+	std::string str = "";
+	Transpiler::build_runnable_code(str, false);
+	REQUIRE(Transpiler::compile() == RES_SUCCESS);
+	REQUIRE(Transpiler::run() == RES_SUCCESS);
+	REQUIRE(Transpiler::v_printed.size() == 2);
+	Assessments::current_assessment = Assessments::v_list[0];
+	Assessments::has_assessment = true;
+	Assessments::submit(Transpiler::v_printed);
+	REQUIRE(Assessments::v_results.size() == 1);
+	REQUIRE(Assessments::v_results[0].score == 1);
 }
