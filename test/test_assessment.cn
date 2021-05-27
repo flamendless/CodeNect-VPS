@@ -2,117 +2,61 @@
 title = Name
 author = Brandon
 creation_dt = 21-05-2021 11:58:07
-offsetx = 145.000000
-offsety = -100.000000
+offsetx = -47.000000
+offsety = -126.000000
 
 
 [node_0]
 name = first_name
 kind = VARIABLE
-x = 178.600037
-y = 349.000000
+x = 71.600037
+y = 295.000000
 desc = 
 value_slot = STRING
-value = 
+value = What is your name? Brandon
 input_1 = STRING
 output_1 = STRING
 
 
-[connection_ADD_0_first_name]
-in_node_name = ADD_0
+[connection_PRINT_0_STRING-first_name_STRING]
+in_node_name = PRINT_0
 in_slot = STRING
 out_node_name = first_name
 out_slot = STRING
 
 
-[connection_first_name_PROMPT]
-in_node_name = first_name
-in_slot = STRING
-out_node_name = PROMPT
-out_slot = STRING
-
-
 [node_1]
-name = exclamation
-kind = VARIABLE
-x = 187.600037
-y = 503.000000
+name = PRINT_0
+kind = ACTION
+x = 410.500000
+y = 309.500000
 desc = 
-value_slot = STRING
-value = !
+action = PRINT
+value = 
+is_append = false
+is_override = true
+is_append_newline = true
 input_1 = STRING
 output_1 = STRING
 
 
-[connection_ADD_0_exclamation]
-in_node_name = ADD_0
+[connection_PRINT_1_STRING-PRINT_0_STRING]
+in_node_name = PRINT_1
 in_slot = STRING
-out_node_name = exclamation
+out_node_name = PRINT_0
 out_slot = STRING
 
 
 [node_2]
-name = ADD_0
-kind = OPERATION
-x = 405.600037
-y = 448.000000
-desc = 
-op = ADD
-input_1 = STRING
-output_1 = STRING
-
-
-[connection_res_ADD_0]
-in_node_name = res
-in_slot = STRING
-out_node_name = ADD_0
-out_slot = STRING
-
-
-[node_3]
-name = res
-kind = VARIABLE
-x = 671.733398
-y = 450.000000
-desc = 
-value_slot = STRING
-value = 
-input_1 = STRING
-output_1 = STRING
-
-
-[connection_PRINT_0_res]
-in_node_name = PRINT_0
-in_slot = STRING
-out_node_name = res
-out_slot = STRING
-
-
-[node_4]
-name = PRINT_0
+name = PRINT_1
 kind = ACTION
-x = 877.966675
-y = 418.500000
+x = 743.500000
+y = 311.500000
 desc = 
 action = PRINT
-value = Hello there,\s
-is_append = true
+value = Hello there, Brandon!
+is_append = false
 is_override = false
 is_append_newline = false
-input_1 = STRING
-output_1 = STRING
-
-
-[node_5]
-name = PROMPT
-kind = ACTION
-x = -115.500000
-y = 225.500000
-desc = 
-action = PROMPT
-value = What is your name?\s
-is_override = false
-is_append_newline = false
-fake_input = First Name
 input_1 = STRING
 output_1 = STRING

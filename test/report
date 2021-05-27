@@ -1,2547 +1,3234 @@
 [0;36m[doctest] [0mdoctest version is "2.4.6"
 [0;36m[doctest] [0mrun with "--help" for options
 [0;33m===============================================================================
-[0;37m../test.cpp:35:
+[0;37m../test.cpp:36:
 [0;33mTEST CASE:  [0mTesting Input/Output Module
 
-[0;37m../test.cpp:37: [1;32mSUCCESS: [0;36mREQUIRE( Input::v_keypresses.size() == 0 ) [0mis correct!
+[0;37m../test.cpp:38: [1;32mSUCCESS: [0;36mREQUIRE( Input::v_keypresses.size() == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:38: [1;32mSUCCESS: [0;36mREQUIRE( Input::v_keyreleases.size() == 0 ) [0mis correct!
+[0;37m../test.cpp:39: [1;32mSUCCESS: [0;36mREQUIRE( Input::v_keyreleases.size() == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:54: [1;32mSUCCESS: [0;36mCHECK( Input::v_keypresses.size() == 1 ) [0mis correct!
+[0;37m../test.cpp:55: [1;32mSUCCESS: [0;36mCHECK( Input::v_keypresses.size() == 1 ) [0mis correct!
   values: CHECK( 1 == 1 )
 
-[0;37m../test.cpp:55: [1;32mSUCCESS: [0;36mCHECK( Input::v_keyreleases.size() == 1 ) [0mis correct!
+[0;37m../test.cpp:56: [1;32mSUCCESS: [0;36mCHECK( Input::v_keyreleases.size() == 1 ) [0mis correct!
   values: CHECK( 1 == 1 )
 
-[0m0.000167 s: Testing Input/Output Module
+[0m0.000133 s: Testing Input/Output Module
 [0m[0;33m===============================================================================
-[0;37m../test.cpp:58:
+[0;37m../test.cpp:59:
 [0;33mTEST CASE:  [0mTesting Filesystem Module
   Opening valid project
 
-[0;37m../test.cpp:64: [1;32mSUCCESS: [0;36mCHECK( Project::nodes_count == 0 ) [0mis correct!
+[0;37m../test.cpp:65: [1;32mSUCCESS: [0;36mCHECK( Project::nodes_count == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:65: [1;32mSUCCESS: [0;36mCHECK( Project::connections_count == 0 ) [0mis correct!
+[0;37m../test.cpp:66: [1;32mSUCCESS: [0;36mCHECK( Project::connections_count == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:66: [1;32mSUCCESS: [0;36mCHECK( Project::has_open_proj == false ) [0mis correct!
+[0;37m../test.cpp:67: [1;32mSUCCESS: [0;36mCHECK( Project::has_open_proj == false ) [0mis correct!
   values: CHECK( false == false )
 
-[0;37m../test.cpp:67: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../../demo/name.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:68: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../../demo/name.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:68: [1;32mSUCCESS: [0;36mCHECK( Project::nodes_count == 6 ) [0mis correct!
+[0;37m../test.cpp:69: [1;32mSUCCESS: [0;36mCHECK( Project::nodes_count == 6 ) [0mis correct!
   values: CHECK( 6 == 6 )
 
-[0;37m../test.cpp:69: [1;32mSUCCESS: [0;36mCHECK( Project::connections_count == 10 ) [0mis correct!
+[0;37m../test.cpp:70: [1;32mSUCCESS: [0;36mCHECK( Project::connections_count == 10 ) [0mis correct!
   values: CHECK( 10 == 10 )
 
-[0;37m../test.cpp:70: [1;32mSUCCESS: [0;36mCHECK( Project::has_open_proj == true ) [0mis correct!
+[0;37m../test.cpp:71: [1;32mSUCCESS: [0;36mCHECK( Project::has_open_proj == true ) [0mis correct!
   values: CHECK( true == true )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:58:
+[0;37m../test.cpp:59:
 [0;33mTEST CASE:  [0mTesting Filesystem Module
   Closing valid project
 
-[0;37m../test.cpp:76: [1;32mSUCCESS: [0;36mCHECK( Project::nodes_count == 0 ) [0mis correct!
+[0;37m../test.cpp:77: [1;32mSUCCESS: [0;36mCHECK( Project::nodes_count == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:77: [1;32mSUCCESS: [0;36mCHECK( Project::connections_count == 0 ) [0mis correct!
+[0;37m../test.cpp:78: [1;32mSUCCESS: [0;36mCHECK( Project::connections_count == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:78: [1;32mSUCCESS: [0;36mCHECK( Project::has_open_proj == false ) [0mis correct!
+[0;37m../test.cpp:79: [1;32mSUCCESS: [0;36mCHECK( Project::has_open_proj == false ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:58:
+[0;37m../test.cpp:59:
 [0;33mTEST CASE:  [0mTesting Filesystem Module
   Opening invalid project
 
-[0;37m../test.cpp:83: [1;32mSUCCESS: [0;36mCHECK( Project::nodes_count == 0 ) [0mis correct!
+[0;37m../test.cpp:84: [1;32mSUCCESS: [0;36mCHECK( Project::nodes_count == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:84: [1;32mSUCCESS: [0;36mCHECK( Project::connections_count == 0 ) [0mis correct!
+[0;37m../test.cpp:85: [1;32mSUCCESS: [0;36mCHECK( Project::connections_count == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:85: [1;32mSUCCESS: [0;36mCHECK( Project::has_open_proj == false ) [0mis correct!
+[0;37m../test.cpp:86: [1;32mSUCCESS: [0;36mCHECK( Project::has_open_proj == false ) [0mis correct!
   values: CHECK( false == false )
 
-[0;37m../test.cpp:86: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../../demo/invalid.cn") == -1 ) [0mis correct!
+[0;37m../test.cpp:87: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../../demo/invalid.cn") == -1 ) [0mis correct!
   values: REQUIRE( -1 == -1 )
 
-[0;37m../test.cpp:87: [1;32mSUCCESS: [0;36mCHECK( Project::nodes_count == 0 ) [0mis correct!
+[0;37m../test.cpp:88: [1;32mSUCCESS: [0;36mCHECK( Project::nodes_count == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:88: [1;32mSUCCESS: [0;36mCHECK( Project::connections_count == 0 ) [0mis correct!
+[0;37m../test.cpp:89: [1;32mSUCCESS: [0;36mCHECK( Project::connections_count == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:89: [1;32mSUCCESS: [0;36mCHECK( Project::has_open_proj == false ) [0mis correct!
+[0;37m../test.cpp:90: [1;32mSUCCESS: [0;36mCHECK( Project::has_open_proj == false ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:58:
+[0;37m../test.cpp:59:
 [0;33mTEST CASE:  [0mTesting Filesystem Module
 [0;33m
 DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0m  Opening invalid project
 
-[0m0.001928 s: Testing Filesystem Module
+[0m0.001807 s: Testing Filesystem Module
 [0m[0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
 
-[0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:98: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   INTEGER
 
-[0;37m../test.cpp:102: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b8cf0 != NULL )
+[0;37m../test.cpp:103: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6bda0 != NULL )
 
-[0;37m../test.cpp:103: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == 32 ) [0mis correct!
+[0;37m../test.cpp:104: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == 32 ) [0mis correct!
   values: CHECK( 32 == 32 )
 
-[0;37m../test.cpp:105: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b8df0 != NULL )
+[0;37m../test.cpp:106: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6bea0 != NULL )
 
-[0;37m../test.cpp:106: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == 64 ) [0mis correct!
+[0;37m../test.cpp:107: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == 64 ) [0mis correct!
   values: CHECK( 64 == 64 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   INTEGER
   Testing Addition Logic
 
-[0;37m../test.cpp:112: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ba570 != NULL )
+[0;37m../test.cpp:113: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6d620 != NULL )
 
-[0;37m../test.cpp:113: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(node_var->m_value.data) == 96 ) [0mis correct!
+[0;37m../test.cpp:114: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(node_var->m_value.data) == 96 ) [0mis correct!
   values: CHECK( 96 == 96 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
 
-[0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:98: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   INTEGER
 
-[0;37m../test.cpp:102: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b8cf0 != NULL )
+[0;37m../test.cpp:103: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6bda0 != NULL )
 
-[0;37m../test.cpp:103: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == 32 ) [0mis correct!
+[0;37m../test.cpp:104: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == 32 ) [0mis correct!
   values: CHECK( 32 == 32 )
 
-[0;37m../test.cpp:105: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b8df0 != NULL )
+[0;37m../test.cpp:106: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6bea0 != NULL )
 
-[0;37m../test.cpp:106: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == 64 ) [0mis correct!
+[0;37m../test.cpp:107: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == 64 ) [0mis correct!
   values: CHECK( 64 == 64 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   INTEGER
   Testing Subtraction Logic
 
-[0;37m../test.cpp:119: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36baa70 != NULL )
+[0;37m../test.cpp:120: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6db20 != NULL )
 
-[0;37m../test.cpp:120: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(node_var->m_value.data) == -32 ) [0mis correct!
+[0;37m../test.cpp:121: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(node_var->m_value.data) == -32 ) [0mis correct!
   values: CHECK( -32 == -32 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
 
-[0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:98: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   INTEGER
 
-[0;37m../test.cpp:102: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b8cf0 != NULL )
+[0;37m../test.cpp:103: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6bda0 != NULL )
 
-[0;37m../test.cpp:103: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == 32 ) [0mis correct!
+[0;37m../test.cpp:104: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == 32 ) [0mis correct!
   values: CHECK( 32 == 32 )
 
-[0;37m../test.cpp:105: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b8df0 != NULL )
+[0;37m../test.cpp:106: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6bea0 != NULL )
 
-[0;37m../test.cpp:106: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == 64 ) [0mis correct!
+[0;37m../test.cpp:107: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == 64 ) [0mis correct!
   values: CHECK( 64 == 64 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   INTEGER
   Testing Multiplication Logic
 
-[0;37m../test.cpp:126: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b9d10 != NULL )
+[0;37m../test.cpp:127: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6cdc0 != NULL )
 
-[0;37m../test.cpp:127: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(node_var->m_value.data) == 2048 ) [0mis correct!
+[0;37m../test.cpp:128: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(node_var->m_value.data) == 2048 ) [0mis correct!
   values: CHECK( 2048 == 2048 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
 
-[0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:98: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   INTEGER
 
-[0;37m../test.cpp:102: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b8cf0 != NULL )
+[0;37m../test.cpp:103: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6bda0 != NULL )
 
-[0;37m../test.cpp:103: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == 32 ) [0mis correct!
+[0;37m../test.cpp:104: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == 32 ) [0mis correct!
   values: CHECK( 32 == 32 )
 
-[0;37m../test.cpp:105: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b8df0 != NULL )
+[0;37m../test.cpp:106: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6bea0 != NULL )
 
-[0;37m../test.cpp:106: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == 64 ) [0mis correct!
+[0;37m../test.cpp:107: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == 64 ) [0mis correct!
   values: CHECK( 64 == 64 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   INTEGER
   Testing Division Logic
 
-[0;37m../test.cpp:133: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36babe0 != NULL )
+[0;37m../test.cpp:134: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6dc90 != NULL )
 
-[0;37m../test.cpp:134: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(node_var->m_value.data) == 0 ) [0mis correct!
+[0;37m../test.cpp:135: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(node_var->m_value.data) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
 
-[0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:98: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   FLOAT
 
-[0;37m../test.cpp:141: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36bb350 != NULL )
+[0;37m../test.cpp:142: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6e400 != NULL )
 
-[0;37m../test.cpp:142: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == 32.0f ) [0mis correct!
+[0;37m../test.cpp:143: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == 32.0f ) [0mis correct!
   values: CHECK( 32.0f == 32.0f )
 
-[0;37m../test.cpp:144: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36bb4c0 != NULL )
+[0;37m../test.cpp:145: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6e570 != NULL )
 
-[0;37m../test.cpp:145: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == 24.0f ) [0mis correct!
+[0;37m../test.cpp:146: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == 24.0f ) [0mis correct!
   values: CHECK( 24.0f == 24.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   FLOAT
   Testing Addition Logic
 
-[0;37m../test.cpp:151: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b8f60 != NULL )
+[0;37m../test.cpp:152: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6c010 != NULL )
 
-[0;37m../test.cpp:152: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(node_var->m_value.data) == 56.0f ) [0mis correct!
+[0;37m../test.cpp:153: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(node_var->m_value.data) == 56.0f ) [0mis correct!
   values: CHECK( 56.0f == 56.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
 
-[0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:98: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   FLOAT
 
-[0;37m../test.cpp:141: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36bb350 != NULL )
+[0;37m../test.cpp:142: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6e400 != NULL )
 
-[0;37m../test.cpp:142: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == 32.0f ) [0mis correct!
+[0;37m../test.cpp:143: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == 32.0f ) [0mis correct!
   values: CHECK( 32.0f == 32.0f )
 
-[0;37m../test.cpp:144: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36bb4c0 != NULL )
+[0;37m../test.cpp:145: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6e570 != NULL )
 
-[0;37m../test.cpp:145: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == 24.0f ) [0mis correct!
+[0;37m../test.cpp:146: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == 24.0f ) [0mis correct!
   values: CHECK( 24.0f == 24.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   FLOAT
   Testing Subtraction Logic
 
-[0;37m../test.cpp:158: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b90d0 != NULL )
+[0;37m../test.cpp:159: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6c180 != NULL )
 
-[0;37m../test.cpp:159: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(node_var->m_value.data) == 8.0f ) [0mis correct!
+[0;37m../test.cpp:160: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(node_var->m_value.data) == 8.0f ) [0mis correct!
   values: CHECK( 8.0f == 8.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
 
-[0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:98: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   FLOAT
 
-[0;37m../test.cpp:141: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36bb350 != NULL )
+[0;37m../test.cpp:142: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6e400 != NULL )
 
-[0;37m../test.cpp:142: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == 32.0f ) [0mis correct!
+[0;37m../test.cpp:143: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == 32.0f ) [0mis correct!
   values: CHECK( 32.0f == 32.0f )
 
-[0;37m../test.cpp:144: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36bb4c0 != NULL )
+[0;37m../test.cpp:145: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6e570 != NULL )
 
-[0;37m../test.cpp:145: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == 24.0f ) [0mis correct!
+[0;37m../test.cpp:146: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == 24.0f ) [0mis correct!
   values: CHECK( 24.0f == 24.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   FLOAT
   Testing Multiplication Logic
 
-[0;37m../test.cpp:165: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b9240 != NULL )
+[0;37m../test.cpp:166: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6c2f0 != NULL )
 
-[0;37m../test.cpp:166: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(node_var->m_value.data) == (32.0f * 24.0f) ) [0mis correct!
+[0;37m../test.cpp:167: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(node_var->m_value.data) == (32.0f * 24.0f) ) [0mis correct!
   values: CHECK( 768.0f == 768.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
 
-[0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:98: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   FLOAT
 
-[0;37m../test.cpp:141: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36bb350 != NULL )
+[0;37m../test.cpp:142: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6e400 != NULL )
 
-[0;37m../test.cpp:142: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == 32.0f ) [0mis correct!
+[0;37m../test.cpp:143: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == 32.0f ) [0mis correct!
   values: CHECK( 32.0f == 32.0f )
 
-[0;37m../test.cpp:144: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36bb4c0 != NULL )
+[0;37m../test.cpp:145: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6e570 != NULL )
 
-[0;37m../test.cpp:145: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == 24.0f ) [0mis correct!
+[0;37m../test.cpp:146: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == 24.0f ) [0mis correct!
   values: CHECK( 24.0f == 24.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   FLOAT
   Testing Division Logic
 
-[0;37m../test.cpp:172: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ba2d0 != NULL )
+[0;37m../test.cpp:173: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6d380 != NULL )
 
-[0;37m../test.cpp:173: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(node_var->m_value.data) == (32.0f/24.0f) ) [0mis correct!
+[0;37m../test.cpp:174: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(node_var->m_value.data) == (32.0f/24.0f) ) [0mis correct!
   values: CHECK( 1.33333f == 1.33333f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
 
-[0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:98: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   DOUBLE
 
-[0;37m../test.cpp:180: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b93b0 != NULL )
+[0;37m../test.cpp:181: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6c460 != NULL )
 
-[0;37m../test.cpp:181: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == 32.0 ) [0mis correct!
+[0;37m../test.cpp:182: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == 32.0 ) [0mis correct!
   values: CHECK( 32.0 == 32.0 )
 
-[0;37m../test.cpp:183: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b9520 != NULL )
+[0;37m../test.cpp:184: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6c5d0 != NULL )
 
-[0;37m../test.cpp:184: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == 24.0 ) [0mis correct!
+[0;37m../test.cpp:185: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == 24.0 ) [0mis correct!
   values: CHECK( 24.0 == 24.0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   DOUBLE
   Testing Addition Logic
 
-[0;37m../test.cpp:190: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b9ba0 != NULL )
+[0;37m../test.cpp:191: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6cc50 != NULL )
 
-[0;37m../test.cpp:191: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(node_var->m_value.data) == 56.0 ) [0mis correct!
+[0;37m../test.cpp:192: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(node_var->m_value.data) == 56.0 ) [0mis correct!
   values: CHECK( 56.0 == 56.0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
 
-[0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:98: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   DOUBLE
 
-[0;37m../test.cpp:180: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b93b0 != NULL )
+[0;37m../test.cpp:181: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6c460 != NULL )
 
-[0;37m../test.cpp:181: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == 32.0 ) [0mis correct!
+[0;37m../test.cpp:182: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == 32.0 ) [0mis correct!
   values: CHECK( 32.0 == 32.0 )
 
-[0;37m../test.cpp:183: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b9520 != NULL )
+[0;37m../test.cpp:184: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6c5d0 != NULL )
 
-[0;37m../test.cpp:184: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == 24.0 ) [0mis correct!
+[0;37m../test.cpp:185: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == 24.0 ) [0mis correct!
   values: CHECK( 24.0 == 24.0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   DOUBLE
   Testing Subtraction Logic
 
-[0;37m../test.cpp:197: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b9e80 != NULL )
+[0;37m../test.cpp:198: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6cf30 != NULL )
 
-[0;37m../test.cpp:198: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(node_var->m_value.data) == 8.0 ) [0mis correct!
+[0;37m../test.cpp:199: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(node_var->m_value.data) == 8.0 ) [0mis correct!
   values: CHECK( 8.0 == 8.0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
 
-[0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:98: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   DOUBLE
 
-[0;37m../test.cpp:180: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b93b0 != NULL )
+[0;37m../test.cpp:181: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6c460 != NULL )
 
-[0;37m../test.cpp:181: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == 32.0 ) [0mis correct!
+[0;37m../test.cpp:182: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == 32.0 ) [0mis correct!
   values: CHECK( 32.0 == 32.0 )
 
-[0;37m../test.cpp:183: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b9520 != NULL )
+[0;37m../test.cpp:184: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6c5d0 != NULL )
 
-[0;37m../test.cpp:184: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == 24.0 ) [0mis correct!
+[0;37m../test.cpp:185: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == 24.0 ) [0mis correct!
   values: CHECK( 24.0 == 24.0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   DOUBLE
   Testing Multiplication Logic
 
-[0;37m../test.cpp:204: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b9ff0 != NULL )
+[0;37m../test.cpp:205: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6d0a0 != NULL )
 
-[0;37m../test.cpp:205: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(node_var->m_value.data) == (32.0 * 24.0) ) [0mis correct!
+[0;37m../test.cpp:206: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(node_var->m_value.data) == (32.0 * 24.0) ) [0mis correct!
   values: CHECK( 768.0 == 768.0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
 
-[0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:98: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   DOUBLE
 
-[0;37m../test.cpp:180: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b93b0 != NULL )
+[0;37m../test.cpp:181: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6c460 != NULL )
 
-[0;37m../test.cpp:181: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == 32.0 ) [0mis correct!
+[0;37m../test.cpp:182: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == 32.0 ) [0mis correct!
   values: CHECK( 32.0 == 32.0 )
 
-[0;37m../test.cpp:183: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36b9520 != NULL )
+[0;37m../test.cpp:184: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6c5d0 != NULL )
 
-[0;37m../test.cpp:184: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == 24.0 ) [0mis correct!
+[0;37m../test.cpp:185: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == 24.0 ) [0mis correct!
   values: CHECK( 24.0 == 24.0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   DOUBLE
   Testing Division Logic
 
-[0;37m../test.cpp:211: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ba160 != NULL )
+[0;37m../test.cpp:212: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6d210 != NULL )
 
-[0;37m../test.cpp:212: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(node_var->m_value.data) == (32.0/24.0) ) [0mis correct!
+[0;37m../test.cpp:213: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(node_var->m_value.data) == (32.0/24.0) ) [0mis correct!
   values: CHECK( 1.3333333333 == 1.3333333333 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
 
-[0;37m../test.cpp:97: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:98: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   STRING
 
-[0;37m../test.cpp:219: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36bad50 != NULL )
+[0;37m../test.cpp:220: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6de00 != NULL )
 
-[0;37m../test.cpp:220: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var_a->m_value.data).compare("hello, ") == 0) ) [0mis correct!
+[0;37m../test.cpp:221: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var_a->m_value.data).compare("hello, ") == 0) ) [0mis correct!
   values: CHECK( true )
 
-[0;37m../test.cpp:222: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36baec0 != NULL )
+[0;37m../test.cpp:223: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6df70 != NULL )
 
-[0;37m../test.cpp:223: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var_b->m_value.data)).compare("world!") == 0 ) [0mis correct!
+[0;37m../test.cpp:224: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var_b->m_value.data)).compare("world!") == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Operation Logic
   STRING
   Testing Addition Logic
 
-[0;37m../test.cpp:229: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36bb1e0 != NULL )
+[0;37m../test.cpp:230: [1;32mSUCCESS: [0;36mREQUIRE( node_var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd6e290 != NULL )
 
-[0;37m../test.cpp:230: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(node_var->m_value.data)).compare("hello, world!") == 0 ) [0mis correct!
+[0;37m../test.cpp:231: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(node_var->m_value.data)).compare("hello, world!") == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
 
-[0;37m../test.cpp:237: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From INTEGER
 
-[0;37m../test.cpp:244: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c6670 != NULL )
+[0;37m../test.cpp:245: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd79720 != NULL )
 
-[0;37m../test.cpp:245: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:246: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var->m_value.data) == val ) [0mis correct!
   values: CHECK( 8 == 8 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From INTEGER
   To BOOL
 
-[0;37m../test.cpp:251: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c6960 != NULL )
+[0;37m../test.cpp:252: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd79a10 != NULL )
 
-[0;37m../test.cpp:252: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (bool)val ) [0mis correct!
+[0;37m../test.cpp:253: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (bool)val ) [0mis correct!
   values: CHECK( true == true )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
 
-[0;37m../test.cpp:237: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From INTEGER
 
-[0;37m../test.cpp:244: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c6670 != NULL )
+[0;37m../test.cpp:245: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd79720 != NULL )
 
-[0;37m../test.cpp:245: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:246: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var->m_value.data) == val ) [0mis correct!
   values: CHECK( 8 == 8 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From INTEGER
   To FLOAT
 
-[0;37m../test.cpp:258: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c6880 != NULL )
+[0;37m../test.cpp:259: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd79930 != NULL )
 
-[0;37m../test.cpp:259: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == (float)val ) [0mis correct!
+[0;37m../test.cpp:260: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == (float)val ) [0mis correct!
   values: CHECK( 8.0f == 8.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
 
-[0;37m../test.cpp:237: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From INTEGER
 
-[0;37m../test.cpp:244: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c6670 != NULL )
+[0;37m../test.cpp:245: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd79720 != NULL )
 
-[0;37m../test.cpp:245: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:246: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var->m_value.data) == val ) [0mis correct!
   values: CHECK( 8 == 8 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From INTEGER
   To DOUBLE
 
-[0;37m../test.cpp:265: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c6ad0 != NULL )
+[0;37m../test.cpp:266: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd79b80 != NULL )
 
-[0;37m../test.cpp:266: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var2->m_value.data) == (double)val ) [0mis correct!
+[0;37m../test.cpp:267: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var2->m_value.data) == (double)val ) [0mis correct!
   values: CHECK( 8.0 == 8.0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
 
-[0;37m../test.cpp:237: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From INTEGER
 
-[0;37m../test.cpp:244: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c6670 != NULL )
+[0;37m../test.cpp:245: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd79720 != NULL )
 
-[0;37m../test.cpp:245: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:246: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var->m_value.data) == val ) [0mis correct!
   values: CHECK( 8 == 8 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From INTEGER
   To STRING
 
-[0;37m../test.cpp:272: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c6bf0 != NULL )
+[0;37m../test.cpp:273: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd79ca0 != NULL )
 
-[0;37m../test.cpp:273: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var2->m_value.data)).compare(std::to_string(val)) == 0 ) [0mis correct!
+[0;37m../test.cpp:274: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var2->m_value.data)).compare(std::to_string(val)) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
 
-[0;37m../test.cpp:237: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From FLOAT
 
-[0;37m../test.cpp:281: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c6d10 != NULL )
+[0;37m../test.cpp:282: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd79dc0 != NULL )
 
-[0;37m../test.cpp:282: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:283: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var->m_value.data) == val ) [0mis correct!
   values: CHECK( 16.0f == 16.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From FLOAT
   To INTEGER
 
-[0;37m../test.cpp:288: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c8930 != NULL )
+[0;37m../test.cpp:289: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd7b9e0 != NULL )
 
-[0;37m../test.cpp:289: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var2->m_value.data) == (int)val ) [0mis correct!
+[0;37m../test.cpp:290: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var2->m_value.data) == (int)val ) [0mis correct!
   values: CHECK( 16 == 16 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
 
-[0;37m../test.cpp:237: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From FLOAT
 
-[0;37m../test.cpp:281: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c6d10 != NULL )
+[0;37m../test.cpp:282: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd79dc0 != NULL )
 
-[0;37m../test.cpp:282: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:283: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var->m_value.data) == val ) [0mis correct!
   values: CHECK( 16.0f == 16.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From FLOAT
   To DOUBLE
 
-[0;37m../test.cpp:295: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c8a50 != NULL )
+[0;37m../test.cpp:296: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd7bb00 != NULL )
 
-[0;37m../test.cpp:296: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var2->m_value.data) == (double)val ) [0mis correct!
+[0;37m../test.cpp:297: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var2->m_value.data) == (double)val ) [0mis correct!
   values: CHECK( 16.0 == 16.0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
 
-[0;37m../test.cpp:237: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From FLOAT
 
-[0;37m../test.cpp:281: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c6d10 != NULL )
+[0;37m../test.cpp:282: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd79dc0 != NULL )
 
-[0;37m../test.cpp:282: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:283: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var->m_value.data) == val ) [0mis correct!
   values: CHECK( 16.0f == 16.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From FLOAT
   To STRING
 
-[0;37m../test.cpp:302: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c8b70 != NULL )
+[0;37m../test.cpp:303: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd7bc20 != NULL )
 
-[0;37m../test.cpp:303: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var2->m_value.data)).compare(std::to_string(val)) == 0 ) [0mis correct!
+[0;37m../test.cpp:304: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var2->m_value.data)).compare(std::to_string(val)) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
 
-[0;37m../test.cpp:237: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From DOUBLE
 
-[0;37m../test.cpp:311: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c6e30 != NULL )
+[0;37m../test.cpp:312: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd79ee0 != NULL )
 
-[0;37m../test.cpp:312: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:313: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.0 == 32.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From DOUBLE
   To INTEGER
 
-[0;37m../test.cpp:318: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c7510 != NULL )
+[0;37m../test.cpp:319: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd7a5c0 != NULL )
 
-[0;37m../test.cpp:319: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var2->m_value.data) == (int)val ) [0mis correct!
+[0;37m../test.cpp:320: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var2->m_value.data) == (int)val ) [0mis correct!
   values: CHECK( 32 == 32 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
 
-[0;37m../test.cpp:237: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From DOUBLE
 
-[0;37m../test.cpp:311: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c6e30 != NULL )
+[0;37m../test.cpp:312: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd79ee0 != NULL )
 
-[0;37m../test.cpp:312: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:313: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.0 == 32.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From DOUBLE
   To FLOAT
 
-[0;37m../test.cpp:325: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c7680 != NULL )
+[0;37m../test.cpp:326: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd7a730 != NULL )
 
-[0;37m../test.cpp:326: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == (float)val ) [0mis correct!
+[0;37m../test.cpp:327: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == (float)val ) [0mis correct!
   values: CHECK( 32.0f == 32.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
 
-[0;37m../test.cpp:237: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From DOUBLE
 
-[0;37m../test.cpp:311: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c6e30 != NULL )
+[0;37m../test.cpp:312: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd79ee0 != NULL )
 
-[0;37m../test.cpp:312: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:313: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.0 == 32.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From DOUBLE
   To STRING
 
-[0;37m../test.cpp:332: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c77f0 != NULL )
+[0;37m../test.cpp:333: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd7a8a0 != NULL )
 
-[0;37m../test.cpp:333: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var2->m_value.data)).compare(std::to_string(val)) == 0 ) [0mis correct!
+[0;37m../test.cpp:334: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var2->m_value.data)).compare(std::to_string(val)) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
 
-[0;37m../test.cpp:237: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From STRING
 
-[0;37m../test.cpp:341: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c7960 != NULL )
+[0;37m../test.cpp:342: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd7aa10 != NULL )
 
-[0;37m../test.cpp:342: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var->m_value.data)).compare(val) == 0 ) [0mis correct!
+[0;37m../test.cpp:343: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var->m_value.data)).compare(val) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From STRING
   To BOOL
 
-[0;37m../test.cpp:348: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c80d0 != NULL )
+[0;37m../test.cpp:349: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd7b180 != NULL )
 
-[0;37m../test.cpp:349: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == false ) [0mis correct!
+[0;37m../test.cpp:350: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == false ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
 
-[0;37m../test.cpp:237: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From STRING
 
-[0;37m../test.cpp:341: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c7960 != NULL )
+[0;37m../test.cpp:342: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd7aa10 != NULL )
 
-[0;37m../test.cpp:342: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var->m_value.data)).compare(val) == 0 ) [0mis correct!
+[0;37m../test.cpp:343: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var->m_value.data)).compare(val) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From STRING
   To INTEGER
 
-[0;37m../test.cpp:355: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c8240 != NULL )
+[0;37m../test.cpp:356: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd7b2f0 != NULL )
 
-[0;37m../test.cpp:356: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var2->m_value.data) == std::stoi(val) ) [0mis correct!
+[0;37m../test.cpp:357: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var2->m_value.data) == std::stoi(val) ) [0mis correct!
   values: CHECK( 48 == 48 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
 
-[0;37m../test.cpp:237: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From STRING
 
-[0;37m../test.cpp:341: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c7960 != NULL )
+[0;37m../test.cpp:342: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd7aa10 != NULL )
 
-[0;37m../test.cpp:342: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var->m_value.data)).compare(val) == 0 ) [0mis correct!
+[0;37m../test.cpp:343: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var->m_value.data)).compare(val) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From STRING
   To FLOAT
 
-[0;37m../test.cpp:362: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c8500 != NULL )
+[0;37m../test.cpp:363: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd7b5b0 != NULL )
 
-[0;37m../test.cpp:363: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == std::stof(val) ) [0mis correct!
+[0;37m../test.cpp:364: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == std::stof(val) ) [0mis correct!
   values: CHECK( 48.64f == 48.64f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
 
-[0;37m../test.cpp:237: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:238: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cast.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From STRING
 
-[0;37m../test.cpp:341: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c7960 != NULL )
+[0;37m../test.cpp:342: [1;32mSUCCESS: [0;36mREQUIRE( var != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd7aa10 != NULL )
 
-[0;37m../test.cpp:342: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var->m_value.data)).compare(val) == 0 ) [0mis correct!
+[0;37m../test.cpp:343: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var->m_value.data)).compare(val) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Cast Logic
   From STRING
   To DOUBLE
 
-[0;37m../test.cpp:369: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36c8670 != NULL )
+[0;37m../test.cpp:370: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd7b720 != NULL )
 
-[0;37m../test.cpp:370: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var2->m_value.data) == std::stod(val) ) [0mis correct!
+[0;37m../test.cpp:371: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var2->m_value.data) == std::stod(val) ) [0mis correct!
   values: CHECK( 48.64 == 48.64 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   BOOL
 
-[0;37m../test.cpp:386: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ec910 != NULL )
+[0;37m../test.cpp:387: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9f9c0 != NULL )
 
-[0;37m../test.cpp:387: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ec9f0 != NULL )
+[0;37m../test.cpp:388: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9faa0 != NULL )
 
-[0;37m../test.cpp:388: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:389: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( true == true )
 
-[0;37m../test.cpp:389: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:390: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   BOOL
   ==
 
-[0;37m../test.cpp:395: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ecf30 != NULL )
+[0;37m../test.cpp:396: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9ffe0 != NULL )
 
-[0;37m../test.cpp:396: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
+[0;37m../test.cpp:397: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   BOOL
 
-[0;37m../test.cpp:386: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ec910 != NULL )
+[0;37m../test.cpp:387: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9f9c0 != NULL )
 
-[0;37m../test.cpp:387: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ec9f0 != NULL )
+[0;37m../test.cpp:388: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9faa0 != NULL )
 
-[0;37m../test.cpp:388: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:389: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( true == true )
 
-[0;37m../test.cpp:389: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:390: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   BOOL
   !=
 
-[0;37m../test.cpp:401: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ed0a0 != NULL )
+[0;37m../test.cpp:402: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda0150 != NULL )
 
-[0;37m../test.cpp:402: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
+[0;37m../test.cpp:403: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
   values: CHECK( true == true )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   BOOL
 
-[0;37m../test.cpp:386: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ec910 != NULL )
+[0;37m../test.cpp:387: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9f9c0 != NULL )
 
-[0;37m../test.cpp:387: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ec9f0 != NULL )
+[0;37m../test.cpp:388: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9faa0 != NULL )
 
-[0;37m../test.cpp:388: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:389: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( true == true )
 
-[0;37m../test.cpp:389: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:390: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   BOOL
   ||
 
-[0;37m../test.cpp:407: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ed210 != NULL )
+[0;37m../test.cpp:408: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda02c0 != NULL )
 
-[0;37m../test.cpp:408: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val || val2) ) [0mis correct!
+[0;37m../test.cpp:409: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val || val2) ) [0mis correct!
   values: CHECK( true == true )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   BOOL
 
-[0;37m../test.cpp:386: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ec910 != NULL )
+[0;37m../test.cpp:387: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9f9c0 != NULL )
 
-[0;37m../test.cpp:387: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ec9f0 != NULL )
+[0;37m../test.cpp:388: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9faa0 != NULL )
 
-[0;37m../test.cpp:388: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:389: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( true == true )
 
-[0;37m../test.cpp:389: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:390: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   BOOL
   &&
 
-[0;37m../test.cpp:413: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ed380 != NULL )
+[0;37m../test.cpp:414: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda0430 != NULL )
 
-[0;37m../test.cpp:414: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val && val2) ) [0mis correct!
+[0;37m../test.cpp:415: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val && val2) ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   INTEGER
 
-[0;37m../test.cpp:424: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ece10 != NULL )
+[0;37m../test.cpp:425: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9fec0 != NULL )
 
-[0;37m../test.cpp:425: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ed4f0 != NULL )
+[0;37m../test.cpp:426: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda05a0 != NULL )
 
-[0;37m../test.cpp:426: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:427: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32 == 32 )
 
-[0;37m../test.cpp:427: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:428: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64 == 64 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   INTEGER
   ==
 
-[0;37m../test.cpp:433: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ed890 != NULL )
+[0;37m../test.cpp:434: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda0940 != NULL )
 
-[0;37m../test.cpp:434: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
+[0;37m../test.cpp:435: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   INTEGER
 
-[0;37m../test.cpp:424: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ece10 != NULL )
+[0;37m../test.cpp:425: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9fec0 != NULL )
 
-[0;37m../test.cpp:425: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ed4f0 != NULL )
+[0;37m../test.cpp:426: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda05a0 != NULL )
 
-[0;37m../test.cpp:426: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:427: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32 == 32 )
 
-[0;37m../test.cpp:427: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:428: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64 == 64 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   INTEGER
   !=
 
-[0;37m../test.cpp:439: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f1570 != NULL )
+[0;37m../test.cpp:440: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda4620 != NULL )
 
-[0;37m../test.cpp:440: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
+[0;37m../test.cpp:441: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
   values: CHECK( true == true )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   INTEGER
 
-[0;37m../test.cpp:424: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ece10 != NULL )
+[0;37m../test.cpp:425: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9fec0 != NULL )
 
-[0;37m../test.cpp:425: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ed4f0 != NULL )
+[0;37m../test.cpp:426: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda05a0 != NULL )
 
-[0;37m../test.cpp:426: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:427: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32 == 32 )
 
-[0;37m../test.cpp:427: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:428: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64 == 64 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   INTEGER
   <
 
-[0;37m../test.cpp:445: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ee7c0 != NULL )
+[0;37m../test.cpp:446: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1870 != NULL )
 
-[0;37m../test.cpp:446: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val < val2) ) [0mis correct!
+[0;37m../test.cpp:447: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val < val2) ) [0mis correct!
   values: CHECK( true == true )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   INTEGER
 
-[0;37m../test.cpp:424: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ece10 != NULL )
+[0;37m../test.cpp:425: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9fec0 != NULL )
 
-[0;37m../test.cpp:425: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ed4f0 != NULL )
+[0;37m../test.cpp:426: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda05a0 != NULL )
 
-[0;37m../test.cpp:426: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:427: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32 == 32 )
 
-[0;37m../test.cpp:427: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:428: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64 == 64 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   INTEGER
   >
 
-[0;37m../test.cpp:451: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f1400 != NULL )
+[0;37m../test.cpp:452: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda44b0 != NULL )
 
-[0;37m../test.cpp:452: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val > val2) ) [0mis correct!
+[0;37m../test.cpp:453: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val > val2) ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   INTEGER
 
-[0;37m../test.cpp:424: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ece10 != NULL )
+[0;37m../test.cpp:425: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9fec0 != NULL )
 
-[0;37m../test.cpp:425: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ed4f0 != NULL )
+[0;37m../test.cpp:426: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda05a0 != NULL )
 
-[0;37m../test.cpp:426: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:427: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32 == 32 )
 
-[0;37m../test.cpp:427: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:428: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64 == 64 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   INTEGER
   <=
 
-[0;37m../test.cpp:457: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f07b0 != NULL )
+[0;37m../test.cpp:458: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda3860 != NULL )
 
-[0;37m../test.cpp:458: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val <= val2) ) [0mis correct!
+[0;37m../test.cpp:459: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val <= val2) ) [0mis correct!
   values: CHECK( true == true )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   INTEGER
 
-[0;37m../test.cpp:424: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ece10 != NULL )
+[0;37m../test.cpp:425: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd9fec0 != NULL )
 
-[0;37m../test.cpp:425: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ed4f0 != NULL )
+[0;37m../test.cpp:426: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda05a0 != NULL )
 
-[0;37m../test.cpp:426: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:427: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32 == 32 )
 
-[0;37m../test.cpp:427: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:428: [1;32mSUCCESS: [0;36mCHECK( std::get<int>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64 == 64 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   INTEGER
   >=
 
-[0;37m../test.cpp:463: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f16e0 != NULL )
+[0;37m../test.cpp:464: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda4790 != NULL )
 
-[0;37m../test.cpp:464: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val >= val2) ) [0mis correct!
+[0;37m../test.cpp:465: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val >= val2) ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   FLOAT
 
-[0;37m../test.cpp:474: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36edf90 != NULL )
+[0;37m../test.cpp:475: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1040 != NULL )
 
-[0;37m../test.cpp:475: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ee0b0 != NULL )
+[0;37m../test.cpp:476: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1160 != NULL )
 
-[0;37m../test.cpp:476: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:477: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.32323f == 32.32323f )
 
-[0;37m../test.cpp:477: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:478: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64.64646f == 64.64646f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   FLOAT
   ==
 
-[0;37m../test.cpp:483: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36eec70 != NULL )
+[0;37m../test.cpp:484: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1d20 != NULL )
 
-[0;37m../test.cpp:484: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
+[0;37m../test.cpp:485: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   FLOAT
 
-[0;37m../test.cpp:474: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36edf90 != NULL )
+[0;37m../test.cpp:475: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1040 != NULL )
 
-[0;37m../test.cpp:475: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ee0b0 != NULL )
+[0;37m../test.cpp:476: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1160 != NULL )
 
-[0;37m../test.cpp:476: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:477: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.32323f == 32.32323f )
 
-[0;37m../test.cpp:477: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:478: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64.64646f == 64.64646f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   FLOAT
   !=
 
-[0;37m../test.cpp:489: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36eede0 != NULL )
+[0;37m../test.cpp:490: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1e90 != NULL )
 
-[0;37m../test.cpp:490: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
+[0;37m../test.cpp:491: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
   values: CHECK( true == true )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   FLOAT
 
-[0;37m../test.cpp:474: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36edf90 != NULL )
+[0;37m../test.cpp:475: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1040 != NULL )
 
-[0;37m../test.cpp:475: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ee0b0 != NULL )
+[0;37m../test.cpp:476: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1160 != NULL )
 
-[0;37m../test.cpp:476: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:477: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.32323f == 32.32323f )
 
-[0;37m../test.cpp:477: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:478: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64.64646f == 64.64646f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   FLOAT
   <
 
-[0;37m../test.cpp:495: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36eef50 != NULL )
+[0;37m../test.cpp:496: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda2000 != NULL )
 
-[0;37m../test.cpp:496: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val < val2) ) [0mis correct!
+[0;37m../test.cpp:497: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val < val2) ) [0mis correct!
   values: CHECK( true == true )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   FLOAT
 
-[0;37m../test.cpp:474: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36edf90 != NULL )
+[0;37m../test.cpp:475: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1040 != NULL )
 
-[0;37m../test.cpp:475: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ee0b0 != NULL )
+[0;37m../test.cpp:476: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1160 != NULL )
 
-[0;37m../test.cpp:476: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:477: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.32323f == 32.32323f )
 
-[0;37m../test.cpp:477: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:478: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64.64646f == 64.64646f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   FLOAT
   >
 
-[0;37m../test.cpp:501: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef0c0 != NULL )
+[0;37m../test.cpp:502: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda2170 != NULL )
 
-[0;37m../test.cpp:502: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val > val2) ) [0mis correct!
+[0;37m../test.cpp:503: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val > val2) ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   FLOAT
 
-[0;37m../test.cpp:474: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36edf90 != NULL )
+[0;37m../test.cpp:475: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1040 != NULL )
 
-[0;37m../test.cpp:475: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ee0b0 != NULL )
+[0;37m../test.cpp:476: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1160 != NULL )
 
-[0;37m../test.cpp:476: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:477: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.32323f == 32.32323f )
 
-[0;37m../test.cpp:477: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:478: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64.64646f == 64.64646f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   FLOAT
   <=
 
-[0;37m../test.cpp:507: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef230 != NULL )
+[0;37m../test.cpp:508: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda22e0 != NULL )
 
-[0;37m../test.cpp:508: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val <= val2) ) [0mis correct!
+[0;37m../test.cpp:509: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val <= val2) ) [0mis correct!
   values: CHECK( true == true )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   FLOAT
 
-[0;37m../test.cpp:474: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36edf90 != NULL )
+[0;37m../test.cpp:475: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1040 != NULL )
 
-[0;37m../test.cpp:475: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ee0b0 != NULL )
+[0;37m../test.cpp:476: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda1160 != NULL )
 
-[0;37m../test.cpp:476: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:477: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.32323f == 32.32323f )
 
-[0;37m../test.cpp:477: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:478: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64.64646f == 64.64646f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   FLOAT
   >=
 
-[0;37m../test.cpp:513: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef3a0 != NULL )
+[0;37m../test.cpp:514: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda2450 != NULL )
 
-[0;37m../test.cpp:514: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val >= val2) ) [0mis correct!
+[0;37m../test.cpp:515: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val >= val2) ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   DOUBLE
 
-[0;37m../test.cpp:524: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef510 != NULL )
+[0;37m../test.cpp:525: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda25c0 != NULL )
 
-[0;37m../test.cpp:525: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef630 != NULL )
+[0;37m../test.cpp:526: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda26e0 != NULL )
 
-[0;37m../test.cpp:526: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:527: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.323232 == 32.323232 )
 
-[0;37m../test.cpp:527: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:528: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64.646464 == 64.646464 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   DOUBLE
   ==
 
-[0;37m../test.cpp:533: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f01f0 != NULL )
+[0;37m../test.cpp:534: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda32a0 != NULL )
 
-[0;37m../test.cpp:534: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
+[0;37m../test.cpp:535: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   DOUBLE
 
-[0;37m../test.cpp:524: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef510 != NULL )
+[0;37m../test.cpp:525: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda25c0 != NULL )
 
-[0;37m../test.cpp:525: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef630 != NULL )
+[0;37m../test.cpp:526: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda26e0 != NULL )
 
-[0;37m../test.cpp:526: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:527: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.323232 == 32.323232 )
 
-[0;37m../test.cpp:527: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:528: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64.646464 == 64.646464 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   DOUBLE
   !=
 
-[0;37m../test.cpp:539: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f0360 != NULL )
+[0;37m../test.cpp:540: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda3410 != NULL )
 
-[0;37m../test.cpp:540: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
+[0;37m../test.cpp:541: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
   values: CHECK( true == true )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   DOUBLE
 
-[0;37m../test.cpp:524: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef510 != NULL )
+[0;37m../test.cpp:525: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda25c0 != NULL )
 
-[0;37m../test.cpp:525: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef630 != NULL )
+[0;37m../test.cpp:526: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda26e0 != NULL )
 
-[0;37m../test.cpp:526: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:527: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.323232 == 32.323232 )
 
-[0;37m../test.cpp:527: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:528: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64.646464 == 64.646464 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   DOUBLE
   <
 
-[0;37m../test.cpp:545: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f04d0 != NULL )
+[0;37m../test.cpp:546: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda3580 != NULL )
 
-[0;37m../test.cpp:546: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val < val2) ) [0mis correct!
+[0;37m../test.cpp:547: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val < val2) ) [0mis correct!
   values: CHECK( true == true )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   DOUBLE
 
-[0;37m../test.cpp:524: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef510 != NULL )
+[0;37m../test.cpp:525: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda25c0 != NULL )
 
-[0;37m../test.cpp:525: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef630 != NULL )
+[0;37m../test.cpp:526: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda26e0 != NULL )
 
-[0;37m../test.cpp:526: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:527: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.323232 == 32.323232 )
 
-[0;37m../test.cpp:527: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:528: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64.646464 == 64.646464 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   DOUBLE
   >
 
-[0;37m../test.cpp:551: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f0640 != NULL )
+[0;37m../test.cpp:552: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda36f0 != NULL )
 
-[0;37m../test.cpp:552: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val > val2) ) [0mis correct!
+[0;37m../test.cpp:553: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val > val2) ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   DOUBLE
 
-[0;37m../test.cpp:524: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef510 != NULL )
+[0;37m../test.cpp:525: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda25c0 != NULL )
 
-[0;37m../test.cpp:525: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef630 != NULL )
+[0;37m../test.cpp:526: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda26e0 != NULL )
 
-[0;37m../test.cpp:526: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:527: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.323232 == 32.323232 )
 
-[0;37m../test.cpp:527: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:528: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64.646464 == 64.646464 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   DOUBLE
   <=
 
-[0;37m../test.cpp:557: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f0a90 != NULL )
+[0;37m../test.cpp:558: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda3b40 != NULL )
 
-[0;37m../test.cpp:558: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val <= val2) ) [0mis correct!
+[0;37m../test.cpp:559: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val <= val2) ) [0mis correct!
   values: CHECK( true == true )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   DOUBLE
 
-[0;37m../test.cpp:524: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef510 != NULL )
+[0;37m../test.cpp:525: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda25c0 != NULL )
 
-[0;37m../test.cpp:525: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ef630 != NULL )
+[0;37m../test.cpp:526: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda26e0 != NULL )
 
-[0;37m../test.cpp:526: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:527: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 32.323232 == 32.323232 )
 
-[0;37m../test.cpp:527: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:528: [1;32mSUCCESS: [0;36mCHECK( std::get<double>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 64.646464 == 64.646464 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   DOUBLE
   >=
 
-[0;37m../test.cpp:563: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f0920 != NULL )
+[0;37m../test.cpp:564: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda39d0 != NULL )
 
-[0;37m../test.cpp:564: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val >= val2) ) [0mis correct!
+[0;37m../test.cpp:565: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val >= val2) ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   STRING
 
-[0;37m../test.cpp:574: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f0c00 != NULL )
+[0;37m../test.cpp:575: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda3cb0 != NULL )
 
-[0;37m../test.cpp:575: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f0d20 != NULL )
+[0;37m../test.cpp:576: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda3dd0 != NULL )
 
-[0;37m../test.cpp:576: [1;32mSUCCESS: [0;36mCHECK( std::get<std::string>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:577: [1;32mSUCCESS: [0;36mCHECK( std::get<std::string>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( abc == abc )
 
-[0;37m../test.cpp:577: [1;32mSUCCESS: [0;36mCHECK( std::get<std::string>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:578: [1;32mSUCCESS: [0;36mCHECK( std::get<std::string>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( def == def )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   STRING
   ==
 
-[0;37m../test.cpp:583: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f1120 != NULL )
+[0;37m../test.cpp:584: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda41d0 != NULL )
 
-[0;37m../test.cpp:584: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
+[0;37m../test.cpp:585: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val == val2) ) [0mis correct!
   values: CHECK( false == false )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
 
-[0;37m../test.cpp:377: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:378: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_cmp.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   STRING
 
-[0;37m../test.cpp:574: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f0c00 != NULL )
+[0;37m../test.cpp:575: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda3cb0 != NULL )
 
-[0;37m../test.cpp:575: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f0d20 != NULL )
+[0;37m../test.cpp:576: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda3dd0 != NULL )
 
-[0;37m../test.cpp:576: [1;32mSUCCESS: [0;36mCHECK( std::get<std::string>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:577: [1;32mSUCCESS: [0;36mCHECK( std::get<std::string>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( abc == abc )
 
-[0;37m../test.cpp:577: [1;32mSUCCESS: [0;36mCHECK( std::get<std::string>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:578: [1;32mSUCCESS: [0;36mCHECK( std::get<std::string>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( def == def )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Comparison Logic
   STRING
   !=
 
-[0;37m../test.cpp:589: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36f1290 != NULL )
+[0;37m../test.cpp:590: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cda4340 != NULL )
 
-[0;37m../test.cpp:590: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
+[0;37m../test.cpp:591: [1;32mSUCCESS: [0;36mCHECK( std::get<bool>(var2->m_value.data) == (val != val2) ) [0mis correct!
   values: CHECK( true == true )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Math Logic
 
-[0;37m../test.cpp:597: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:598: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:602: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36a85c0 != NULL )
+[0;37m../test.cpp:603: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd5b670 != NULL )
 
-[0;37m../test.cpp:603: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36a86a0 != NULL )
+[0;37m../test.cpp:604: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd5b750 != NULL )
 
-[0;37m../test.cpp:604: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:605: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 64.0f == 64.0f )
 
-[0;37m../test.cpp:605: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:606: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 2.0f == 2.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Math Logic
   ROOT
 
-[0;37m../test.cpp:613: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ad5e0 != NULL )
+[0;37m../test.cpp:614: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd60690 != NULL )
 
-[0;37m../test.cpp:614: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == res ) [0mis correct!
+[0;37m../test.cpp:615: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == res ) [0mis correct!
   values: CHECK( 1.01089f == 1.01089f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Math Logic
 
-[0;37m../test.cpp:597: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:598: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:602: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36a85c0 != NULL )
+[0;37m../test.cpp:603: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd5b670 != NULL )
 
-[0;37m../test.cpp:603: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36a86a0 != NULL )
+[0;37m../test.cpp:604: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd5b750 != NULL )
 
-[0;37m../test.cpp:604: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:605: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 64.0f == 64.0f )
 
-[0;37m../test.cpp:605: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:606: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 2.0f == 2.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Math Logic
   POW
 
-[0;37m../test.cpp:622: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ad750 != NULL )
+[0;37m../test.cpp:623: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd60800 != NULL )
 
-[0;37m../test.cpp:623: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == res ) [0mis correct!
+[0;37m../test.cpp:624: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == res ) [0mis correct!
   values: CHECK( 4096.0f == 4096.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Math Logic
 
-[0;37m../test.cpp:597: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:598: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:602: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36a85c0 != NULL )
+[0;37m../test.cpp:603: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd5b670 != NULL )
 
-[0;37m../test.cpp:603: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36a86a0 != NULL )
+[0;37m../test.cpp:604: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd5b750 != NULL )
 
-[0;37m../test.cpp:604: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:605: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 64.0f == 64.0f )
 
-[0;37m../test.cpp:605: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:606: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 2.0f == 2.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Math Logic
   SIN
 
-[0;37m../test.cpp:631: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ad8c0 != NULL )
+[0;37m../test.cpp:632: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd60970 != NULL )
 
-[0;37m../test.cpp:632: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == res ) [0mis correct!
+[0;37m../test.cpp:633: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == res ) [0mis correct!
   values: CHECK( 0.92003f == 0.92003f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Math Logic
 
-[0;37m../test.cpp:597: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:598: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:602: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36a85c0 != NULL )
+[0;37m../test.cpp:603: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd5b670 != NULL )
 
-[0;37m../test.cpp:603: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36a86a0 != NULL )
+[0;37m../test.cpp:604: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd5b750 != NULL )
 
-[0;37m../test.cpp:604: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:605: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 64.0f == 64.0f )
 
-[0;37m../test.cpp:605: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:606: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 2.0f == 2.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Math Logic
   COS
 
-[0;37m../test.cpp:640: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36a6d30 != NULL )
+[0;37m../test.cpp:641: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd59de0 != NULL )
 
-[0;37m../test.cpp:641: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == res ) [0mis correct!
+[0;37m../test.cpp:642: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == res ) [0mis correct!
   values: CHECK( 0.39186f == 0.39186f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Math Logic
 
-[0;37m../test.cpp:597: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:598: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_math.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:602: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36a85c0 != NULL )
+[0;37m../test.cpp:603: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd5b670 != NULL )
 
-[0;37m../test.cpp:603: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36a86a0 != NULL )
+[0;37m../test.cpp:604: [1;32mSUCCESS: [0;36mREQUIRE( var_b != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd5b750 != NULL )
 
-[0;37m../test.cpp:604: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
+[0;37m../test.cpp:605: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_a->m_value.data) == val ) [0mis correct!
   values: CHECK( 64.0f == 64.0f )
 
-[0;37m../test.cpp:605: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
+[0;37m../test.cpp:606: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var_b->m_value.data) == val2 ) [0mis correct!
   values: CHECK( 2.0f == 2.0f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing Math Logic
   tan
 
-[0;37m../test.cpp:649: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36a6e60 != NULL )
+[0;37m../test.cpp:650: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd59f10 != NULL )
 
-[0;37m../test.cpp:650: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == res ) [0mis correct!
+[0;37m../test.cpp:651: [1;32mSUCCESS: [0;36mCHECK( std::get<float>(var2->m_value.data) == res ) [0mis correct!
   values: CHECK( 2.34786f == 2.34786f )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing String Logic
 
-[0;37m../test.cpp:656: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_string.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:657: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_string.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:659: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36d01a0 != NULL )
+[0;37m../test.cpp:660: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd83250 != NULL )
 
-[0;37m../test.cpp:660: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var_a->m_value.data)).compare(val) == 0 ) [0mis correct!
+[0;37m../test.cpp:661: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var_a->m_value.data)).compare(val) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing String Logic
   To Lowercase
 
-[0;37m../test.cpp:666: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36d0500 != NULL )
+[0;37m../test.cpp:667: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd835b0 != NULL )
 
-[0;37m../test.cpp:672: [1;32mSUCCESS: [0;36mCHECK( res.compare(res2) == 0 ) [0mis correct!
+[0;37m../test.cpp:673: [1;32mSUCCESS: [0;36mCHECK( res.compare(res2) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing String Logic
 
-[0;37m../test.cpp:656: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_string.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:657: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_string.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:659: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36d01a0 != NULL )
+[0;37m../test.cpp:660: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd83250 != NULL )
 
-[0;37m../test.cpp:660: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var_a->m_value.data)).compare(val) == 0 ) [0mis correct!
+[0;37m../test.cpp:661: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var_a->m_value.data)).compare(val) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing String Logic
   To Uppercase
 
-[0;37m../test.cpp:678: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36d0670 != NULL )
+[0;37m../test.cpp:679: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd83720 != NULL )
 
-[0;37m../test.cpp:684: [1;32mSUCCESS: [0;36mCHECK( res.compare(res2) == 0 ) [0mis correct!
+[0;37m../test.cpp:685: [1;32mSUCCESS: [0;36mCHECK( res.compare(res2) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing String Logic
 
-[0;37m../test.cpp:656: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_string.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:657: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_string.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:659: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36d01a0 != NULL )
+[0;37m../test.cpp:660: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd83250 != NULL )
 
-[0;37m../test.cpp:660: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var_a->m_value.data)).compare(val) == 0 ) [0mis correct!
+[0;37m../test.cpp:661: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var_a->m_value.data)).compare(val) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing String Logic
   Reverse
 
-[0;37m../test.cpp:690: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36d07e0 != NULL )
+[0;37m../test.cpp:691: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd83890 != NULL )
 
-[0;37m../test.cpp:695: [1;32mSUCCESS: [0;36mCHECK( res.compare(res2) == 0 ) [0mis correct!
+[0;37m../test.cpp:696: [1;32mSUCCESS: [0;36mCHECK( res.compare(res2) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing String Logic
 
-[0;37m../test.cpp:656: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_string.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:657: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_string.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:659: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36d01a0 != NULL )
+[0;37m../test.cpp:660: [1;32mSUCCESS: [0;36mREQUIRE( var_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd83250 != NULL )
 
-[0;37m../test.cpp:660: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var_a->m_value.data)).compare(val) == 0 ) [0mis correct!
+[0;37m../test.cpp:661: [1;32mSUCCESS: [0;36mCHECK( (std::get<std::string>(var_a->m_value.data)).compare(val) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
   Testing String Logic
   To Array
 
-[0;37m../test.cpp:701: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36d0aa0 != NULL )
+[0;37m../test.cpp:702: [1;32mSUCCESS: [0;36mREQUIRE( var2 != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cd83b50 != NULL )
 
-[0;37m../test.cpp:712: [1;32mSUCCESS: [0;36mREQUIRE( res.size() == var2->m_from_string.size() ) [0mis correct!
+[0;37m../test.cpp:713: [1;32mSUCCESS: [0;36mREQUIRE( res.size() == var2->m_from_string.size() ) [0mis correct!
   values: REQUIRE( 13 == 13 )
 
-[0;37m../test.cpp:720: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
+[0;37m../test.cpp:721: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:720: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
+[0;37m../test.cpp:721: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:720: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
+[0;37m../test.cpp:721: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:720: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
+[0;37m../test.cpp:721: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:720: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
+[0;37m../test.cpp:721: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:720: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
+[0;37m../test.cpp:721: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:720: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
+[0;37m../test.cpp:721: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:720: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
+[0;37m../test.cpp:721: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:720: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
+[0;37m../test.cpp:721: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:720: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
+[0;37m../test.cpp:721: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:720: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
+[0;37m../test.cpp:721: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:720: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
+[0;37m../test.cpp:721: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:720: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
+[0;37m../test.cpp:721: [1;32mSUCCESS: [0;36mCHECK( a.compare(b) == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
 [0;33m
 DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0m  Testing String Logic
   To Array
 
-[0m0.071329 s: Testing Visual Nodes Module
+[0m0.070922 s: Testing Visual Nodes Module
 [0m[0;33m===============================================================================
-[0;37m../test.cpp:726:
+[0;37m../test.cpp:727:
 [0;33mTEST CASE:  [0mTesting Transpiler Module
 
-[0;37m../test.cpp:728: [1;32mSUCCESS: [0;36mCHECK( Transpiler::v_declarations.size() == 0 ) [0mis correct!
+[0;37m../test.cpp:729: [1;32mSUCCESS: [0;36mCHECK( Transpiler::v_declarations.size() == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:729: [1;32mSUCCESS: [0;36mCHECK( Transpiler::level == 0 ) [0mis correct!
+[0;37m../test.cpp:730: [1;32mSUCCESS: [0;36mCHECK( Transpiler::level == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:730: [1;32mSUCCESS: [0;36mCHECK( Transpiler::has_ran == false ) [0mis correct!
+[0;37m../test.cpp:731: [1;32mSUCCESS: [0;36mCHECK( Transpiler::has_ran == false ) [0mis correct!
   values: CHECK( false == false )
 
-[0;37m../test.cpp:731: [1;32mSUCCESS: [0;36mCHECK( Transpiler::has_compiled == false ) [0mis correct!
+[0;37m../test.cpp:732: [1;32mSUCCESS: [0;36mCHECK( Transpiler::has_compiled == false ) [0mis correct!
   values: CHECK( false == false )
 
-[0;37m../test.cpp:732: [1;32mSUCCESS: [0;36mCHECK( Transpiler::n_transpiled == 0 ) [0mis correct!
+[0;37m../test.cpp:733: [1;32mSUCCESS: [0;36mCHECK( Transpiler::n_transpiled == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:733: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:734: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:738: [1;32mSUCCESS: [0;36mREQUIRE( Transpiler::compile() == 0 ) [0mis correct!
+[0;37m../test.cpp:739: [1;32mSUCCESS: [0;36mREQUIRE( Transpiler::compile() == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:739: [1;32mSUCCESS: [0;36mCHECK( Transpiler::level == 0 ) [0mis correct!
+[0;37m../test.cpp:740: [1;32mSUCCESS: [0;36mCHECK( Transpiler::level == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:740: [1;32mSUCCESS: [0;36mCHECK( Transpiler::has_compiled == true ) [0mis correct!
+[0;37m../test.cpp:741: [1;32mSUCCESS: [0;36mCHECK( Transpiler::has_compiled == true ) [0mis correct!
   values: CHECK( true == true )
 
-[0;37m../test.cpp:741: [1;32mSUCCESS: [0;36mCHECK( Transpiler::n_transpiled == 34 ) [0mis correct!
+[0;37m../test.cpp:742: [1;32mSUCCESS: [0;36mCHECK( Transpiler::n_transpiled == 34 ) [0mis correct!
   values: CHECK( 34 == 34 )
 
-[0m0.012179 s: Testing Transpiler Module
+[0m0.012011 s: Testing Transpiler Module
 [0m[0;33m===============================================================================
-[0;37m../test.cpp:744:
+[0;37m../test.cpp:745:
 [0;33mTEST CASE:  [0mTesting Debugger Module
 
-[0;37m../test.cpp:746: [1;32mSUCCESS: [0;36mCHECK( Debugger::v_msg_info.size() == 0 ) [0mis correct!
+[0;37m../test.cpp:747: [1;32mSUCCESS: [0;36mCHECK( Debugger::v_msg_info.size() == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0;37m../test.cpp:747: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:748: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_op.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
-[0;37m../test.cpp:750: [1;32mSUCCESS: [0;36mREQUIRE( node_a != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ff650 != NULL )
+[0;37m../test.cpp:751: [1;32mSUCCESS: [0;36mREQUIRE( node_a != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cdb2700 != NULL )
 
-[0;37m../test.cpp:751: [1;32mSUCCESS: [0;36mREQUIRE( node_op != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ff890 != NULL )
+[0;37m../test.cpp:752: [1;32mSUCCESS: [0;36mREQUIRE( node_op != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cdb2940 != NULL )
 
-[0;37m../test.cpp:765: [1;32mSUCCESS: [0;36mCHECK( has_deleted == true ) [0mis correct!
+[0;37m../test.cpp:766: [1;32mSUCCESS: [0;36mCHECK( has_deleted == true ) [0mis correct!
   values: CHECK( true == true )
 
-[0;37m../test.cpp:767: [1;32mSUCCESS: [0;36mREQUIRE( Debugger::v_msg_info.size() != 0 ) [0mis correct!
+[0;37m../test.cpp:768: [1;32mSUCCESS: [0;36mREQUIRE( Debugger::v_msg_info.size() != 0 ) [0mis correct!
   values: REQUIRE( 1 != 0 )
 
-[0;37m../test.cpp:769: [1;32mSUCCESS: [0;36mCHECK( Debugger::v_msg_info.size() == 0 ) [0mis correct!
+[0;37m../test.cpp:770: [1;32mSUCCESS: [0;36mCHECK( Debugger::v_msg_info.size() == 0 ) [0mis correct!
   values: CHECK( 0 == 0 )
 
-[0m0.000516 s: Testing Debugger Module
+[0m0.000339 s: Testing Debugger Module
 [0m[0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
 
-[0;37m../test.cpp:774: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
   Testing single For-Loop
 
-[0;37m../test.cpp:779: [1;32mSUCCESS: [0;36mREQUIRE( node_for != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c38cfc30 != NULL )
+[0;37m../test.cpp:780: [1;32mSUCCESS: [0;36mREQUIRE( node_for != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
   Testing single For-Loop
   iteration #0
 
-[0;37m../test.cpp:787: [1;32mSUCCESS: [0;36mREQUIRE( node_for->m_override_it == i ) [0mis correct!
+[0;37m../test.cpp:788: [1;32mSUCCESS: [0;36mREQUIRE( node_for->m_override_it == i ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
 
-[0;37m../test.cpp:774: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
   Testing single For-Loop
 
-[0;37m../test.cpp:779: [1;32mSUCCESS: [0;36mREQUIRE( node_for != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c38cfc30 != NULL )
+[0;37m../test.cpp:780: [1;32mSUCCESS: [0;36mREQUIRE( node_for != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
   Testing single For-Loop
   iteration #1
 
-[0;37m../test.cpp:787: [1;32mSUCCESS: [0;36mREQUIRE( node_for->m_override_it == i ) [0mis correct!
+[0;37m../test.cpp:788: [1;32mSUCCESS: [0;36mREQUIRE( node_for->m_override_it == i ) [0mis correct!
   values: REQUIRE( 1 == 1 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
 
-[0;37m../test.cpp:774: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
   Testing single For-Loop
 
-[0;37m../test.cpp:779: [1;32mSUCCESS: [0;36mREQUIRE( node_for != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c38cfc30 != NULL )
+[0;37m../test.cpp:780: [1;32mSUCCESS: [0;36mREQUIRE( node_for != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
   Testing single For-Loop
   iteration #2
 
-[0;37m../test.cpp:787: [1;32mSUCCESS: [0;36mREQUIRE( node_for->m_override_it == i ) [0mis correct!
+[0;37m../test.cpp:788: [1;32mSUCCESS: [0;36mREQUIRE( node_for->m_override_it == i ) [0mis correct!
   values: REQUIRE( 2 == 2 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
 
-[0;37m../test.cpp:774: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
   Testing single For-Loop
 
-[0;37m../test.cpp:779: [1;32mSUCCESS: [0;36mREQUIRE( node_for != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c38cfc30 != NULL )
+[0;37m../test.cpp:780: [1;32mSUCCESS: [0;36mREQUIRE( node_for != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
   Testing single For-Loop
   iteration #3
 
-[0;37m../test.cpp:787: [1;32mSUCCESS: [0;36mREQUIRE( node_for->m_override_it == i ) [0mis correct!
+[0;37m../test.cpp:788: [1;32mSUCCESS: [0;36mREQUIRE( node_for->m_override_it == i ) [0mis correct!
   values: REQUIRE( 3 == 3 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
 
-[0;37m../test.cpp:774: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
   Testing single For-Loop
 
-[0;37m../test.cpp:779: [1;32mSUCCESS: [0;36mREQUIRE( node_for != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c38cfc30 != NULL )
+[0;37m../test.cpp:780: [1;32mSUCCESS: [0;36mREQUIRE( node_for != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
   Testing single For-Loop
   iteration #4
 
-[0;37m../test.cpp:787: [1;32mSUCCESS: [0;36mREQUIRE( node_for->m_override_it == i ) [0mis correct!
+[0;37m../test.cpp:788: [1;32mSUCCESS: [0;36mREQUIRE( node_for->m_override_it == i ) [0mis correct!
   values: REQUIRE( 4 == 4 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
 
-[0;37m../test.cpp:774: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
   Testing nested For-Loops
 
-[0;37m../test.cpp:797: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c36ab470 != NULL )
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
 
-[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
-  values: REQUIRE( 0x00005595c38cfc30 != NULL )
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
   Testing nested For-Loops
   outer iteration #0
   inner iteration #0
 
-[0;37m../test.cpp:813: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
   values: REQUIRE( 0 == 0 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
   Testing nested For-Loops
   outer iteration #0
-[0;33m
-DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
-[0m  Testing nested For-Loops
-  outer iteration #0
-  inner iteration #0
+  inner iteration #1
 
-[0;37m../test.cpp:816: [0;31mFATAL ERROR: [0;36mREQUIRE( node_for_i->m_override_it == i ) [0mis NOT correct!
-  values: REQUIRE( 1 == 0 )
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 1 == 1 )
 
 [0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #0
+  inner iteration #2
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 2 == 2 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #0
+  inner iteration #3
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 3 == 3 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #0
+  inner iteration #4
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 4 == 4 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #1
+  inner iteration #0
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #1
+  inner iteration #1
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 1 == 1 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #1
+  inner iteration #2
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 2 == 2 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #1
+  inner iteration #3
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 3 == 3 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #1
+  inner iteration #4
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 4 == 4 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #2
+  inner iteration #0
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #2
+  inner iteration #1
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 1 == 1 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #2
+  inner iteration #2
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 2 == 2 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #2
+  inner iteration #3
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 3 == 3 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #2
+  inner iteration #4
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 4 == 4 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #3
+  inner iteration #0
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #3
+  inner iteration #1
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 1 == 1 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #3
+  inner iteration #2
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 2 == 2 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #3
+  inner iteration #3
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 3 == 3 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #3
+  inner iteration #4
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 4 == 4 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #4
+  inner iteration #0
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #4
+  inner iteration #1
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 1 == 1 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #4
+  inner iteration #2
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 2 == 2 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #4
+  inner iteration #3
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 3 == 3 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+
+[0;37m../test.cpp:775: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_for.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+
+[0;37m../test.cpp:798: [1;32mSUCCESS: [0;36mREQUIRE( node_for_i != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf814c0 != NULL )
+
+[0;37m../test.cpp:799: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j != nullptr ) [0mis correct!
+  values: REQUIRE( 0x000055775cf82750 != NULL )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
+[0;33mTEST CASE:  [0mTesting Simulation Module
+  Testing nested For-Loops
+  outer iteration #4
+  inner iteration #4
+
+[0;37m../test.cpp:814: [1;32mSUCCESS: [0;36mREQUIRE( node_for_j->m_override_it == j ) [0mis correct!
+  values: REQUIRE( 4 == 4 )
+
+[0;33m===============================================================================
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
 [0;33m
 DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0m  Testing nested For-Loops
-  outer iteration #0
-  inner iteration #0
+  outer iteration #4
+  inner iteration #4
 
-[0m0.002638 s: Testing Simulation Module
+[0m0.013070 s: Testing Simulation Module
 [0m[0;33m===============================================================================
-[0;36m[doctest] [0mtest cases:   6 | [0m  5 passed[0m | [0;31m1 failed[0m | [0m0 skipped[0m
-[0;36m[doctest] [0massertions: 455 | [0m454 passed[0m | [0;31m1 failed[0m |
-[0;36m[doctest] [0mStatus: [0;31mFAILURE![0m
+[0;37m../test.cpp:823:
+[0;33mTEST CASE:  [0mTesting Assessments Module
+
+[0;37m../test.cpp:825: [1;32mSUCCESS: [0;36mREQUIRE( Project::open("../test_assessment.cn") == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;37m../test.cpp:826: [1;32mSUCCESS: [0;36mCHECK( Assessments::has_assessment == false ) [0mis correct!
+  values: CHECK( false == false )
+
+[0;37m../test.cpp:827: [1;32mSUCCESS: [0;36mCHECK( Assessments::v_results.size() == 0 ) [0mis correct!
+  values: CHECK( 0 == 0 )
+
+[0;37m../test.cpp:830: [1;32mSUCCESS: [0;36mREQUIRE( Transpiler::compile() == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;37m../test.cpp:831: [1;32mSUCCESS: [0;36mREQUIRE( Transpiler::run() == 0 ) [0mis correct!
+  values: REQUIRE( 0 == 0 )
+
+[0;37m../test.cpp:832: [1;32mSUCCESS: [0;36mREQUIRE( Transpiler::v_printed.size() == 2 ) [0mis correct!
+  values: REQUIRE( 2 == 2 )
+
+[0;37m../test.cpp:836: [1;32mSUCCESS: [0;36mREQUIRE( Assessments::v_results.size() == 1 ) [0mis correct!
+  values: REQUIRE( 1 == 1 )
+
+[0;37m../test.cpp:837: [1;32mSUCCESS: [0;36mREQUIRE( Assessments::v_results[0].score == 2 ) [0mis correct!
+  values: REQUIRE( 2 == 2 )
+
+[0m0.002392 s: Testing Assessments Module
+[0m[0;33m===============================================================================
+[0;36m[doctest] [0mtest cases:   7 | [0;32m  7 passed[0m | [0m0 failed[0m | [0m0 skipped[0m
+[0;36m[doctest] [0massertions: 558 | [0;32m558 passed[0m | [0m0 failed[0m |
+[0;36m[doctest] [0mStatus: [0;32mSUCCESS![0m

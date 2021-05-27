@@ -1,39 +1,39 @@
 [0;36m[doctest] [0mdoctest version is "2.4.6"
 [0;36m[doctest] [0mrun with "--help" for options
 [0;33m===============================================================================
-[0;37m../test.cpp:35:
+[0;37m../test.cpp:36:
 [0;33mTEST CASE:  [0mTesting Input/Output Module
 
-[0m0.000045 s: Testing Input/Output Module
+[0m0.000032 s: Testing Input/Output Module
 [0m[0;33m===============================================================================
-[0;37m../test.cpp:58:
+[0;37m../test.cpp:59:
 [0;33mTEST CASE:  [0mTesting Filesystem Module
 [0;33m
 DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0m  Opening invalid project
 
-[0m0.001581 s: Testing Filesystem Module
+[0m0.001556 s: Testing Filesystem Module
 [0m[0;33m===============================================================================
-[0;37m../test.cpp:93:
+[0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
 [0;33m
 DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0m  Testing String Logic
   To Array
 
-[0m0.061408 s: Testing Visual Nodes Module
+[0m0.063005 s: Testing Visual Nodes Module
 [0m[0;33m===============================================================================
-[0;37m../test.cpp:726:
+[0;37m../test.cpp:727:
 [0;33mTEST CASE:  [0mTesting Transpiler Module
 
-[0m0.012216 s: Testing Transpiler Module
+[0m0.011802 s: Testing Transpiler Module
 [0m[0;33m===============================================================================
-[0;37m../test.cpp:744:
+[0;37m../test.cpp:745:
 [0;33mTEST CASE:  [0mTesting Debugger Module
 
-[0m0.000231 s: Testing Debugger Module
+[0m0.000227 s: Testing Debugger Module
 [0m[0;33m===============================================================================
-[0;37m../test.cpp:772:
+[0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
 [0;33m
 DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
@@ -41,8 +41,13 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
   outer iteration #4
   inner iteration #4
 
-[0m0.010060 s: Testing Simulation Module
+[0m0.010103 s: Testing Simulation Module
 [0m[0;33m===============================================================================
-[0;36m[doctest] [0mtest cases:   6 | [0;32m  6 passed[0m | [0m0 failed[0m | [0m0 skipped[0m
-[0;36m[doctest] [0massertions: 550 | [0;32m550 passed[0m | [0m0 failed[0m |
+[0;37m../test.cpp:823:
+[0;33mTEST CASE:  [0mTesting Assessments Module
+
+[0m2.820801 s: Testing Assessments Module
+[0m[0;33m===============================================================================
+[0;36m[doctest] [0mtest cases:   7 | [0;32m  7 passed[0m | [0m0 failed[0m | [0m0 skipped[0m
+[0;36m[doctest] [0massertions: 558 | [0;32m558 passed[0m | [0m0 failed[0m |
 [0;36m[doctest] [0mStatus: [0;32mSUCCESS![0m

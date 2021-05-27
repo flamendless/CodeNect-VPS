@@ -818,7 +818,6 @@ TEST_CASE("Testing Simulation Module")
 			}
 		}
 	}
-	Project::close();
 }
 
 TEST_CASE("Testing Assessments Module")
@@ -835,5 +834,5 @@ TEST_CASE("Testing Assessments Module")
 	Assessments::has_assessment = true;
 	Assessments::submit(Transpiler::v_printed);
 	REQUIRE(Assessments::v_results.size() == 1);
-	REQUIRE(Assessments::v_results[0].score == 1);
+	REQUIRE(Assessments::v_results[0].score == 2);
 }
