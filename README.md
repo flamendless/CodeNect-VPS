@@ -1,4 +1,4 @@
-<!-- ![image](https://raw.githubusercontent.com/flamendless/CodeNect-VPS/main/media/) -->
+![image](https://raw.githubusercontent.com/flamendless/CodeNect-VPS/main/media/logo.png)
 
 ![image]({https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white})
 
@@ -9,6 +9,9 @@
 ## About
 CodeNect is a visual programming software developed for my thesis as a supplementary
 tool for beginners in programming.
+
+## Demo/Screenshots
+Check the [media](https://github.com/flamendless/CodeNect-VPS/tree/main/media) for a ton of images
 
 ## Features
 * The visual code can be compiled to *C* code using `TinyC Compiler`
