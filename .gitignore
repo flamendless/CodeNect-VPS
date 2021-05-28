@@ -13,3 +13,4 @@ tags
 *~
 test/bin_test/
 test/build_test/
+.SRCINFO

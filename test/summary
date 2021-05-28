@@ -9,7 +9,6 @@
 [0;37m../test.cpp:59:
 [0;33mTEST CASE:  [0mTesting Filesystem Module
 [0;33m
-DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0m  Opening invalid project
 
 [0m0.001556 s: Testing Filesystem Module
@@ -17,7 +16,6 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0;37m../test.cpp:94:
 [0;33mTEST CASE:  [0mTesting Visual Nodes Module
 [0;33m
-DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0m  Testing String Logic
   To Array
 
@@ -36,7 +34,6 @@ DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0;37m../test.cpp:773:
 [0;33mTEST CASE:  [0mTesting Simulation Module
 [0;33m
-DEEPEST SUBCASE STACK REACHED (DIFFERENT FROM THE CURRENT ONE):
 [0m  Testing nested For-Loops
   outer iteration #4
   inner iteration #4
