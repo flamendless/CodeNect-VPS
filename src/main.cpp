@@ -23,6 +23,7 @@
 #include "modules/transpiler.hpp"
 #include "ui/assessments.hpp"
 #include "ui/diff_viewer.hpp"
+#include "ui/info.hpp"
 
 int main(int argv, char** args)
 {
@@ -63,6 +64,9 @@ int main(int argv, char** args)
 	//Zoom
 	if (CodeNect::Zoom::init() != RES_SUCCESS) return -1;
 	CodeNect::Zoom::register_commands();
+
+	//Info
+	if (CodeNect::Info::init() != RES_SUCCESS) return -1;
 
 	//SimulationControl
 	if (CodeNect::SimulationControl::init() != RES_SUCCESS) return -1;
@@ -136,6 +140,7 @@ int main(int argv, char** args)
 		CodeNect::AssessmentsUI::draw();
 		CodeNect::DiffViewer::draw();
 		CodeNect::Zoom::draw();
+		CodeNect::Info::draw();
 		CodeNect::Terminal::draw();
 		CodeNect::SimulationControl::draw();
 		CodeNect::Docs::draw();

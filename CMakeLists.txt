@@ -101,6 +101,7 @@ add_executable(CodeNect
 	src/ui/diff_viewer.cpp
 	src/ui/docs.cpp
 	src/ui/help.cpp
+	src/ui/info.cpp
 	src/ui/inspector.cpp
 	src/ui/new_project.cpp
 	src/ui/node_interface.cpp
