@@ -178,14 +178,32 @@ target_compile_definitions(CodeNectTest PRIVATE "$<$<CONFIG:Debug>:TEST=1>")
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 
-target_link_libraries(CodeNectTest ${GTK3_LIBRARIES} ${OPENGL_glx_LIBRARY})
-target_compile_options(CodeNectTest PRIVATE ${GTK3_CFLAGS_OTHER})
-target_link_directories(CodeNectTest PRIVATE ${GTK3_LIBRARY_DIRS})
-target_sources(CodeNectTest PRIVATE ../includes/nfd/nfd_gtk.c)
-target_include_directories(CodeNectTest PRIVATE ${GTK3_INCLUDE_DIRS})
-target_link_libraries(CodeNectTest ${CMAKE_CURRENT_SOURCE_DIR}/../lib/linux/libtcc.a)
-target_link_libraries(CodeNectTest ${CMAKE_CURRENT_SOURCE_DIR}/../lib/linux/libtcc1.a)
-target_link_libraries(CodeNectTest dl)
+if (WIN32)
+	target_compile_definitions(CodeNectTest PRIVATE OS_WIN=1)
+	target_sources(CodeNectTest PRIVATE ../includes/nfd/nfd_win.cpp)
+	target_link_libraries(CodeNectTest ${CMAKE_CURRENT_SOURCE_DIR}/../lib/windows/libtcc1-64.a)
+	target_link_libraries(CodeNectTest ${CMAKE_CURRENT_SOURCE_DIR}/../lib/libtcc.dll)
+	install(FILES
+			../lib/libtcc.dll
+		DESTINATION .)
+	install(FILES
+			../lib/windows/libtcc1-64.a
+		DESTINATION ./lib)
+else ()
+	target_compile_definitions(CodeNectTest PRIVATE OS_LINUX=1)
+
+	find_package(PkgConfig REQUIRED)
+	pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+
+	target_link_libraries(CodeNectTest ${GTK3_LIBRARIES} ${OPENGL_glx_LIBRARY})
+	target_compile_options(CodeNectTest PRIVATE ${GTK3_CFLAGS_OTHER})
+	target_link_directories(CodeNectTest PRIVATE ${GTK3_LIBRARY_DIRS})
+	target_sources(CodeNectTest PRIVATE ../includes/nfd/nfd_gtk.c)
+	target_include_directories(CodeNectTest PRIVATE ${GTK3_INCLUDE_DIRS})
+	target_link_libraries(CodeNectTest ${CMAKE_CURRENT_SOURCE_DIR}/../lib/linux/libtcc.a)
+	target_link_libraries(CodeNectTest ${CMAKE_CURRENT_SOURCE_DIR}/../lib/linux/libtcc1.a)
+	target_link_libraries(CodeNectTest dl)
+endif ()
 
 target_link_libraries(CodeNectTest
 	${OPENGL_LIBRARIES}
@@ -200,6 +218,12 @@ install(FILES
 		../lib/linux/libtcc.a
 		../lib/linux/libtcc1.a
 	DESTINATION ./lib)
+install(FILES
+		../lib/glfw3.dll
+		../lib/libgcc_s_seh-1.dll
+		../lib/libstdc++-6.dll
+		../lib/libwinpthread-1.dll
+	DESTINATION .)
 
 add_custom_target(
 	copy-compile-commands ALL

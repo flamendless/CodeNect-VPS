@@ -736,10 +736,12 @@ TEST_CASE("Testing Transpiler Module")
 	std::string str_transpiled;
 	Transpiler::init();
 	Transpiler::build_runnable_code(str_transpiled, false);
+#ifndef OS_WIN
 	REQUIRE(Transpiler::compile() == RES_SUCCESS);
 	CHECK(Transpiler::level == 0);
 	CHECK(Transpiler::has_compiled == true);
 	CHECK(Transpiler::n_transpiled == 34);
+#endif
 }
 
 TEST_CASE("Testing Debugger Module")
@@ -827,6 +829,7 @@ TEST_CASE("Testing Assessments Module")
 	CHECK(Assessments::v_results.size() == 0);
 	std::string str = "";
 	Transpiler::build_runnable_code(str, false);
+#ifndef OS_WIN
 	REQUIRE(Transpiler::compile() == RES_SUCCESS);
 	REQUIRE(Transpiler::run() == RES_SUCCESS);
 	REQUIRE(Transpiler::v_printed.size() == 2);
@@ -835,4 +838,5 @@ TEST_CASE("Testing Assessments Module")
 	Assessments::submit(Transpiler::v_printed);
 	REQUIRE(Assessments::v_results.size() == 1);
 	REQUIRE(Assessments::v_results[0].score == 2);
+#endif
 }
