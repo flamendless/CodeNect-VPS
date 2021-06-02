@@ -25,6 +25,8 @@ struct Config
 	static CSimpleIniA ini;
 	static const char* fonts[6];
 	static const char* version;
+	static bool first_time;
+	static bool tutorial_done;
 
 	struct Sidebar_c
 	{

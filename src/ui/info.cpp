@@ -40,8 +40,8 @@ void Info::draw(void)
 			ICON_FA_EXCLAMATION_TRIANGLE " You have a warning\nin your visual code");
 		if (ImGui::Button("Click here for more info"))
 			Terminal::is_open = true;
+		ImGui::End();
 	}
-	ImGui::End();
 
 	ImGui::PopStyleVar(2);
 }

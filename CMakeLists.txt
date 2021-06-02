@@ -111,6 +111,7 @@ add_executable(CodeNect
 	src/ui/sidebar_indicator.cpp
 	src/ui/simulation_control.cpp
 	src/ui/terminal.cpp
+	src/ui/tutorial.cpp
 	src/ui/zoom.cpp
 
 	# color text editor

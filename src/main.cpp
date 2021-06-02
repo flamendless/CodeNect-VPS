@@ -24,6 +24,7 @@
 #include "ui/assessments.hpp"
 #include "ui/diff_viewer.hpp"
 #include "ui/info.hpp"
+#include "ui/tutorial.hpp"
 
 int main(int argv, char** args)
 {
@@ -92,6 +93,10 @@ int main(int argv, char** args)
 	if (CodeNect::Terminal::init() != RES_SUCCESS) return -1;
 	CodeNect::Terminal::register_commands();
 
+	//Tutorial
+	if (CodeNect::Tutorial::init() != RES_SUCCESS) return -1;
+	CodeNect::Tutorial::register_commands();
+
 #if DEBUG_MODE
 	bool is_imgui_demo = true;
 #endif
@@ -144,6 +149,7 @@ int main(int argv, char** args)
 		CodeNect::Terminal::draw();
 		CodeNect::SimulationControl::draw();
 		CodeNect::Docs::draw();
+		CodeNect::Tutorial::draw();
 
 		app.render_end();
 	}

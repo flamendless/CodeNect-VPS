@@ -63,7 +63,7 @@ void Zoom::draw(void)
 	if (ImGui::Begin("Zoom", &Zoom::is_open, Zoom::flags))
 	{
 		ImGui::Text(ICON_FA_SEARCH_PLUS " %d%%", (int)(Zoom::zoom_factor * 100));
+		ImGui::End();
 	}
-	ImGui::End();
 }
 }

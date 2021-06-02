@@ -507,6 +507,11 @@ int Transpiler::run(void)
 	{
 		// tcc_output_file(Transpiler::tcc_state, filename.c_str());
 		Transpiler::add_message(std::move("Launching program..."));
+#ifdef OS_LINUX
+		Transpiler::add_message(std::move("Switch to the terminal to see the program"));
+#elif OS_WIN
+		Transpiler::add_message(std::move("Switch to the command prompt to see the program"));
+#endif
 		Transpiler::has_ran = true;
 	}
 

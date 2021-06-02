@@ -26,6 +26,8 @@ const char* Config::fonts[6] = {
 	"CousineRegular", "KarlaRegular", "RobotoMedium"
 };
 const char* Config::version;
+bool Config::first_time = true;
+bool Config::tutorial_done = false;
 
 //Sidebar_c
 int Config::Sidebar_c::fade_in;
@@ -144,6 +146,11 @@ void Config::init_general(void)
 	Config::win_width = std::stoi(ini.GetValue("general", "width", "1280"));
 	Config::win_height = std::stoi(ini.GetValue("general", "height", "720"));
 	Config::vsync = std::stoi(ini.GetValue("general", "vsync", "1"));
+
+	const char* first_time = ini.GetValue("general", "first_time", "true");
+	Config::first_time = Utils::bool_from_string(first_time);
+	const char* tutorial_done = ini.GetValue("general", "tutorial_done", "false");
+	Config::tutorial_done = Utils::bool_from_string(tutorial_done);
 
 	const float r = std::stof(ini.GetValue("clear_color", "r", "0.45f"));
 	const float g = std::stof(ini.GetValue("clear_color", "g", "0.55f"));
