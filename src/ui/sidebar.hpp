@@ -8,6 +8,7 @@ namespace CodeNect
 {
 struct Sidebar
 {
+	static bool is_open;
 	// static map_images images;
 	// static map_images images_hover;
 	map_ui_buttons m_ui_buttons;

@@ -5,8 +5,15 @@
 #include "core/commands.hpp"
 #include "core/config.hpp"
 #include "core/font.hpp"
+#include "core/project.hpp"
 #include "core/utils.hpp"
+#include "core/markdown.hpp"
+#include "node/nodes.hpp"
+#include "node/node_print.hpp"
+#include "modules/transpiler.hpp"
 #include "ui/alert.hpp"
+#include "ui/sidebar.hpp"
+#include "ui/command_palette.hpp"
 
 namespace CodeNect
 {
@@ -19,16 +26,95 @@ bool Tutorial::is_open = false;
 ImVec2 Tutorial::pos;
 ImVec2 Tutorial::size;
 unsigned int Tutorial::current_step = 0;
-std::map<const std::string, bool> Tutorial::m_steps = {
-	{"Open Sidebar", false},
-	{"Open Command Palette", false},
-	{"Create New Project", false},
-	{"Create Node Variables", false},
-	{"Create Node Operation", false},
-	{"Create Node Print", false},
-	{"Connecting Nodes", false},
-	{"Transpiling Visual Code", false},
-	{"Running Visual Code", false},
+
+std::string md_open_sidebar =
+#include "markdown/tutorial_open_sidebar.md"
+;
+std::string md_open_cmd_prompt =
+#include "markdown/tutorial_open_cmd_prompt.md"
+;
+std::string md_create_new_proj =
+#include "markdown/tutorial_new_proj.md"
+;
+std::string md_create_vars =
+#include "markdown/tutorial_create_vars.md"
+;
+std::string md_create_op =
+#include "markdown/tutorial_create_op.md"
+;
+std::string md_create_print =
+#include "markdown/tutorial_create_print.md"
+;
+std::string md_connect_nodes =
+#include "markdown/tutorial_connect_nodes.md"
+;
+std::string md_transpile =
+#include "markdown/tutorial_transpile.md"
+;
+std::string md_run =
+#include "markdown/tutorial_run.md"
+;
+
+std::vector<TutorialInfo> Tutorial::v_steps = {
+	{
+		"Open Sidebar", false, std::move(md_open_sidebar),
+		[](){ return Sidebar::is_open; }
+	},
+	{
+		"Open Command Palette", false, std::move(md_open_cmd_prompt),
+		[](){ return CommandPalette::is_open; }
+	},
+	{
+		"Create New Project", false, std::move(md_create_new_proj),
+		[](){ return Project::has_open_proj; }
+	},
+
+	{
+		"Create Node Variables", false, std::move(md_create_vars),
+		[](){
+			int n = std::count_if(Nodes::v_nodes.begin(), Nodes::v_nodes.end(),
+				[](Node* &node){ return node->m_kind == +NODE_KIND::VARIABLE; });
+			return n >= 3;
+		}
+	},
+
+	{
+		"Create Node Operation", false, std::move(md_create_op),
+		[](){
+			for (Node* &node : Nodes::v_nodes)
+			{
+				if (node->m_kind == +NODE_KIND::OPERATION)
+					return true;
+			}
+			return false;
+		}
+	},
+
+	{
+		"Create Node Print", false, std::move(md_create_print),
+		[](){
+			for (Node* &node : Nodes::v_nodes)
+			{
+				NodePrint* node_print = dynamic_cast<NodePrint*>(node);
+				if (node_print)
+					return true;
+			}
+			return false;
+		}
+	},
+
+	{
+		"Connecting Nodes", false, std::move(md_connect_nodes),
+		[](){ return Nodes::count_connections() >= 8; }
+	},
+	{
+		"Transpiling Visual Code", false, std::move(md_transpile),
+		[](){ return Transpiler::has_compiled; }
+	},
+	{
+		"Running Visual Code", false, std::move(md_run),
+		[](){ return Transpiler::has_ran; }
+	},
 };
 
 int Tutorial::init(void)
@@ -48,20 +134,17 @@ int Tutorial::init(void)
 			if (ImGui::Button(ICON_FA_CHECK " Yes, begin the tutorial"))
 			{
 				Tutorial::is_open = true;
-				// Config::first_time = false;
-				// Config::ini.SetValue("general", "first_time", "false");
-				// Config::save_user_config();
 				Alert::close();
 			}
-
 			ImGui::SameLine();
-
 			if (ImGui::Button(ICON_FA_TIMES " No, I already know how to use it"))
 			{
 				Tutorial::is_open = false;
-				// Config::first_time = false;
-				// Config::ini.SetValue("general", "first_time", "false");
-				// Config::save_user_config();
+				Config::first_time = false;
+				Config::tutorial_done = true;
+				Config::ini.SetValue("general", "first_time", "false");
+				Config::ini.SetValue("general", "tutorial_done", "true");
+				Config::save_user_config();
 				Alert::close();
 			}
 		};
@@ -98,23 +181,52 @@ void Tutorial::draw(void)
 		Utils::center_text(ICON_FA_MAGIC " TUTORIAL", true);
 		Font::unuse_font();
 		ImGui::Separator();
+		unsigned int finished = 0;
 		unsigned int step = 0;
 
-		for (std::pair<const std::string, bool>& e : Tutorial::m_steps)
+		for (TutorialInfo& info : Tutorial::v_steps)
 		{
-			const char* id = e.first.c_str();
-			ImGui::PushID(id);
+			ImGui::PushID(info.m_title);
 			if (step == Tutorial::current_step)
 				ImGui::SetNextItemOpen(true);
-
-			if (ImGui::TreeNode(id))
+			if (ImGui::TreeNode(info.m_title))
 			{
+				if (info.m_is_done)
+					ImGui::Text(ICON_FA_CHECK);
+				if (!info.m_is_done && step == Tutorial::current_step)
+				{
+					if (info.m_cond())
+					{
+						info.m_is_done = true;
+						++finished;
+					}
+					Markdown::draw(info.m_content);
+				}
 				ImGui::TreePop();
 			}
 			ImGui::PopID();
 			++step;
 		}
 
+		//if all is done
+		if (finished == Tutorial::v_steps.size())
+		{
+			Font::use_font(FONT_SIZE::LARGE);
+			Utils::center_text(ICON_FA_AWARD " CONGRATULATIONS!", true);
+			Utils::center_text("You have finished the tutorial.", true);
+			Utils::center_text("You may now proceed to making visual codes!", true);
+			Utils::center_text(ICON_FA_AWARD " CONGRATULATIONS!", true);
+			Font::unuse_font();
+			if (ImGui::Button("Close the tutorial"))
+			{
+				Config::first_time = false;
+				Config::tutorial_done = true;
+				Config::ini.SetValue("general", "first_time", "false");
+				Config::ini.SetValue("general", "tutorial_done", "true");
+				Config::save_user_config();
+				Tutorial::is_open = false;
+			}
+		}
 		ImGui::End();
 	}
 

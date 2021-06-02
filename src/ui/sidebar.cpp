@@ -17,6 +17,8 @@
 
 namespace CodeNect
 {
+bool Sidebar::is_open = false;
+
 Button* btn_project;
 Button* btn_run;
 Button* btn_inspector;
@@ -259,6 +261,7 @@ void Sidebar::draw(void)
 
 void Sidebar::draw_sidebar(void)
 {
+	Sidebar::is_open = m_is_open;
 	const ImVec2& max_size = Config::Sidebar_c::max_img_size;
 
 	Sidebar::set_style();
