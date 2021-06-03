@@ -36,6 +36,7 @@ void SidebarHandler::update(float dt)
 		tween = tweeny::from(m_sidebar->m_alpha).to(0.0f).during(Config::Sidebar_c::fade_out);
 
 	sidebar_was_visible = sidebar_is_visible;
+	Sidebar::is_open = sidebar_is_visible;
 
 	const float value = tween.step(static_cast<int>(dt * 1000));
 	m_sidebar->m_alpha = value;

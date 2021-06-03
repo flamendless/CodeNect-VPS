@@ -22,7 +22,7 @@ struct Tutorial
 	static bool is_open;
 	static ImVec2 pos;
 	static ImVec2 size;
-	static unsigned int current_step;
+	static int current_step;
 	static std::vector<TutorialInfo> v_steps;
 
 	static int init(void);

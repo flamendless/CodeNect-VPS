@@ -25,16 +25,19 @@ ImGuiWindowFlags Tutorial::flags =
 bool Tutorial::is_open = false;
 ImVec2 Tutorial::pos;
 ImVec2 Tutorial::size;
-unsigned int Tutorial::current_step = 0;
+int Tutorial::current_step = -1;
 
 std::string md_open_sidebar =
 #include "markdown/tutorial_open_sidebar.md"
 ;
-std::string md_open_cmd_prompt =
-#include "markdown/tutorial_open_cmd_prompt.md"
+std::string md_open_cmd_palette =
+#include "markdown/tutorial_open_cmd_palette.md"
 ;
 std::string md_create_new_proj =
 #include "markdown/tutorial_new_proj.md"
+;
+std::string md_navigation =
+#include "markdown/tutorial_navigation.md"
 ;
 std::string md_create_vars =
 #include "markdown/tutorial_create_vars.md"
@@ -44,9 +47,6 @@ std::string md_create_op =
 ;
 std::string md_create_print =
 #include "markdown/tutorial_create_print.md"
-;
-std::string md_connect_nodes =
-#include "markdown/tutorial_connect_nodes.md"
 ;
 std::string md_transpile =
 #include "markdown/tutorial_transpile.md"
@@ -61,12 +61,16 @@ std::vector<TutorialInfo> Tutorial::v_steps = {
 		[](){ return Sidebar::is_open; }
 	},
 	{
-		"Open Command Palette", false, std::move(md_open_cmd_prompt),
+		"Open Command Palette", false, std::move(md_open_cmd_palette),
 		[](){ return CommandPalette::is_open; }
 	},
 	{
 		"Create New Project", false, std::move(md_create_new_proj),
 		[](){ return Project::has_open_proj; }
+	},
+	{
+		"Navigation", false, std::move(md_navigation),
+		[](){ return true; }
 	},
 
 	{
@@ -104,10 +108,6 @@ std::vector<TutorialInfo> Tutorial::v_steps = {
 	},
 
 	{
-		"Connecting Nodes", false, std::move(md_connect_nodes),
-		[](){ return Nodes::count_connections() >= 8; }
-	},
-	{
 		"Transpiling Visual Code", false, std::move(md_transpile),
 		[](){ return Transpiler::has_compiled; }
 	},
@@ -123,7 +123,7 @@ int Tutorial::init(void)
 	const int y = (float)Config::win_height/2;
 
 	Tutorial::pos = ImVec2(x, y);
-	Tutorial::size = ImVec2(Config::win_width * 0.30, Config::win_height - 16);
+	Tutorial::size = ImVec2(Config::win_width * 0.45, Config::win_height - 16);
 
 	if (Config::first_time && !Config::tutorial_done)
 	{
@@ -181,41 +181,66 @@ void Tutorial::draw(void)
 		Utils::center_text(ICON_FA_MAGIC " TUTORIAL", true);
 		Font::unuse_font();
 		ImGui::Separator();
-		unsigned int finished = 0;
-		unsigned int step = 0;
+		static int finished = 0;
 
-		for (TutorialInfo& info : Tutorial::v_steps)
+		if (Tutorial::current_step == -1)
 		{
-			ImGui::PushID(info.m_title);
-			if (step == Tutorial::current_step)
-				ImGui::SetNextItemOpen(true);
-			if (ImGui::TreeNode(info.m_title))
+			Font::use_font(FONT_SIZE::LARGE);
+			Utils::center_text(ICON_FA_AWARD " WELCOME!", true);
+			Utils::center_text("This tutorial will teach you the", true);
+			Utils::center_text("basics of visual programming", true);
+			Utils::center_text("and how to use CodeNect", true);
+			Font::unuse_font();
+			if (ImGui::Button("Proceed to the tutorial"))
+				Tutorial::current_step = 0;
+		}
+		else
+		{
+			int step = 0;
+			for (TutorialInfo& info : Tutorial::v_steps)
 			{
 				if (info.m_is_done)
-					ImGui::Text(ICON_FA_CHECK);
-				if (!info.m_is_done && step == Tutorial::current_step)
 				{
-					if (info.m_cond())
-					{
-						info.m_is_done = true;
-						++finished;
-					}
-					Markdown::draw(info.m_content);
+					ImGui::TextColored(ImVec4(0, 1, 0, 1), ICON_FA_CHECK);
+					ImGui::SameLine();
 				}
-				ImGui::TreePop();
+				if (step == Tutorial::current_step)
+					ImGui::SetNextItemOpen(true);
+				else if (!info.m_is_done)
+				{
+					++step;
+					continue;
+				}
+
+				ImGui::PushID(step);
+				if (ImGui::TreeNode(info.m_title))
+				{
+					if (step == Tutorial::current_step)
+					{
+						Markdown::draw(info.m_content);
+						if (info.m_cond())
+							info.m_is_done = true;
+						if (info.m_is_done && ImGui::Button("Proceed to next tutorial"))
+						{
+							++Tutorial::current_step;
+							++finished;
+						}
+					}
+					ImGui::TreePop();
+				}
+				ImGui::PopID();
+				++step;
 			}
-			ImGui::PopID();
-			++step;
 		}
 
 		//if all is done
-		if (finished == Tutorial::v_steps.size())
+		if (finished >= (int)Tutorial::v_steps.size())
 		{
+			ImGui::Separator();
 			Font::use_font(FONT_SIZE::LARGE);
 			Utils::center_text(ICON_FA_AWARD " CONGRATULATIONS!", true);
 			Utils::center_text("You have finished the tutorial.", true);
 			Utils::center_text("You may now proceed to making visual codes!", true);
-			Utils::center_text(ICON_FA_AWARD " CONGRATULATIONS!", true);
 			Font::unuse_font();
 			if (ImGui::Button("Close the tutorial"))
 			{
