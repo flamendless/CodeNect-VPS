@@ -4,6 +4,9 @@
 ![image](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 ![image](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 
+Buy the binary for Windows over at [itchio](https://flamendless.itch.io/codenect)
+to support the developer
+
 ## About
 CodeNect is a visual programming software developed for my thesis as a supplementary
 tool for beginners in programming.
