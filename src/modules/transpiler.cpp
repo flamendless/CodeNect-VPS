@@ -138,7 +138,7 @@ int Transpiler::init(void)
 		return RES_FAIL;
 	}
 
-#ifdef OS_LINUX
+#if defined(OS_LINUX) || defined(OS_MAC)
 	tcc_set_lib_path(Transpiler::tcc_state, "./lib");
 #endif
 	tcc_add_library_path(Transpiler::tcc_state, "./tcc");
@@ -507,7 +507,7 @@ int Transpiler::run(void)
 	{
 		// tcc_output_file(Transpiler::tcc_state, filename.c_str());
 		Transpiler::add_message(std::move("Launching program..."));
-#ifdef OS_LINUX
+#if defined(OS_LINUX) || defined(OS_MAC)
 		Transpiler::add_message(std::move("Switch to the terminal to see the program"));
 #elif OS_WIN
 		Transpiler::add_message(std::move("Switch to the command prompt to see the program"));

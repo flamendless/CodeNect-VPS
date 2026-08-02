@@ -5,7 +5,7 @@
 
 namespace CodeNect::Templates
 {
-#ifdef OS_LINUX
+#if defined(OS_LINUX) || defined(OS_MAC)
 inline static const char* incl_tcc =
 	"#include <tcclib.h>\n"
 	"//for assert for checking array out of bounds\n"

@@ -104,7 +104,7 @@ int main(int argv, char** args)
 	ImGuiIO* imgui_io = &ImGui::GetIO();
 
 	//test
-#if OS_LINUX
+#if defined(OS_LINUX) || defined(OS_MAC)
 	// CodeNect::Project::open("../demo/branch.cn");
 #endif
 

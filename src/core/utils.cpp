@@ -116,6 +116,9 @@ void open_url(const char* url)
 #ifdef OS_LINUX
 	std::string cmd_linux = "xdg-open " + str_url;
 	system(cmd_linux.c_str());
+#elif OS_MAC
+	std::string cmd_mac = "open " + str_url;
+	system(cmd_mac.c_str());
 #elif OS_WIN
 	ShellExecute(NULL, "open", str_url.c_str(), NULL, NULL, SW_SHOWDEFAULT);
 #endif
