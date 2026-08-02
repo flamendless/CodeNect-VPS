@@ -171,12 +171,8 @@ target_include_directories(CodeNectTest PRIVATE
 	${GLFW3_INCLUDE_DIR}
 )
 
-target_compile_definitions(CodeNectTest PRIVATE OS_LINUX=1)
 target_compile_definitions(CodeNectTest PRIVATE "$<$<CONFIG:Debug>:DEBUG_MODE=1>")
 target_compile_definitions(CodeNectTest PRIVATE "$<$<CONFIG:Debug>:TEST=1>")
-
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 
 if (WIN32)
 	target_compile_definitions(CodeNectTest PRIVATE OS_WIN=1)
@@ -189,6 +185,32 @@ if (WIN32)
 	install(FILES
 			../lib/windows/libtcc1-64.a
 		DESTINATION ./lib)
+elseif (APPLE)
+	target_compile_definitions(CodeNectTest PRIVATE OS_MAC=1)
+
+	enable_language(OBJC)
+	target_sources(CodeNectTest PRIVATE ../includes/nfd/nfd_cocoa.m)
+	set_source_files_properties(../includes/nfd/nfd_cocoa.m PROPERTIES
+		COMPILE_FLAGS "-fno-objc-arc")
+	target_link_libraries(CodeNectTest "-framework AppKit")
+
+	set(MACOS_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../lib/macos)
+	if (EXISTS ${MACOS_LIB_DIR}/libtcc.a)
+		target_link_libraries(CodeNectTest ${MACOS_LIB_DIR}/libtcc.a)
+		if (EXISTS ${MACOS_LIB_DIR}/libtcc1.a)
+			target_link_libraries(CodeNectTest ${MACOS_LIB_DIR}/libtcc1.a)
+		endif ()
+	else ()
+		find_library(TCC_LIBRARY NAMES tcc
+			PATHS /opt/homebrew/lib /usr/local/lib)
+		if (NOT TCC_LIBRARY)
+			message(FATAL_ERROR
+				"libtcc was not found. Build it for macOS with "
+				"'../scripts/build_tcc_macos.sh' or install TinyCC via "
+				"Homebrew, then re-run CMake.")
+		endif ()
+		target_link_libraries(CodeNectTest ${TCC_LIBRARY})
+	endif ()
 else ()
 	target_compile_definitions(CodeNectTest PRIVATE OS_LINUX=1)
 

@@ -192,6 +192,43 @@ if (WIN32)
 	install(FILES
 			lib/windows/libtcc1-64.a
 		DESTINATION ./lib)
+elseif (APPLE)
+	target_compile_definitions(CodeNect PRIVATE OS_MAC=1)
+
+	# native file dialog uses the Cocoa/AppKit backend on macOS.
+	# nfd_cocoa.m uses manual reference counting, so ARC must stay disabled.
+	enable_language(OBJC)
+	target_sources(CodeNect PRIVATE includes/nfd/nfd_cocoa.m)
+	set_source_files_properties(includes/nfd/nfd_cocoa.m PROPERTIES
+		COMPILE_FLAGS "-fno-objc-arc")
+	target_link_libraries(CodeNect "-framework AppKit")
+
+	# TinyCC static libraries for macOS (Apple Silicon/Intel). These are not
+	# shipped in the repo because they must match the host architecture and
+	# SDK. Build them once with ./scripts/build_tcc_macos.sh (which installs
+	# them into lib/macos/) or install TinyCC through Homebrew.
+	set(MACOS_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/macos)
+	if (EXISTS ${MACOS_LIB_DIR}/libtcc.a)
+		target_link_libraries(CodeNect ${MACOS_LIB_DIR}/libtcc.a)
+		install(FILES ${MACOS_LIB_DIR}/libtcc.a DESTINATION .)
+		install(FILES ${MACOS_LIB_DIR}/libtcc.a DESTINATION ./lib)
+		if (EXISTS ${MACOS_LIB_DIR}/libtcc1.a)
+			target_link_libraries(CodeNect ${MACOS_LIB_DIR}/libtcc1.a)
+			install(FILES ${MACOS_LIB_DIR}/libtcc1.a DESTINATION ./lib)
+		endif ()
+	else ()
+		find_library(TCC_LIBRARY NAMES tcc
+			PATHS /opt/homebrew/lib /usr/local/lib)
+		if (NOT TCC_LIBRARY)
+			message(FATAL_ERROR
+				"libtcc was not found. Build it for macOS with "
+				"'./scripts/build_tcc_macos.sh' (installs into lib/macos/) "
+				"or install TinyCC via Homebrew, then re-run CMake.")
+		endif ()
+		target_link_libraries(CodeNect ${TCC_LIBRARY})
+	endif ()
+
+	# dlopen/dlsym live in libSystem on macOS; no separate -ldl is required.
 else ()
 	target_compile_definitions(CodeNect PRIVATE OS_LINUX=1)
 

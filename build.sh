@@ -29,13 +29,28 @@ function package_linux()
 	zip -9r codenect_linux.zip assets build.sh build_win.bat cmake CMakeLists.txt config.ini includes lib LICENSE src
 }
 
+function package_macos()
+{
+	zip -9r codenect_macos.zip assets build.sh build_win.bat cmake CMakeLists.txt config.ini includes lib LICENSE scripts src
+}
+
+function deps_macos()
+{
+	# installs the toolchain and libraries needed to build CodeNect on macOS
+	# (Apple Silicon or Intel) via Homebrew
+	brew install cmake ninja pkg-config glfw
+	# TinyCC static libs are architecture specific and are not shipped in the
+	# repo, so build them locally into lib/macos/
+	./scripts/build_tcc_macos.sh
+}
+
 function clean()
 {
 	rm -rf ${dir_build}/*
 }
 
 if [ $# -eq 0 ]; then
-	echo "Must pass command: rebuild, compile, run, clean"
+	echo "Must pass command: rebuild, compile, run, clean, package_linux, package_macos, deps_macos"
 else
 	"$@"
 fi

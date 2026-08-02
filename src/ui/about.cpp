@@ -56,6 +56,8 @@ void About::draw()
 		Utils::center_text(version.c_str(), true);
 #if OS_LINUX
 		Utils::center_text("Linux Release", true);
+#elif OS_MAC
+		Utils::center_text("macOS (Apple Silicon) Release", true);
 #elif OS_WIN
 		Utils::center_text("Windows x64 Release", true);
 #endif
