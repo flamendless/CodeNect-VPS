@@ -3,6 +3,7 @@
 ![image](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 ![image](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 ![image](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![image](https://img.shields.io/badge/macOS-000000?style=for-the-badge&logo=apple&logoColor=white)
 
 Buy the binary for Windows over at [itchio](https://flamendless.itch.io/codenect)
 to support the developer
@@ -56,17 +57,62 @@ The following nodes are supported:
 The supported platforms are:
 * Linux
 * Windows 7, 10 (64 bit)
+* macOS (Apple Silicon / arm64, also builds on Intel)
 
 ## Requirements
-* CMake
+* CMake (3.16 or higher on macOS for Objective-C support)
 * Ninja
 * Clang++ (11.1.0 or higher)
 * C++17
 
+Platform specific libraries:
+* Linux: `gtk+-3.0`, `glfw3`, OpenGL
+* Windows: bundled in `lib/`
+* macOS: `glfw`, OpenGL (system framework), Cocoa/AppKit (system framework)
+
 ## Compiling/Building
 (clone the repo first then get the submodules)
+
+```
+git clone https://github.com/flamendless/CodeNect-VPS.git
+cd CodeNect-VPS
+git submodule update --init --recursive
+```
+
 * For Linux, just run `./build.sh rebuild && ./build.sh compile && ./build.sh run`
 * For Windows, just run `build_win.bat`
+* For macOS (Apple Silicon), see the section below
+
+### macOS (Apple Silicon)
+1. Install the Xcode Command Line Tools (provides `clang`, `make`, `git`):
+
+```
+xcode-select --install
+```
+
+2. Install the build dependencies and build the architecture-specific `libtcc`
+   in one step with [Homebrew](https://brew.sh):
+
+```
+./build.sh deps_macos
+```
+
+   This runs `brew install cmake ninja pkg-config glfw` and then
+   `./scripts/build_tcc_macos.sh`, which compiles TinyCC for your Mac and
+   installs `libtcc.a`/`libtcc1.a` into `lib/macos/`. You can also run those
+   two steps manually if you prefer.
+
+3. Build and run just like on Linux:
+
+```
+./build.sh rebuild && ./build.sh compile && ./build.sh run
+```
+
+> Note: The `libtcc` static libraries are architecture and SDK specific, so
+> they are not committed to the repo. `./scripts/build_tcc_macos.sh` builds them
+> for your machine. TinyCC's macOS (Mach-O) backend is experimental, especially
+> on Apple Silicon; pin a known-good ref with
+> `./scripts/build_tcc_macos.sh <git-ref>` if you hit issues.
 
 ## Testing
 * `cd test && ./build.sh rebuild`
