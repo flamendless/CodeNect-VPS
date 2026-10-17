@@ -138,5 +138,9 @@ CodeNect is grateful to the following tool/libraries for making it possible:
 * [Tweeny](https://github.com/mobius3/tweeny)
 * [CppVerbalExpressions](https://github.com/VerbalExpressions/CppVerbalExpressions/)
 
+## AI/LLM Use Disclaimer
+
+ AI and large language model (LLM) tools were used to help port CodeNect to macOS (including build tooling, platform-specific code, and related documentation). Output from those tools was not merged blindly: the maintainer reviewed, edited, and tested the changes to the extent of their knowledge and experience. That review does not guarantee correctness; if you spot problems in the macOS port or surrounding changes, please open an issue.
+
 ## LICENSE
 License is [GNU General Public License v3.0](https://github.com/flamendless/CodeNect-VPS/blob/main/LICENSE)

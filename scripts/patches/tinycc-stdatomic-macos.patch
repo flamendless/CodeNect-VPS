@@ -1,0 +1,11 @@
+--- a/lib/stdatomic.c
++++ b/lib/stdatomic.c
+@@ -100,5 +100,8 @@
+ }
+ 
+ #ifndef __TINYC__
++/* CODENECT_MACOS_STDATOMIC: clang on macOS rejects aliases and builtins clash */
++#if !defined(__APPLE__)
+ bool __atomic_is_lock_free(unsigned long size, const volatile void *ptr) __attribute__((alias("__tcc_atomic_is_lock_free")));
++#endif
+ #endif

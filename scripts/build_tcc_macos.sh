@@ -72,24 +72,50 @@ echo "==> Configuring"
 echo "==> Compiling libtcc and the runtime support library"
 make clean >/dev/null 2>&1 || true
 make libtcc.a
-# libtcc1.a is the compiler runtime that generated programs link against
-make libtcc1.a || make
+
+# ponytail: TinyCC's libtcc1 build emits ELF + broken ar on macOS; assemble with clang.
+build_libtcc1_macos() {
+	local lib_dir="${WORK_DIR}/tinycc/lib"
+	local out="$1"
+	local -a objs cflags=(-arch "${ARCH}" -fPIC -fno-omit-frame-pointer
+		-Wno-unused-function -Wno-unused-variable -I..)
+
+	cd "${lib_dir}"
+	case "${ARCH}" in
+		arm64)
+			objs=(lib-arm64.o)
+			clang -c lib-arm64.c -o lib-arm64.o "${cflags[@]}"
+			;;
+		x86_64)
+			objs=(libtcc1.o va_list.o)
+			clang -c libtcc1.c -o libtcc1.o "${cflags[@]}"
+			clang -c va_list.c -o va_list.o "${cflags[@]}"
+			;;
+		*)
+			echo "error: unsupported macOS arch '${ARCH}'." >&2
+			return 1
+			;;
+	esac
+	objs+=(stdatomic.o atomic.o builtin.o alloca.o alloca-bt.o tcov.o)
+	clang -c stdatomic.c -o stdatomic.o "${cflags[@]}"
+	sed -E '/^[[:space:]]*\.(type|size)/d' atomic.S \
+		| clang -c -x assembler-with-cpp - -o atomic.o -arch "${ARCH}"
+	clang -c builtin.c -o builtin.o "${cflags[@]}"
+	clang -c -x assembler-with-cpp alloca.S -o alloca.o -arch "${ARCH}"
+	clang -c -x assembler-with-cpp alloca-bt.S -o alloca-bt.o -arch "${ARCH}"
+	clang -c tcov.c -o tcov.o "${cflags[@]}"
+	ar rcs "${out}" "${objs[@]}"
+}
+
+echo "==> Patching TinyCC runtime sources for clang on macOS"
+python3 "${SCRIPT_DIR}/patch_tinycc_macos.py" "${WORK_DIR}/tinycc"
+
+echo "==> Building libtcc1.a with clang (${ARCH})"
+mkdir -p "${DEST_DIR}"
+build_libtcc1_macos "${DEST_DIR}/libtcc1.a"
 
 echo "==> Installing libraries into ${DEST_DIR}"
-mkdir -p "${DEST_DIR}"
-cp -v libtcc.a "${DEST_DIR}/libtcc.a"
-
-# libtcc1.a lands either at the repo root or under a per-arch subdirectory
-if [[ -f libtcc1.a ]]; then
-	cp -v libtcc1.a "${DEST_DIR}/libtcc1.a"
-else
-	found_libtcc1="$(find . -name 'libtcc1.a' -print -quit || true)"
-	if [[ -n "${found_libtcc1}" ]]; then
-		cp -v "${found_libtcc1}" "${DEST_DIR}/libtcc1.a"
-	else
-		echo "warning: libtcc1.a was not produced; runtime linking may fail." >&2
-	fi
-fi
+cp -v "${WORK_DIR}/tinycc/libtcc.a" "${DEST_DIR}/libtcc.a"
 
 echo ""
 echo "Done. libtcc for macOS is installed in ${DEST_DIR}:"

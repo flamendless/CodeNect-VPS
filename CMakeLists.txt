@@ -201,7 +201,15 @@ elseif (APPLE)
 	target_sources(CodeNect PRIVATE includes/nfd/nfd_cocoa.m)
 	set_source_files_properties(includes/nfd/nfd_cocoa.m PROPERTIES
 		COMPILE_FLAGS "-fno-objc-arc")
-	target_link_libraries(CodeNect "-framework AppKit")
+	target_link_libraries(CodeNect
+		"-framework AppKit"
+		"-framework IOKit"
+		"-framework CoreFoundation"
+		"-framework CoreGraphics"
+		"-framework CoreVideo"
+		"-framework Metal"
+		"-framework QuartzCore"
+	)
 
 	# TinyCC static libraries for macOS (Apple Silicon/Intel). These are not
 	# shipped in the repo because they must match the host architecture and
