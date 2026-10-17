@@ -19,6 +19,8 @@ void display_asterisk(bool ref, const char* str);
 void display_asterisk(bool ref);
 std::string time_now(void);
 void open_url(const char* url);
+void use_resource_directory_as_cwd(int argc, char** argv);
+std::string resolve_resource_path(const char* relative_path);
 bool bool_from_string(const char* str);
 void string_to_name(std::string& str);
 const char* cmp_to_op_str(NODE_CMP&);

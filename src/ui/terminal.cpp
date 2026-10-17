@@ -1,5 +1,6 @@
 #include "ui/terminal.hpp"
 
+#include <mutex>
 #include <string>
 #include <fstream>
 #include <imgui_internal.h>
@@ -24,6 +25,9 @@
 
 namespace CodeNect
 {
+static char s_terminal_input_buf[512] = "";
+static bool s_terminal_input_focus = false;
+
 ImGuiWindowFlags Terminal::flags =
 	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
 	ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar |
@@ -230,16 +234,48 @@ void Terminal::draw_output(void)
 		ImGui::PopStyleVar(1);
 
 	ImGui::Separator();
-	if (Debugger::v_msg_info.size() != 0)
+	const float output_height = Transpiler::awaiting_input ? 280.0f : 320.0f;
+	if (ImGui::BeginChild("TerminalOutputScroll", ImVec2(0, output_height), true))
 	{
-		ImGui::TextColored(NodeColors::Lookup::YELLOW, ICON_FA_EXCLAMATION_TRIANGLE " %s", "There are warnings with your node structure");
-		ImGui::TextColored(NodeColors::Lookup::YELLOW, ICON_FA_EXCLAMATION_TRIANGLE " %s", "This may result in error with the transpiled code");
-		ImGui::TextColored(NodeColors::Lookup::YELLOW, ICON_FA_EXCLAMATION_TRIANGLE " %s", "You may check the Docs for more info regarding the warning or error");
-		Terminal::draw_message_info(Debugger::v_msg_info);
-	}
+		if (Debugger::v_msg_info.size() != 0)
+		{
+			ImGui::TextColored(NodeColors::Lookup::YELLOW, ICON_FA_EXCLAMATION_TRIANGLE " %s", "There are warnings with your node structure");
+			ImGui::TextColored(NodeColors::Lookup::YELLOW, ICON_FA_EXCLAMATION_TRIANGLE " %s", "This may result in error with the transpiled code");
+			ImGui::TextColored(NodeColors::Lookup::YELLOW, ICON_FA_EXCLAMATION_TRIANGLE " %s", "You may check the Docs for more info regarding the warning or error");
+			Terminal::draw_message_info(Debugger::v_msg_info);
+		}
 
-	Terminal::draw_message_info(Transpiler::v_output);
-	Terminal::draw_assessment();
+		{
+			std::lock_guard<std::mutex> lock(Transpiler::io_mutex);
+			Terminal::draw_message_info(Transpiler::v_output);
+		}
+		Terminal::draw_assessment();
+		if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
+			ImGui::SetScrollHereY(1.0f);
+	}
+	ImGui::EndChild();
+
+	if (Transpiler::awaiting_input)
+	{
+		if (!s_terminal_input_focus)
+		{
+			ImGui::SetKeyboardFocusHere();
+			s_terminal_input_focus = true;
+		}
+		ImGui::TextUnformatted("Input:");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(-1.0f);
+		if (ImGui::InputText("##TerminalProgramInput", s_terminal_input_buf,
+				IM_ARRAYSIZE(s_terminal_input_buf), ImGuiInputTextFlags_EnterReturnsTrue))
+		{
+			Transpiler::submit_terminal_input(s_terminal_input_buf);
+			s_terminal_input_buf[0] = '\0';
+			s_terminal_input_focus = false;
+		}
+		ImGui::PopItemWidth();
+	}
+	else
+		s_terminal_input_focus = false;
 }
 
 void Terminal::draw_code(void)

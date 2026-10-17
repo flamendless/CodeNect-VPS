@@ -468,8 +468,11 @@ void Transpiler::build_runnable_code(std::string& out, bool is_tcc)
 
 	//closing
 #ifndef TEST
-	str_closing.append("  printf(\"PRESS ENTER TO EXIT\\n\");").append("\n");
-	str_closing.append("  getchar();").append("\n");
+	if (!is_tcc)
+	{
+		str_closing.append("  printf(\"PRESS ENTER TO EXIT\\n\");").append("\n");
+		str_closing.append("  getchar();").append("\n");
+	}
 #endif
 	str_closing.append("  return 0;").append("\n");
 	str_closing.append("}");

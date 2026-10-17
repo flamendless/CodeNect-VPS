@@ -1,5 +1,13 @@
 #include "core/utils.hpp"
 
+#include <filesystem>
+#if defined(OS_MAC)
+#include <mach-o/dyld.h>
+#include <unistd.h>
+#elif defined(OS_LINUX)
+#include <unistd.h>
+#endif
+
 #include <algorithm>
 #include "fmt/format.h"
 #include "core/defines.hpp"
@@ -108,6 +116,101 @@ std::string time_now(void)
 	strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
 
 	return std::string(buffer);
+}
+
+namespace
+{
+std::filesystem::path g_resource_root;
+
+std::filesystem::path executable_directory_from_argv(int argc, char** argv)
+{
+	if (argc < 1 || argv == nullptr || argv[0] == nullptr || argv[0][0] == '\0')
+		return {};
+	std::error_code ec;
+	std::filesystem::path exe(argv[0]);
+	if (!exe.is_absolute())
+		exe = std::filesystem::current_path(ec) / exe;
+	exe = std::filesystem::weakly_canonical(exe, ec);
+	if (ec || !exe.has_filename())
+		return {};
+	return exe.parent_path();
+}
+
+std::filesystem::path executable_directory(void)
+{
+	std::error_code ec;
+#if defined(OS_MAC)
+	char path[4096];
+	uint32_t size = sizeof(path);
+	if (_NSGetExecutablePath(path, &size) != 0)
+		return {};
+	return std::filesystem::weakly_canonical(
+		std::filesystem::path(path).parent_path(), ec);
+#elif defined(OS_LINUX)
+	char path[4096];
+	const ssize_t len = readlink("/proc/self/exe", path, sizeof(path) - 1);
+	if (len <= 0)
+		return {};
+	path[len] = '\0';
+	return std::filesystem::weakly_canonical(
+		std::filesystem::path(path).parent_path(), ec);
+#elif defined(OS_WIN)
+	char path[MAX_PATH];
+	if (GetModuleFileNameA(nullptr, path, MAX_PATH) == 0)
+		return {};
+	return std::filesystem::weakly_canonical(
+		std::filesystem::path(path).parent_path(), ec);
+#else
+	return {};
+#endif
+}
+
+bool has_bundled_assets(const std::filesystem::path& dir)
+{
+	std::error_code ec;
+	return std::filesystem::is_directory(dir / "assets", ec)
+		&& std::filesystem::exists(dir / "assets" / "logo.png", ec);
+}
+}
+
+void use_resource_directory_as_cwd(int argc, char** argv)
+{
+	std::filesystem::path exe_dir = executable_directory_from_argv(argc, argv);
+	if (exe_dir.empty())
+		exe_dir = executable_directory();
+	if (exe_dir.empty())
+		return;
+
+	std::error_code ec;
+	std::filesystem::path dir = exe_dir;
+	std::filesystem::path resource_dir = exe_dir;
+	for (int depth = 0; depth < 8; ++depth)
+	{
+		if (has_bundled_assets(dir))
+		{
+			resource_dir = dir;
+			break;
+		}
+		const auto parent = dir.parent_path();
+		if (parent == dir)
+			break;
+		dir = parent;
+	}
+
+	g_resource_root = resource_dir;
+	std::filesystem::current_path(resource_dir, ec);
+}
+
+std::string resolve_resource_path(const char* relative_path)
+{
+	if (relative_path == nullptr || relative_path[0] == '\0')
+		return {};
+	const std::filesystem::path rel(relative_path);
+	if (rel.is_absolute())
+		return rel.string();
+	if (!g_resource_root.empty())
+		return (g_resource_root / rel).string();
+	return rel.string();
 }
 
 void open_url(const char* url)

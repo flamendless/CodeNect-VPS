@@ -15,6 +15,7 @@ struct Paths
 	static std::filesystem::path cur_path;
 };
 
+void refresh_working_paths(void);
 bool open_project_file(std::string& project_filepath);
 bool open_filepath(std::string& filepath);
 bool save_to_file(std::string& out_filepath, const char* ext, const std::string& content);

@@ -1,10 +1,26 @@
 app_name=CodeNect
 dir_build=build
 dir_install=bin
+_repo_root="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+
+# Older macOS installs left bin/CodeNect and build/CodeNect next to CodeNect.app.
+function remove_stale_macos_flat_binary()
+{
+	local f
+	for f in "${_repo_root}/bin/CodeNect" "${_repo_root}/build/CodeNect"; do
+		if [ -f "${f}" ]; then
+			rm -f -- "${f}"
+		fi
+	done
+}
 
 function debug()
 {
-	cd ${dir_install} && lldb ${app_name}
+	if [ "$(uname -s)" = "Darwin" ]; then
+		cd "${dir_install}/CodeNect.app/Contents/MacOS" && lldb ./${app_name}
+	else
+		cd ${dir_install} && lldb ${app_name}
+	fi
 }
 
 function rebuild()
@@ -15,13 +31,20 @@ function rebuild()
 function compile()
 {
 	cmake --build ${dir_build} --target install
+	if [ "$(uname -s)" = "Darwin" ]; then
+		remove_stale_macos_flat_binary
+	fi
 	ctags -R src
 	cp ${dir_build}/compile_commands.json .
 }
 
 function run()
 {
-	cd ${dir_install} && ./${app_name}
+	if [ "$(uname -s)" = "Darwin" ]; then
+		cd "${dir_install}/CodeNect.app/Contents/MacOS" && ./${app_name}
+	else
+		cd ${dir_install} && ./${app_name}
+	fi
 }
 
 function package_linux()

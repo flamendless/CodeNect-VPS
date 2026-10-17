@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <stdio.h>
 #include <functional>
+#include <cstring>
 #include "plog/Log.h"
 #include "ppk_assert.h"
 #include "IconsFontAwesome5.h"
@@ -52,6 +53,14 @@ std::vector<State> Transpiler::v_states;
 std::vector<NodeBranch*> Transpiler::v_finished_branches;
 // std::vector<std::string> Transpiler::v_lines;
 std::vector<std::string> Transpiler::v_printed;
+std::atomic<bool> Transpiler::is_running{false};
+std::atomic<bool> Transpiler::awaiting_input{false};
+std::atomic<bool> Transpiler::run_finished{false};
+std::mutex Transpiler::io_mutex;
+std::condition_variable Transpiler::input_cv;
+std::string Transpiler::input_line;
+bool Transpiler::input_ready = false;
+std::thread Transpiler::run_thread;
 
 bool has_warning_added = false;
 std::array<std::string, 2> ignored_warnings = {
@@ -63,27 +72,72 @@ void cn_printf(const char* fmt, ...)
 {
 	char buffer[256];
 	va_list args;
-    va_start(args, fmt);
+	va_start(args, fmt);
 	vsprintf(buffer, fmt, args);
-	printf("%s", buffer);
+	va_end(args);
 
-	//sanitize string
 	std::string str_buffer = buffer;
-	str_buffer.erase(str_buffer.find_last_not_of("\n\r\t") + 1);
-	Transpiler::v_printed.push_back(str_buffer);
+	const auto end = str_buffer.find_last_not_of("\n\r\t");
+	if (end != std::string::npos)
+		str_buffer.erase(end + 1);
+	else
+		str_buffer.clear();
+
+	{
+		std::lock_guard<std::mutex> lock(Transpiler::io_mutex);
+		Transpiler::v_printed.push_back(str_buffer);
+		MessageInfo info;
+		info.m_msg = str_buffer;
+		info.m_type = OUTPUT_TYPE::STDOUT;
+		Transpiler::v_output.push_back(std::move(info));
+	}
 }
 
 char* cn_fgets(char* str, int num, FILE* s)
 {
-	char* ret = fgets(str, num, s);
+	if (s != nullptr && s != stdin)
+		return fgets(str, num, s);
 
-	//sanitize
-	std::string str_buffer = str;
-	str_buffer.erase(str_buffer.find_last_not_of("\n\r\t") + 1);
-	std::string str_prev = Transpiler::v_printed.back();
-	Transpiler::v_printed.pop_back();
-	Transpiler::v_printed.push_back(str_prev + str_buffer);
-	return ret;
+	std::string line;
+	{
+		{
+			std::lock_guard<std::mutex> lock(Transpiler::io_mutex);
+			Transpiler::input_ready = false;
+			Transpiler::input_line.clear();
+		}
+		Transpiler::awaiting_input = true;
+		std::unique_lock<std::mutex> lock(Transpiler::io_mutex);
+		Transpiler::input_cv.wait(lock, [] { return Transpiler::input_ready; });
+		line = Transpiler::input_line;
+	}
+	if (line.empty())
+		return nullptr;
+
+	std::string with_nl = line;
+	if (with_nl.back() != '\n')
+		with_nl.push_back('\n');
+
+	const int copy_len = std::min(num - 1, static_cast<int>(with_nl.size()));
+	std::memcpy(str, with_nl.c_str(), copy_len);
+	str[copy_len] = '\0';
+
+	std::string str_buffer = line;
+	const auto end = str_buffer.find_last_not_of("\n\r\t");
+	if (end != std::string::npos)
+		str_buffer.erase(end + 1);
+	else
+		str_buffer.clear();
+
+	{
+		std::lock_guard<std::mutex> lock(Transpiler::io_mutex);
+		if (!Transpiler::v_printed.empty())
+		{
+			std::string str_prev = Transpiler::v_printed.back();
+			Transpiler::v_printed.pop_back();
+			Transpiler::v_printed.push_back(str_prev + str_buffer);
+		}
+	}
+	return str;
 }
 
 void Transpiler::handle_error(void* opaque, const char* msg)
@@ -138,11 +192,14 @@ int Transpiler::init(void)
 		return RES_FAIL;
 	}
 
+	const std::string tcc_dir = Utils::resolve_resource_path("tcc");
+	const std::string lib_dir = Utils::resolve_resource_path("lib");
 #if defined(OS_LINUX) || defined(OS_MAC)
-	tcc_set_lib_path(Transpiler::tcc_state, "./lib");
+	tcc_set_lib_path(Transpiler::tcc_state, tcc_dir.c_str());
 #endif
-	tcc_add_library_path(Transpiler::tcc_state, "./tcc");
-	tcc_add_include_path(Transpiler::tcc_state, "./tcc");
+	tcc_add_library_path(Transpiler::tcc_state, lib_dir.c_str());
+	tcc_add_library_path(Transpiler::tcc_state, tcc_dir.c_str());
+	tcc_add_include_path(Transpiler::tcc_state, tcc_dir.c_str());
 	tcc_set_error_func(Transpiler::tcc_state, stderr, Transpiler::handle_error);
 	// tcc_set_output_type(Transpiler::tcc_state, TCC_OUTPUT_EXE);
 	tcc_set_output_type(Transpiler::tcc_state, TCC_OUTPUT_MEMORY);
@@ -168,11 +225,48 @@ void Transpiler::add_message(const std::string& msg, OUTPUT_TYPE type, Node* nod
 {
 	PLOGD << msg;
 	MessageInfo info;
-	info.m_msg = std::move(msg);
+	info.m_msg = msg;
 	info.m_type = type;
 	info.m_node = node;
 	info.m_doc_id = doc_id;
+	{
+		std::lock_guard<std::mutex> lock(Transpiler::io_mutex);
+		Transpiler::v_output.push_back(std::move(info));
+	}
+}
+
+void Transpiler::add_message_threadsafe(const std::string& msg, OUTPUT_TYPE type)
+{
+	MessageInfo info;
+	info.m_msg = msg;
+	info.m_type = type;
+	std::lock_guard<std::mutex> lock(Transpiler::io_mutex);
 	Transpiler::v_output.push_back(std::move(info));
+}
+
+void Transpiler::submit_terminal_input(const std::string& line)
+{
+	{
+		std::lock_guard<std::mutex> lock(Transpiler::io_mutex);
+		Transpiler::input_line = line;
+		Transpiler::input_ready = true;
+	}
+	Transpiler::awaiting_input = false;
+	Transpiler::input_cv.notify_one();
+}
+
+void Transpiler::poll_run(void)
+{
+	if (!Transpiler::is_running || !Transpiler::run_finished)
+		return;
+
+	if (Transpiler::run_thread.joinable())
+		Transpiler::run_thread.join();
+
+	Transpiler::is_running = false;
+	Transpiler::run_finished = false;
+	Transpiler::awaiting_input = false;
+	Transpiler::add_message(std::move("Finished running the program"));
 }
 
 std::string Transpiler::get_temp_name(const char* name)
@@ -285,7 +379,10 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs, 
 
 		if (!has_prompt && node_prompt)
 		{
-			str_structs.append(Templates::struct_prompt);
+			if (is_tcc)
+				str_structs.append(Templates::struct_prompt_tcc);
+			else
+				str_structs.append(Templates::struct_prompt);
 			has_prompt = true;
 			continue;
 		}
@@ -426,6 +523,12 @@ void Transpiler::set_pre_entry(std::string& str_incl, std::string& str_structs, 
 
 int Transpiler::compile(void)
 {
+	if (Transpiler::is_running)
+	{
+		Alert::open(ALERT_TYPE::ERR, "program is still running");
+		return RES_FAIL;
+	}
+
 	if (!Project::has_open_proj)
 	{
 		Alert::open(ALERT_TYPE::ERR, "no project is open");
@@ -483,6 +586,12 @@ int Transpiler::compile(void)
 
 int Transpiler::run(void)
 {
+	if (Transpiler::is_running)
+	{
+		Alert::open(ALERT_TYPE::ERR, "program is already running");
+		return RES_FAIL;
+	}
+
 	if (!Project::has_open_proj)
 	{
 		Alert::open(ALERT_TYPE::ERR, "no project is open");
@@ -495,26 +604,6 @@ int Transpiler::run(void)
 		return RES_FAIL;
 	}
 
-	Terminal::is_open = true;
-	PLOGI << "Running code...";
-	Transpiler::add_message(std::move("Running code..."));
-
-	// std::filesystem::path od = Filesystem::Paths::out_dir;
-	// od.append(Project::meta.file_bin);
-	// std::string filename = od.string();
-
-	if (!Transpiler::has_ran)
-	{
-		// tcc_output_file(Transpiler::tcc_state, filename.c_str());
-		Transpiler::add_message(std::move("Launching program..."));
-#if defined(OS_LINUX) || defined(OS_MAC)
-		Transpiler::add_message(std::move("Switch to the terminal to see the program"));
-#elif OS_WIN
-		Transpiler::add_message(std::move("Switch to the command prompt to see the program"));
-#endif
-		Transpiler::has_ran = true;
-	}
-
 	int(*func)(void);
 	func = (int(*)(void))tcc_get_symbol(Transpiler::tcc_state, "main");
 	if (!func)
@@ -523,12 +612,19 @@ int Transpiler::run(void)
 		return RES_FAIL;
 	}
 
-	func();
+	Terminal::is_open = true;
+	PLOGI << "Running code...";
+	Transpiler::v_printed.clear();
+	Transpiler::add_message(std::move("Running code..."));
+	Transpiler::has_ran = true;
 
-	// if (Transpiler::run_cmd(filename) == RES_FAIL)
-	// 	return RES_FAIL;
+	Transpiler::run_finished = false;
+	Transpiler::is_running = true;
+	Transpiler::run_thread = std::thread([func]() {
+		func();
+		Transpiler::run_finished = true;
+	});
 
-	Transpiler::add_message(std::move("Finished running the program"));
 	return RES_SUCCESS;
 }
 
@@ -580,6 +676,12 @@ int Transpiler::run(void)
 
 void Transpiler::clear(void)
 {
+	if (Transpiler::is_running)
+	{
+		Alert::open(ALERT_TYPE::ERR, "program is still running");
+		return;
+	}
+
 	has_warning_added = false;
 	Transpiler::v_printed.clear();
 	Transpiler::v_output.clear();
@@ -610,6 +712,20 @@ void Transpiler::save_file(void)
 
 void Transpiler::shutdown(void)
 {
+	if (Transpiler::run_thread.joinable())
+	{
+		Transpiler::run_finished = true;
+		Transpiler::awaiting_input = false;
+		{
+			std::lock_guard<std::mutex> lock(Transpiler::io_mutex);
+			Transpiler::input_line.clear();
+			Transpiler::input_ready = true;
+		}
+		Transpiler::input_cv.notify_one();
+		Transpiler::run_thread.join();
+	}
+	Transpiler::is_running = false;
+
 	PLOGI << "Closing TCC state...";
 	tcc_delete(Transpiler::tcc_state);
 	PLOGI << "Closed TCC state successfully";

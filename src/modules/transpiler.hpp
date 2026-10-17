@@ -1,9 +1,13 @@
 #ifndef _TRANSPILER_HPP
 #define _TRANSPILER_HPP
 
+#include <atomic>
+#include <condition_variable>
 #include <functional>
 #include <map>
+#include <mutex>
 #include <string>
+#include <thread>
 #include <vector>
 #include "libtcc.h"
 #include "core/defines.hpp"
@@ -43,11 +47,23 @@ struct Transpiler
 	// static std::vector<std::string> v_lines;
 	static std::vector<std::string> v_printed;
 
+	static std::atomic<bool> is_running;
+	static std::atomic<bool> awaiting_input;
+	static std::atomic<bool> run_finished;
+	static std::mutex io_mutex;
+	static std::condition_variable input_cv;
+	static std::string input_line;
+	static bool input_ready;
+	static std::thread run_thread;
+
 	Transpiler() = delete;
 	static int init(void);
 	static void register_commands(void);
 	static void handle_error(void* opaque, const char* msg);
 	static void add_message(const std::string&, OUTPUT_TYPE = OUTPUT_TYPE::SUCCESS, Node* = nullptr, DOC_ID = DOC_ID::EMPTY);
+	static void add_message_threadsafe(const std::string&, OUTPUT_TYPE = OUTPUT_TYPE::SUCCESS);
+	static void submit_terminal_input(const std::string& line);
+	static void poll_run(void);
 	static std::string get_temp_name(const char* name);
 	static std::pair<std::string, bool> get_temp_name(const char* name, bool reuse);
 	static bool is_valid_decls(Node*);

@@ -12,6 +12,7 @@
 #include "plog/Log.h"
 #include "stb_image.h"
 #include "core/defines.hpp"
+#include "core/utils.hpp"
 
 #ifdef OS_WIN
 #include <windows.h>
@@ -25,6 +26,12 @@ namespace CodeNect::Filesystem
 std::filesystem::path Paths::out_dir = ".out_cn";
 std::filesystem::path Paths::cur_path = std::filesystem::current_path();
 std::string current_path = Paths::cur_path.string();
+
+void refresh_working_paths(void)
+{
+	Paths::cur_path = std::filesystem::current_path();
+	current_path = Paths::cur_path.string();
+}
 
 bool open_project_file(std::string& project_filepath)
 {
@@ -97,17 +104,21 @@ bool save_to_file(std::string& out_filepath, const char* ext, const std::string&
 
 int load_texture_from_file(const char* filename, CodeNect::Image& image)
 {
-	PLOGV << "Loading texture from file: " << filename;
+	const std::string path = CodeNect::Utils::resolve_resource_path(filename);
+	PLOGV << "Loading texture from file: " << path;
 
 	int img_width = 0;
 	int img_height = 0;
-	unsigned char* img_data = stbi_load(filename, &img_width, &img_height, NULL, STBI_rgb_alpha);
+	unsigned char* img_data = stbi_load(path.c_str(), &img_width, &img_height, NULL, STBI_rgb_alpha);
 
 	PLOGV << "loaded texture from file: " << "width: " << img_width
 		<< " , height: " << img_height;
 
 	if (img_data == NULL)
+	{
+		PLOGE << "stbi_load failed: " << stbi_failure_reason();
 		return RES_FAIL;
+	}
 
 	GLuint img_texture;
 	glGenTextures(1, &img_texture);
@@ -134,7 +145,8 @@ int load_texture_from_file(const char* filename, CodeNect::Image& image)
 
 unsigned char* load_texture_from_file(const char* filename, GLFWimage& image)
 {
-	return stbi_load(filename, &image.width, &image.height, 0, STBI_rgb_alpha);
+	const std::string path = CodeNect::Utils::resolve_resource_path(filename);
+	return stbi_load(path.c_str(), &image.width, &image.height, 0, STBI_rgb_alpha);
 }
 
 // void create_project_temp_dir(void)

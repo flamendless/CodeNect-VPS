@@ -25,9 +25,12 @@
 #include "ui/diff_viewer.hpp"
 #include "ui/info.hpp"
 #include "ui/tutorial.hpp"
+#include "core/utils.hpp"
 
 int main(int argv, char** args)
 {
+	CodeNect::Utils::use_resource_directory_as_cwd(argv, args);
+	CodeNect::Filesystem::refresh_working_paths();
 	CodeNect::App app;
 	app.init();
 
@@ -122,6 +125,7 @@ int main(int argv, char** args)
 		float dt = imgui_io->DeltaTime;
 
 		glfwPollEvents();
+		CodeNect::Transpiler::poll_run();
 
 		//update
 		sidebar_handler.update(dt);

@@ -194,6 +194,26 @@ if (WIN32)
 		DESTINATION ./lib)
 elseif (APPLE)
 	target_compile_definitions(CodeNect PRIVATE OS_MAC=1)
+	set(CODENECT_MACOS_PAYLOAD "CodeNect.app/Contents/MacOS")
+
+	set(CODENECT_ICNS "${CMAKE_CURRENT_SOURCE_DIR}/assets/CodeNect.icns")
+	add_custom_command(
+		OUTPUT "${CODENECT_ICNS}"
+		COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/scripts/make_macos_icns.sh"
+		DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets/logo.png"
+		WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+		COMMENT "Building CodeNect.icns from assets/logo.png")
+	add_custom_target(codenect_macos_icon DEPENDS "${CODENECT_ICNS}")
+	add_dependencies(CodeNect codenect_macos_icon)
+	set_source_files_properties("${CODENECT_ICNS}" PROPERTIES
+		MACOSX_PACKAGE_LOCATION Resources
+		GENERATED TRUE)
+	target_sources(CodeNect PRIVATE "${CODENECT_ICNS}")
+	set_target_properties(CodeNect PROPERTIES
+		MACOSX_BUNDLE TRUE
+		MACOSX_BUNDLE_BUNDLE_NAME "CodeNect"
+		MACOSX_BUNDLE_GUI_IDENTIFIER "io.flamendless.codenect"
+		MACOSX_BUNDLE_ICON_FILE "CodeNect")
 
 	# native file dialog uses the Cocoa/AppKit backend on macOS.
 	# nfd_cocoa.m uses manual reference counting, so ARC must stay disabled.
@@ -218,11 +238,14 @@ elseif (APPLE)
 	set(MACOS_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/macos)
 	if (EXISTS ${MACOS_LIB_DIR}/libtcc.a)
 		target_link_libraries(CodeNect ${MACOS_LIB_DIR}/libtcc.a)
-		install(FILES ${MACOS_LIB_DIR}/libtcc.a DESTINATION .)
-		install(FILES ${MACOS_LIB_DIR}/libtcc.a DESTINATION ./lib)
+		install(FILES ${MACOS_LIB_DIR}/libtcc.a
+			DESTINATION "${CODENECT_MACOS_PAYLOAD}")
+		install(FILES ${MACOS_LIB_DIR}/libtcc.a
+			DESTINATION "${CODENECT_MACOS_PAYLOAD}/lib")
 		if (EXISTS ${MACOS_LIB_DIR}/libtcc1.a)
 			target_link_libraries(CodeNect ${MACOS_LIB_DIR}/libtcc1.a)
-			install(FILES ${MACOS_LIB_DIR}/libtcc1.a DESTINATION ./lib)
+			install(FILES ${MACOS_LIB_DIR}/libtcc1.a
+				DESTINATION "${CODENECT_MACOS_PAYLOAD}/lib")
 		endif ()
 	else ()
 		find_library(TCC_LIBRARY NAMES tcc
@@ -265,16 +288,25 @@ target_link_libraries(CodeNect
 	${GLFW3_LIBRARY}
 )
 
-install(TARGETS CodeNect DESTINATION .)
-install(FILES config.ini DESTINATION .)
-install(DIRECTORY assets DESTINATION .)
-install(FILES
-		lib/glfw3.dll
-		lib/libgcc_s_seh-1.dll
-		lib/libstdc++-6.dll
-		lib/libwinpthread-1.dll
-	DESTINATION .)
-install(DIRECTORY lib/tcc DESTINATION .)
+if (APPLE)
+	install(TARGETS CodeNect BUNDLE DESTINATION .)
+	set(CODENECT_INSTALL_DATA_DIR "${CODENECT_MACOS_PAYLOAD}")
+else ()
+	install(TARGETS CodeNect DESTINATION .)
+	set(CODENECT_INSTALL_DATA_DIR ".")
+endif ()
+
+install(FILES config.ini DESTINATION "${CODENECT_INSTALL_DATA_DIR}")
+install(DIRECTORY assets DESTINATION "${CODENECT_INSTALL_DATA_DIR}")
+if (WIN32)
+	install(FILES
+			lib/glfw3.dll
+			lib/libgcc_s_seh-1.dll
+			lib/libstdc++-6.dll
+			lib/libwinpthread-1.dll
+		DESTINATION .)
+endif ()
+install(DIRECTORY lib/tcc DESTINATION "${CODENECT_INSTALL_DATA_DIR}")
 
 add_custom_target(
 	copy-compile-commands ALL

@@ -40,7 +40,7 @@ The following nodes are supported:
 	* Sine
 	* Cosine
 	* Tangent
-* String functions: 
+* String functions:
 	* To lowercase
 	* To uppercase
 	* To arrray
@@ -81,38 +81,7 @@ git submodule update --init --recursive
 
 * For Linux, just run `./build.sh rebuild && ./build.sh compile && ./build.sh run`
 * For Windows, just run `build_win.bat`
-* For macOS (Apple Silicon), see the section below
-
-### macOS (Apple Silicon)
-1. Install the Xcode Command Line Tools (provides `clang`, `make`, `git`):
-
-```
-xcode-select --install
-```
-
-2. Install the build dependencies and build the architecture-specific `libtcc`
-   in one step with [Homebrew](https://brew.sh):
-
-```
-./build.sh deps_macos
-```
-
-   This runs `brew install cmake ninja pkg-config glfw` and then
-   `./scripts/build_tcc_macos.sh`, which compiles TinyCC for your Mac and
-   installs `libtcc.a`/`libtcc1.a` into `lib/macos/`. You can also run those
-   two steps manually if you prefer.
-
-3. Build and run just like on Linux:
-
-```
-./build.sh rebuild && ./build.sh compile && ./build.sh run
-```
-
-> Note: The `libtcc` static libraries are architecture and SDK specific, so
-> they are not committed to the repo. `./scripts/build_tcc_macos.sh` builds them
-> for your machine. TinyCC's macOS (Mach-O) backend is experimental, especially
-> on Apple Silicon; pin a known-good ref with
-> `./scripts/build_tcc_macos.sh <git-ref>` if you hit issues.
+* For macOS, run `./build.sh deps_macos` once, then `./build.sh rebuild && ./build.sh compile && ./build.sh run`
 
 ## Testing
 * `cd test && ./build.sh rebuild`
