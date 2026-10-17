@@ -57,6 +57,40 @@ function package_macos()
 	zip -9r codenect_macos.zip assets build.sh build_win.bat cmake CMakeLists.txt config.ini includes lib LICENSE scripts src
 }
 
+function dmg()
+{
+	if [ "$(uname -s)" != "Darwin" ]; then
+		echo "dmg: macOS only" >&2
+		return 1
+	fi
+	if [ ! -d "${dir_install}/CodeNect.app" ]; then
+		echo "dmg: run ./build.sh compile first (need ${dir_install}/CodeNect.app)" >&2
+		return 1
+	fi
+	"${_repo_root}/scripts/package_macos_dmg.sh" "$@"
+}
+
+function package_macos_app()
+{
+	if [ "$(uname -s)" != "Darwin" ]; then
+		echo "package_macos_app: macOS only" >&2
+		return 1
+	fi
+	if [ ! -d "${dir_install}/CodeNect.app" ]; then
+		echo "package_macos_app: run ./build.sh compile first" >&2
+		return 1
+	fi
+	local version arch zip_name
+	version="$(sed -n 's/^version[[:space:]]*=[[:space:]]*//p' config.ini 2>/dev/null | head -1 | tr -d '\r')"
+	version="${version:-0.0.0}"
+	arch="$(uname -m)"
+	zip_name="dist/CodeNect-${version}-macOS-${arch}.zip"
+	mkdir -p dist
+	rm -f "${zip_name}"
+	( cd "${dir_install}" && zip -9ry "../${zip_name}" CodeNect.app )
+	echo "Wrote ${zip_name}"
+}
+
 function deps_macos()
 {
 	# installs the toolchain and libraries needed to build CodeNect on macOS
@@ -73,7 +107,7 @@ function clean()
 }
 
 if [ $# -eq 0 ]; then
-	echo "Must pass command: rebuild, compile, run, clean, package_linux, package_macos, deps_macos"
+	echo "Must pass command: rebuild, compile, run, clean, package_linux, package_macos, package_macos_app, dmg, deps_macos"
 else
 	"$@"
 fi

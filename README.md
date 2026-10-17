@@ -83,6 +83,15 @@ git submodule update --init --recursive
 * For Windows, just run `build_win.bat`
 * For macOS, run `./build.sh deps_macos` once, then `./build.sh rebuild && ./build.sh compile && ./build.sh run`
 
+### macOS release (.dmg)
+
+After a release build (`./build.sh rebuild && ./build.sh compile`):
+
+* **DMG:** `./build.sh dmg` → `dist/CodeNect-<version>-macOS-<arch>.dmg` (drag `CodeNect.app` to Applications)
+* **Zip:** `./build.sh package_macos_app` → `dist/CodeNect-<version>-macOS-<arch>.zip`
+
+Version comes from `version` in `config.ini`. Unsigned builds are normal for indie distribution; users may need **Right-click → Open** the first time. To sign, set `CODENECT_CODESIGN_IDENTITY` to your Developer ID Application name before running `./build.sh dmg`.
+
 ## Testing
 * `cd test && ./build.sh rebuild`
 * `./build.sh test_detailed` or `./build.sh test_summary`

@@ -1,5 +1,6 @@
 compile_commands.json
 release/
+dist/
 build/
 bin/
 build_win/
